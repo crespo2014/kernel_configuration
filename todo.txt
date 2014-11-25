@@ -1,0 +1,28 @@
+[Firmware Bug]: ACPI: BIOS _OSI(Linux) query ignored
+
+ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S1_] (20140724/hwxface-580)
+ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S2_] (20140724/hwxface-580)
+ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S3_] (20140724/hwxface-580)
+
+Could not find Carillo Ranch MCH device.
+
+drm/i810 does not support SMP
+
+iwlwifi 0000:02:00.0: Direct firmware load for iwlwifi-3160-10.ucode failed with error -2
+
+serio_raw: disagrees about version of symbol get_device
+serio_raw: Unknown symbol get_device (err -22)
+serio_raw: disagrees about version of symbol put_device
+serio_raw: Unknown symbol put_device (err -22)
+serio_raw: disagrees about version of symbol _dev_info
+serio_raw: Unknown symbol _dev_info (err -22)
+serio_raw: disagrees about version of symbol dev_err
+serio_raw: Unknown symbol dev_err (err -22)
+serio_raw: disagrees about version of symbol get_device
+serio_raw: Unknown symbol get_device (err -22)
+serio_raw: disagrees about version of symbol put_device
+serio_raw: Unknown symbol put_device (err -22)
+serio_raw: disagrees about version of symbol _dev_info
+serio_raw: Unknown symbol _dev_info (err -22)
+serio_raw: disagrees about version of symbol dev_err
+serio_raw: Unknown symbol dev_err (err -22)
