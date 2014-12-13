@@ -2,3 +2,10 @@ Required drivers
 @todo get driver realtek from official downlao page 
 untar
 build
+
+copy folder r8168 into linux/drivers/net/ethernet
+
+modify file linux/drivers/net/ethernet/KConfig
+
+source "drivers/net/ethernet/realtek/Kconfig"
+++ source "drivers/net/ethernet/r8168/Kconfig"
