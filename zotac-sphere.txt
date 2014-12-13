@@ -1,0 +1,4 @@
+Required drivers
+@todo get driver realtek from official downlao page 
+untar
+build
