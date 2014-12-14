@@ -1,5 +1,32 @@
 
 obj-$(CONFIG_RTL8168)	+= r8168.o
+
+r8168-objs := r8168_n.o r8168_asf.o rtl_eeprom.o rtltool.o
+
+ifeq ($(ENABLE_REALWOW_SUPPORT), y)
+    r8168-objs += r8168_realwow.o
+	EXTRA_CFLAGS += -DENABLE_REALWOW_SUPPORT
+endif
+ifeq ($(ENABLE_DASH_SUPPORT), y)
+    r8168-objs += r8168_dash.o
+	EXTRA_CFLAGS += -DENABLE_DASH_SUPPORT
+endif
+EXTRA_CFLAGS += -DCONFIG_R8168_NAPI
+EXTRA_CFLAGS += -DCONFIG_R8168_VLAN
+ifeq ($(CONFIG_DOWN_SPEED_100), y)
+	EXTRA_CFLAGS += -DCONFIG_DOWN_SPEED_100
+endif
+ifeq ($(CONFIG_ASPM), y)
+	EXTRA_CFLAGS += -DCONFIG_ASPM
+endif
+ifeq ($(ENABLE_S5WOL), y)
+	EXTRA_CFLAGS += -DENABLE_S5WOL
+endif
+ifeq ($(ENABLE_EEE), y)
+	EXTRA_CFLAGS += -DENABLE_EEE
+endif
+
+ifeq (0,1)
 obj-$(CONFIG_ENABLE_REALWOW_SUPPORT) += r8168_realwow.o
 obj-$(CONFIG_ENABLE_DASH_SUPPORT) += r8168_dash.o
 
@@ -11,3 +38,4 @@ ccflags-$(CONFIG_ENABLE_S5WOL) += -DENABLE_S5WOL
 ccflags-$(CONFIG_ENABLE_EEE) += -DENABLE_EEE
 
 ccflags-y += -DCONFIG_R8168_NAPI -DCONFIG_R8168_VLAN
+endif
