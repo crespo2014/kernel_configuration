@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org">
+<meta http-equiv="Content-Type" content=
+"text/html; charset=us-ascii">
+<title>Chapter&nbsp;5.&nbsp;Listing of Installed Components</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title=
+"NVIDIA Accelerated Linux Graphics Driver README and Installation Guide">
+<link rel="up" href="installationandconfiguration.html" title=
+"Part&nbsp;I.&nbsp;Installation and Configuration Instructions">
+<link rel="prev" href="installdriver.html" title=
+"Chapter&nbsp;4.&nbsp;Installing the NVIDIA Driver">
+<link rel="next" href="editxconfig.html" title=
+"Chapter&nbsp;6.&nbsp;Configuring X for the NVIDIA Driver">
+</head>
+<body>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr>
+<th colspan="3" align="center">Chapter&nbsp;5.&nbsp;Listing of
+Installed Components</th>
+</tr>
+<tr>
+<td width="20%" align="left"><a accesskey="p" href=
+"installdriver.html">Prev</a>&nbsp;</td>
+<th width="60%" align="center">Part&nbsp;I.&nbsp;Installation and
+Configuration Instructions</th>
+<td width="20%" align="right">&nbsp;<a accesskey="n" href=
+"editxconfig.html">Next</a></td>
+</tr>
+</table>
+<hr></div>
+<div class="chapter" lang="en">
+<div class="titlepage">
+<div>
+<div>
+<h2 class="title"><a name="installedcomponents" id=
+"installedcomponents"></a>Chapter&nbsp;5.&nbsp;Listing of Installed
+Components</h2>
+</div>
+</div>
+</div>
+<p>The NVIDIA Accelerated Linux Graphics Driver consists of the
+following components (filenames in parentheses are the full names
+of the components after installation; "x.y.z" denotes the current
+version. In these cases appropriate symlinks are created during
+installation):</p>
+<div class="itemizedlist">
+<ul type="disc">
+<li>
+<p>An X driver (/usr/X11R6/lib/modules/drivers/nvidia_drv.so); this
+driver is needed by the X server to use your NVIDIA hardware.</p>
+</li>
+<li>
+<p>A GLX extension module for X
+(/usr/X11R6/lib/modules/extensions/libglx.so.x.y.z); this module is
+used by the X server to provide server-side GLX support.</p>
+</li>
+<li>
+<p>An X module for wrapped software rendering
+(/usr/X11R6/lib/modules/libnvidia-wfb.so.x.y.z and optionally,
+/usr/X11R6/lib/modules/libwfb.so); this module is used by the X
+driver to perform software rendering on GeForce 8 series GPUs. If
+libwfb.so already exists, nvidia-installer will not overwrite it.
+Otherwise, it will create a symbolic link from libwfb.so to
+libnvidia-wfb.so.x.y.z.</p>
+</li>
+<li>
+<p>An OpenGL library (/usr/lib/libGL.so.x.y.z); this library
+provides the API entry points for all OpenGL and GLX function
+calls. It is linked to at run-time by OpenGL applications.</p>
+</li>
+<li>
+<p>An OpenGL core library (/usr/lib/libnvidia-glcore.so.x.y.z);
+this library is implicitly used by libGL and by libglx. It contains
+the core accelerated 3D functionality. You should not explicitly
+load it in your X config file -- that is taken care of by
+libglx.</p>
+</li>
+<li>
+<p>Three VDPAU (Video Decode and Presentation API for Unix-like
+systems) libraries: The top-level wrapper
+(/usr/X11R6/lib/libvdpau.so.x.y.z), a debug trace library
+(/usr/X11R6/lib/libvdpau_trace.so.x.y.z), and the NVIDIA
+implementation (/usr/X11R6/lib/libvdpau_nvidia.so.x.y.z). See
+<a href="vdpausupport.html" title=
+"Appendix&nbsp;G.&nbsp;VDPAU Support">Appendix&nbsp;G, <i>VDPAU
+Support</i></a> for details.</p>
+</li>
+<li>
+<p>Two CUDA libraries (/usr/lib/libcuda.so.x.y.z,
+/usr/lib/libcuda.la); these libraries provide runtime support for
+CUDA (high-performance computing on the GPU) applications.</p>
+</li>
+<li>
+<p>Two OpenCL libraries (/usr/lib/libOpenCL.so.1.0.0,
+/usr/lib/libnvidia-opencl.so.x.y.z); the former is a
+vendor-independent Installable Client Driver (ICD) loader, and the
+latter is the NVIDIA Vendor ICD. A config file
+/usr/lib/vendors/nvidia.icd is also installed, to advertise the
+NVIDIA Vendor ICD to the ICD Loader.</p>
+</li>
+<li>
+<p>A kernel module (/lib/modules/`uname
+-r`/kernel/drivers/video/nvidia.ko); this kernel module provides
+low-level access to your NVIDIA hardware for all of the above
+components. It is generally loaded into the kernel when the X
+server is started, and is used by the X driver and OpenGL.
+nvidia.ko consists of two pieces: the binary-only core, and a
+kernel interface that must be compiled specifically for your kernel
+version. Note that the Linux kernel does not have a consistent
+binary interface like the X server, so it is important that this
+kernel interface be matched with the version of the kernel that you
+are using. This can either be accomplished by compiling yourself,
+or using precompiled binaries provided for the kernels shipped with
+some of the more common Linux distributions.</p>
+</li>
+<li>
+<p>NVIDIA frontend module (/lib/modules/`uname
+-r`/kernel/drivers/video/nvidia-frontend.ko); this kernel module is
+built when the --multiple-kernel-modules parameter is passed to
+nvidia-installer (See <a href="faq.html#multikernelmodules">&ldquo;
+How can I minimize software overhead when driving many GPUs in a
+single system? &rdquo;</a>) or when the NV_BUILD_MODULE_INSTANCES
+variable is passed to make when building the NVIDIA kernel module
+(See <a href="faq.html#buildmultiplemodules">&ldquo; How can I
+build multiple NVIDIA kernel modules? &rdquo;</a>). The number of
+module instances can be a number between 1 and 8. This module
+registers the nvidia[0-7].ko modules and redirects operations to
+individual nvidia[0-7].ko modules.</p>
+</li>
+<li>
+<p>Multiple kernel modules (/lib/modules/`uname
+-r`/kernel/drivers/video/nvidia[0-7].ko); these modules are built
+when the --multiple-kernel-modules parameter is passed to
+nvidia-installer (See <a href="faq.html#multikernelmodules">&ldquo;
+How can I minimize software overhead when driving many GPUs in a
+single system? &rdquo;</a>) or when the NV_BUILD_MODULE_INSTANCES
+variable is passed to make when building the NVIDIA kernel module
+(See <a href="faq.html#buildmultiplemodules">&ldquo; How can I
+build multiple NVIDIA kernel modules? &rdquo;</a>). The number of
+module instances can be a number between 1 and 8. Each of these
+modules is similar to nvidia.ko in terms of functionality.</p>
+</li>
+<li>
+<p>NVIDIA Unified Memory kernel module (/lib/modules/`uname
+-r`/kernel/drivers/video/nvidia-uvm.ko); this kernel module
+provides functionality for sharing memory between the CPU and GPU
+in CUDA programs. It is generally loaded into the kernel when a
+CUDA program is started, and is used by the CUDA driver. Unified
+Memory is incompatible with multiple kernel modules.</p>
+</li>
+<li>
+<p>The nvidia-tls libraries (/usr/lib/libnvidia-tls.so.x.y.z and
+/usr/lib/tls/libnvidia-tls.so.x.y.z); these files provide thread
+local storage support for the NVIDIA OpenGL libraries (libGL,
+libnvidia-glcore, and libglx). Each nvidia-tls library provides
+support for a particular thread local storage model (such as ELF
+TLS), and the one appropriate for your system will be loaded at run
+time.</p>
+</li>
+<li>
+<p>The nvidia-ml library (/usr/lib/libnvidia-ml.so.x.y.z); The
+NVIDIA Management Library provides a monitoring and management API.
+See <a href="nvidia-ml.html" title=
+"Chapter&nbsp;26.&nbsp;The NVIDIA Management Library">Chapter&nbsp;26,
+<i>The NVIDIA Management Library</i></a> for more information.</p>
+</li>
+<li>
+<p>The application nvidia-installer (/usr/bin/nvidia-installer) is
+NVIDIA's tool for installing and updating NVIDIA drivers. See
+<a href="installdriver.html" title=
+"Chapter&nbsp;4.&nbsp;Installing the NVIDIA Driver">Chapter&nbsp;4,
+<i>Installing the NVIDIA Driver</i></a> for a more thorough
+description.</p>
+</li>
+<li>
+<p>The application nvidia-xconfig (/usr/bin/nvidia-xconfig) is
+NVIDIA's tool for manipulating X server configuration files. See
+<a href="editxconfig.html" title=
+"Chapter&nbsp;6.&nbsp;Configuring X for the NVIDIA Driver">Chapter&nbsp;6,
+<i>Configuring X for the NVIDIA Driver</i></a> for more
+information.</p>
+</li>
+<li>
+<p>The application nvidia-settings (/usr/bin/nvidia-settings) is
+NVIDIA's tool for dynamic configuration while the X server is
+running. See <a href="nvidiasettings.html" title=
+"Chapter&nbsp;24.&nbsp;Using the nvidia-settings Utility">Chapter&nbsp;24,
+<i>Using the nvidia-settings Utility</i></a> for more
+information.</p>
+</li>
+<li>
+<p>The application nvidia-smi (/usr/bin/nvidia-smi) is the NVIDIA
+System Management Interface for management and monitoring
+functionality. See <a href="nvidia-smi.html" title=
+"Chapter&nbsp;25.&nbsp;Using the nvidia-smi Utility">Chapter&nbsp;25,
+<i>Using the nvidia-smi Utility</i></a> for more information.</p>
+</li>
+<li>
+<p>The application nvidia-debugdump (/usr/bin/nvidia-debugdump) is
+NVIDIA's tool for collecting internal GPU state. It is normally
+invoked by the nvidia-bug-report.sh (/usr/bin/nvidia-bug-report.sh)
+script. See <a href="nvidia-debugdump.html" title=
+"Chapter&nbsp;27.&nbsp;Using the nvidia-debugdump Utility">Chapter&nbsp;27,
+<i>Using the nvidia-debugdump Utility</i></a> for more
+information.</p>
+</li>
+<li>
+<p>The daemon nvidia-persistenced (/usr/bin/nvidia-persistenced) is
+the NVIDIA Persistence Daemon for allowing the NVIDIA kernel module
+to maintain persistent state when no other NVIDIA driver components
+are running. See <a href="nvidia-persistenced.html" title=
+"Chapter&nbsp;28.&nbsp;Using the nvidia-persistenced Utility">Chapter&nbsp;28,
+<i>Using the nvidia-persistenced Utility</i></a> for more
+information.</p>
+</li>
+<li>
+<p>The NVCUVID library (/usr/lib/libnvcuvid.so.x.y.z); The NVIDIA
+CUDA Video Decoder (NVCUVID) library provides an interface to
+hardware video decoding capabilities on NVIDIA GPUs with CUDA.</p>
+</li>
+<li>
+<p>The NvEncodeAPI library (/usr/lib/libnvidia-encode.so.x.y.z);
+The NVENC Video Encoding library provides an interface to video
+encoder hardware on supported NVIDIA GPUs.</p>
+</li>
+<li>
+<p>The NvIFROpenGL library (/usr/lib/libnvidia-ifr.so.x.y.z); The
+NVIDIA OpenGL-based Inband Frame Readback library provides an
+interface to capture and optionally encode an OpenGL framebuffer.
+NvIFROpenGL is a private API that is only available to approved
+partners for use in remote graphics scenarios. Please contact
+NVIDIA at GRIDteam@nvidia.com for more information.</p>
+</li>
+<li>
+<p>The NvFBC library (/usr/lib/libnvidia-fbc.so.x.y.z); The NVIDIA
+Framebuffer Capture library provides an interface to capture and
+optionally encode the framebuffer of an X server screen. NvFBC is a
+private API that is only available to approved partners for use in
+remote graphics scenarios. Please contact NVIDIA at
+GRIDteam@nvidia.com for more information.</p>
+</li>
+</ul>
+</div>
+<p></p>
+<p>Problems will arise if applications use the wrong version of a
+library. This can be the case if there are either old libGL
+libraries or stale symlinks left lying around. If you think there
+may be something awry in your installation, check that the
+following files are in place (these are all the files of the NVIDIA
+Accelerated Linux Graphics Driver, as well as their symlinks):</p>
+<pre class="screen">
+    /usr/lib/xorg/modules/drivers/nvidia_drv.so
+    /usr/lib/xorg/modules/libwfb.so (if your X server is new enough), or
+    /usr/lib/xorg/modules/libnvidia-wfb.so and
+    /usr/lib/xorg/modules/libwfb.so -&gt; libnvidia-wfb.so
+
+    /usr/lib/xorg/modules/extensions/libglx.so.x.y.z
+    /usr/lib/xorg/modules/extensions/libglx.so -&gt; libglx.so.x.y.z
+
+    (the above may also be in /usr/lib/modules or /usr/X11R6/lib/modules)
+
+    /usr/lib/libGL.so.x.y.z
+    /usr/lib/libGL.so.1 -&gt; libGL.so.x.y.z
+    /usr/lib/libGL.so -&gt; libGL.so.1
+
+    /usr/lib/libnvidia-glcore.so.x.y.z
+
+    /usr/lib/libcuda.so.x.y.z
+    /usr/lib/libcuda.so -&gt; libcuda.so.x.y.z
+
+    /lib/modules/`uname -r`/video/nvidia.{o,ko}, or
+    /lib/modules/`uname -r`/kernel/drivers/video/nvidia.{o,ko}
+</pre>
+<p>If there are other libraries whose "soname" conflicts with that
+of the NVIDIA libraries, ldconfig may create the wrong symlinks. It
+is recommended that you manually remove or rename conflicting
+libraries (be sure to rename clashing libraries to something that
+ldconfig will not look at -- we have found that prepending "XXX" to
+a library name generally does the trick), rerun 'ldconfig', and
+check that the correct symlinks were made. An example of a library
+that often creates conflicts is "/usr/X11R6/lib/libGL.so*".</p>
+<p>If the libraries appear to be correct, then verify that the
+application is using the correct libraries. For example, to check
+that the application /usr/X11R6/bin/glxgears is using the NVIDIA
+libraries, run:</p>
+<pre class="screen">
+    % ldd /usr/X11R6/bin/glxgears
+        linux-gate.so.1 =&gt;  (0xffffe000)
+        libGL.so.1 =&gt; /usr/lib/libGL.so.1 (0xb7ed1000)
+        libXext.so.6 =&gt; /usr/X11R6/lib/libXext.so.6 (0xb7ec0000)
+        libX11.so.6 =&gt; /usr/X11R6/lib/libX11.so.6 (0xb7de0000)
+        libpthread.so.0 =&gt; /lib/tls/libpthread.so.0 (0x00946000)
+        libm.so.6 =&gt; /lib/tls/libm.so.6 (0x0075d000)
+        libc.so.6 =&gt; /lib/tls/libc.so.6 (0x00631000)
+        libnvidia-tls.so.340.65 =&gt; /usr/lib/tls/libnvidia-tls.so.__DRV_VER__ (0xb7ddd000)
+        libnvidia-glcore.so.340.65 =&gt; /usr/lib/libnvidia-glcore.so.__DRV_VER__ (0xb5d1f000)
+        libdl.so.2 =&gt; /lib/libdl.so.2 (0x00782000)
+        /lib/ld-linux.so.2 (0x00614000)
+</pre>
+<p>Check the files being used for libGL -- if it is something other
+than the NVIDIA library, then you will need to either remove the
+library that is getting in the way or adjust your ld search path
+using the <code class="envar">LD_LIBRARY_PATH</code> environment
+variable. You may want to consult the man pages for
+<span><strong class="command">ldconfig</strong></span> and
+<span><strong class="command">ldd</strong></span>.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left"><a accesskey="p" href=
+"installdriver.html">Prev</a>&nbsp;</td>
+<td width="20%" align="center"><a accesskey="u" href=
+"installationandconfiguration.html">Up</a></td>
+<td width="40%" align="right">&nbsp;<a accesskey="n" href=
+"editxconfig.html">Next</a></td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">
+Chapter&nbsp;4.&nbsp;Installing the NVIDIA Driver&nbsp;</td>
+<td width="20%" align="center"><a accesskey="h" href=
+"index.html">Home</a></td>
+<td width="40%" align="right" valign="top">
+&nbsp;Chapter&nbsp;6.&nbsp;Configuring X for the NVIDIA Driver</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
