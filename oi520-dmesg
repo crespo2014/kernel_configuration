@@ -1,7 +1,7 @@
 Initializing cgroup subsys cpuset
 Initializing cgroup subsys cpu
 Initializing cgroup subsys cpuacct
-Linux version 3.18.0-zotac-sphere (lester@c2d) (gcc version 4.7.2 (Debian 4.7.2-5) ) #6 SMP Sat Dec 13 20:05:38 GMT 2014
+Linux version 3.18.0-zotac-sphere (lester@c2d) (gcc version 4.7.2 (Debian 4.7.2-5) ) #14 SMP Sun Dec 14 00:36:21 GMT 2014
 e820: BIOS-provided physical RAM map:
 BIOS-e820: [mem 0x0000000000000000-0x000000000009d7ff] usable
 BIOS-e820: [mem 0x000000000009d800-0x000000000009ffff] reserved
@@ -51,7 +51,7 @@ MTRR variable ranges enabled:
 x86 PAT enabled: cpu 0, old 0x7040600070406, new 0x7010600070106
 e820: update [mem 0xdd000000-0xffffffff] usable ==> reserved
 found SMP MP-table at [mem 0x000fd730-0x000fd73f] mapped at [c00fd730]
-initial memory mapped: [mem 0x00000000-0x01bfffff]
+initial memory mapped: [mem 0x00000000-0x01dfffff]
 Base memory trampoline at [c0099000] 99000 size 16384
 init_memory_mapping: [mem 0x00000000-0x000fffff]
  [mem 0x00000000-0x000fffff] page 4k
@@ -64,11 +64,11 @@ init_memory_mapping: [mem 0x00100000-0x33ffffff]
  [mem 0x00200000-0x33ffffff] page 2M
 init_memory_mapping: [mem 0x37600000-0x377fdfff]
  [mem 0x37600000-0x377fdfff] page 4k
-BRK [0x0177c000, 0x0177cfff] PGTABLE
-BRK [0x0177d000, 0x0177dfff] PGTABLE
+BRK [0x018a4000, 0x018a4fff] PGTABLE
+BRK [0x018a5000, 0x018a5fff] PGTABLE
 RAMDISK: [mem 0x3798c000-0x37cbdfff]
-Allocated new RAMDISK: [mem 0x374cc000-0x377fda07]
-Move RAMDISK from [mem 0x3798c000-0x37cbda07] to [mem 0x374cc000-0x377fda07]
+Allocated new RAMDISK: [mem 0x374cc000-0x377fdc38]
+Move RAMDISK from [mem 0x3798c000-0x37cbdc38] to [mem 0x374cc000-0x377fdc38]
 ACPI: Early table checksum verification disabled
 ACPI: RSDP 0x000F0490 000024 (v02 ALASKA)
 ACPI: XSDT 0xDB9B5080 00007C (v01 ALASKA A M I    01072009 AMI  00010013)
@@ -90,7 +90,7 @@ ACPI: Local APIC address 0xfee00000
 887MB LOWMEM available.
   mapped low ram: 0 - 377fe000
   low ram: 0 - 377fe000
-BRK [0x0177e000, 0x0177efff] PGTABLE
+BRK [0x018a6000, 0x018a6fff] PGTABLE
 Zone ranges:
   DMA      [mem 0x00001000-0x00ffffff]
   Normal   [mem 0x01000000-0x377fdfff]
@@ -106,7 +106,7 @@ Early memory node ranges
   node   0: [mem 0x00000000-0x1fdfffff]
 Initmem setup node 0 [mem 0x00001000-0x1fdfffff]
 On node 0 totalpages: 2077495
-free_area_init_node: node 0, pgdat c1684a00, node_mem_map f30cc020
+free_area_init_node: node 0, pgdat c17aa8c0, node_mem_map f30cc020
   DMA zone: 32 pages used for memmap
   DMA zone: 0 pages reserved
   DMA zone: 3996 pages, LIFO batch:0
@@ -146,15 +146,15 @@ Initializing CPU#0
 xsave: enabled xstate_bv 0x7, cntxt size 0x340 using standard form
 Initializing HighMem for node 0 (000377fe:0021fe00)
 Initializing Movable for node 0 (00000000:00000000)
-Memory: 8228216K/8309980K available (4335K kernel code, 437K rwdata, 1936K rodata, 520K init, 348K bss, 81764K reserved, 7401076K highmem)
+Memory: 8227032K/8309980K available (5215K kernel code, 446K rwdata, 2224K rodata, 524K init, 348K bss, 82948K reserved, 7401076K highmem)
 virtual kernel memory layout:
     fixmap  : 0xfff17000 - 0xfffff000   ( 928 kB)
     pkmap   : 0xff800000 - 0xffa00000   (2048 kB)
     vmalloc : 0xf7ffe000 - 0xff7fe000   ( 120 MB)
     lowmem  : 0xc0000000 - 0xf77fe000   ( 887 MB)
-      .init : 0xc1691000 - 0xc1713000   ( 520 kB)
-      .data : 0xc143c02d - 0xc168f480   (2381 kB)
-      .text : 0xc1000000 - 0xc143c02d   (4336 kB)
+      .init : 0xc17b7000 - 0xc183a000   ( 524 kB)
+      .data : 0xc1518071 - 0xc17b5a80   (2678 kB)
+      .text : 0xc1000000 - 0xc1518071   (5216 kB)
 Checking if this processor honours the WP bit even in supervisor mode...Ok.
 Hierarchical RCU implementation.
 	RCU dyntick-idle grace-period acceleration is enabled.
@@ -167,8 +167,8 @@ Console: colour VGA+ 80x25
 console [tty0] enabled
 hpet clockevent registered
 tsc: Fast TSC calibration using PIT
-tsc: Detected 2294.744 MHz processor
-Calibrating delay loop (skipped), value calculated using timer frequency.. 4589.48 BogoMIPS (lpj=2294744)
+tsc: Detected 2294.597 MHz processor
+Calibrating delay loop (skipped), value calculated using timer frequency.. 4589.19 BogoMIPS (lpj=2294597)
 pid_max: default: 32768 minimum: 301
 ACPI: Core revision 20140926
 ACPI: All ACPI Tables successfully acquired
@@ -187,7 +187,7 @@ mce: CPU supports 7 MCE banks
 CPU0: Thermal monitoring enabled (TM1)
 Last level iTLB entries: 4KB 1024, 2MB 1024, 4MB 1024
 Last level dTLB entries: 4KB 1024, 2MB 1024, 4MB 1024, 1GB 4
-Freeing SMP alternatives memory: 12K (c1713000 - c1716000)
+Freeing SMP alternatives memory: 12K (c183a000 - c183d000)
 Enabling APIC mode:  Flat.  Using 1 I/O APICs
 ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=0 pin2=0
 smpboot: CPU0: Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz (fam: 06, model: 45, stepping: 01)
@@ -211,7 +211,7 @@ CPU 3 irqstacks, hard=f2944000 soft=f2946000
  #3
 Initializing CPU#3
 x86: Booted up 1 node, 4 CPUs
-smpboot: Total of 4 processors activated (18357.95 BogoMIPS)
+smpboot: Total of 4 processors activated (18356.77 BogoMIPS)
 devtmpfs: initialized
 PM: Registering ACPI NVS region [mem 0xcb9f4000-0xcb9fafff] (28672 bytes)
 PM: Registering ACPI NVS region [mem 0xdb8b1000-0xdb9e0fff] (1245184 bytes)
@@ -222,6 +222,7 @@ cpuidle: using governor ladder
 cpuidle: using governor menu
 ACPI: bus type PCI registered
 acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
+dca service started, version 1.12.1
 PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf8000000-0xfbffffff] (base 0xf8000000)
 PCI: MMCONFIG at [mem 0xf8000000-0xfbffffff] reserved in E820
 PCI: Using MMCONFIG for extended config space
@@ -233,11 +234,11 @@ ACPI: Added _OSI(Processor Aggregator Device)
 ACPI: Executed 1 blocks of module-level executable AML code
 [Firmware Bug]: ACPI: BIOS _OSI(Linux) query ignored
 ACPI: Dynamic OEM Table Load:
-ACPI: SSDT 0xF299D400 0003D3 (v01 PmRef  Cpu0Cst  00003001 INTL 20120711)
+ACPI: SSDT 0xF299E000 0003D3 (v01 PmRef  Cpu0Cst  00003001 INTL 20120711)
 ACPI: Dynamic OEM Table Load:
-ACPI: SSDT 0xF29C0800 0005AA (v01 PmRef  ApIst    00003000 INTL 20120711)
+ACPI: SSDT 0xF29C3800 0005AA (v01 PmRef  ApIst    00003000 INTL 20120711)
 ACPI: Dynamic OEM Table Load:
-ACPI: SSDT 0xF29B1200 000119 (v01 PmRef  ApCst    00003000 INTL 20120711)
+ACPI: SSDT 0xF29BB200 000119 (v01 PmRef  ApCst    00003000 INTL 20120711)
 ACPI: Interpreter enabled
 ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S1_] (20140926/hwxface-580)
 ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S2_] (20140926/hwxface-580)
@@ -439,7 +440,7 @@ NatSemi SCx200 Driver
 futex hash table entries: 1024 (order: 4, 65536 bytes)
 HugeTLB registered 2 MB page size, pre-allocated 0 pages
 ntfs: driver 2.1.31 [Flags: R/W].
-msgmni has been set to 1621
+msgmni has been set to 1619
 alg: No test for crc32 (crc32-table)
 alg: No test for stdrng (krng)
 bounce: pool size: 64 pages
@@ -466,6 +467,8 @@ cpcihp_generic: Generic port I/O CompactPCI Hot Plug Driver version: 0.1
 cpcihp_generic: not configured, disabling.
 shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
 acpiphp_ibm: ibm_acpiphp_init: acpi_walk_namespace failed
+vmlfb: initializing
+Could not find Carillo Ranch MCH device.
 intel_idle: MWAIT substates: 0x11142120
 intel_idle: v0.4 model 0x45
 intel_idle: lapic_timer_reliable_states 0xffffffff
@@ -480,30 +483,49 @@ ACPI: Thermal Zone [TZ01] (30 C)
 GHES: HEST is not enabled!
 isapnp: Scanning for PnP cards...
 isapnp: No Plug & Play device found
+ioatdma: Intel(R) QuickData Technology Driver 4.00
 Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
 serial 00:05: ttyS0 at I/O 0x3f8 (irq = 4, base_baud = 115200) is a 16550A
 Linux agpgart interface v0.103
+[drm] Initialized drm 1.1.0 20060810
+[drm] Memory usable by graphics device = 2048M
+[drm] Replacing VGA console driver
+Console: switching to colour dummy device 80x25
+i915 0000:00:02.0: irq 43 for MSI/MSI-X
+[drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+[drm] Driver supports precise vblank timestamp query.
+vgaarb: device changed decodes: PCI:0000:00:02.0,olddecodes=io+mem,decodes=io+mem:owns=io+mem
+ACPI: Video Device [GFX0] (multi-head: yes  rom: no  post: no)
+input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/LNXVIDEO:00/input/input2
+[drm] Initialized i915 1.6.0 20140905 for 0000:00:02.0 on minor 0
 brd: module loaded
 loop: module loaded
 ahci 0000:00:1f.2: version 3.0
-ahci 0000:00:1f.2: irq 43 for MSI/MSI-X
+ahci 0000:00:1f.2: irq 44 for MSI/MSI-X
 ahci 0000:00:1f.2: AHCI 0001.0300 32 slots 4 ports 6 Gbps 0x5 impl SATA mode
 ahci 0000:00:1f.2: flags: 64bit ncq pm led clo only pio slum part deso sadm sds apst 
 scsi host0: ahci
 scsi host1: ahci
 scsi host2: ahci
 scsi host3: ahci
-ata1: SATA max UDMA/133 abar m2048@0xf7d1a000 port 0xf7d1a100 irq 43
+ata1: SATA max UDMA/133 abar m2048@0xf7d1a000 port 0xf7d1a100 irq 44
 ata2: DUMMY
-ata3: SATA max UDMA/133 abar m2048@0xf7d1a000 port 0xf7d1a200 irq 43
+ata3: SATA max UDMA/133 abar m2048@0xf7d1a000 port 0xf7d1a200 irq 44
 ata4: DUMMY
 Rounding down aligned max_sectors from 4294967295 to 4294967288
+r8168 Gigabit Ethernet driver 8.039.00-NAPI loaded
+r8168 0000:03:00.0: irq 45 for MSI/MSI-X
+fbcon: inteldrmfb (fb0) is primary device
+r8168: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.
+r8168  Copyright (C) 2014  Realtek NIC software team <nicfae@realtek.com> 
+ This program comes with ABSOLUTELY NO WARRANTY; for details, please see <http://www.gnu.org/licenses/>. 
+ This is free software, and you are welcome to redistribute it under certain conditions; see <http://www.gnu.org/licenses/>. 
 I2O subsystem v1.325
 i2o: max drivers = 8
 xhci_hcd 0000:00:14.0: xHCI Host Controller
 xhci_hcd 0000:00:14.0: new USB bus registered, assigned bus number 1
 xhci_hcd 0000:00:14.0: cache line size of 64 is not supported
-xhci_hcd 0000:00:14.0: irq 44 for MSI/MSI-X
+xhci_hcd 0000:00:14.0: irq 46 for MSI/MSI-X
 hub 1-0:1.0: USB hub found
 hub 1-0:1.0: 9 ports detected
 xhci_hcd 0000:00:14.0: xHCI Host Controller
@@ -531,7 +553,7 @@ serio: i8042 AUX port at 0x60,0x64 irq 12
 mousedev: PS/2 mouse device common for all mice
 inport.c: Didn't find InPort mouse at 0x23c
 logibm.c: Didn't find Logitech busmouse at 0x23c
-input: PC Speaker as /devices/platform/pcspkr/input/input3
+input: PC Speaker as /devices/platform/pcspkr/input/input4
 rtc_cmos 00:02: RTC can wake from S4
 rtc_cmos 00:02: rtc core: registered rtc_cmos as rtc0
 rtc_cmos 00:02: alarms up to one month, y3k, 242 bytes nvram, hpet irqs
@@ -543,11 +565,10 @@ usbhid: USB HID core driver
 oprofile: using NMI interrupt.
 TCP: cubic registered
 NET: Registered protocol family 17
+snd_hda_intel 0000:00:03.0: irq 47 for MSI/MSI-X
+snd_hda_intel 0000:00:1b.0: irq 48 for MSI/MSI-X
 Using IPI No-Shortcut mode
-snd_hda_intel 0000:00:1b.0: irq 45 for MSI/MSI-X
-hda-i915: get_power symbol get fail
-snd_hda_intel 0000:00:03.0: Error request power-well from i915
-rtc_cmos 00:02: setting system clock to 2014-12-13 20:12:07 UTC (1418501527)
+rtc_cmos 00:02: setting system clock to 2014-12-14 14:38:25 UTC (1418567905)
 ALSA device list:
   No soundcards found.
 sound hdaudioC1D0: autoconfig: line_outs=1 (0x14/0x0/0x0/0x0/0x0) type:line
@@ -557,16 +578,25 @@ sound hdaudioC1D0:    mono: mono_out=0x0
 sound hdaudioC1D0:    dig-out=0x1e/0x0
 sound hdaudioC1D0:    inputs:
 sound hdaudioC1D0:      Mic=0x18
+sound hdaudioC0D0: autoconfig: line_outs=0 (0x0/0x0/0x0/0x0/0x0) type:line
+sound hdaudioC0D0:    speaker_outs=0 (0x0/0x0/0x0/0x0/0x0)
+sound hdaudioC0D0:    hp_outs=0 (0x0/0x0/0x0/0x0/0x0)
+sound hdaudioC0D0:    mono: mono_out=0x0
+sound hdaudioC0D0:    dig-out=0x3/0x0
+sound hdaudioC0D0:    inputs:
+Console: switching to colour frame buffer device 240x67
+i915 0000:00:02.0: fb0: inteldrmfb frame buffer device
+i915 0000:00:02.0: registered panic notifier
 ata3: SATA link down (SStatus 0 SControl 300)
 ata1: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
 ata1.00: ATA-8: SAMSUNG HM320JI, 2SS00_01, max UDMA7
 ata1.00: 625142448 sectors, multi 16: LBA48 NCQ (depth 31/32), AA
-usb 3-1: new high-speed USB device number 2 using ehci-pci
 ata1.00: configured for UDMA/133
 scsi 0:0:0:0: Direct-Access     ATA      SAMSUNG HM320JI  0_01 PQ: 0 ANSI: 5
-Freeing unused kernel memory: 520K (c1691000 - c1713000)
+Freeing unused kernel memory: 524K (c17b7000 - c183a000)
+usb 3-1: new high-speed USB device number 2 using ehci-pci
 udevd[157]: starting version 175
-usb 1-5: new high-speed USB device number 2 using xhci_hcd
+usb 1-3: new high-speed USB device number 2 using xhci_hcd
 sd 0:0:0:0: [sda] 625142448 512-byte logical blocks: (320 GB/298 GiB)
 sd 0:0:0:0: [sda] Write Protect is off
 sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
@@ -576,40 +606,33 @@ hub 3-1:1.0: 8 ports detected
  sda: sda1 sda3 < sda5 sda6 >
 sd 0:0:0:0: [sda] Attached SCSI disk
 sd 0:0:0:0: Attached scsi generic sg0 type 0
+usb-storage 1-3:1.0: USB Mass Storage device detected
+scsi host4: usb-storage 1-3:1.0
+tsc: Refined TSC clocksource calibration: 2294.687 MHz
+usb 1-5: new high-speed USB device number 3 using xhci_hcd
 hub 1-5:1.0: USB hub found
 hub 1-5:1.0: 4 ports detected
-tsc: Refined TSC clocksource calibration: 2294.687 MHz
-usb 1-6: new high-speed USB device number 3 using xhci_hcd
-usb 1-5.3: new full-speed USB device number 4 using xhci_hcd
-usb 1-7: new low-speed USB device number 5 using xhci_hcd
-usb 1-7: ep 0x81 - rounding interval to 64 microframes, ep desc says 80 microframes
-input: DELL Dell USB Entry Keyboard as /devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7:1.0/0003:413C:2107.0001/input/input6
-hid-generic 0003:413C:2107.0001: input,hidraw0: USB HID v1.10 Keyboard [DELL Dell USB Entry Keyboard] on usb-0000:00:14.0-7/input0
-usb 1-8: new full-speed USB device number 6 using xhci_hcd
+usb 1-6: new high-speed USB device number 4 using xhci_hcd
+usb 1-5.3: new full-speed USB device number 5 using xhci_hcd
+usb 1-7: new low-speed USB device number 6 using xhci_hcd
+scsi 4:0:0:0: Direct-Access     Linux    File-CD Gadget   0000 PQ: 0 ANSI: 2
+sd 4:0:0:0: Attached scsi generic sg1 type 0
+sd 4:0:0:0: [sdb] Attached SCSI removable disk
 Switched to clocksource tsc
+usb 1-7: ep 0x81 - rounding interval to 64 microframes, ep desc says 80 microframes
+input: DELL Dell USB Entry Keyboard as /devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7:1.0/0003:413C:2107.0001/input/input7
+hid-generic 0003:413C:2107.0001: input,hidraw0: USB HID v1.10 Keyboard [DELL Dell USB Entry Keyboard] on usb-0000:00:14.0-7/input0
+usb 1-8: new full-speed USB device number 7 using xhci_hcd
 usb 1-8: ep 0x81 - rounding interval to 64 microframes, ep desc says 80 microframes
-input: USB Multi-Smart Mouse as /devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/0003:04FC:0801.0002/input/input7
+input: USB Multi-Smart Mouse as /devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/0003:04FC:0801.0002/input/input8
 hid-generic 0003:04FC:0801.0002: input,hidraw1: USB HID v1.11 Mouse [USB Multi-Smart Mouse] on usb-0000:00:14.0-8/input0
 EXT4-fs (sda5): mounted filesystem with ordered data mode. Opts: (null)
 random: nonblocking pool is initialized
-udevd[553]: starting version 175
-[drm] Initialized drm 1.1.0 20060810
+udevd[563]: starting version 175
 ACPI Warning: SystemIO range 0x0000f040-0x0000f05f conflicts with OpRegion 0x0000f040-0x0000f04f (\_SB_.PCI0.SBUS.SMBI) (20140926/utaddress-258)
 ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
-[drm] Memory usable by graphics device = 2048M
-[drm] Replacing VGA console driver
-Console: switching to colour dummy device 80x25
-i915 0000:00:02.0: irq 46 for MSI/MSI-X
-[drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
-[drm] Driver supports precise vblank timestamp query.
-vgaarb: device changed decodes: PCI:0000:00:02.0,olddecodes=io+mem,decodes=io+mem:owns=io+mem
-ACPI: Video Device [GFX0] (multi-head: yes  rom: no  post: no)
-input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/LNXVIDEO:00/input/input8
-[drm] Initialized i915 1.6.0 20140905 for 0000:00:02.0 on minor 0
-fbcon: inteldrmfb (fb0) is primary device
-Console: switching to colour frame buffer device 240x67
-i915 0000:00:02.0: fb0: inteldrmfb frame buffer device
-i915 0000:00:02.0: registered panic notifier
 EXT4-fs (sda5): re-mounted. Opts: (null)
 EXT4-fs (sda5): re-mounted. Opts: errors=remount-ro
 EXT4-fs (sda6): mounted filesystem with ordered data mode. Opts: (null)
+eth0: 0xf8030000, 00:01:2e:58:35:6a, IRQ 45
+r8168: eth0: link up
