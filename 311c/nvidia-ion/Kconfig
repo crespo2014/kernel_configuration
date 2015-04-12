@@ -1,0 +1,19 @@
+#
+# NVidia ION Display controller
+#
+config NVIDIA_ION
+	tristate "Nvidia ION LE for netbook"
+	depends on DRM
+	select CRC32
+	select MII
+	---help---
+	Nvida ion is the video card for 311c
+
+if NVIDIA_ION
+
+config OPTION_2
+	bool "ENABLE 2"
+	default n
+
+
+endif # NVIDIA_ION
