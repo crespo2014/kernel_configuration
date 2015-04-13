@@ -3,17 +3,16 @@ MODULE_NAME := nvidia
 
 obj-m := $(MODULE_NAME).o 
 
-obj ?= $(CURDIR)
-src ?= $(CURDIR)
+#obj ?= $(CURDIR)
+#src ?= $(CURDIR)
 
 ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
 
 options := CONFIG_DEBUG_SECTION_MISMATCH=y
 
-#obj-m += uvm/
-
 $(MODULE_NAME)-objs := $(patsubst %.c,%.o,nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
-#$(MODULE_NAME)-objs += nvidia.mod.o
+
+obj-$(NVIDIA_UVM) += uvm/
 
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
 #os system

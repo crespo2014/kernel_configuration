@@ -10,9 +10,8 @@ config NVIDIA_ION
 if NVIDIA_ION
 
 config NVIDIA_UVM
-	bool "Enable CUDA Support"
-	default n
-
+	tristate "Enable CUDA Support"
+	
 if NVIDIA_UVM
 
 config NVIDIA_ION_UVM_LITE
