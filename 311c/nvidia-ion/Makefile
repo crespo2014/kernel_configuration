@@ -13,7 +13,7 @@ options := CONFIG_DEBUG_SECTION_MISMATCH=y
 #obj-m += uvm/
 
 $(MODULE_NAME)-objs := $(patsubst %.c,%.o,nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
-$(MODULE_NAME)-objs += nvidia.mod.o
+#$(MODULE_NAME)-objs += nvidia.mod.o
 
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
 #os system
@@ -44,9 +44,8 @@ $(VERSION_HEADER):
 # Conftest header file creation 	
 
 $(CONF_TEST): | $(obj)/conftest
-	@echo "typedef unsigned long nv_acpi_integer_t;" > $@
-	
-	@echo "// $(CONFIG_EFI) $(CONFIG_SMP)" >> $@
+	@echo "typedef unsigned long nv_acpi_integer_t;" > $@	
+	@echo "// $(obj) $(src) $(CONFIG_EFI) $(CONFIG_SMP)" >> $@
 	
 ifeq ($(CONFIG_EFI),TODO)
 	@echo "#define NV_EFI_ENABLED_PRESENT" >> $@
@@ -129,17 +128,18 @@ endif
 
 $(CONF_TEST_PATCHES): $(CONF_TEST)
 	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
-	
-$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ)
-	cp $(src)/$(CORE_OBJ) $(obj)/$(CORE_OBJ)	
 
+$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src
+ 	@cp $^ $@
+	
 $(obj)/nv.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
 
 ldflags-y := $(obj)/$(CORE_OBJ)
 
 
-all:  $(CONF_TEST)
-			
+311c:
+	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/311c KCONFIG_CONFIG=`pwd`/../linux/311c.config modules
+				
 default:
 	make -C /usr/src/linux-headers-`uname -r` M=$$PWD ${options} modules
 		
@@ -147,7 +147,7 @@ k3_19_3:
 	make V=1 -C `pwd`/../linux-3.19.3 M=$(CURDIR) ${options} modules
 	
 oi520:
-	make -C $(CURDIR)/../linux-3.19.2 M=$(CURDIR) ${options}  O=$(CURDIR)/../linux-3.19.2/build/oi520 KCONFIG_CONFIG=$(CURDIR)/../linux/zbox-oi520.config modules
+	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/oi520 KCONFIG_CONFIG=`pwd`/../linux/zbox-oi520.config modules
 
 clean:
 	rm -f *.o
