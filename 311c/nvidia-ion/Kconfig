@@ -3,17 +3,23 @@
 #
 config NVIDIA_ION
 	tristate "Nvidia ION LE for netbook"
-	depends on DRM
-	select CRC32
-	select MII
+	select DRM
 	---help---
 	Nvida ion is the video card for 311c
 
 if NVIDIA_ION
 
-config OPTION_2
-	bool "ENABLE 2"
+config NVIDIA_UVM
+	bool "Enable CUDA Support"
 	default n
+
+if NVIDIA_UVM
+
+config NVIDIA_ION_UVM_LITE
+	bool "Enable lite mode"
+	default n
+	
+endif #NVIDIA_UVM	
 
 
 endif # NVIDIA_ION

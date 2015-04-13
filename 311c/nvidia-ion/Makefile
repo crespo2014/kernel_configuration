@@ -45,6 +45,7 @@ $(VERSION_HEADER):
 
 $(CONF_TEST): | $(obj)/conftest
 	@echo "typedef unsigned long nv_acpi_integer_t;" > $@	
+	
 	@echo "// $(obj) $(src) $(CONFIG_EFI) $(CONFIG_SMP)" >> $@
 	
 ifeq ($(CONFIG_EFI),TODO)
@@ -72,18 +73,15 @@ endif
 	@echo "#define NV_PCI_SAVE_STATE_ARGUMENT_COUNT 1" >> $@			
 	@echo "#define NV_REMAP_PFN_RANGE_PRESENT" >> $@					
 	@echo "#define NV_VMAP_PRESENT" >> $@								
-	@echo "#define NV_VMAP_ARGUMENT_COUNT 4" >> $@					   
-#@echo "#define NV_I2C_ADAPTER_HAS_CLIENT_REGISTER" >> $@			
+	@echo "#define NV_VMAP_ARGUMENT_COUNT 4" >> $@
 	@echo "#define NV_PM_MESSAGE_T_PRESENT" >> $@						
 	@echo "#define NV_PM_MESSAGE_T_HAS_EVENT" >> $@					   
 	@echo "#define NV_PCI_CHOOSE_STATE_PRESENT" >> $@					
 	@echo "#define NV_VM_INSERT_PAGE_PRESENT" >> $@					   
 	@echo "#define NV_IRQ_HANDLER_T_PRESENT" >> $@					   
-	@echo "#define NV_IRQ_HANDLER_T_ARGUMENT_COUNT 3" >> $@			   
-#	@echo "#define NV_ACPI_DEVICE_OPS_HAS_MATCH" >> $@				   
+	@echo "#define NV_IRQ_HANDLER_T_ARGUMENT_COUNT 3" >> $@
 	@echo "#define NV_ACPI_DEVICE_OPS_REMOVE_ARGUMENT_COUNT 1" >> $@	
-	@echo "#define NV_ACPI_DEVICE_ID_HAS_DRIVER_DATA" >> $@			   
-#@echo "#define NV_ACQUIRE_CONSOLE_SEM_PRESENT" >> $@			
+	@echo "#define NV_ACPI_DEVICE_ID_HAS_DRIVER_DATA" >> $@
 	@echo "#define NV_CONSOLE_LOCK_PRESENT" >> $@				
 	@echo "#define NV_KMEM_CACHE_CREATE_PRESENT" >> $@
 	@echo "#define NV_KMEM_CACHE_CREATE_ARGUMENT_COUNT 5" >> $@		   
@@ -98,10 +96,8 @@ endif
 	@echo "#define NV_INIT_WORK_PRESENT" >> $@					   
 	@echo "#define NV_INIT_WORK_ARGUMENT_COUNT 2" >> $@				   
 	@echo "#define NV_PCI_DMA_MAPPING_ERROR_PRESENT" >> $@			   
-	@echo "#define NV_PCI_DMA_MAPPING_ERROR_ARGUMENT_COUNT 2" >> $@	   
-#	@echo "#define NV_SCATTERLIST_HAS_PAGE" >> $@					   
-	@echo "#define NV_PCI_DOMAIN_NR_PRESENT" >> $@					   
-#@echo "#define NV_FILE_OPERATIONS_HAS_IOCTL" >> $@				   
+	@echo "#define NV_PCI_DMA_MAPPING_ERROR_ARGUMENT_COUNT 2" >> $@
+	@echo "#define NV_PCI_DOMAIN_NR_PRESENT" >> $@
 	@echo "#define NV_FILE_OPERATIONS_HAS_UNLOCKED_IOCTL" >> $@		   
 	@echo "#define NV_FILE_OPERATIONS_HAS_COMPAT_IOCTL" >> $@		   
 	@echo "#define NV_SG_INIT_TABLE_PRESENT" >> $@					   
@@ -109,8 +105,7 @@ endif
 	@echo "#define NV_SG_ALLOC_TABLE_PRESENT" >> $@					   
 	@echo "#define NV_SG_ALLOC_TABLE_FROM_PAGES_PRESENT" >> $@
 	@echo "#define NV_GENERATED_AUTOCONF_H_PRESENT" >> $@				
-	@echo "#define NV_LINUX_SEMAPHORE_H_PRESENT" >> $@	
-#@echo "#define NV_DOM0_KERNEL_PRESENT" >> $@						
+	@echo "#define NV_LINUX_SEMAPHORE_H_PRESENT" >> $@
 	@echo "#define NV_DRM_AVAILABLE" >> $@							   
 	@echo "#define NV_PROC_CREATE_DATA_PRESENT" >> $@				   
 	@echo "#define NV_PDE_DATA_PRESENT" >> $@						   
@@ -125,17 +120,24 @@ endif
 	@echo "#define NV_KUID_T_PRESENT" >> $@			 	   
 	@echo "#define NV_PM_VT_SWITCH_REQUIRED_PRESENT" >> $@	
 
+#	@echo "#define NV_I2C_ADAPTER_HAS_CLIENT_REGISTER" >> $@			   
+#	@echo "#define NV_ACPI_DEVICE_OPS_HAS_MATCH" >> $@			   
+#	@echo "#define NV_ACQUIRE_CONSOLE_SEM_PRESENT" >> $@
+#	@echo "#define NV_SCATTERLIST_HAS_PAGE" >> $@			   
+#	@echo "#define NV_FILE_OPERATIONS_HAS_IOCTL" >> $@		
+#	@echo "#define NV_DOM0_KERNEL_PRESENT" >> $@		
 
 $(CONF_TEST_PATCHES): $(CONF_TEST)
 	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
 
 $(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src
- 	@cp $^ $@
+	@cp $^ $@
 	
 $(obj)/nv.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
 
 ldflags-y := $(obj)/$(CORE_OBJ)
 
+modules: $(CONF_TEST)
 
 311c:
 	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/311c KCONFIG_CONFIG=`pwd`/../linux/311c.config modules
