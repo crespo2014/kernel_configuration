@@ -19,6 +19,10 @@ config NVIDIA_ION_UVM_LITE
 	bool "Enable lite mode"
 	default n
 	
+config NVIDIA_ION_UVM_NEXT
+	bool "Enable uvm next mode"
+	default n
+	
 endif #NVIDIA_UVM	
 
 

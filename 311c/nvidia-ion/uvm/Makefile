@@ -1,19 +1,27 @@
 
-MODULE_NAME := nvidia
+MODULE_NAME := nvidia-uvm
 
-obj-m := $(MODULE_NAME).o 
+obj-(NVIDIA_UVM) := $(MODULE_NAME).o 
 
-obj ?= $(CURDIR)
-src ?= $(CURDIR)
+#obj ?= $(CURDIR)
+#src ?= $(CURDIR)
 
 ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
 
 options := CONFIG_DEBUG_SECTION_MISMATCH=y
 
-#obj-m += uvm/
-
-$(MODULE_NAME)-objs := $(patsubst %.c,%.o,nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
-#$(MODULE_NAME)-objs += nvidia.mod.o
+$(MODULE_NAME)-objs := nvidia_uvm_linux.o \
+                        nvidia_uvm_common.o \
+                        nvidia_uvm_utils.o
+                        
+obj-$(NVIDIA_ION_UVM_LITE) += nvidia_uvm_lite.o \
+                        nvidia_uvm_page_cache.o \
+                        nvidia_uvm_lite_api.o \
+                        nvidia_uvm_lite_counters.o \
+                        nvidia_page_migration.o \
+                        nvidia_page_migration_kepler.o \
+                        nvidia_uvm_lite_events.o \
+                        uvm_gpu_ops_tests.o
 
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
 #os system
@@ -22,7 +30,14 @@ ccflags-y += -DNV_TARGET_ARCH=x86
 
 ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
-ccflags-y += -I$(src) -I$(src)/uvm
+ccflags-y += -I$(src) 
+
+ifeq ($(NVIDIA_ION_UVM_LITE),y)
+    NV_DEFINES += -DNVIDIA_UVM_LITE_ENABLED
+endif
+ifeq ($(NVIDIA_ION_UVM_NEXT),y)
+    NV_DEFINES += -DNVIDIA_UVM_NEXT_ENABLED
+endif
 
 ifdef CONFIG_DRM
 ifdef CONFIG_DRM_MODULE
@@ -33,13 +48,18 @@ endif
 VERSION_HEADER := $(obj)/nv_compiler.h
 CONF_TEST := $(obj)/conftest.h
 CONF_TEST_PATCHES := $(obj)/conftest/patches.h
-CORE_OBJ := nv-kernel.o
+
 
 $(obj)/conftest: 
 	@mkdir -p $@
 
 $(VERSION_HEADER):
 	@echo \#define NV_COMPILER \"`$(CC) -v 2>&1 | tail -n 1`\" > $@
+	
+$(CONF_TEST_PATCHES): $(CONF_TEST)
+	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
+
+$(obj)/nvidia_uvm_linux.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) 
 	
 # Conftest header file creation 	
 
@@ -127,13 +147,6 @@ endif
 #	@echo "#define NV_FILE_OPERATIONS_HAS_IOCTL" >> $@		
 #	@echo "#define NV_DOM0_KERNEL_PRESENT" >> $@		
 
-$(CONF_TEST_PATCHES): $(CONF_TEST)
-	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
-
-$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src
-	@cp $^ $@
-	
-$(obj)/nv.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
 
 ldflags-y := $(obj)/$(CORE_OBJ)
 
