@@ -1,5 +1,34 @@
 Nvidia module for 311c.
 
+Makefile to integrate nvidia kernel module into kernel sources
+
+uncompress nvida source files.
+
+./NVIDIA-Linux-x86-340.76.run -x
+
+rename Makefile in kernel directory
+
+mv Makefile Makefile.orig
+
+Copy kernel directory into folder containing Makefile and KBuild
+
+Apply patch to nvidia source code
+
+patch < nvidia.patch
+
+Not accepted arguments
+--kernel-module-only
+
+Steps.
+./NVIDIA-Linux-x86-340.76.run -x
+cd NVIDIA-Linux-x86-340.76
+./nvidia-installer --no-x-check --accept-license "--kernel-source-path=/mnt/data/users/lester/projects/linux-3.19.2" --kernel-output-path=/mnt/data/users/lester/projects/linux-3.19.2/build/oi520 --kernel-install-path=/tmp/nvidia --no-nvidia-modprobe --no-precompiled-interface --no-rpms --no-recursion  --no-nouveau-check  --no-cc-version-check --no-distro-scripts --no-opengl-files --kernel-module-source-dir=output/nvidia --no-check-for-alternate-installs
+cd kernel
+rm conftest.h
+rm -r conftest/
+rm gcc-version-check.c
+cp nv-kernel.o nv-kernel.o.src
+
 Next variables are used by nvidia makefile
 SYSSRC	-    kernel source dir
 

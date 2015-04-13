@@ -30,7 +30,7 @@ ccflags-y += -DNV_TARGET_ARCH=x86
 
 ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
-ccflags-y += -I$(src) 
+ccflags-y += -I$(src)/uvm 
 
 ifeq ($(NVIDIA_ION_UVM_LITE),y)
     NV_DEFINES += -DNVIDIA_UVM_LITE_ENABLED
