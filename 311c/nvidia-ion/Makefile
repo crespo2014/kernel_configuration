@@ -3,31 +3,13 @@ MODULE_NAME := nvidia-ion
 ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
 options := CONFIG_DEBUG_SECTION_MISMATCH=y
 
-VERSION_HEADER := $(obj)/nv_compiler.h
-CONF_TEST := $(obj)/conftest.h
-CONF_TEST_PATCHES := $(obj)/conftest/patches.h
 CORE_OBJ := nv-kernel.o
 
-#Prerequeisities
-$(obj)/nv.o : | $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
-
 #Source files
-$(MODULE_NAME)-y := $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
+$(MODULE_NAME)-y := $(CORE_OBJ)_shipped $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
 
 obj-$(CONFIG_NVIDIA_ION) += $(MODULE_NAME).o
 obj-$(CONFIG_NVIDIA_UVM) += uvm/
-
-$(obj)/conftest: 
-	@mkdir -p $@
-
-$(VERSION_HEADER):
-	@echo \#define NV_COMPILER \"`$(CC) -v 2>&1 | tail -n 1`\" > $@
-	
-$(CONF_TEST_PATCHES): $(CONF_TEST)
-	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
-
-$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src 
-	@cp $^ $@
 
 #Compiler flags
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
@@ -40,12 +22,33 @@ ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
 ccflags-y += -I$(src) -I$(src)/uvm -I$(obj)
 
-# Precompili nvidia object
-ldflags-y := $(obj)/$(CORE_OBJ)
+# Precompiled nvidia object
+#ldflags-y := $(obj)/$(CORE_OBJ)
+
+#Prerequesities
+CONF_TEST := $(obj)/conftest.h
+CONF_TEST_PATCHES := $(obj)/conftest/patches.h 
+VERSION_HEADER := $(obj)/nv_compiler.h
+CORE_OBJ := nv-kernel.o
+
+$(obj)/nv.o : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
+
+$(obj)/conftest: 
+	@mkdir -p $@
+
+$(VERSION_HEADER):
+	@echo \#define NV_COMPILER \"`$(CC) -v 2>&1 | tail -n 1`\" > $@
+	
+$(CONF_TEST_PATCHES): | $(obj)/conftest
+	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
+
+$(CORE_OBJ) :  |  $(VERSION_HEADER) $(CONF_TEST)
+$(obj)/$(CORE_OBJ) :  |  $(VERSION_HEADER) $(CONF_TEST)
+
 	
 # Conftest header file creation 	
 
-$(CONF_TEST): | $(obj)/conftest
+$(CONF_TEST): $(obj)/conftest
 	@echo "typedef unsigned long long nv_acpi_integer_t;" > $@		
 	@echo "// efi=$(CONFIG_EFI) smp=$(CONFIG_SMP)" >> $@
 	
@@ -130,8 +133,6 @@ endif
 
 clean-files := $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
 clean-dirs := $(obj)/conftest
-
-
 
 
 311c:
