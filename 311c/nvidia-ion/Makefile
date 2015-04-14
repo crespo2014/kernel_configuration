@@ -47,13 +47,13 @@ ldflags-y := $(obj)/$(CORE_OBJ)
 
 $(CONF_TEST): | $(obj)/conftest
 	@echo "typedef unsigned long long nv_acpi_integer_t;" > $@		
-	@echo "// $(obj) $(src) $(CONFIG_EFI) $(CONFIG_SMP)" >> $@
+	@echo "// efi=$(CONFIG_EFI) smp=$(CONFIG_SMP)" >> $@
 	
 ifeq ($(CONFIG_EFI),TODO)
 	@echo "#define NV_EFI_ENABLED_PRESENT" >> $@
 	@echo "#define NV_EFI_ENABLED_ARGUMENT_COUNT 1" >> $@
 endif
-ifdef ($(CONFIG_SMP),y)
+ifeq ($(CONFIG_SMP),y)
 	@echo "#define NV_ON_EACH_CPU_PRESENT " >> $@
 	@echo "#define NV_ON_EACH_CPU_ARGUMENT_COUNT 3" >> $@  
 endif	
