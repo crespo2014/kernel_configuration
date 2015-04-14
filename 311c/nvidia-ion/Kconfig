@@ -11,6 +11,7 @@ if NVIDIA_ION
 
 config NVIDIA_UVM
 	tristate "Enable CUDA Support"
+	default m if NVIDIA_ION
 	
 if NVIDIA_UVM
 

@@ -1,3 +1,13 @@
+Edit kernel file
+
+drivers/gpu/drm/Makefile
+++ obj-$(CONFIG_NVIDIA_ION) += nvidia-ion/
+
+drivers/gpu/drm/Kconfig
+source "drivers/gpu/drm/bridge/Kconfig"
+
+++source "drivers/gpu/drm/nvidia-ion/Kconfig"
+
 Nvidia module for 311c.
 
 Makefile to integrate nvidia kernel module into kernel sources

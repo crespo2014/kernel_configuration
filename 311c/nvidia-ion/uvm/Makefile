@@ -1,8 +1,6 @@
 
 MODULE_NAME := nvidia-uvm
 
-obj-(NVIDIA_UVM) := $(MODULE_NAME).o 
-
 #obj ?= $(CURDIR)
 #src ?= $(CURDIR)
 
@@ -14,7 +12,9 @@ $(MODULE_NAME)-objs := nvidia_uvm_linux.o \
                         nvidia_uvm_common.o \
                         nvidia_uvm_utils.o
                         
-obj-$(NVIDIA_ION_UVM_LITE) += nvidia_uvm_lite.o \
+ifeq ($(CONFIG_NVIDIA_ION_UVM_LITE),y) 
+
+$(MODULE_NAME)-objs += nvidia_uvm_lite.o \
                         nvidia_uvm_page_cache.o \
                         nvidia_uvm_lite_api.o \
                         nvidia_uvm_lite_counters.o \
@@ -22,6 +22,9 @@ obj-$(NVIDIA_ION_UVM_LITE) += nvidia_uvm_lite.o \
                         nvidia_page_migration_kepler.o \
                         nvidia_uvm_lite_events.o \
                         uvm_gpu_ops_tests.o
+endif                      
+
+obj-$(CONFIG_NVIDIA_UVM) += $(MODULE_NAME).o                         
 
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
 #os system
@@ -30,9 +33,9 @@ ccflags-y += -DNV_TARGET_ARCH=x86
 
 ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
-ccflags-y += -I$(src)/uvm 
+ccflags-y += -I$(src)/.. -I$(src) 
 
-ifeq ($(NVIDIA_ION_UVM_LITE),y)
+ifeq ($(CONFIG_NVIDIA_ION_UVM_LITE),y)
     NV_DEFINES += -DNVIDIA_UVM_LITE_ENABLED
 endif
 ifeq ($(NVIDIA_ION_UVM_NEXT),y)
