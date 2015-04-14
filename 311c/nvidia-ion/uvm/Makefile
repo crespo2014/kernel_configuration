@@ -22,16 +22,25 @@ $(MODULE_NAME)-y += nvidia_uvm_lite.o \
                         uvm_gpu_ops_tests.o
 endif                      
 
-obj-$(CONFIG_NVIDIA_UVM) += $(MODULE_NAME).o                         
+obj-$(CONFIG_NVIDIA_UVM) += $(MODULE_NAME).o  
 
+VERSION_HEADER := $(obj)/nv_compiler.h
+CONF_TEST := $(obj)/conftest.h
+CONF_TEST_PATCHES := $(obj)/conftest/patches.h 
+
+#prerequisities
+$(obj)/nvidia_uvm_linux.o : |  $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES)                     
+
+#compiler flags
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
+
 #os system
 ccflags-y += -D__linux__
 ccflags-y += -DNV_TARGET_ARCH=x86
 
 ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
-ccflags-y += -I$(src)/.. 
+ccflags-y += -I$(obj) -I$(src)/.. 
 
 ifeq ($(CONFIG_NVIDIA_ION_UVM_ALL),y)
 ccflags-y += -DNVIDIA_UVM_LITE_ENABLED -DNVIDIA_UVM_NEXT_ENABLED
@@ -51,10 +60,6 @@ ifeq ($(CONFIG_NVIDIA_UVM_RM),y)
 ccflags-y += -DNVIDIA_UVM_RM_ENABLED
 endif
 
-VERSION_HEADER := $(obj)/nv_compiler.h
-CONF_TEST := $(obj)/conftest.h
-CONF_TEST_PATCHES := $(obj)/conftest/patches.h
-
 $(obj)/conftest: 
 	@mkdir -p $@
 
@@ -64,14 +69,8 @@ $(VERSION_HEADER):
 $(CONF_TEST_PATCHES): $(CONF_TEST)
 	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
 
-#$(obj)/nvidia_uvm_linux.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) 
-	
 # Conftest header file creation 	
-
 $(CONF_TEST): | $(obj)/conftest
-#	@echo "typedef unsigned long nv_acpi_integer_t;" > $@	
-	
-	@echo "// drm=$(CONFIG_DRM) efi=$(CONFIG_EFI) smp=$(CONFIG_SMP)" >> $@
 	
 ifeq ($(CONFIG_EFI),TODO)
 	@echo "#define NV_EFI_ENABLED_PRESENT" >> $@
@@ -152,26 +151,7 @@ endif
 #	@echo "#define NV_FILE_OPERATIONS_HAS_IOCTL" >> $@		
 #	@echo "#define NV_DOM0_KERNEL_PRESENT" >> $@		
 
+clean-files := $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) 
+clean-dirs := $(obj)/conftest
 
-311c:
-	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/311c KCONFIG_CONFIG=`pwd`/../linux/311c.config modules
-				
-default:
-	make -C /usr/src/linux-headers-`uname -r` M=$$PWD ${options} modules
-		
-k3_19_3:
-	make V=1 -C `pwd`/../linux-3.19.3 M=$(CURDIR) ${options} modules
-	
-oi520:
-	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/oi520 KCONFIG_CONFIG=`pwd`/../linux/zbox-oi520.config modules
-
-clean:
-	rm -f *.o
-	rm -f $(MODULE_GLUE_OBJS) $(KERNEL_GLUE_OBJS)
-	rm -f build-in.o nv-linux*.o *.d .*.cmd .*.flags
-	rm -f $(MODULE_NAME)*.o $(MODULE_NAME)*.ko*
-	rm -f $(MODULE_NAME)*.mod* $(VERSION_HEADER) *~
-	rm -f $(CONF_TEST) $(CONF_TEST_PATCHES)
-	rm -rf Module*.symvers .tmp_versions modules.order $(obj)/conftest
-	make V=1 -C `pwd`/../linux-3.19.3 M=$(CURDIR) clean
 		

@@ -1,17 +1,18 @@
 MODULE_NAME := nvidia-ion
 
+ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
+options := CONFIG_DEBUG_SECTION_MISMATCH=y
+
 VERSION_HEADER := $(obj)/nv_compiler.h
 CONF_TEST := $(obj)/conftest.h
 CONF_TEST_PATCHES := $(obj)/conftest/patches.h
 CORE_OBJ := nv-kernel.o
 
-$(MODULE_NAME)-y := $(CORE_OBJ)
-
 #Prerequeisities
-$(obj)/pre.o : $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
+$(obj)/nv.o : | $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
 
 #Source files
-$(MODULE_NAME)-y += $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
+$(MODULE_NAME)-y := $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
 
 obj-$(CONFIG_NVIDIA_ION) += $(MODULE_NAME).o
 obj-$(CONFIG_NVIDIA_UVM) += uvm/
@@ -25,14 +26,12 @@ $(VERSION_HEADER):
 $(CONF_TEST_PATCHES): $(CONF_TEST)
 	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
 
-$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src | $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
+$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src 
 	@cp $^ $@
 
-ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
-options := CONFIG_DEBUG_SECTION_MISMATCH=y
-
-
+#Compiler flags
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
+
 #os system
 ccflags-y += -D__linux__
 ccflags-y += -DNV_TARGET_ARCH=x86
@@ -42,7 +41,7 @@ ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
 ccflags-y += -I$(src) -I$(src)/uvm -I$(obj)
 
 # Precompili nvidia object
-#ldflags-y := $(obj)/$(CORE_OBJ)
+ldflags-y := $(obj)/$(CORE_OBJ)
 	
 # Conftest header file creation 	
 
@@ -130,7 +129,7 @@ endif
 #	@echo "#define NV_DOM0_KERNEL_PRESENT" >> $@		
 
 clean-files := $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
-clean-dirs := conftest
+clean-dirs := $(obj)/conftest
 
 
 
