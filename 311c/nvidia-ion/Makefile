@@ -46,7 +46,7 @@ ldflags-y := $(obj)/$(CORE_OBJ)
 # Conftest header file creation 	
 
 $(CONF_TEST): | $(obj)/conftest
-	@echo "typedef unsigned long nv_acpi_integer_t;" > $@		
+	@echo "typedef unsigned long long nv_acpi_integer_t;" > $@		
 	@echo "// $(obj) $(src) $(CONFIG_EFI) $(CONFIG_SMP)" >> $@
 	
 ifeq ($(CONFIG_EFI),TODO)
