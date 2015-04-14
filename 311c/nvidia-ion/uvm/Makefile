@@ -1,20 +1,18 @@
 
 MODULE_NAME := nvidia-uvm
 
-#obj ?= $(CURDIR)
-#src ?= $(CURDIR)
 
 ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
 
 options := CONFIG_DEBUG_SECTION_MISMATCH=y
 
-$(MODULE_NAME)-objs := nvidia_uvm_linux.o \
+$(MODULE_NAME)-y := nvidia_uvm_linux.o \
                         nvidia_uvm_common.o \
                         nvidia_uvm_utils.o
                         
 ifeq ($(CONFIG_NVIDIA_ION_UVM_LITE),y) 
 
-$(MODULE_NAME)-objs += nvidia_uvm_lite.o \
+$(MODULE_NAME)-y += nvidia_uvm_lite.o \
                         nvidia_uvm_page_cache.o \
                         nvidia_uvm_lite_api.o \
                         nvidia_uvm_lite_counters.o \
@@ -33,25 +31,29 @@ ccflags-y += -DNV_TARGET_ARCH=x86
 
 ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
-ccflags-y += -I$(src)/.. -I$(src) 
+ccflags-y += -I$(src)/.. 
 
+ifeq ($(CONFIG_NVIDIA_ION_UVM_ALL),y)
+ccflags-y += -DNVIDIA_UVM_LITE_ENABLED -DNVIDIA_UVM_NEXT_ENABLED
+else
 ifeq ($(CONFIG_NVIDIA_ION_UVM_LITE),y)
-    NV_DEFINES += -DNVIDIA_UVM_LITE_ENABLED
+ccflags-y += -DNVIDIA_UVM_LITE_ENABLED
+else
+ifeq ($(CONFIG_NVIDIA_ION_UVM_NEXT),y)
+ccflags-y += -DNVIDIA_UVM_NEXT_ENABLED
+else 
+    $(error "Cannot build with both UVM_LITE and UVM_NEXT disabled")
 endif
-ifeq ($(NVIDIA_ION_UVM_NEXT),y)
-    NV_DEFINES += -DNVIDIA_UVM_NEXT_ENABLED
+endif
 endif
 
-ifdef CONFIG_DRM
-ifdef CONFIG_DRM_MODULE
-ccflags-y += -DNV_DRM_DRMP_H_PRESENT -DNV_DRM_AVAILABLE -DNV_DRM_DRM_GEM_H_PRESENT
-endif
+ifeq ($(CONFIG_NVIDIA_UVM_RM),y)
+ccflags-y += -DNVIDIA_UVM_RM_ENABLED
 endif
 
 VERSION_HEADER := $(obj)/nv_compiler.h
 CONF_TEST := $(obj)/conftest.h
 CONF_TEST_PATCHES := $(obj)/conftest/patches.h
-
 
 $(obj)/conftest: 
 	@mkdir -p $@
@@ -62,14 +64,14 @@ $(VERSION_HEADER):
 $(CONF_TEST_PATCHES): $(CONF_TEST)
 	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
 
-$(obj)/nvidia_uvm_linux.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) 
+#$(obj)/nvidia_uvm_linux.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) 
 	
 # Conftest header file creation 	
 
 $(CONF_TEST): | $(obj)/conftest
-	@echo "typedef unsigned long nv_acpi_integer_t;" > $@	
+#	@echo "typedef unsigned long nv_acpi_integer_t;" > $@	
 	
-	@echo "// $(obj) $(src) $(CONFIG_EFI) $(CONFIG_SMP)" >> $@
+	@echo "// drm=$(CONFIG_DRM) efi=$(CONFIG_EFI) smp=$(CONFIG_SMP)" >> $@
 	
 ifeq ($(CONFIG_EFI),TODO)
 	@echo "#define NV_EFI_ENABLED_PRESENT" >> $@
@@ -150,10 +152,6 @@ endif
 #	@echo "#define NV_FILE_OPERATIONS_HAS_IOCTL" >> $@		
 #	@echo "#define NV_DOM0_KERNEL_PRESENT" >> $@		
 
-
-ldflags-y := $(obj)/$(CORE_OBJ)
-
-modules: $(CONF_TEST)
 
 311c:
 	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/311c KCONFIG_CONFIG=`pwd`/../linux/311c.config modules

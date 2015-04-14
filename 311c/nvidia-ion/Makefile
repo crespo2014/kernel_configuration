@@ -4,7 +4,7 @@ ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
 
 options := CONFIG_DEBUG_SECTION_MISMATCH=y
 
-$(MODULE_NAME)-objs := $(patsubst %.c,%.o,nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
+$(MODULE_NAME)-y := $(patsubst %.c,%.o,nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
 
 obj-$(CONFIG_NVIDIA_ION) += $(MODULE_NAME).o
 obj-$(CONFIG_NVIDIA_UVM) += uvm/
@@ -18,12 +18,6 @@ ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
 ccflags-y += -I$(src) -I$(src)/uvm
 
-ifdef CONFIG_DRM
-ifdef CONFIG_DRM_MODULE
-ccflags-y += -DNV_DRM_DRMP_H_PRESENT -DNV_DRM_AVAILABLE -DNV_DRM_DRM_GEM_H_PRESENT
-endif
-endif
-
 VERSION_HEADER := $(obj)/nv_compiler.h
 CONF_TEST := $(obj)/conftest.h
 CONF_TEST_PATCHES := $(obj)/conftest/patches.h
@@ -35,11 +29,22 @@ $(obj)/conftest:
 $(VERSION_HEADER):
 	@echo \#define NV_COMPILER \"`$(CC) -v 2>&1 | tail -n 1`\" > $@
 	
+$(CONF_TEST_PATCHES): $(CONF_TEST)
+	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
+
+$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src
+	@cp $^ $@
+	
+#$(obj)/nv.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
+
+ldflags-y := $(obj)/$(CORE_OBJ)
+
+#modules: $(CONF_TEST)
+	
 # Conftest header file creation 	
 
 $(CONF_TEST): | $(obj)/conftest
-	@echo "typedef unsigned long nv_acpi_integer_t;" > $@	
-	
+	@echo "typedef unsigned long nv_acpi_integer_t;" > $@		
 	@echo "// $(obj) $(src) $(CONFIG_EFI) $(CONFIG_SMP)" >> $@
 	
 ifeq ($(CONFIG_EFI),TODO)
@@ -121,17 +126,8 @@ endif
 #	@echo "#define NV_FILE_OPERATIONS_HAS_IOCTL" >> $@		
 #	@echo "#define NV_DOM0_KERNEL_PRESENT" >> $@		
 
-$(CONF_TEST_PATCHES): $(CONF_TEST)
-	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
-
-$(obj)/$(CORE_OBJ) : $(src)/$(CORE_OBJ).src
-	@cp $^ $@
-	
-$(obj)/nv.o: $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
-
-ldflags-y := $(obj)/$(CORE_OBJ)
-
-modules: $(CONF_TEST)
+clean-files := $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
+clean-dirs := conftest
 
 311c:
 	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/311c KCONFIG_CONFIG=`pwd`/../linux/311c.config modules
@@ -145,13 +141,4 @@ k3_19_3:
 oi520:
 	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/oi520 KCONFIG_CONFIG=`pwd`/../linux/zbox-oi520.config modules
 
-clean:
-	rm -f *.o
-	rm -f $(MODULE_GLUE_OBJS) $(KERNEL_GLUE_OBJS)
-	rm -f build-in.o nv-linux*.o *.d .*.cmd .*.flags
-	rm -f $(MODULE_NAME)*.o $(MODULE_NAME)*.ko*
-	rm -f $(MODULE_NAME)*.mod* $(VERSION_HEADER) *~
-	rm -f $(CONF_TEST) $(CONF_TEST_PATCHES)
-	rm -rf Module*.symvers .tmp_versions modules.order $(obj)/conftest
-	make V=1 -C `pwd`/../linux-3.19.3 M=$(CURDIR) clean
 		

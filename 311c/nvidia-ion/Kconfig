@@ -6,22 +6,41 @@ config NVIDIA_ION
 	select DRM
 	---help---
 	Nvida ion is the video card for 311c
-
+	
 if NVIDIA_ION
+
+config NVIDIA_UVM_RM
+	bool "Enable Nvidia RM"
+	default y
+	---help---
+	You need this option enable in order to compile nvidia uvm driver that brings cuda support
 
 config NVIDIA_UVM
 	tristate "Enable CUDA Support"
-	default m if NVIDIA_ION
+	depends on NVIDIA_UVM_RM
+	
+choice
+ 	prompt "UVM module type"
+ 	default NVIDIA_ION_UVM_LITE
+ 	depends on NVIDIA_UVM
+ 	
+config NVIDIA_ION_UVM_LITE
+	bool "Only lite mode"
+	
+config NVIDIA_ION_UVM_NEXT
+	bool "Only uvm next mode"
+	
+config NVIDIA_ION_UVM_ALL
+    bool "Both modes lite and next"
+	
+ 	
+endchoice 	
 	
 if NVIDIA_UVM
 
-config NVIDIA_ION_UVM_LITE
-	bool "Enable lite mode"
-	default n
+
 	
-config NVIDIA_ION_UVM_NEXT
-	bool "Enable uvm next mode"
-	default n
+
 	
 endif #NVIDIA_UVM	
 

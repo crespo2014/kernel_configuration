@@ -32,7 +32,7 @@ Not accepted arguments
 Steps.
 ./NVIDIA-Linux-x86-340.76.run -x
 cd NVIDIA-Linux-x86-340.76
-./nvidia-installer --no-x-check --accept-license "--kernel-source-path=/mnt/data/users/lester/projects/linux-3.19.2" --kernel-output-path=/mnt/data/users/lester/projects/linux-3.19.2/build/oi520 --kernel-install-path=/tmp/nvidia --no-nvidia-modprobe --no-precompiled-interface --no-rpms --no-recursion  --no-nouveau-check  --no-cc-version-check --no-distro-scripts --no-opengl-files --kernel-module-source-dir=output/nvidia --no-check-for-alternate-installs
+./nvidia-installer --no-x-check --accept-license "--kernel-source-path=/mnt/data/users/lester/projects/linux-4.0" --kernel-output-path=/mnt/data/users/lester/projects/linux-4.0/build/311c --kernel-install-path=/tmp/nvidia --no-nvidia-modprobe --no-precompiled-interface --no-rpms --no-recursion  --no-nouveau-check  --no-cc-version-check --no-distro-scripts --no-opengl-files --kernel-module-source-dir=output/nvidia --no-check-for-alternate-installs
 cd kernel
 rm conftest.h
 rm -r conftest/
