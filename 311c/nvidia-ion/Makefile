@@ -3,7 +3,7 @@ MODULE_NAME := nvidia-ion
 CORE_OBJ := nv-kernel.o
 
 #Source files
-$(MODULE_NAME)-y := $(CORE_OBJ)_shipped $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
+$(MODULE_NAME)-y := $(CORE_OBJ) $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
 
 obj-$(CONFIG_NVIDIA_ION) += $(MODULE_NAME).o
 obj-$(CONFIG_NVIDIA_UVM) += uvm/
