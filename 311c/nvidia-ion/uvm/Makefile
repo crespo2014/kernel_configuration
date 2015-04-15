@@ -24,15 +24,8 @@ endif
 
 obj-$(CONFIG_NVIDIA_UVM) += $(MODULE_NAME).o  
 
-VERSION_HEADER := $(obj)/nv_compiler.h
-CONF_TEST := $(obj)/conftest.h
-CONF_TEST_PATCHES := $(obj)/conftest/patches.h 
-
-#prerequisities
-$(obj)/nvidia_uvm_linux.o : |  $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES)                     
-
 #compiler flags
-ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
+ccflags-y := -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
 
 #os system
 ccflags-y += -D__linux__
@@ -59,6 +52,15 @@ endif
 ifeq ($(CONFIG_NVIDIA_UVM_RM),y)
 ccflags-y += -DNVIDIA_UVM_RM_ENABLED
 endif
+
+#Prerequesities
+VERSION_HEADER := $(obj)/nv_compiler.h
+CONF_TEST := $(obj)/conftest.h
+CONF_TEST_PATCHES := $(obj)/conftest/patches.h 
+
+TODO := $(shell rm $(CONF_TEST))
+
+$(obj)/nvidia_uvm_linux.o : |  $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES)  
 
 $(obj)/conftest: 
 	@mkdir -p $@

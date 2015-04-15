@@ -1,15 +1,18 @@
-MODULE_NAME := nvidia-ion
+MODULE_NAME := nvidia
 
 CORE_OBJ := nv-kernel.o
 
 #Source files
-$(MODULE_NAME)-y := $(CORE_OBJ) $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  $(patsubst %.c,%.o,nv-frontend.c)
+$(MODULE_NAME)-y := $(CORE_OBJ) $(patsubst %.c,%.o, nv.c nv-acpi.c nv-chrdev.c nv-cray.c nv-dma.c nv-drm.c nv-gvi.c nv-i2c.c nv-mempool.c nv-mmap.c nv-p2p.c nv-pat.c nv-procfs.c nv-usermap.c nv-vm.c nv-vtophys.c os-interface.c os-mlock.c os-pci.c os-registry.c os-smp.c  os-usermap.c nv_uvm_interface.c)  
+
+#only if suffix is defined or there is not instances
+$(MODULE_NAME)-y += $(patsubst %.c,%.o,nv-frontend.c)
 
 obj-$(CONFIG_NVIDIA_ION) += $(MODULE_NAME).o
 obj-$(CONFIG_NVIDIA_UVM) += uvm/
 
 #Compiler flags
-ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
+ccflags-y :=  -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
 
 #os system
 ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
@@ -21,14 +24,13 @@ ccflags-y += -nostdinc -isystem $(ISYSTEM)
 ccflags-y += -DNV_BUILD_MODULE_INSTANCES=0 -DNV_MODULE_INSTANCE=0
 ccflags-y += -I$(src) -I$(src)/uvm -I$(obj)
 
-# Precompiled nvidia object
-#ldflags-y := $(obj)/$(CORE_OBJ)
-
 #Prerequesities
 CONF_TEST := $(obj)/conftest.h
 CONF_TEST_PATCHES := $(obj)/conftest/patches.h 
 VERSION_HEADER := $(obj)/nv_compiler.h
 CORE_OBJ := nv-kernel.o
+
+TODO := $(shell rm $(CONF_TEST))
 
 $(obj)/nv.o        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
 #$(CORE_OBJ)        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
