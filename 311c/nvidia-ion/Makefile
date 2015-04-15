@@ -30,7 +30,7 @@ CONF_TEST_PATCHES := $(obj)/conftest/patches.h
 VERSION_HEADER := $(obj)/nv_compiler.h
 CORE_OBJ := nv-kernel.o
 
-TODO := $(shell rm $(CONF_TEST))
+TODO := $(shell rm -f $(CONF_TEST))
 
 $(obj)/nv.o        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
 #$(CORE_OBJ)        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
@@ -52,7 +52,8 @@ $(CONF_TEST): $(obj)/conftest
 	@echo "typedef unsigned long long nv_acpi_integer_t;" > $@		
 	@echo "// efi=$(CONFIG_EFI) smp=$(CONFIG_SMP)" >> $@
 	
-ifeq ($(CONFIG_EFI),TODO)
+ifeq ($(CONFIG_EFI),y)
+	@echo "#define NV_LINUX_EFI_H_PRESENT" >> $@
 	@echo "#define NV_EFI_ENABLED_PRESENT" >> $@
 	@echo "#define NV_EFI_ENABLED_ARGUMENT_COUNT 1" >> $@
 endif

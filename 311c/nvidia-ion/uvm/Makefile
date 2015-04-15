@@ -58,7 +58,7 @@ VERSION_HEADER := $(obj)/nv_compiler.h
 CONF_TEST := $(obj)/conftest.h
 CONF_TEST_PATCHES := $(obj)/conftest/patches.h 
 
-TODO := $(shell rm $(CONF_TEST))
+TODO := $(shell rm -f $(CONF_TEST))
 
 $(obj)/nvidia_uvm_linux.o : |  $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES)  
 
@@ -74,7 +74,8 @@ $(CONF_TEST_PATCHES): $(CONF_TEST)
 # Conftest header file creation 	
 $(CONF_TEST): | $(obj)/conftest
 	
-ifeq ($(CONFIG_EFI),TODO)
+ifeq ($(CONFIG_EFI),y)
+	@echo "#define NV_LINUX_EFI_H_PRESENT" >> $@
 	@echo "#define NV_EFI_ENABLED_PRESENT" >> $@
 	@echo "#define NV_EFI_ENABLED_ARGUMENT_COUNT 1" >> $@
 endif
