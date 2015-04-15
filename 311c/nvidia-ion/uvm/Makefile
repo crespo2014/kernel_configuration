@@ -58,7 +58,7 @@ VERSION_HEADER := $(obj)/nv_compiler.h
 CONF_TEST := $(obj)/conftest.h
 CONF_TEST_PATCHES := $(obj)/conftest/patches.h 
 
-TODO := $(shell rm -f $(CONF_TEST))
+TODO_UVM := $(shell rm -f $(CONF_TEST))
 
 $(obj)/nvidia_uvm_linux.o : |  $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES)  
 

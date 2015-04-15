@@ -33,8 +33,6 @@ CORE_OBJ := nv-kernel.o
 TODO := $(shell rm -f $(CONF_TEST))
 
 $(obj)/nv.o        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
-#$(CORE_OBJ)        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
-#$(obj)/$(CORE_OBJ) : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
 
 $(obj)/conftest: 
 	@mkdir -p $@
