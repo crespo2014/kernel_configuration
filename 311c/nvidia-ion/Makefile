@@ -1,8 +1,5 @@
 MODULE_NAME := nvidia-ion
 
-ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
-options := CONFIG_DEBUG_SECTION_MISMATCH=y
-
 CORE_OBJ := nv-kernel.o
 
 #Source files
@@ -15,6 +12,8 @@ obj-$(CONFIG_NVIDIA_UVM) += uvm/
 ccflags-y := -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"340.65\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -DNV_UVM_ENABLE  -DNV_DEV_NAME=\"$(MODULE_NAME)\"
 
 #os system
+ISYSTEM=`$(CC) -print-file-name=include 2> /dev/null`
+
 ccflags-y += -D__linux__
 ccflags-y += -DNV_TARGET_ARCH=x86
 
@@ -31,7 +30,9 @@ CONF_TEST_PATCHES := $(obj)/conftest/patches.h
 VERSION_HEADER := $(obj)/nv_compiler.h
 CORE_OBJ := nv-kernel.o
 
-$(obj)/nv.o : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
+$(obj)/nv.o        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
+#$(CORE_OBJ)        : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
+#$(obj)/$(CORE_OBJ) : | $(VERSION_HEADER) $(CONF_TEST) $(CONF_TEST_PATCHES) 
 
 $(obj)/conftest: 
 	@mkdir -p $@
@@ -41,9 +42,6 @@ $(VERSION_HEADER):
 	
 $(CONF_TEST_PATCHES): | $(obj)/conftest
 	@echo " static struct { const char *short_description; const char *description; } __nv_patches[] = { { NULL, NULL } }; " > $@
-
-$(CORE_OBJ) :  |  $(VERSION_HEADER) $(CONF_TEST)
-$(obj)/$(CORE_OBJ) :  |  $(VERSION_HEADER) $(CONF_TEST)
 
 	
 # Conftest header file creation 	
@@ -134,6 +132,7 @@ endif
 clean-files := $(CONF_TEST) $(VERSION_HEADER) $(CONF_TEST_PATCHES) $(obj)/$(CORE_OBJ)
 clean-dirs := $(obj)/conftest
 
+options := CONFIG_DEBUG_SECTION_MISMATCH=y
 
 311c:
 	make -C `pwd`/../linux-3.19.2 M=`pwd` ${options}  O=`pwd`/../linux-3.19.2/build/311c KCONFIG_CONFIG=`pwd`/../linux/311c.config modules
