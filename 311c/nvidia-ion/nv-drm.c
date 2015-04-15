@@ -130,6 +130,9 @@ static struct drm_driver nv_drm_driver = {
     .gem_prime_get_sg_table = nv_gem_prime_get_sg_table,
     .gem_prime_vmap = nv_gem_prime_vmap,
     .gem_prime_vunmap = nv_gem_prime_vunmap,
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 18, 0)
+    .set_busid = drm_pci_set_busid,
+#endif
 
     .name = "nvidia-drm",
     .desc = "NVIDIA DRM driver",
