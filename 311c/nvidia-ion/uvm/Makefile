@@ -44,7 +44,7 @@ else
 ifeq ($(CONFIG_NVIDIA_ION_UVM_NEXT),y)
 ccflags-y += -DNVIDIA_UVM_NEXT_ENABLED
 else 
-    $(error "Cannot build with both UVM_LITE and UVM_NEXT disabled")
+#    $(error "Cannot build with both UVM_LITE and UVM_NEXT disabled")
 endif
 endif
 endif

@@ -45,7 +45,6 @@
  *  Created on: 16 Apr 2015
  *      Author: lester.crespo
  */
-#include "linux/async_minit.h"
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -63,6 +62,7 @@
 #include <linux/types.h>
 //#include <linux/atomic.h>
 #include <asm/atomic.h>
+#include <linux/kthread.h>  // for threads
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 #define printk_debug(...) printk(__VA_ARGS__)
@@ -218,8 +218,9 @@ void Prepare(struct init_fn* alltask, unsigned count)
 	}
 }
 
-void WorkingThread(void)
+int WorkingThread(void *data)
 {
+  //struct task_struct *kthread = *(struct task_struct**)data;
 	struct init_fn* task = 0;
 	do
 	{
@@ -233,13 +234,26 @@ void WorkingThread(void)
 			//wait for (depends.unlocked !=0 or depends.waiting_last == 0)
 		}
 	} while (depends.waiting_last != 0);	// something to do
+//	if (kthread != NULL)
+//	  exit_kthread(*kthread);
+	return 0;
 }
 
 static int do_async_module_init(void)
 {
-  Prepare(__async_initcall_start,__async_initcall_end-__async_initcall_start);
+  static struct task_struct *thr;
+  Prepare(__async_initcall_start, __async_initcall_end - __async_initcall_start);
   //start working threads
-  WorkingThread();
+  thr = kthread_create(WorkingThread, &thr, "async thread");
+  if (thr != ERR_PTR(-ENOMEM))
+  {
+    wake_up_process(thr);
+  } else
+  {
+    printk("Async module initialization thread failed .. fall back to normal mode");
+    WorkingThread(NULL);
+  }
+
   return 0;
 }
 
