@@ -2,3 +2,6 @@
 *.old
 *.o.cmd
 conftest
+modules.order
+Module.symvers
+.tmp_versions
