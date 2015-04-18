@@ -245,35 +245,6 @@ static int do_async_module_init(void)
 
 module_init(do_async_module_init);
 
-/*
- * Test the module
- */
-
-static int do_a(void)
-{
-  return 0;
-}
-
-static int do_b(void)
-{
-  return 0;
-}
-
-static int do_c(void)
-{
-  return 0;
-}
-
-static int do_d(void)
-{
-  return 0;
-}
-
-async_init(do_a);
-async_init(do_b,do_a);
-async_init(do_c,do_a);
-async_init(do_d);
-
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
 

@@ -38,6 +38,7 @@
  *
  */
 
+#include "linux/async_minit.h"
 #include "nvidia_uvm_common.h"
 #include "nvidia_uvm_linux.h"
 
@@ -353,7 +354,8 @@ RM_STATUS uvm_map_page(struct vm_area_struct *vma, struct page *page,
 }
 
 
-module_init(uvm_init);
+//module_init(uvm_init);
+async_init(uvm_init);
 module_exit(uvm_exit);
 MODULE_LICENSE("MIT");
 MODULE_INFO(supported, "external");
