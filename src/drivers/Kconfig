@@ -1,0 +1,6 @@
+#
+#
+config ASYNCHRO_MODULE_INIT
+	bool "Initialize module in Asynchronize way using single module dependencies"
+	---help---
+	Asynchrone drivers initialization routine 
