@@ -8,6 +8,7 @@
  * _NVRM_COPYRIGHT_END_
  */
 
+#include "linux/async_minit.h"
 #include "nv-misc.h"
 #include "os-interface.h"
 #include "nv-linux.h"
@@ -410,6 +411,7 @@ static void __exit nvidia_frontend_exit_module(void)
     }
 }
 
-module_init(nvidia_frontend_init_module);
+//module_init(nvidia_frontend_init_module);
+async_init(nvidia_frontend_init_module);
 module_exit(nvidia_frontend_exit_module);
 
