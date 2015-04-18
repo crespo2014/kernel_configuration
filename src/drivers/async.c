@@ -176,6 +176,10 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 		prev_task = 0;
 	}
 	// spin unlock
+	if ((prev_task == 0) && (depends.running_last == 0))
+	{
+	  free_initmem();
+	}
 	return prev_task;
 }
 
@@ -203,13 +207,12 @@ void Prepare(struct init_fn* alltask, unsigned count)
 			{
 				if (strcmp(alltask[j].name, depends.task[i].ptr->depends_on) == 0)
 				{
-					depends.task[i].waiting_for = alltask + j;
+					//depends.task[i].waiting_for = alltask + j;
 					break;
 				}
 			}
 			// dependency not found, move task to the end
-			if (depends.task[i].waiting_for == 0)
-				depends.task[i].waiting_for = alltask + count;
+			depends.task[i].waiting_for = alltask + j;    // j will point to the end if task not found
 		} else
 			depends.waiting++;			// avoid bug,
 	}
@@ -225,7 +228,6 @@ void WorkingThread(void)
 		{
 		  printk_debug("Start %s\n", task->name);
 		  do_one_initcall(task->fnc);
-		  printk_debug("End %s\n", task->name);
 		} else
 		{
 			//wait for (depends.unlocked !=0 or depends.waiting_last == 0)
