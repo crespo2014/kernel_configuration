@@ -222,9 +222,9 @@ void WorkingThread(void)
 		task = TaskDone(task);
 		if (task != 0)
 		{
-		  printk_debug("%s started\n", task->name);
+		  printk_debug("Start %s\n", task->name);
 		  do_one_initcall(task->fnc);
-		  printk_debug("%s done\n", task->name);
+		  printk_debug("End %s\n", task->name);
 		} else
 		{
 			//wait for (depends.unlocked !=0 or depends.waiting_last == 0)
@@ -232,10 +232,14 @@ void WorkingThread(void)
 	} while (depends.waiting_last != 0);	// something to do
 }
 
-void do_async_module_init(void)
+static int do_async_module_init(void)
 {
   Prepare(__async_initcall_start,__async_initcall_end-__async_initcall_start);
+  //start working threads
+  return 0;
 }
+
+module_init(do_async_module_init);
 
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)

@@ -34,10 +34,7 @@ struct init_fn
 
 #endif
 
-#define ASYNC_INITCALLS           \
-   VMLINUX_SYMBOL(__async_initcall_start) = .;    \
-   *(.async_initcall.init)        \
-   VMLINUX_SYMBOL(__async_initcall_end) = .;
+
 
 
 #endif /* ASYNC_MINIT_H_ */
