@@ -4,3 +4,8 @@ config ASYNCHRO_MODULE_INIT
 	bool "Initialize module in Asynchronize way using single module dependencies"
 	---help---
 	Asynchrone drivers initialization routine 
+	
+	if ASYNCHRO_MODULE_INIT_DEBUG
+	config ASYNCHRO_MODULE_INIT_DEBUG
+	bool "Debug mode"
+	endif

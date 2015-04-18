@@ -45,25 +45,43 @@
  *  Created on: 16 Apr 2015
  *      Author: lester.crespo
  */
+#include "linux/async_minit.h"
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/uaccess.h>
+#include <linux/proc_fs.h>
+#include <linux/miscdevice.h>
+#include <linux/debugfs.h>
+#include <linux/mm.h>  // mmap related stuff
+#include <linux/slab.h>
+#include <linux/types.h>
+#include <linux/wait.h>
+#include <linux/sched.h>
+#include <linux/poll.h>
+#include <linux/types.h>
+//#include <linux/atomic.h>
+#include <asm/atomic.h>
 
-#include <stdio.h>
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+#define printk_debug(...) printk(__VA_ARGS__)
+#else
+#define printk_debug(...) do {} while(0)
+#endif
 
 /**
  * Static struct holding all data
  */
-struct s_task
-{
-	const char* name;
-	const char* depends_on;
-};
+extern struct init_fn __async_initcall_start[], __async_initcall_end[];
 
 /**
  * at least one element has to be in the list in the position 0 that never executes
  */
 struct task_data
 {
-	struct s_task* ptr;			// ptr to static task
-	struct s_task* waiting_for;	// 0 ready,  1:end_idx waiting , > end_idx : lowest priority
+	struct init_fn* ptr;			// ptr to static task
+	struct init_fn* waiting_for;	// 0 ready,  1:end_idx waiting , > end_idx : lowest priority
 };
 
 /**
@@ -82,7 +100,7 @@ struct depends_list
 	unsigned end_idx;		// last element on the list
 	unsigned waiting;		// how many task are ready to be executed
 	struct task_data task[MAX_TASKS];
-	struct s_task* stask;	// static task structure
+	struct init_fn* stask;	// static task structure
 };
 
 struct depends_list depends;
@@ -92,7 +110,7 @@ struct depends_list depends;
  * Get a task from the list for execution
  * nullptr - no more task available
  */
-struct s_task* TaskDone(struct s_task* prev_task)
+struct init_fn* TaskDone(struct init_fn* prev_task)
 {
 	unsigned i, j;
 	struct task_data task;
@@ -161,7 +179,7 @@ struct s_task* TaskDone(struct s_task* prev_task)
 	return prev_task;
 }
 
-void Prepare(struct s_task* alltask, unsigned count)
+void Prepare(struct init_fn* alltask, unsigned count)
 {
 	// fill dependencies structure
 	unsigned i, j;
@@ -196,21 +214,27 @@ void Prepare(struct s_task* alltask, unsigned count)
 	}
 }
 
-void WorkingThread()
+void WorkingThread(void)
 {
-	struct s_task* task = 0;
+	struct init_fn* task = 0;
 	do
 	{
 		task = TaskDone(task);
 		if (task != 0)
 		{
-			// task doit
-			printf("%s done\n", task->name);
+		  printk_debug("%s started\n", task->name);
+		  do_one_initcall(task->fnc);
+		  printk_debug("%s done\n", task->name);
 		} else
 		{
 			//wait for (depends.unlocked !=0 or depends.waiting_last == 0)
 		}
 	} while (depends.waiting_last != 0);	// something to do
+}
+
+void do_async_module_init(void)
+{
+  Prepare(__async_initcall_start,__async_initcall_end-__async_initcall_start);
 }
 
 #ifdef TEST
