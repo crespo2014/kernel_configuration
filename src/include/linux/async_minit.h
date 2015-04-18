@@ -23,7 +23,7 @@ struct init_fn
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT
 
 #define async_init(fnc, ... )  \
-  static init_fn init_fn_##fnc __used \
+  static struct init_fn init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {#fnc,#__VA_ARGS__,fnc};
 
 //#define async_init(fnc) async_init(fnc,);
@@ -33,8 +33,6 @@ struct init_fn
 #define async_init(fnc, ... ) module_init(fnc);
 
 #endif
-
-
 
 
 #endif /* ASYNC_MINIT_H_ */

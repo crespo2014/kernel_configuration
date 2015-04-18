@@ -190,6 +190,7 @@ void Prepare(struct init_fn* alltask, unsigned count)
 	depends.stask = alltask;
 	for (i = 0; i < count; ++i)
 	{
+    printk_debug("Added %s --> %s\n", alltask[i].name,alltask[i].depends_on);
 		depends.task[i].ptr = alltask + i;
 		depends.task[i].waiting_for = 0;
 	}
@@ -236,10 +237,40 @@ static int do_async_module_init(void)
 {
   Prepare(__async_initcall_start,__async_initcall_end-__async_initcall_start);
   //start working threads
+  WorkingThread();
   return 0;
 }
 
 module_init(do_async_module_init);
+
+/*
+ * Test the module
+ */
+
+static int do_a(void)
+{
+  return 0;
+}
+
+static int do_b(void)
+{
+  return 0;
+}
+
+static int do_c(void)
+{
+  return 0;
+}
+
+static int do_d(void)
+{
+  return 0;
+}
+
+async_init(do_a);
+async_init(do_b,do_a);
+async_init(do_c,do_a);
+async_init(do_d);
 
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)

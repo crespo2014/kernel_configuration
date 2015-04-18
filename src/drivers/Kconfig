@@ -5,7 +5,7 @@ config ASYNCHRO_MODULE_INIT
 	---help---
 	Asynchrone drivers initialization routine 
 	
-	if ASYNCHRO_MODULE_INIT_DEBUG
+if ASYNCHRO_MODULE_INIT
 	config ASYNCHRO_MODULE_INIT_DEBUG
 	bool "Debug mode"
-	endif
+endif
