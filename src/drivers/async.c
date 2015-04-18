@@ -190,14 +190,14 @@ void Prepare(struct init_fn* alltask, unsigned count)
 	depends.stask = alltask;
 	for (i = 0; i < count; ++i)
 	{
-    printk_debug("Added %s --> %s\n", alltask[i].name,alltask[i].depends_on);
+    printk_debug("Added '%s' --> '%s'\n", alltask[i].name,alltask[i].depends_on);
 		depends.task[i].ptr = alltask + i;
 		depends.task[i].waiting_for = 0;
 	}
 	// resolve dependencies
 	for (i = 0; i < count; ++i)
 	{
-		if (depends.task[i].ptr->depends_on != 0)
+		if ((depends.task[i].ptr->depends_on != 0) && (*depends.task[i].ptr->depends_on != 0))
 		{
 			for (j = 0; j < count; ++j)
 			{
