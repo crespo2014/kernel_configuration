@@ -30,6 +30,10 @@ struct init_fn
   static struct init_fn init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {#fnc,#__VA_ARGS__,fnc};
 
+#define async_module_init(fnc, ... )  \
+  static struct init_fn init_fn_##fnc __used \
+  __attribute__((__section__(".async_initcall.init"))) = {#fnc,#__VA_ARGS__,fnc};
+
 //#define async_init(fnc) async_init(fnc,);
 
 #else
