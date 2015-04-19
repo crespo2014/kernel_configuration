@@ -127,3 +127,1218 @@ diff -r --exclude build ../../linux-4.0/init/main.c ../../linux-4.0.orig/init/ma
 ---
 > 	free_initmem();
 Only in ../../linux-4.0: .project
+Only in linux-4.0: .cproject
+diff -r --exclude build linux-4.0/crypto/aes_generic.c linux-4.0.orig/crypto/aes_generic.c
+1472c1472
+< async_init(aes_init);
+---
+> module_init(aes_init);
+diff -r --exclude build linux-4.0/crypto/ansi_cprng.c linux-4.0.orig/crypto/ansi_cprng.c
+477c477
+< async_init(prng_mod_init);
+---
+> module_init(prng_mod_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/asymmetric_type.c linux-4.0.orig/crypto/asymmetric_keys/asymmetric_type.c
+405c405
+< async_init(asymmetric_key_init);
+---
+> module_init(asymmetric_key_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/pkcs7_key_type.c linux-4.0.orig/crypto/asymmetric_keys/pkcs7_key_type.c
+97c97
+< async_init(pkcs7_key_init);
+---
+> module_init(pkcs7_key_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/x509_public_key.c linux-4.0.orig/crypto/asymmetric_keys/x509_public_key.c
+360c360
+< async_init(x509_key_init);
+---
+> module_init(x509_key_init);
+diff -r --exclude build linux-4.0/crypto/blowfish_generic.c linux-4.0.orig/crypto/blowfish_generic.c
+136c136
+< async_init(blowfish_mod_init);
+---
+> module_init(blowfish_mod_init);
+diff -r --exclude build linux-4.0/crypto/cbc.c linux-4.0.orig/crypto/cbc.c
+287c287
+< async_init(crypto_cbc_module_init);
+---
+> module_init(crypto_cbc_module_init);
+diff -r --exclude build linux-4.0/crypto/crc32.c linux-4.0.orig/crypto/crc32.c
+153c153
+< async_init(crc32_mod_init);
+---
+> module_init(crc32_mod_init);
+diff -r --exclude build linux-4.0/crypto/crc32c_generic.c linux-4.0.orig/crypto/crc32c_generic.c
+167c167
+< async_init(crc32c_mod_init);
+---
+> module_init(crc32c_mod_init);
+diff -r --exclude build linux-4.0/crypto/crct10dif_generic.c linux-4.0.orig/crypto/crct10dif_generic.c
+121c121
+< async_init(crct10dif_mod_init);
+---
+> module_init(crct10dif_mod_init);
+diff -r --exclude build linux-4.0/crypto/crypto_null.c linux-4.0.orig/crypto/crypto_null.c
+178c178
+< async_init(crypto_null_mod_init);
+---
+> module_init(crypto_null_mod_init);
+diff -r --exclude build linux-4.0/crypto/crypto_user.c linux-4.0.orig/crypto/crypto_user.c
+532c532
+< async_init(crypto_user_init);
+---
+> module_init(crypto_user_init);
+diff -r --exclude build linux-4.0/crypto/ecb.c linux-4.0.orig/crypto/ecb.c
+183c183
+< async_init(crypto_ecb_module_init);
+---
+> module_init(crypto_ecb_module_init);
+diff -r --exclude build linux-4.0/crypto/lrw.c linux-4.0.orig/crypto/lrw.c
+398c398
+< async_init(crypto_module_init);
+---
+> module_init(crypto_module_init);
+diff -r --exclude build linux-4.0/crypto/lz4.c linux-4.0.orig/crypto/lz4.c
+102c102
+< async_init(lz4_mod_init);
+---
+> module_init(lz4_mod_init);
+diff -r --exclude build linux-4.0/crypto/lz4hc.c linux-4.0.orig/crypto/lz4hc.c
+102c102
+< async_init(lz4hc_mod_init);
+---
+> module_init(lz4hc_mod_init);
+diff -r --exclude build linux-4.0/crypto/lzo.c linux-4.0.orig/crypto/lzo.c
+105c105
+< async_init(lzo_mod_init);
+---
+> module_init(lzo_mod_init);
+diff -r --exclude build linux-4.0/crypto/md4.c linux-4.0.orig/crypto/md4.c
+253c253
+< async_init(md4_mod_init);
+---
+> module_init(md4_mod_init);
+diff -r --exclude build linux-4.0/crypto/md5.c linux-4.0.orig/crypto/md5.c
+166c166
+< async_init(md5_mod_init);
+---
+> module_init(md5_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd128.c linux-4.0.orig/crypto/rmd128.c
+324c324
+< async_init(rmd128_mod_init);
+---
+> module_init(rmd128_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd160.c linux-4.0.orig/crypto/rmd160.c
+368c368
+< async_init(rmd160_mod_init);
+---
+> module_init(rmd160_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd256.c linux-4.0.orig/crypto/rmd256.c
+343c343
+< async_init(rmd256_mod_init);
+---
+> module_init(rmd256_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd320.c linux-4.0.orig/crypto/rmd320.c
+392c392
+< async_init(rmd320_mod_init);
+---
+> module_init(rmd320_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha1_generic.c linux-4.0.orig/crypto/sha1_generic.c
+150c150
+< async_init(sha1_generic_mod_init);
+---
+> module_init(sha1_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha256_generic.c linux-4.0.orig/crypto/sha256_generic.c
+381c381
+< async_init(sha256_generic_mod_init);
+---
+> module_init(sha256_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha512_generic.c linux-4.0.orig/crypto/sha512_generic.c
+285c285
+< async_init(sha512_generic_mod_init);
+---
+> module_init(sha512_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/tcrypt.c linux-4.0.orig/crypto/tcrypt.c
+2191c2191
+< async_init(tcrypt_mod_init);
+---
+> module_init(tcrypt_mod_init);
+diff -r --exclude build linux-4.0/crypto/tea.c linux-4.0.orig/crypto/tea.c
+277c277
+< async_init(tea_mod_init);
+---
+> module_init(tea_mod_init);
+diff -r --exclude build linux-4.0/crypto/tgr192.c linux-4.0.orig/crypto/tgr192.c
+683c683
+< async_init(tgr192_mod_init);
+---
+> module_init(tgr192_mod_init);
+diff -r --exclude build linux-4.0/crypto/twofish_generic.c linux-4.0.orig/crypto/twofish_generic.c
+209c209
+< async_init(twofish_mod_init);
+---
+> module_init(twofish_mod_init);
+diff -r --exclude build linux-4.0/crypto/vmac.c linux-4.0.orig/crypto/vmac.c
+711c711
+< async_init(vmac_module_init);
+---
+> module_init(vmac_module_init);
+diff -r --exclude build linux-4.0/crypto/wp512.c linux-4.0.orig/crypto/wp512.c
+1174c1174
+< async_init(wp512_mod_init);
+---
+> module_init(wp512_mod_init);
+diff -r --exclude build linux-4.0/crypto/xcbc.c linux-4.0.orig/crypto/xcbc.c
+284c284
+< async_init(crypto_xcbc_module_init);
+---
+> module_init(crypto_xcbc_module_init);
+diff -r --exclude build linux-4.0/crypto/xts.c linux-4.0.orig/crypto/xts.c
+360c360
+< async_init(crypto_module_init);
+---
+> module_init(crypto_module_init);
+diff -r --exclude build linux-4.0/crypto/zlib.c linux-4.0.orig/crypto/zlib.c
+375c375
+< async_init(zlib_mod_init);
+---
+> module_init(zlib_mod_init);
+Only in linux-4.0: dmesg.out.txt
+diff -r --exclude build linux-4.0/drivers/acpi/thermal.c linux-4.0.orig/drivers/acpi/thermal.c
+1284c1284
+< async_init(acpi_thermal_init);
+---
+> module_init(acpi_thermal_init);
+diff -r --exclude build linux-4.0/drivers/acpi/video.c linux-4.0.orig/drivers/acpi/video.c
+2206c2206
+< async_init(acpi_video_init);
+---
+> module_init(acpi_video_init);
+Only in linux-4.0/drivers: async.c
+diff -r --exclude build linux-4.0/drivers/gpu/drm/Kconfig linux-4.0.orig/drivers/gpu/drm/Kconfig
+80d79
+< 
+84,85d82
+< 
+< source "drivers/gpu/drm/nvidia-ion/Kconfig"
+diff -r --exclude build linux-4.0/drivers/gpu/drm/Makefile linux-4.0.orig/drivers/gpu/drm/Makefile
+37d36
+< obj-$(CONFIG_NVIDIA_ION)	+= nvidia-ion/
+Only in linux-4.0/drivers/gpu/drm: nvidia-ion
+diff -r --exclude build linux-4.0/drivers/input/keyboard/atkbd.c linux-4.0.orig/drivers/input/keyboard/atkbd.c
+1814c1814
+< async_init(atkbd_init);
+---
+> module_init(atkbd_init);
+diff -r --exclude build linux-4.0/drivers/input/misc/uinput.c linux-4.0.orig/drivers/input/misc/uinput.c
+942c942
+< async_init(uinput_init);
+---
+> module_init(uinput_init);
+diff -r --exclude build linux-4.0/drivers/input/mouse/psmouse-base.c linux-4.0.orig/drivers/input/mouse/psmouse-base.c
+1897c1897
+< async_init(psmouse_init);
+---
+> module_init(psmouse_init);
+diff -r --exclude build linux-4.0/drivers/input/mousedev.c linux-4.0.orig/drivers/input/mousedev.c
+1127c1127
+< async_init(mousedev_init);
+---
+> module_init(mousedev_init);
+diff -r --exclude build linux-4.0/drivers/input/serio/i8042.c linux-4.0.orig/drivers/input/serio/i8042.c
+1527c1527
+< async_init(i8042_init);
+---
+> module_init(i8042_init);
+diff -r --exclude build linux-4.0/drivers/input/serio/serport.c linux-4.0.orig/drivers/input/serio/serport.c
+300c300
+< async_init(serport_init);
+---
+> module_init(serport_init);
+diff -r --exclude build linux-4.0/drivers/Kconfig linux-4.0.orig/drivers/Kconfig
+3,12d2
+< config ASYNCHRO_MODULE_INIT
+< 	bool "Initialize module in Asynchronize way using single module dependencies"
+< 	---help---
+< 	Asynchrone drivers initialization routine 
+< 	
+< if ASYNCHRO_MODULE_INIT
+< 	config ASYNCHRO_MODULE_INIT_DEBUG
+< 	bool "Debug mode"
+< endif
+< 	
+diff -r --exclude build linux-4.0/drivers/Makefile linux-4.0.orig/drivers/Makefile
+168,169d167
+< 
+< obj-y += async.o
+diff -r --exclude build linux-4.0/drivers/net/wireless/b43/main.c linux-4.0.orig/drivers/net/wireless/b43/main.c
+5900c5900
+< async_init(b43_init)
+---
+> module_init(b43_init)
+diff -r --exclude build linux-4.0/drivers/net/wireless/b43legacy/main.c linux-4.0.orig/drivers/net/wireless/b43legacy/main.c
+4064c4064
+< async_init(b43legacy_init)
+---
+> module_init(b43legacy_init)
+diff -r --exclude build linux-4.0/drivers/net/wireless/ipw2x00/ipw2100.c linux-4.0.orig/drivers/net/wireless/ipw2x00/ipw2100.c
+6614c6614
+< async_init(ipw2100_init);
+---
+> module_init(ipw2100_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/pciehp_core.c linux-4.0.orig/drivers/pci/hotplug/pciehp_core.c
+386c386
+< async_init(pcied_init,pci_hotplug_init);
+---
+> module_init(pcied_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/pci_hotplug_core.c linux-4.0.orig/drivers/pci/hotplug/pci_hotplug_core.c
+548c548
+< async_init(pci_hotplug_init,pcie_portdrv_init);
+---
+> module_init(pci_hotplug_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/shpchp_core.c linux-4.0.orig/drivers/pci/hotplug/shpchp_core.c
+388c388
+< async_init(shpcd_init,pcied_init);
+---
+> module_init(shpcd_init);
+diff -r --exclude build linux-4.0/drivers/pci/pcie/portdrv_pci.c linux-4.0.orig/drivers/pci/pcie/portdrv_pci.c
+364c364
+< async_init(pcie_portdrv_init);
+---
+> module_init(pcie_portdrv_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-hcd.c linux-4.0.orig/drivers/usb/host/ehci-hcd.c
+1379c1379
+< async_init(ehci_hcd_init);
+---
+> module_init(ehci_hcd_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-pci.c linux-4.0.orig/drivers/usb/host/ehci-pci.c
+424c424
+< async_init(ehci_pci_init,ehci_hcd_init);
+---
+> module_init(ehci_pci_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-platform.c linux-4.0.orig/drivers/usb/host/ehci-platform.c
+431c431
+< async_init(ehci_platform_init,ehci_hcd_init);
+---
+> module_init(ehci_platform_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-hcd.c linux-4.0.orig/drivers/usb/host/ohci-hcd.c
+1355c1355
+< async_init(ohci_hcd_mod_init,ehci_platform_init);
+---
+> module_init(ohci_hcd_mod_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-pci.c linux-4.0.orig/drivers/usb/host/ohci-pci.c
+305c305
+< async_init(ohci_pci_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_pci_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-platform.c linux-4.0.orig/drivers/usb/host/ohci-platform.c
+405c405
+< async_init(ohci_platform_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_platform_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/uhci-hcd.c linux-4.0.orig/drivers/usb/host/uhci-hcd.c
+940c940
+< async_init(uhci_hcd_init);
+---
+> module_init(uhci_hcd_init);
+diff -r --exclude build linux-4.0/fs/cifs/cifsfs.c linux-4.0.orig/fs/cifs/cifsfs.c
+1317c1317
+< async_init(init_cifs)
+---
+> module_init(init_cifs)
+diff -r --exclude build linux-4.0/fs/fat/inode.c linux-4.0.orig/fs/fat/inode.c
+1858c1858
+< async_init(init_fat_fs)
+---
+> module_init(init_fat_fs)
+diff -r --exclude build linux-4.0/fs/fat/namei_msdos.c linux-4.0.orig/fs/fat/namei_msdos.c
+685c685
+< async_init(init_msdos_fs,init_fat_fs)
+---
+> module_init(init_msdos_fs)
+diff -r --exclude build linux-4.0/fs/isofs/inode.c linux-4.0.orig/fs/isofs/inode.c
+1555c1555
+< async_init(init_iso9660_fs)
+---
+> module_init(init_iso9660_fs)
+diff -r --exclude build linux-4.0/fs/ntfs/super.c linux-4.0.orig/fs/ntfs/super.c
+3219c3219
+< async_init(init_ntfs_fs)
+---
+> module_init(init_ntfs_fs)
+diff -r --exclude build linux-4.0/include/asm-generic/vmlinux.lds.h linux-4.0.orig/include/asm-generic/vmlinux.lds.h
+635,639d634
+< #define ASYNC_INITCALLS           \
+<    VMLINUX_SYMBOL(__async_initcall_start) = .;    \
+<    *(.async_initcall.init)        \
+<    VMLINUX_SYMBOL(__async_initcall_end) = .;
+< 
+810d804
+< 		ASYNC_INITCALLS   \
+Only in linux-4.0/include/linux: async_minit.h
+diff -r --exclude build linux-4.0/include/linux/device.h linux-4.0.orig/include/linux/device.h
+1269,1281d1268
+< // Usefull for ACPI and USB maybe PCI
+< #define async_module_driver(__driver, __register, __unregister,__depends, ...) \
+< static int __init __driver##_init(void) \
+< { \
+<   return __register(&(__driver) , ##__VA_ARGS__); \
+< } \
+< async_init(__driver##_init,__depends); \
+< static void __exit __driver##_exit(void) \
+< { \
+<   __unregister(&(__driver) , ##__VA_ARGS__); \
+< } \
+< module_exit(__driver##_exit);
+< 
+diff -r --exclude build linux-4.0/include/linux/module.h linux-4.0.orig/include/linux/module.h
+9d8
+< #include "linux/async_minit.h"
+diff -r --exclude build linux-4.0/init/main.c linux-4.0.orig/init/main.c
+931c931
+< 	//free_initmem();
+---
+> 	free_initmem();
+Only in linux-4.0: .project
+Only in linux-4.0: .cproject
+diff -r --exclude build linux-4.0/crypto/aes_generic.c linux-4.0.orig/crypto/aes_generic.c
+1472c1472
+< async_init(aes_init);
+---
+> module_init(aes_init);
+diff -r --exclude build linux-4.0/crypto/ansi_cprng.c linux-4.0.orig/crypto/ansi_cprng.c
+477c477
+< async_init(prng_mod_init);
+---
+> module_init(prng_mod_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/asymmetric_type.c linux-4.0.orig/crypto/asymmetric_keys/asymmetric_type.c
+405c405
+< async_init(asymmetric_key_init);
+---
+> module_init(asymmetric_key_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/pkcs7_key_type.c linux-4.0.orig/crypto/asymmetric_keys/pkcs7_key_type.c
+97c97
+< async_init(pkcs7_key_init);
+---
+> module_init(pkcs7_key_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/x509_public_key.c linux-4.0.orig/crypto/asymmetric_keys/x509_public_key.c
+360c360
+< async_init(x509_key_init);
+---
+> module_init(x509_key_init);
+diff -r --exclude build linux-4.0/crypto/blowfish_generic.c linux-4.0.orig/crypto/blowfish_generic.c
+136c136
+< async_init(blowfish_mod_init);
+---
+> module_init(blowfish_mod_init);
+diff -r --exclude build linux-4.0/crypto/cbc.c linux-4.0.orig/crypto/cbc.c
+287c287
+< async_init(crypto_cbc_module_init);
+---
+> module_init(crypto_cbc_module_init);
+diff -r --exclude build linux-4.0/crypto/crc32.c linux-4.0.orig/crypto/crc32.c
+153c153
+< async_init(crc32_mod_init);
+---
+> module_init(crc32_mod_init);
+diff -r --exclude build linux-4.0/crypto/crc32c_generic.c linux-4.0.orig/crypto/crc32c_generic.c
+167c167
+< async_init(crc32c_mod_init);
+---
+> module_init(crc32c_mod_init);
+diff -r --exclude build linux-4.0/crypto/crct10dif_generic.c linux-4.0.orig/crypto/crct10dif_generic.c
+121c121
+< async_init(crct10dif_mod_init);
+---
+> module_init(crct10dif_mod_init);
+diff -r --exclude build linux-4.0/crypto/crypto_null.c linux-4.0.orig/crypto/crypto_null.c
+178c178
+< async_init(crypto_null_mod_init);
+---
+> module_init(crypto_null_mod_init);
+diff -r --exclude build linux-4.0/crypto/crypto_user.c linux-4.0.orig/crypto/crypto_user.c
+532c532
+< async_init(crypto_user_init);
+---
+> module_init(crypto_user_init);
+diff -r --exclude build linux-4.0/crypto/ecb.c linux-4.0.orig/crypto/ecb.c
+183c183
+< async_init(crypto_ecb_module_init);
+---
+> module_init(crypto_ecb_module_init);
+diff -r --exclude build linux-4.0/crypto/lrw.c linux-4.0.orig/crypto/lrw.c
+398c398
+< async_init(crypto_module_init);
+---
+> module_init(crypto_module_init);
+diff -r --exclude build linux-4.0/crypto/lz4.c linux-4.0.orig/crypto/lz4.c
+102c102
+< async_init(lz4_mod_init);
+---
+> module_init(lz4_mod_init);
+diff -r --exclude build linux-4.0/crypto/lz4hc.c linux-4.0.orig/crypto/lz4hc.c
+102c102
+< async_init(lz4hc_mod_init);
+---
+> module_init(lz4hc_mod_init);
+diff -r --exclude build linux-4.0/crypto/lzo.c linux-4.0.orig/crypto/lzo.c
+105c105
+< async_init(lzo_mod_init);
+---
+> module_init(lzo_mod_init);
+diff -r --exclude build linux-4.0/crypto/md4.c linux-4.0.orig/crypto/md4.c
+253c253
+< async_init(md4_mod_init);
+---
+> module_init(md4_mod_init);
+diff -r --exclude build linux-4.0/crypto/md5.c linux-4.0.orig/crypto/md5.c
+166c166
+< async_init(md5_mod_init);
+---
+> module_init(md5_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd128.c linux-4.0.orig/crypto/rmd128.c
+324c324
+< async_init(rmd128_mod_init);
+---
+> module_init(rmd128_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd160.c linux-4.0.orig/crypto/rmd160.c
+368c368
+< async_init(rmd160_mod_init);
+---
+> module_init(rmd160_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd256.c linux-4.0.orig/crypto/rmd256.c
+343c343
+< async_init(rmd256_mod_init);
+---
+> module_init(rmd256_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd320.c linux-4.0.orig/crypto/rmd320.c
+392c392
+< async_init(rmd320_mod_init);
+---
+> module_init(rmd320_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha1_generic.c linux-4.0.orig/crypto/sha1_generic.c
+150c150
+< async_init(sha1_generic_mod_init);
+---
+> module_init(sha1_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha256_generic.c linux-4.0.orig/crypto/sha256_generic.c
+381c381
+< async_init(sha256_generic_mod_init);
+---
+> module_init(sha256_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha512_generic.c linux-4.0.orig/crypto/sha512_generic.c
+285c285
+< async_init(sha512_generic_mod_init);
+---
+> module_init(sha512_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/tcrypt.c linux-4.0.orig/crypto/tcrypt.c
+2191c2191
+< async_init(tcrypt_mod_init);
+---
+> module_init(tcrypt_mod_init);
+diff -r --exclude build linux-4.0/crypto/tea.c linux-4.0.orig/crypto/tea.c
+277c277
+< async_init(tea_mod_init);
+---
+> module_init(tea_mod_init);
+diff -r --exclude build linux-4.0/crypto/tgr192.c linux-4.0.orig/crypto/tgr192.c
+683c683
+< async_init(tgr192_mod_init);
+---
+> module_init(tgr192_mod_init);
+diff -r --exclude build linux-4.0/crypto/twofish_generic.c linux-4.0.orig/crypto/twofish_generic.c
+209c209
+< async_init(twofish_mod_init);
+---
+> module_init(twofish_mod_init);
+diff -r --exclude build linux-4.0/crypto/vmac.c linux-4.0.orig/crypto/vmac.c
+711c711
+< async_init(vmac_module_init);
+---
+> module_init(vmac_module_init);
+diff -r --exclude build linux-4.0/crypto/wp512.c linux-4.0.orig/crypto/wp512.c
+1174c1174
+< async_init(wp512_mod_init);
+---
+> module_init(wp512_mod_init);
+diff -r --exclude build linux-4.0/crypto/xcbc.c linux-4.0.orig/crypto/xcbc.c
+284c284
+< async_init(crypto_xcbc_module_init);
+---
+> module_init(crypto_xcbc_module_init);
+diff -r --exclude build linux-4.0/crypto/xts.c linux-4.0.orig/crypto/xts.c
+360c360
+< async_init(crypto_module_init);
+---
+> module_init(crypto_module_init);
+diff -r --exclude build linux-4.0/crypto/zlib.c linux-4.0.orig/crypto/zlib.c
+375c375
+< async_init(zlib_mod_init);
+---
+> module_init(zlib_mod_init);
+Only in linux-4.0: dmesg.out.txt
+diff -r --exclude build linux-4.0/drivers/acpi/ac.c linux-4.0.orig/drivers/acpi/ac.c
+455c455
+< async_init(acpi_ac_init);
+---
+> module_init(acpi_ac_init);
+diff -r --exclude build linux-4.0/drivers/acpi/acpi_ipmi.c linux-4.0.orig/drivers/acpi/acpi_ipmi.c
+660c660
+< async_init(acpi_ipmi_init);
+---
+> module_init(acpi_ipmi_init);
+diff -r --exclude build linux-4.0/drivers/acpi/acpi_pad.c linux-4.0.orig/drivers/acpi/acpi_pad.c
+517c517
+< async_init(acpi_pad_init);
+---
+> module_init(acpi_pad_init);
+diff -r --exclude build linux-4.0/drivers/acpi/battery.c linux-4.0.orig/drivers/acpi/battery.c
+1322c1322
+< async_init(acpi_battery_init);
+---
+> module_init(acpi_battery_init);
+diff -r --exclude build linux-4.0/drivers/acpi/processor_driver.c linux-4.0.orig/drivers/acpi/processor_driver.c
+304c304
+< async_init(acpi_processor_driver_init);
+---
+> module_init(acpi_processor_driver_init);
+diff -r --exclude build linux-4.0/drivers/acpi/sbs.c linux-4.0.orig/drivers/acpi/sbs.c
+758c758
+< async_init(acpi_sbs_init);
+---
+> module_init(acpi_sbs_init);
+diff -r --exclude build linux-4.0/drivers/acpi/thermal.c linux-4.0.orig/drivers/acpi/thermal.c
+1284c1284
+< async_init(acpi_thermal_init);
+---
+> module_init(acpi_thermal_init);
+diff -r --exclude build linux-4.0/drivers/acpi/video.c linux-4.0.orig/drivers/acpi/video.c
+2206c2206
+< async_init(acpi_video_init);
+---
+> module_init(acpi_video_init);
+Only in linux-4.0/drivers: async.c
+diff -r --exclude build linux-4.0/drivers/ata/ata_piix.c linux-4.0.orig/drivers/ata/ata_piix.c
+1804c1804
+< async_init(piix_init);
+---
+> module_init(piix_init);
+diff -r --exclude build linux-4.0/drivers/gpu/drm/Kconfig linux-4.0.orig/drivers/gpu/drm/Kconfig
+80d79
+< 
+84,85d82
+< 
+< source "drivers/gpu/drm/nvidia-ion/Kconfig"
+diff -r --exclude build linux-4.0/drivers/gpu/drm/Makefile linux-4.0.orig/drivers/gpu/drm/Makefile
+37d36
+< obj-$(CONFIG_NVIDIA_ION)	+= nvidia-ion/
+Only in linux-4.0/drivers/gpu/drm: nvidia-ion
+diff -r --exclude build linux-4.0/drivers/input/keyboard/atkbd.c linux-4.0.orig/drivers/input/keyboard/atkbd.c
+1814c1814
+< async_init(atkbd_init);
+---
+> module_init(atkbd_init);
+diff -r --exclude build linux-4.0/drivers/input/misc/uinput.c linux-4.0.orig/drivers/input/misc/uinput.c
+942c942
+< async_init(uinput_init);
+---
+> module_init(uinput_init);
+diff -r --exclude build linux-4.0/drivers/input/mouse/psmouse-base.c linux-4.0.orig/drivers/input/mouse/psmouse-base.c
+1897c1897
+< async_init(psmouse_init);
+---
+> module_init(psmouse_init);
+diff -r --exclude build linux-4.0/drivers/input/mousedev.c linux-4.0.orig/drivers/input/mousedev.c
+1127c1127
+< async_init(mousedev_init);
+---
+> module_init(mousedev_init);
+diff -r --exclude build linux-4.0/drivers/input/serio/i8042.c linux-4.0.orig/drivers/input/serio/i8042.c
+1527c1527
+< async_init(i8042_init);
+---
+> module_init(i8042_init);
+diff -r --exclude build linux-4.0/drivers/input/serio/serport.c linux-4.0.orig/drivers/input/serio/serport.c
+300c300
+< async_init(serport_init);
+---
+> module_init(serport_init);
+diff -r --exclude build linux-4.0/drivers/Kconfig linux-4.0.orig/drivers/Kconfig
+3,12d2
+< config ASYNCHRO_MODULE_INIT
+< 	bool "Initialize module in Asynchronize way using single module dependencies"
+< 	---help---
+< 	Asynchrone drivers initialization routine 
+< 	
+< if ASYNCHRO_MODULE_INIT
+< 	config ASYNCHRO_MODULE_INIT_DEBUG
+< 	bool "Debug mode"
+< endif
+< 	
+diff -r --exclude build linux-4.0/drivers/Makefile linux-4.0.orig/drivers/Makefile
+168,169d167
+< 
+< obj-y += async.o
+diff -r --exclude build linux-4.0/drivers/net/wireless/b43/main.c linux-4.0.orig/drivers/net/wireless/b43/main.c
+5900c5900
+< async_init(b43_init)
+---
+> module_init(b43_init)
+diff -r --exclude build linux-4.0/drivers/net/wireless/b43legacy/main.c linux-4.0.orig/drivers/net/wireless/b43legacy/main.c
+4064c4064
+< async_init(b43legacy_init)
+---
+> module_init(b43legacy_init)
+diff -r --exclude build linux-4.0/drivers/net/wireless/ipw2x00/ipw2100.c linux-4.0.orig/drivers/net/wireless/ipw2x00/ipw2100.c
+6614c6614
+< async_init(ipw2100_init);
+---
+> module_init(ipw2100_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/pciehp_core.c linux-4.0.orig/drivers/pci/hotplug/pciehp_core.c
+386c386
+< async_init(pcied_init,pci_hotplug_init);
+---
+> module_init(pcied_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/pci_hotplug_core.c linux-4.0.orig/drivers/pci/hotplug/pci_hotplug_core.c
+548c548
+< async_init(pci_hotplug_init,pcie_portdrv_init);
+---
+> module_init(pci_hotplug_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/shpchp_core.c linux-4.0.orig/drivers/pci/hotplug/shpchp_core.c
+388c388
+< async_init(shpcd_init,pcied_init);
+---
+> module_init(shpcd_init);
+diff -r --exclude build linux-4.0/drivers/pci/pcie/portdrv_pci.c linux-4.0.orig/drivers/pci/pcie/portdrv_pci.c
+364c364
+< async_init(pcie_portdrv_init);
+---
+> module_init(pcie_portdrv_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-hcd.c linux-4.0.orig/drivers/usb/host/ehci-hcd.c
+1379c1379
+< async_init(ehci_hcd_init);
+---
+> module_init(ehci_hcd_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-pci.c linux-4.0.orig/drivers/usb/host/ehci-pci.c
+424c424
+< async_init(ehci_pci_init,ehci_hcd_init);
+---
+> module_init(ehci_pci_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-platform.c linux-4.0.orig/drivers/usb/host/ehci-platform.c
+431c431
+< async_init(ehci_platform_init,ehci_hcd_init);
+---
+> module_init(ehci_platform_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-hcd.c linux-4.0.orig/drivers/usb/host/ohci-hcd.c
+1355c1355
+< async_init(ohci_hcd_mod_init,ehci_platform_init);
+---
+> module_init(ohci_hcd_mod_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-pci.c linux-4.0.orig/drivers/usb/host/ohci-pci.c
+305c305
+< async_init(ohci_pci_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_pci_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-platform.c linux-4.0.orig/drivers/usb/host/ohci-platform.c
+405c405
+< async_init(ohci_platform_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_platform_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/uhci-hcd.c linux-4.0.orig/drivers/usb/host/uhci-hcd.c
+940c940
+< async_init(uhci_hcd_init);
+---
+> module_init(uhci_hcd_init);
+diff -r --exclude build linux-4.0/fs/cifs/cifsfs.c linux-4.0.orig/fs/cifs/cifsfs.c
+1317c1317
+< async_init(init_cifs)
+---
+> module_init(init_cifs)
+diff -r --exclude build linux-4.0/fs/fat/inode.c linux-4.0.orig/fs/fat/inode.c
+1858c1858
+< async_init(init_fat_fs)
+---
+> module_init(init_fat_fs)
+diff -r --exclude build linux-4.0/fs/fat/namei_msdos.c linux-4.0.orig/fs/fat/namei_msdos.c
+685c685
+< async_init(init_msdos_fs,init_fat_fs)
+---
+> module_init(init_msdos_fs)
+diff -r --exclude build linux-4.0/fs/isofs/inode.c linux-4.0.orig/fs/isofs/inode.c
+1555c1555
+< async_init(init_iso9660_fs)
+---
+> module_init(init_iso9660_fs)
+diff -r --exclude build linux-4.0/fs/ntfs/super.c linux-4.0.orig/fs/ntfs/super.c
+3219c3219
+< async_init(init_ntfs_fs)
+---
+> module_init(init_ntfs_fs)
+diff -r --exclude build linux-4.0/include/acpi/acpi_bus.h linux-4.0.orig/include/acpi/acpi_bus.h
+504,505c504,505
+< 	async_module_driver(__acpi_driver, acpi_bus_register_driver, \
+< 		      acpi_bus_unregister_driver,acpi_ac_init)
+---
+> 	module_driver(__acpi_driver, acpi_bus_register_driver, \
+> 		      acpi_bus_unregister_driver)
+diff -r --exclude build linux-4.0/include/asm-generic/vmlinux.lds.h linux-4.0.orig/include/asm-generic/vmlinux.lds.h
+635,639d634
+< #define ASYNC_INITCALLS           \
+<    VMLINUX_SYMBOL(__async_initcall_start) = .;    \
+<    *(.async_initcall.init)        \
+<    VMLINUX_SYMBOL(__async_initcall_end) = .;
+< 
+810d804
+< 		ASYNC_INITCALLS   \
+Only in linux-4.0/include/linux: async_minit.h
+diff -r --exclude build linux-4.0/include/linux/device.h linux-4.0.orig/include/linux/device.h
+1269,1281d1268
+< // Usefull for ACPI and USB maybe PCI
+< #define async_module_driver(__driver, __register, __unregister,__depends, ...) \
+< static int __init __driver##_init(void) \
+< { \
+<   return __register(&(__driver) , ##__VA_ARGS__); \
+< } \
+< async_init(__driver##_init,__depends); \
+< static void __exit __driver##_exit(void) \
+< { \
+<   __unregister(&(__driver) , ##__VA_ARGS__); \
+< } \
+< module_exit(__driver##_exit);
+< 
+diff -r --exclude build linux-4.0/include/linux/module.h linux-4.0.orig/include/linux/module.h
+9d8
+< #include "linux/async_minit.h"
+diff -r --exclude build linux-4.0/init/main.c linux-4.0.orig/init/main.c
+931c931
+< 	//free_initmem();
+---
+> 	free_initmem();
+Only in linux-4.0: .project
+Only in linux-4.0: .cproject
+diff -r --exclude build linux-4.0/crypto/aes_generic.c linux-4.0.orig/crypto/aes_generic.c
+1472c1472
+< async_init(aes_init);
+---
+> module_init(aes_init);
+diff -r --exclude build linux-4.0/crypto/ansi_cprng.c linux-4.0.orig/crypto/ansi_cprng.c
+477c477
+< async_init(prng_mod_init);
+---
+> module_init(prng_mod_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/asymmetric_type.c linux-4.0.orig/crypto/asymmetric_keys/asymmetric_type.c
+405c405
+< async_init(asymmetric_key_init);
+---
+> module_init(asymmetric_key_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/pkcs7_key_type.c linux-4.0.orig/crypto/asymmetric_keys/pkcs7_key_type.c
+97c97
+< async_init(pkcs7_key_init);
+---
+> module_init(pkcs7_key_init);
+diff -r --exclude build linux-4.0/crypto/asymmetric_keys/x509_public_key.c linux-4.0.orig/crypto/asymmetric_keys/x509_public_key.c
+360c360
+< async_init(x509_key_init);
+---
+> module_init(x509_key_init);
+diff -r --exclude build linux-4.0/crypto/blowfish_generic.c linux-4.0.orig/crypto/blowfish_generic.c
+136c136
+< async_init(blowfish_mod_init);
+---
+> module_init(blowfish_mod_init);
+diff -r --exclude build linux-4.0/crypto/cbc.c linux-4.0.orig/crypto/cbc.c
+287c287
+< async_init(crypto_cbc_module_init);
+---
+> module_init(crypto_cbc_module_init);
+diff -r --exclude build linux-4.0/crypto/crc32.c linux-4.0.orig/crypto/crc32.c
+153c153
+< async_init(crc32_mod_init);
+---
+> module_init(crc32_mod_init);
+diff -r --exclude build linux-4.0/crypto/crc32c_generic.c linux-4.0.orig/crypto/crc32c_generic.c
+167c167
+< async_init(crc32c_mod_init);
+---
+> module_init(crc32c_mod_init);
+diff -r --exclude build linux-4.0/crypto/crct10dif_generic.c linux-4.0.orig/crypto/crct10dif_generic.c
+121c121
+< async_init(crct10dif_mod_init);
+---
+> module_init(crct10dif_mod_init);
+diff -r --exclude build linux-4.0/crypto/crypto_null.c linux-4.0.orig/crypto/crypto_null.c
+178c178
+< async_init(crypto_null_mod_init);
+---
+> module_init(crypto_null_mod_init);
+diff -r --exclude build linux-4.0/crypto/crypto_user.c linux-4.0.orig/crypto/crypto_user.c
+532c532
+< async_init(crypto_user_init);
+---
+> module_init(crypto_user_init);
+diff -r --exclude build linux-4.0/crypto/ecb.c linux-4.0.orig/crypto/ecb.c
+183c183
+< async_init(crypto_ecb_module_init);
+---
+> module_init(crypto_ecb_module_init);
+diff -r --exclude build linux-4.0/crypto/lrw.c linux-4.0.orig/crypto/lrw.c
+398c398
+< async_init(crypto_module_init);
+---
+> module_init(crypto_module_init);
+diff -r --exclude build linux-4.0/crypto/lz4.c linux-4.0.orig/crypto/lz4.c
+102c102
+< async_init(lz4_mod_init);
+---
+> module_init(lz4_mod_init);
+diff -r --exclude build linux-4.0/crypto/lz4hc.c linux-4.0.orig/crypto/lz4hc.c
+102c102
+< async_init(lz4hc_mod_init);
+---
+> module_init(lz4hc_mod_init);
+diff -r --exclude build linux-4.0/crypto/lzo.c linux-4.0.orig/crypto/lzo.c
+105c105
+< async_init(lzo_mod_init);
+---
+> module_init(lzo_mod_init);
+diff -r --exclude build linux-4.0/crypto/md4.c linux-4.0.orig/crypto/md4.c
+253c253
+< async_init(md4_mod_init);
+---
+> module_init(md4_mod_init);
+diff -r --exclude build linux-4.0/crypto/md5.c linux-4.0.orig/crypto/md5.c
+166c166
+< async_init(md5_mod_init);
+---
+> module_init(md5_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd128.c linux-4.0.orig/crypto/rmd128.c
+324c324
+< async_init(rmd128_mod_init);
+---
+> module_init(rmd128_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd160.c linux-4.0.orig/crypto/rmd160.c
+368c368
+< async_init(rmd160_mod_init);
+---
+> module_init(rmd160_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd256.c linux-4.0.orig/crypto/rmd256.c
+343c343
+< async_init(rmd256_mod_init);
+---
+> module_init(rmd256_mod_init);
+diff -r --exclude build linux-4.0/crypto/rmd320.c linux-4.0.orig/crypto/rmd320.c
+392c392
+< async_init(rmd320_mod_init);
+---
+> module_init(rmd320_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha1_generic.c linux-4.0.orig/crypto/sha1_generic.c
+150c150
+< async_init(sha1_generic_mod_init);
+---
+> module_init(sha1_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha256_generic.c linux-4.0.orig/crypto/sha256_generic.c
+381c381
+< async_init(sha256_generic_mod_init);
+---
+> module_init(sha256_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/sha512_generic.c linux-4.0.orig/crypto/sha512_generic.c
+285c285
+< async_init(sha512_generic_mod_init);
+---
+> module_init(sha512_generic_mod_init);
+diff -r --exclude build linux-4.0/crypto/tcrypt.c linux-4.0.orig/crypto/tcrypt.c
+2191c2191
+< async_init(tcrypt_mod_init);
+---
+> module_init(tcrypt_mod_init);
+diff -r --exclude build linux-4.0/crypto/tea.c linux-4.0.orig/crypto/tea.c
+277c277
+< async_init(tea_mod_init);
+---
+> module_init(tea_mod_init);
+diff -r --exclude build linux-4.0/crypto/tgr192.c linux-4.0.orig/crypto/tgr192.c
+683c683
+< async_init(tgr192_mod_init);
+---
+> module_init(tgr192_mod_init);
+diff -r --exclude build linux-4.0/crypto/twofish_generic.c linux-4.0.orig/crypto/twofish_generic.c
+209c209
+< async_init(twofish_mod_init);
+---
+> module_init(twofish_mod_init);
+diff -r --exclude build linux-4.0/crypto/vmac.c linux-4.0.orig/crypto/vmac.c
+711c711
+< async_init(vmac_module_init);
+---
+> module_init(vmac_module_init);
+diff -r --exclude build linux-4.0/crypto/wp512.c linux-4.0.orig/crypto/wp512.c
+1174c1174
+< async_init(wp512_mod_init);
+---
+> module_init(wp512_mod_init);
+diff -r --exclude build linux-4.0/crypto/xcbc.c linux-4.0.orig/crypto/xcbc.c
+284c284
+< async_init(crypto_xcbc_module_init);
+---
+> module_init(crypto_xcbc_module_init);
+diff -r --exclude build linux-4.0/crypto/xts.c linux-4.0.orig/crypto/xts.c
+360c360
+< async_init(crypto_module_init);
+---
+> module_init(crypto_module_init);
+diff -r --exclude build linux-4.0/crypto/zlib.c linux-4.0.orig/crypto/zlib.c
+375c375
+< async_init(zlib_mod_init);
+---
+> module_init(zlib_mod_init);
+Only in linux-4.0: dmesg.out.txt
+diff -r --exclude build linux-4.0/drivers/acpi/ac.c linux-4.0.orig/drivers/acpi/ac.c
+455c455
+< async_init(acpi_ac_init);
+---
+> module_init(acpi_ac_init);
+diff -r --exclude build linux-4.0/drivers/acpi/acpi_ipmi.c linux-4.0.orig/drivers/acpi/acpi_ipmi.c
+660c660
+< async_init(acpi_ipmi_init);
+---
+> module_init(acpi_ipmi_init);
+diff -r --exclude build linux-4.0/drivers/acpi/acpi_pad.c linux-4.0.orig/drivers/acpi/acpi_pad.c
+517c517
+< async_init(acpi_pad_init);
+---
+> module_init(acpi_pad_init);
+diff -r --exclude build linux-4.0/drivers/acpi/battery.c linux-4.0.orig/drivers/acpi/battery.c
+1322c1322
+< async_init(acpi_battery_init);
+---
+> module_init(acpi_battery_init);
+diff -r --exclude build linux-4.0/drivers/acpi/processor_driver.c linux-4.0.orig/drivers/acpi/processor_driver.c
+304c304
+< async_init(acpi_processor_driver_init);
+---
+> module_init(acpi_processor_driver_init);
+diff -r --exclude build linux-4.0/drivers/acpi/sbs.c linux-4.0.orig/drivers/acpi/sbs.c
+758c758
+< async_init(acpi_sbs_init);
+---
+> module_init(acpi_sbs_init);
+diff -r --exclude build linux-4.0/drivers/acpi/thermal.c linux-4.0.orig/drivers/acpi/thermal.c
+1284c1284
+< async_init(acpi_thermal_init);
+---
+> module_init(acpi_thermal_init);
+diff -r --exclude build linux-4.0/drivers/acpi/video.c linux-4.0.orig/drivers/acpi/video.c
+2206c2206
+< async_init(acpi_video_init);
+---
+> module_init(acpi_video_init);
+Only in linux-4.0/drivers: async.c
+diff -r --exclude build linux-4.0/drivers/gpu/drm/Kconfig linux-4.0.orig/drivers/gpu/drm/Kconfig
+80d79
+< 
+84,85d82
+< 
+< source "drivers/gpu/drm/nvidia-ion/Kconfig"
+diff -r --exclude build linux-4.0/drivers/gpu/drm/Makefile linux-4.0.orig/drivers/gpu/drm/Makefile
+37d36
+< obj-$(CONFIG_NVIDIA_ION)	+= nvidia-ion/
+Only in linux-4.0/drivers/gpu/drm: nvidia-ion
+diff -r --exclude build linux-4.0/drivers/input/keyboard/atkbd.c linux-4.0.orig/drivers/input/keyboard/atkbd.c
+1814c1814
+< async_init(atkbd_init);
+---
+> module_init(atkbd_init);
+diff -r --exclude build linux-4.0/drivers/input/misc/uinput.c linux-4.0.orig/drivers/input/misc/uinput.c
+942c942
+< async_init(uinput_init);
+---
+> module_init(uinput_init);
+diff -r --exclude build linux-4.0/drivers/input/mouse/psmouse-base.c linux-4.0.orig/drivers/input/mouse/psmouse-base.c
+1897c1897
+< async_init(psmouse_init);
+---
+> module_init(psmouse_init);
+diff -r --exclude build linux-4.0/drivers/input/mousedev.c linux-4.0.orig/drivers/input/mousedev.c
+1127c1127
+< async_init(mousedev_init);
+---
+> module_init(mousedev_init);
+diff -r --exclude build linux-4.0/drivers/input/serio/i8042.c linux-4.0.orig/drivers/input/serio/i8042.c
+1527c1527
+< async_init(i8042_init);
+---
+> module_init(i8042_init);
+diff -r --exclude build linux-4.0/drivers/input/serio/serport.c linux-4.0.orig/drivers/input/serio/serport.c
+300c300
+< async_init(serport_init);
+---
+> module_init(serport_init);
+diff -r --exclude build linux-4.0/drivers/Kconfig linux-4.0.orig/drivers/Kconfig
+3,12d2
+< config ASYNCHRO_MODULE_INIT
+< 	bool "Initialize module in Asynchronize way using single module dependencies"
+< 	---help---
+< 	Asynchrone drivers initialization routine 
+< 	
+< if ASYNCHRO_MODULE_INIT
+< 	config ASYNCHRO_MODULE_INIT_DEBUG
+< 	bool "Debug mode"
+< endif
+< 	
+diff -r --exclude build linux-4.0/drivers/Makefile linux-4.0.orig/drivers/Makefile
+36,38d35
+< #ready for asyncronized initialization
+< obj-y += async.o
+< 
+171,172d167
+< 
+< 
+diff -r --exclude build linux-4.0/drivers/net/wireless/b43/main.c linux-4.0.orig/drivers/net/wireless/b43/main.c
+5900c5900
+< async_init(b43_init)
+---
+> module_init(b43_init)
+diff -r --exclude build linux-4.0/drivers/net/wireless/b43legacy/main.c linux-4.0.orig/drivers/net/wireless/b43legacy/main.c
+4064c4064
+< async_init(b43legacy_init)
+---
+> module_init(b43legacy_init)
+diff -r --exclude build linux-4.0/drivers/net/wireless/ipw2x00/ipw2100.c linux-4.0.orig/drivers/net/wireless/ipw2x00/ipw2100.c
+6614c6614
+< async_init(ipw2100_init);
+---
+> module_init(ipw2100_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/pciehp_core.c linux-4.0.orig/drivers/pci/hotplug/pciehp_core.c
+386c386
+< async_init(pcied_init,pci_hotplug_init);
+---
+> module_init(pcied_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/pci_hotplug_core.c linux-4.0.orig/drivers/pci/hotplug/pci_hotplug_core.c
+548c548
+< async_init(pci_hotplug_init,pcie_portdrv_init);
+---
+> module_init(pci_hotplug_init);
+diff -r --exclude build linux-4.0/drivers/pci/hotplug/shpchp_core.c linux-4.0.orig/drivers/pci/hotplug/shpchp_core.c
+388c388
+< async_init(shpcd_init,pcied_init);
+---
+> module_init(shpcd_init);
+diff -r --exclude build linux-4.0/drivers/pci/pcie/portdrv_pci.c linux-4.0.orig/drivers/pci/pcie/portdrv_pci.c
+364c364
+< async_init(pcie_portdrv_init);
+---
+> module_init(pcie_portdrv_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-hcd.c linux-4.0.orig/drivers/usb/host/ehci-hcd.c
+1379c1379
+< async_init(ehci_hcd_init);
+---
+> module_init(ehci_hcd_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-pci.c linux-4.0.orig/drivers/usb/host/ehci-pci.c
+424c424
+< async_init(ehci_pci_init,ehci_hcd_init);
+---
+> module_init(ehci_pci_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ehci-platform.c linux-4.0.orig/drivers/usb/host/ehci-platform.c
+431c431
+< async_init(ehci_platform_init,ehci_hcd_init);
+---
+> module_init(ehci_platform_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-hcd.c linux-4.0.orig/drivers/usb/host/ohci-hcd.c
+1355c1355
+< async_init(ohci_hcd_mod_init,ehci_platform_init);
+---
+> module_init(ohci_hcd_mod_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-pci.c linux-4.0.orig/drivers/usb/host/ohci-pci.c
+305c305
+< async_init(ohci_pci_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_pci_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/ohci-platform.c linux-4.0.orig/drivers/usb/host/ohci-platform.c
+405c405
+< async_init(ohci_platform_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_platform_init);
+diff -r --exclude build linux-4.0/drivers/usb/host/uhci-hcd.c linux-4.0.orig/drivers/usb/host/uhci-hcd.c
+940c940
+< async_init(uhci_hcd_init);
+---
+> module_init(uhci_hcd_init);
+diff -r --exclude build linux-4.0/fs/cifs/cifsfs.c linux-4.0.orig/fs/cifs/cifsfs.c
+1317c1317
+< async_init(init_cifs)
+---
+> module_init(init_cifs)
+diff -r --exclude build linux-4.0/fs/fat/inode.c linux-4.0.orig/fs/fat/inode.c
+1858c1858
+< async_init(init_fat_fs)
+---
+> module_init(init_fat_fs)
+diff -r --exclude build linux-4.0/fs/fat/namei_msdos.c linux-4.0.orig/fs/fat/namei_msdos.c
+685c685
+< async_init(init_msdos_fs,init_fat_fs)
+---
+> module_init(init_msdos_fs)
+diff -r --exclude build linux-4.0/fs/isofs/inode.c linux-4.0.orig/fs/isofs/inode.c
+1555c1555
+< async_init(init_iso9660_fs)
+---
+> module_init(init_iso9660_fs)
+diff -r --exclude build linux-4.0/fs/ntfs/super.c linux-4.0.orig/fs/ntfs/super.c
+3219c3219
+< async_init(init_ntfs_fs)
+---
+> module_init(init_ntfs_fs)
+diff -r --exclude build linux-4.0/include/acpi/acpi_bus.h linux-4.0.orig/include/acpi/acpi_bus.h
+504,505c504,505
+< 	async_module_driver(__acpi_driver, acpi_bus_register_driver, \
+< 		      acpi_bus_unregister_driver,acpi_ac_init)
+---
+> 	module_driver(__acpi_driver, acpi_bus_register_driver, \
+> 		      acpi_bus_unregister_driver)
+diff -r --exclude build linux-4.0/include/asm-generic/vmlinux.lds.h linux-4.0.orig/include/asm-generic/vmlinux.lds.h
+635,639d634
+< #define ASYNC_INITCALLS           \
+<    VMLINUX_SYMBOL(__async_initcall_start) = .;    \
+<    *(.async_initcall.init)        \
+<    VMLINUX_SYMBOL(__async_initcall_end) = .;
+< 
+810d804
+< 		ASYNC_INITCALLS   \
+Only in linux-4.0/include/linux: async_minit.h
+diff -r --exclude build linux-4.0/include/linux/device.h linux-4.0.orig/include/linux/device.h
+1269,1281d1268
+< // Usefull for ACPI and USB maybe PCI
+< #define async_module_driver(__driver, __register, __unregister,__depends, ...) \
+< static int __init __driver##_init(void) \
+< { \
+<   return __register(&(__driver) , ##__VA_ARGS__); \
+< } \
+< async_init(__driver##_init,__depends); \
+< static void __exit __driver##_exit(void) \
+< { \
+<   __unregister(&(__driver) , ##__VA_ARGS__); \
+< } \
+< module_exit(__driver##_exit);
+< 
+diff -r --exclude build linux-4.0/include/linux/module.h linux-4.0.orig/include/linux/module.h
+9d8
+< #include "linux/async_minit.h"
+diff -r --exclude build linux-4.0/include/linux/pci.h linux-4.0.orig/include/linux/pci.h
+1159,1162d1158
+< #define async_module_pci_driver(__pci_driver) \
+<   async_module_driver(__pci_driver, pci_register_driver, \
+<            pci_unregister_driver,)
+< 
+diff -r --exclude build linux-4.0/include/linux/usb.h linux-4.0.orig/include/linux/usb.h
+1161,1162c1161,1162
+< 	async_module_driver(__usb_driver, usb_register, \
+< 		       usb_deregister,)
+---
+> 	module_driver(__usb_driver, usb_register, \
+> 		       usb_deregister)
+diff -r --exclude build linux-4.0/init/main.c linux-4.0.orig/init/main.c
+931c931
+< 	//free_initmem();
+---
+> 	free_initmem();
+Only in linux-4.0: .project
