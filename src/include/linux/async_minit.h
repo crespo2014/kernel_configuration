@@ -19,6 +19,10 @@ struct init_fn
   initcall_t fnc;
 };
 
+/*
+ * TODO Disable when module build as module
+ * add support for bus devices like acpi, pci, etc
+*/
 //
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT
 

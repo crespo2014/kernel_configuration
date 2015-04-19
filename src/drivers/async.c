@@ -100,11 +100,12 @@ struct depends_list
 	unsigned end_idx;		// last element on the list
 	unsigned waiting;		// how many task are ready to be executed
   struct init_fn* stask;  // static task structure
-	struct task_data task[MAX_TASKS];
+	struct task_data task[MAX_TASKS];   //TODO use dinamic allocation
 };
 
 struct depends_list depends;
 static DEFINE_SPINLOCK(list_lock);
+static DECLARE_WAIT_QUEUE_HEAD(list_wait);
 
 /**
  * Mark task as done and get
@@ -114,9 +115,13 @@ static DEFINE_SPINLOCK(list_lock);
 struct init_fn* TaskDone(struct init_fn* prev_task)
 {
 	unsigned i, j;
+	unsigned waiting;    // how many task has been wakeup
 	struct task_data task;
+	if (depends.running_last == 0)
+	  return 0;
 	//lock
 	spin_lock(&list_lock);
+	waiting = depends.waiting;    // detect how many task has been wake up
 	if (prev_task != 0)
 	{
 		for (i = depends.waiting_last; i < depends.running_last; ++i)
@@ -150,7 +155,7 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 		}
 	}
 	// pick a new task
-	if (depends.waiting)
+	if (depends.waiting != 0)
 	{
 		// find the lower id task available
 		prev_task = depends.stask + depends.end_idx;
@@ -173,12 +178,15 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 		// check end of all task
 		if (depends.running_last == 0)
 		{
-			// clean up all
+			// clean up all memory
 		}
 		prev_task = 0;
 	}
 	// spin unlock
 	spin_unlock(&list_lock);
+	// allow other thread pick a task
+	if ((depends.waiting > waiting + 1 ) || (depends.running_last == 0))
+	  wake_up_interruptible(&list_wait);
 	if ((prev_task == 0) && (depends.running_last == 0))
 	{
 	  free_initmem();
@@ -223,6 +231,7 @@ void Prepare(struct init_fn* alltask, unsigned count)
 
 int WorkingThread(void *data)
 {
+  int ret;
   //struct task_struct *kthread = *(struct task_struct**)data;
 	struct init_fn* task = 0;
 	do
@@ -234,29 +243,38 @@ int WorkingThread(void *data)
 		  do_one_initcall(task->fnc);
 		} else
 		{
+		  printk_debug("Waiting ...\n");
+		  ret = wait_event_interruptible(list_wait, (depends.waiting !=0 || depends.waiting_last == 0));
+		  if (ret != 0)
+		  {
+		    printk("Async init wake up returned %d\n",ret);
+		    break;
+		  }
 			//wait for (depends.unlocked !=0 or depends.waiting_last == 0)
 		}
 	} while (depends.waiting_last != 0);	// something to do
-//	if (kthread != NULL)
-//	  exit_kthread(*kthread);
 	return 0;
 }
 
 static int do_async_module_init(void)
 {
+  unsigned max_threads = 2;
   static struct task_struct *thr;
   Prepare(__async_initcall_start, __async_initcall_end - __async_initcall_start);
-  //start working threads
-  thr = kthread_create(WorkingThread, &thr, "async thread");
-  if (thr != ERR_PTR(-ENOMEM))
+  for (; max_threads != 0; --max_threads)
   {
-    wake_up_process(thr);
-  } else
-  {
-    printk("Async module initialization thread failed .. fall back to normal mode");
-    WorkingThread(NULL);
+    //start working threads
+    thr = kthread_create(WorkingThread, &thr, "async thread");
+    if (thr != ERR_PTR(-ENOMEM))
+    {
+      kthread_bind(thr, max_threads % num_online_cpus());
+      wake_up_process(thr);
+    } else
+    {
+      printk("Async module initialization thread failed .. fall back to normal mode");
+      WorkingThread(NULL);
+    }
   }
-
   return 0;
 }
 
