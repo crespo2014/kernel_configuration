@@ -263,14 +263,14 @@ int WorkingThread(void *data)
 
 static int do_async_module_init(void)
 {
-  unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
+  unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS -1;
   unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
   Prepare(__async_initcall_start, __async_initcall_end - __async_initcall_start);
   for (; max_threads != 0; --max_threads)
   {
     //start working threads
-    thr = kthread_create(WorkingThread,(void*)( max_threads - 1), "async thread");
+    thr = kthread_create(WorkingThread,(void*)( max_threads), "async thread");
     if (thr != ERR_PTR(-ENOMEM))
     {
       kthread_bind(thr, max_threads % max_cpus);
@@ -278,9 +278,10 @@ static int do_async_module_init(void)
     } else
     {
       printk("Async module initialization thread failed .. fall back to normal mode");
-      WorkingThread(NULL);
+      //WorkingThread(NULL);
     }
   }
+  WorkingThread(0);
   return 0;
 }
 
