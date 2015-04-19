@@ -263,7 +263,7 @@ int WorkingThread(void *data)
 
 static int do_async_module_init(void)
 {
-  unsigned max_threads = 4;
+  unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
   unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
   Prepare(__async_initcall_start, __async_initcall_end - __async_initcall_start);

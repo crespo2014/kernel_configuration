@@ -8,4 +8,9 @@ config ASYNCHRO_MODULE_INIT
 if ASYNCHRO_MODULE_INIT
 	config ASYNCHRO_MODULE_INIT_DEBUG
 	bool "Debug mode"
+	
+config ASYNCHRO_MODULE_INIT_THREADS	
+	int "Maximum number of threads"
+	range 1 4
+	default "2" 
 endif
