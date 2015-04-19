@@ -205,7 +205,6 @@ void Prepare(struct init_fn* alltask, unsigned count)
 	depends.stask = alltask;
 	for (i = 0; i < count; ++i)
 	{
-    printk_debug("Added '%s' --> '%s'\n", alltask[i].name,alltask[i].depends_on);
 		depends.task[i].ptr = alltask + i;
 		depends.task[i].waiting_for = 0;
 	}
@@ -224,8 +223,12 @@ void Prepare(struct init_fn* alltask, unsigned count)
 			}
 			// dependency not found, move task to the end
 			depends.task[i].waiting_for = alltask + j;    // j will point to the end if task not found
+			printk_debug("async registered '%s' --> '%s'\n", alltask[i].name,(j != count) ? alltask[i].depends_on : "not found");
 		} else
+		{
 			depends.waiting++;			// avoid bug,
+			printk_debug("async registered '%s'\n", alltask[i].name);
+		}
 	}
 }
 
@@ -234,40 +237,43 @@ int WorkingThread(void *data)
   int ret;
   //struct task_struct *kthread = *(struct task_struct**)data;
 	struct init_fn* task = 0;
+	printk_debug("async %d starts\n",(unsigned)data);
 	do
 	{
 		task = TaskDone(task);
 		if (task != 0)
 		{
-		  printk_debug("Start %s\n", task->name);
+		  printk_debug("async start %d %s\n",(unsigned)data, task->name);
 		  do_one_initcall(task->fnc);
 		} else
 		{
-		  printk_debug("Waiting ...\n");
+		  printk_debug("async %d waiting ...\n",(unsigned)data);
 		  ret = wait_event_interruptible(list_wait, (depends.waiting !=0 || depends.waiting_last == 0));
 		  if (ret != 0)
 		  {
-		    printk("Async init wake up returned %d\n",ret);
+		    printk("async init wake up returned %d\n",ret);
 		    break;
 		  }
 			//wait for (depends.unlocked !=0 or depends.waiting_last == 0)
 		}
 	} while (depends.waiting_last != 0);	// something to do
+	printk_debug("async %d ends\n",(unsigned)data);
 	return 0;
 }
 
 static int do_async_module_init(void)
 {
-  unsigned max_threads = 2;
+  unsigned max_threads = 4;
+  unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
   Prepare(__async_initcall_start, __async_initcall_end - __async_initcall_start);
   for (; max_threads != 0; --max_threads)
   {
     //start working threads
-    thr = kthread_create(WorkingThread, &thr, "async thread");
+    thr = kthread_create(WorkingThread,(void*)( max_threads - 1), "async thread");
     if (thr != ERR_PTR(-ENOMEM))
     {
-      kthread_bind(thr, max_threads % num_online_cpus());
+      kthread_bind(thr, max_threads % max_cpus);
       wake_up_process(thr);
     } else
     {
