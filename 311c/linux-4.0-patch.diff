@@ -1,0 +1,129 @@
+Only in ../../linux-4.0: .cproject
+diff -r --exclude build ../../linux-4.0/crypto/aes_generic.c ../../linux-4.0.orig/crypto/aes_generic.c
+1472c1472
+< async_init(aes_init);
+---
+> module_init(aes_init);
+diff -r --exclude build ../../linux-4.0/crypto/ansi_cprng.c ../../linux-4.0.orig/crypto/ansi_cprng.c
+477c477
+< async_init(prng_mod_init);
+---
+> module_init(prng_mod_init);
+diff -r --exclude build ../../linux-4.0/crypto/blowfish_generic.c ../../linux-4.0.orig/crypto/blowfish_generic.c
+136c136
+< async_init(blowfish_mod_init);
+---
+> module_init(blowfish_mod_init);
+diff -r --exclude build ../../linux-4.0/crypto/sha1_generic.c ../../linux-4.0.orig/crypto/sha1_generic.c
+150c150
+< async_init(sha1_generic_mod_init);
+---
+> module_init(sha1_generic_mod_init);
+diff -r --exclude build ../../linux-4.0/crypto/sha256_generic.c ../../linux-4.0.orig/crypto/sha256_generic.c
+381c381
+< async_init(sha256_generic_mod_init);
+---
+> module_init(sha256_generic_mod_init);
+diff -r --exclude build ../../linux-4.0/crypto/sha512_generic.c ../../linux-4.0.orig/crypto/sha512_generic.c
+285c285
+< async_init(sha512_generic_mod_init);
+---
+> module_init(sha512_generic_mod_init);
+Only in ../../linux-4.0: dmesg.out.txt
+Only in ../../linux-4.0: .dmesg.out.txt.swp
+diff -r --exclude build ../../linux-4.0/drivers/acpi/thermal.c ../../linux-4.0.orig/drivers/acpi/thermal.c
+1284c1284
+< async_init(acpi_thermal_init);
+---
+> module_init(acpi_thermal_init);
+diff -r --exclude build ../../linux-4.0/drivers/acpi/video.c ../../linux-4.0.orig/drivers/acpi/video.c
+2206c2206
+< async_init(acpi_video_init);
+---
+> module_init(acpi_video_init);
+Only in ../../linux-4.0/drivers: async.c
+diff -r --exclude build ../../linux-4.0/drivers/gpu/drm/Kconfig ../../linux-4.0.orig/drivers/gpu/drm/Kconfig
+80d79
+< 
+84,85d82
+< 
+< source "drivers/gpu/drm/nvidia-ion/Kconfig"
+diff -r --exclude build ../../linux-4.0/drivers/gpu/drm/Makefile ../../linux-4.0.orig/drivers/gpu/drm/Makefile
+37d36
+< obj-$(CONFIG_NVIDIA_ION)	+= nvidia-ion/
+Only in ../../linux-4.0/drivers/gpu/drm: nvidia-ion
+diff -r --exclude build ../../linux-4.0/drivers/input/serio/i8042.c ../../linux-4.0.orig/drivers/input/serio/i8042.c
+1527c1527
+< async_init(i8042_init);
+---
+> module_init(i8042_init);
+diff -r --exclude build ../../linux-4.0/drivers/Kconfig ../../linux-4.0.orig/drivers/Kconfig
+3,12d2
+< config ASYNCHRO_MODULE_INIT
+< 	bool "Initialize module in Asynchronize way using single module dependencies"
+< 	---help---
+< 	Asynchrone drivers initialization routine 
+< 	
+< if ASYNCHRO_MODULE_INIT
+< 	config ASYNCHRO_MODULE_INIT_DEBUG
+< 	bool "Debug mode"
+< endif
+< 	
+diff -r --exclude build ../../linux-4.0/drivers/Makefile ../../linux-4.0.orig/drivers/Makefile
+168,169d167
+< 
+< obj-y += async.o
+diff -r --exclude build ../../linux-4.0/drivers/net/wireless/b43/main.c ../../linux-4.0.orig/drivers/net/wireless/b43/main.c
+5900c5900
+< async_init(b43_init)
+---
+> module_init(b43_init)
+diff -r --exclude build ../../linux-4.0/drivers/usb/host/ehci-hcd.c ../../linux-4.0.orig/drivers/usb/host/ehci-hcd.c
+1379c1379
+< async_init(ehci_hcd_init);
+---
+> module_init(ehci_hcd_init);
+diff -r --exclude build ../../linux-4.0/drivers/usb/host/ehci-pci.c ../../linux-4.0.orig/drivers/usb/host/ehci-pci.c
+424c424
+< async_init(ehci_pci_init,ehci_hcd_init);
+---
+> module_init(ehci_pci_init);
+diff -r --exclude build ../../linux-4.0/drivers/usb/host/ehci-platform.c ../../linux-4.0.orig/drivers/usb/host/ehci-platform.c
+431c431
+< async_init(ehci_platform_init,ehci_hcd_init);
+---
+> module_init(ehci_platform_init);
+diff -r --exclude build ../../linux-4.0/drivers/usb/host/ohci-hcd.c ../../linux-4.0.orig/drivers/usb/host/ohci-hcd.c
+1355c1355
+< async_init(ohci_hcd_mod_init,ehci_hcd_init);
+---
+> module_init(ohci_hcd_mod_init);
+diff -r --exclude build ../../linux-4.0/drivers/usb/host/ohci-pci.c ../../linux-4.0.orig/drivers/usb/host/ohci-pci.c
+305c305
+< async_init(ohci_pci_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_pci_init);
+diff -r --exclude build ../../linux-4.0/drivers/usb/host/ohci-platform.c ../../linux-4.0.orig/drivers/usb/host/ohci-platform.c
+405c405
+< async_init(ohci_platform_init,ohci_hcd_mod_init);
+---
+> module_init(ohci_platform_init);
+diff -r --exclude build ../../linux-4.0/include/asm-generic/vmlinux.lds.h ../../linux-4.0.orig/include/asm-generic/vmlinux.lds.h
+635,639d634
+< #define ASYNC_INITCALLS           \
+<    VMLINUX_SYMBOL(__async_initcall_start) = .;    \
+<    *(.async_initcall.init)        \
+<    VMLINUX_SYMBOL(__async_initcall_end) = .;
+< 
+810d804
+< 		ASYNC_INITCALLS   \
+Only in ../../linux-4.0/include/linux: async_minit.h
+diff -r --exclude build ../../linux-4.0/include/linux/module.h ../../linux-4.0.orig/include/linux/module.h
+9d8
+< #include "linux/async_minit.h"
+diff -r --exclude build ../../linux-4.0/init/main.c ../../linux-4.0.orig/init/main.c
+931c931
+< 	//free_initmem();
+---
+> 	free_initmem();
+Only in ../../linux-4.0: .project
