@@ -99,11 +99,12 @@ struct depends_list
 	unsigned running_last;	// the last task running
 	unsigned end_idx;		// last element on the list
 	unsigned waiting;		// how many task are ready to be executed
+  struct init_fn* stask;  // static task structure
 	struct task_data task[MAX_TASKS];
-	struct init_fn* stask;	// static task structure
 };
 
 struct depends_list depends;
+static DEFINE_SPINLOCK(list_lock);
 
 /**
  * Mark task as done and get
@@ -114,7 +115,8 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 {
 	unsigned i, j;
 	struct task_data task;
-	// spin lock
+	//lock
+	spin_lock(&list_lock);
 	if (prev_task != 0)
 	{
 		for (i = depends.waiting_last; i < depends.running_last; ++i)
@@ -176,6 +178,7 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 		prev_task = 0;
 	}
 	// spin unlock
+	spin_unlock(&list_lock);
 	if ((prev_task == 0) && (depends.running_last == 0))
 	{
 	  free_initmem();
