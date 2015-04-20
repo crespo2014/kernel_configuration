@@ -194,40 +194,47 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 	return prev_task;
 }
 
-void Prepare(struct init_fn* alltask, unsigned count)
+void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 {
 	// fill dependencies structure
-	unsigned i, j;
-	depends.end_idx = count;
-	depends.waiting_last = count;
-	depends.running_last = count;
+	struct init_fn* it_task;
+	unsigned i;
 	depends.waiting = 0;
-	depends.stask = alltask;
-	for (i = 0; i < count; ++i)
+	depends.end_idx = 0;
+	for (it_task = begin; it_task < end; ++it_task)
 	{
-		depends.task[i].ptr = alltask + i;
-		depends.task[i].waiting_for = 0;
+		if (it_task->type_ == type)
+		{
+			depends.task[depends.end_idx].ptr = it_task;
+			depends.task[depends.end_idx].waiting_for = 0;
+			++depends.end_idx;
+		}
 	}
+	depends.waiting_last = depends.end_idx;
+	depends.running_last = depends.end_idx;
 	// resolve dependencies
-	for (i = 0; i < count; ++i)
+	for (i = 0; i < depends.end_idx; ++i)
 	{
 		if ((depends.task[i].ptr->depends_on != 0) && (*depends.task[i].ptr->depends_on != 0))
 		{
-			for (j = 0; j < count; ++j)
+			for (it_task = begin; it_task < end; ++it_task)
 			{
-				if (strcmp(alltask[j].name, depends.task[i].ptr->depends_on) == 0)
+				if (strcmp(it_task->name, depends.task[i].ptr->depends_on) == 0)
 				{
-					//depends.task[i].waiting_for = alltask + j;
+					if (it_task->type_ != type)
+					{
+						printk("async cross type dependency detected %s -> %s",depends.task[i].ptr->name,it_task->name);
+						it_task = end;
+					}
 					break;
 				}
-			}
-			// dependency not found, move task to the end
-			depends.task[i].waiting_for = alltask + j;    // j will point to the end if task not found
-			printk_debug("async registered '%s' --> '%s'\n", alltask[i].name,(j != count) ? alltask[i].depends_on : "not found");
+			}	
+			depends.task[i].waiting_for = it_task;    // it will point to the end if task not found
+			printk_debug("async registered '%s' --> '%s'\n", depends.task[i].ptr->name,(it_task != end) ? it_task->name : "not found");
 		} else
 		{
 			depends.waiting++;			// avoid bug,
-			printk_debug("async registered '%s'\n", alltask[i].name);
+			printk_debug("async registered '%s'\n", depends.task[i].ptr->name);
 		}
 	}
 }
@@ -261,13 +268,16 @@ int WorkingThread(void *data)
 	return 0;
 }
 
-static int do_async_module_init(void)
-{
-  unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS -1;
+/**
+ * Execute all initialization for an specific type
+ */
+ int doit_type(task_type_t type)
+ {
+ 	unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
   unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
-  Prepare(__async_initcall_start, __async_initcall_end - __async_initcall_start);
-  for (; max_threads != 0; --max_threads)
+ 	Prepare(__async_initcall_start, __async_initcall_end,type);
+ 	for (; max_threads != 0; --max_threads)
   {
     //start working threads
     thr = kthread_create(WorkingThread,(void*)( max_threads), "async thread");
@@ -281,11 +291,25 @@ static int do_async_module_init(void)
       //WorkingThread(NULL);
     }
   }
-  WorkingThread(0);
-  return 0;
+ 	return 0;
+ }
+/**
+ * First initialization of module. Disk diver and AGP  
+*/
+static int async_initialization(void)
+{
+		return doit_type(asynchronized);
+}
+/**
+ * Second initialization USB devices, some PCI
+ */ 
+static int deferred_initialization(void)
+{
+ 	return doit_type(deferred);
 }
 
-module_init(do_async_module_init);
+module_init(async_initialization);
+late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)

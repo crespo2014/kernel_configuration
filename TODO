@@ -1,0 +1,10 @@
+Add support for deferred call in Async module 
+ Async module has to registered a module init for the lastest level of inti call 7. 
+ and start doing deferred call, it allows initialization of modules when filesystem is loaded.
+ New parameter has to be added to task data, called type (async,deferred)
+ 
+Add macro deferred_module_init that setup type member in struct to defferred
+Update macro async_module_init to support type member
+
+File system has to be online as soon as posible to allow system tools execution
+All usb modules will be deferred 

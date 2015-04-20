@@ -12,8 +12,16 @@
 
 #include <linux/init.h>
 
+/**
+ * Task type or execution priority
+ * async - needs to be execute in an asynchronized way
+ * deferred - it can be execute at user initialization time
+ */
+typedef enum { asynchronized, deferred } task_type_t;
+
 struct init_fn
 {
+  task_type_t type_;    // task type
   const char* name;
   const char* depends_on;
   initcall_t fnc;
@@ -28,11 +36,11 @@ struct init_fn
 
 #define async_init(fnc, ... )  \
   static struct init_fn init_fn_##fnc __used \
-  __attribute__((__section__(".async_initcall.init"))) = {#fnc,#__VA_ARGS__,fnc};
+  __attribute__((__section__(".async_initcall.init"))) = {asynchronized,#fnc,#__VA_ARGS__,fnc};
 
 #define async_module_init(fnc, ... )  \
   static struct init_fn init_fn_##fnc __used \
-  __attribute__((__section__(".async_initcall.init"))) = {#fnc,#__VA_ARGS__,fnc};
+  __attribute__((__section__(".async_initcall.init"))) = {asynchronized,#fnc,#__VA_ARGS__,fnc};
 
 //#define async_init(fnc) async_init(fnc,);
 
