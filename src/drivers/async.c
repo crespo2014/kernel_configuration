@@ -86,7 +86,7 @@ extern struct init_fn __async_initcall_start[], __async_initcall_end[];
  */
 struct task_data
 {
-	enum task_type_t type_;		// task type	 
+	task_type_t type_;		// task type
 	struct init_fn* ptr;			// ptr to static task
 	struct init_fn* waiting_for;	// 0 ready,  1:end_idx waiting , > end_idx : lowest priority
 };
@@ -201,12 +201,11 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 	return prev_task;
 }
 
-void Prepare(struct init_fn* begin, struct init_fn* end,enum task_type_t type)
+void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 {
 	// fill dependencies structure
 	struct init_fn* it_task;
 	unsigned i, j;
-	depends.end_idx = count;
 	depends.waiting = 0;
 	depends.stask = alltask;
 	for (it_task = begin; it_task < end; ++it_task)
@@ -278,7 +277,7 @@ int WorkingThread(void *data)
 /**
  * Execute all initialization for an specific type
  */
- int doit_type(enum task_type_t type)
+ int doit_type(task_type_t type)
  {
  	unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
   unsigned max_cpus = num_online_cpus();
