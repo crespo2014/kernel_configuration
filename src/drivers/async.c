@@ -275,12 +275,6 @@ int WorkingThread(void *data)
 	printk_debug("async %d ends\n",(unsigned)data);
 	return 0;
 }
-
-static int do_async_module_init(void)
-{
-		return doit_type(asynchronized);
-}
-
 /**
  * Execute all initialization for an specific type
  */
@@ -306,14 +300,23 @@ static int do_async_module_init(void)
   }
  	return 0;
  }
- 
- static int do_async_module_init(void)
- {
+/**
+ * First initialization of module. Disk diver and AGP  
+*/
+static int async_initialization(void)
+{
+		return doit_type(asynchronized);
+}
+/**
+ * Second initialization USB devices, some PCI
+ */ 
+static int deferred_initialization(void)
+{
  	return doit_type(deferred);
- }
+}
 
-module_init(do_async_module_init);
-late_initcall_sync(deferred_module_init);		// Second stage, last to do before jump to high level initialization
+module_init(async_initialization);
+late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
