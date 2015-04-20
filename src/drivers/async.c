@@ -76,10 +76,17 @@
 extern struct init_fn __async_initcall_start[], __async_initcall_end[];
 
 /**
+ * Task type or execution priority
+ * async - needs to be execute in an asynchronized way
+ * deferred - it can be execute at user initialization time
+ */
+ typedef enum { asynchronized, deferred } task_type_t;
+/**
  * at least one element has to be in the list in the position 0 that never executes
  */
 struct task_data
 {
+	enum task_type_t type_;		// task type	 
 	struct init_fn* ptr;			// ptr to static task
 	struct init_fn* waiting_for;	// 0 ready,  1:end_idx waiting , > end_idx : lowest priority
 };
@@ -194,40 +201,48 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 	return prev_task;
 }
 
-void Prepare(struct init_fn* alltask, unsigned count)
+void Prepare(struct init_fn* begin, struct init_fn* end,enum task_type_t type)
 {
 	// fill dependencies structure
+	struct init_fn* it_task;
 	unsigned i, j;
 	depends.end_idx = count;
-	depends.waiting_last = count;
-	depends.running_last = count;
 	depends.waiting = 0;
 	depends.stask = alltask;
-	for (i = 0; i < count; ++i)
+	for (it_task = begin; it_task < end; ++it_task)
 	{
-		depends.task[i].ptr = alltask + i;
-		depends.task[i].waiting_for = 0;
+		if (it_task->type_ == type)
+		{
+			depends.task[i].ptr = it_task;
+			depends.task[i].waiting_for = 0;
+			++depends.end_idx;
+		}
 	}
+	depends.waiting_last = depends.end_idx;
+	depends.running_last = depends.end_idx;
 	// resolve dependencies
-	for (i = 0; i < count; ++i)
+	for (i = 0; i < depends.end_idx; ++i)
 	{
 		if ((depends.task[i].ptr->depends_on != 0) && (*depends.task[i].ptr->depends_on != 0))
 		{
-			for (j = 0; j < count; ++j)
+			for (it_task = begin; it_task < end; ++it_task)
 			{
-				if (strcmp(alltask[j].name, depends.task[i].ptr->depends_on) == 0)
+				if (strcmp(it_task->name, depends.task[i].ptr->depends_on) == 0)
 				{
-					//depends.task[i].waiting_for = alltask + j;
+					if (it_task->type_ != type)
+					{
+						printk("async cross type dependency detected %s -> %s",depends.task[i].ptr->name,alltask[j].name);
+						it_task = end;
+					}
 					break;
 				}
-			}
-			// dependency not found, move task to the end
-			depends.task[i].waiting_for = alltask + j;    // j will point to the end if task not found
-			printk_debug("async registered '%s' --> '%s'\n", alltask[i].name,(j != count) ? alltask[i].depends_on : "not found");
+			}	
+			depends.task[i].waiting_for = it_task;    // it will point to the end if task not found
+			printk_debug("async registered '%s' --> '%s'\n", depends.task[i].ptr->name,(it_task != end) ? it_task->name : "not found");
 		} else
 		{
 			depends.waiting++;			// avoid bug,
-			printk_debug("async registered '%s'\n", alltask[i].name);
+			printk_debug("async registered '%s'\n", depends.task[i].ptr->name);
 		}
 	}
 }
@@ -266,7 +281,7 @@ static int do_async_module_init(void)
   unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
   unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
-  Prepare(__async_initcall_start, __async_initcall_end - __async_initcall_start);
+  Prepare(__async_initcall_start, __async_initcall_end,asynchronized);
   for (; max_threads != 0; --max_threads)
   {
     //start working threads
@@ -283,6 +298,32 @@ static int do_async_module_init(void)
   }
   return 0;
 }
+
+/**
+ * Execute all initialization for an specific type
+ */
+ int doit_type(enum task_type_t type)
+ {
+ 	unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
+  unsigned max_cpus = num_online_cpus();
+  static struct task_struct *thr;
+ 	Prepare(__async_initcall_start, __async_initcall_end,type);
+ 	for (; max_threads != 0; --max_threads)
+  {
+    //start working threads
+    thr = kthread_create(WorkingThread,(void*)( max_threads - 1), "async thread");
+    if (thr != ERR_PTR(-ENOMEM))
+    {
+      kthread_bind(thr, max_threads % max_cpus);
+      wake_up_process(thr);
+    } else
+    {
+      printk("Async module initialization thread failed .. fall back to normal mode");
+      WorkingThread(NULL);
+    }
+  }
+ 	return 0;
+ }
 
 module_init(do_async_module_init);
 
