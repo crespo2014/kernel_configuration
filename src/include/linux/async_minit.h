@@ -34,6 +34,7 @@ struct init_fn
 //
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT
 
+//
 #define async_module_init(fnc, ... )  \
   static struct init_fn init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {asynchronized,#fnc,#__VA_ARGS__,fnc};
@@ -55,6 +56,7 @@ static void __exit __driver##_exit(void) \
 } \
 module_exit(__driver##_exit);
 
+//
 #define deferred_module_driver(__driver, __register, __unregister,__depends, ...) \
 static int __init __driver##_init(void) \
 { \
@@ -67,10 +69,22 @@ static void __exit __driver##_exit(void) \
 } \
 module_exit(__driver##_exit);
 
+//
+#define async_module_pci_driver(__pci_driver) \
+  async_module_driver(__pci_driver, pci_register_driver, \
+           pci_unregister_driver,)
+
+#define deferred_module_pci_driver(__pci_driver) \
+    deferred_module_driver(__pci_driver, pci_register_driver, \
+           pci_unregister_driver,)
+
 #else
 
-#define async_module_init(fnc, ... )                                            module_init(fnc);
-#define async_module_driver(__driver, __register, __unregister,__depends, ...)  module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
+#define async_module_init(fnc, ... )      module_init(fnc);
+#define deferred_module_init(fnc, ... )   module_init(fnc);
+
+#define async_module_driver(__driver, __register, __unregister,__depends, ...)    module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
+#define deferred_module_driver(__driver, __register, __unregister,__depends, ...) module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
 
 #endif
 
