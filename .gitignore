@@ -5,3 +5,4 @@ conftest
 modules.order
 Module.symvers
 .tmp_versions
+/Default/

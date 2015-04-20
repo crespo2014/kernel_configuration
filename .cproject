@@ -68,7 +68,7 @@
 					<folderInfo id="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.base.165592746" name="cdt.managedbuild.toolchain.gnu.base" superClass="cdt.managedbuild.toolchain.gnu.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.1072066539" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder arguments="-C ${workspace_loc:/linux-4.0} O=build/311c CONFIG=${workspace_loc:/liunx-conf/311c.config} M=${workspace_loc:/liunx-conf/src/drivers}" autoBuildTarget="" command="make" enableAutoBuild="true" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.base.1643341045" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+							<builder arguments="-C ${workspace_loc:/linux-4.0} O=build/311c CONFIG=${workspace_loc:/liunx-conf/311c.config} M=${workspace_loc:/liunx-conf/src/drivers}" autoBuildTarget="" command="make" enableAutoBuild="false" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.base.1643341045" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1871883102" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1285861472" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.548150686" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
@@ -119,17 +119,5 @@
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1285861472;cdt.managedbuild.tool.gnu.cpp.compiler.input.899170444">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.;cdt.managedbuild.tool.gnu.c.compiler.base.744902218;cdt.managedbuild.tool.gnu.c.compiler.input.1114785184">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206;cdt.managedbuild.toolchain.gnu.base.2130150206.480213078;cdt.managedbuild.tool.gnu.cpp.compiler.base.1324850812;cdt.managedbuild.tool.gnu.cpp.compiler.input.1315093986">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206;cdt.managedbuild.toolchain.gnu.base.2130150206.480213078;cdt.managedbuild.tool.gnu.c.compiler.base.1722421272;cdt.managedbuild.tool.gnu.c.compiler.input.1909168301">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>
