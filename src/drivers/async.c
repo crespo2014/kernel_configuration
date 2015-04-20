@@ -257,7 +257,7 @@ int WorkingThread(void *data)
 		task = TaskDone(task);
 		if (task != 0)
 		{
-		  printk_debug("async start %d %s\n",(unsigned)data, task->name);
+		  printk_debug("async %d %s\n",(unsigned)data, task->name);
 		  do_one_initcall(task->fnc);
 		} else
 		{
@@ -277,41 +277,44 @@ int WorkingThread(void *data)
 /**
  * Execute all initialization for an specific type
  */
- int doit_type(task_type_t type)
- {
- 	unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
-  unsigned max_cpus = num_online_cpus();
-  static struct task_struct *thr;
- 	Prepare(__async_initcall_start, __async_initcall_end,type);
- 	for (; max_threads != 0; --max_threads)
-  {
-    //start working threads
-    thr = kthread_create(WorkingThread,(void*)( max_threads - 1), "async thread");
-    if (thr != ERR_PTR(-ENOMEM))
-    {
-      kthread_bind(thr, max_threads % max_cpus);
-      wake_up_process(thr);
-    } else
-    {
-      printk("Async module initialization thread failed .. fall back to normal mode");
-      WorkingThread(NULL);
-    }
-  }
- 	return 0;
- }
+int doit_type(task_type_t type)
+{
+	unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
+	unsigned max_cpus = num_online_cpus();
+	static struct task_struct *thr;
+	Prepare(__async_initcall_start, __async_initcall_end, type);
+	for (; max_threads != 0; --max_threads)
+	{
+		//start working threads
+		thr = kthread_create(WorkingThread, (void* )(max_threads - 1), "async thread");
+		if (thr != ERR_PTR(-ENOMEM))
+		{
+			kthread_bind(thr, max_threads % max_cpus);
+			wake_up_process(thr);
+		}
+		else
+		{
+			printk("Async module initialization thread failed .. fall back to normal mode");
+			WorkingThread(NULL);
+		}
+	}
+	return 0;
+}
 /**
  * First initialization of module. Disk diver and AGP  
-*/
+ */
 static int async_initialization(void)
 {
-		return doit_type(asynchronized);
+	printk_debug("async asynchronized call started\n",(unsigned)data);
+	return doit_type(asynchronized);
 }
 /**
  * Second initialization USB devices, some PCI
- */ 
+ */
 static int deferred_initialization(void)
 {
- 	return doit_type(deferred);
+	printk_debug("async deferred call started\n",(unsigned)data);
+	return doit_type(deferred);
 }
 
 module_init(async_initialization);
