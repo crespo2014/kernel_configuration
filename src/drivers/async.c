@@ -278,25 +278,7 @@ int WorkingThread(void *data)
 
 static int do_async_module_init(void)
 {
-  unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
-  unsigned max_cpus = num_online_cpus();
-  static struct task_struct *thr;
-  Prepare(__async_initcall_start, __async_initcall_end,asynchronized);
-  for (; max_threads != 0; --max_threads)
-  {
-    //start working threads
-    thr = kthread_create(WorkingThread,(void*)( max_threads - 1), "async thread");
-    if (thr != ERR_PTR(-ENOMEM))
-    {
-      kthread_bind(thr, max_threads % max_cpus);
-      wake_up_process(thr);
-    } else
-    {
-      printk("Async module initialization thread failed .. fall back to normal mode");
-      WorkingThread(NULL);
-    }
-  }
-  return 0;
+		return doit_type(asynchronized);
 }
 
 /**
@@ -324,8 +306,14 @@ static int do_async_module_init(void)
   }
  	return 0;
  }
+ 
+ static int do_async_module_init(void)
+ {
+ 	return doit_type(deferred);
+ }
 
 module_init(do_async_module_init);
+late_initcall_sync(deferred_module_init);		// Second stage, last to do before jump to high level initialization
 
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
