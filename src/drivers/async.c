@@ -203,7 +203,7 @@ void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 	depends.end_idx = 0;
 	for (it_task = begin; it_task < end; ++it_task)
 	{
-		//if (it_task->type_ == type)
+		if (it_task->type_ == type)
 		{
 			depends.task[depends.end_idx].ptr = it_task;
 			depends.task[depends.end_idx].waiting_for = 0;
