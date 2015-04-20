@@ -92,14 +92,14 @@ struct task_data
  * threads end when waiting == 0
  * last thread is when running became 0
  */
-#define MAX_TASKS 100
+#define MAX_TASKS 200
 struct depends_list
 {
 	unsigned waiting_last;	// last task waiting to be release
 	unsigned running_last;	// the last task running
 	unsigned end_idx;		// last element on the list
 	unsigned waiting;		// how many task are ready to be executed
-  struct init_fn* stask;  // static task structure
+  //struct init_fn* stask;  // static task structure
 	struct task_data task[MAX_TASKS];   //TODO use dinamic allocation
 };
 
@@ -158,11 +158,11 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 	if (depends.waiting != 0)
 	{
 		// find the lower id task available
-		prev_task = depends.stask + depends.end_idx;
+		prev_task = 0;
 		j = 0;
 		for (i = 0; i < depends.waiting_last; ++i)
 		{
-			if (depends.task[i].waiting_for == 0 && depends.task[i].ptr < prev_task)
+			if ((depends.task[i].waiting_for == 0) && ((prev_task == 0) || (depends.task[i].ptr < prev_task)))
 			{
 				prev_task = depends.task[i].ptr;
 				j = i;
@@ -203,7 +203,7 @@ void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 	depends.end_idx = 0;
 	for (it_task = begin; it_task < end; ++it_task)
 	{
-		if (it_task->type_ == type)
+		//if (it_task->type_ == type)
 		{
 			depends.task[depends.end_idx].ptr = it_task;
 			depends.task[depends.end_idx].waiting_for = 0;
@@ -223,7 +223,7 @@ void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 				{
 					if (it_task->type_ != type)
 					{
-						printk("async cross type dependency detected %s -> %s",depends.task[i].ptr->name,it_task->name);
+						printk("async cross type dependency detected %s -> %s\n",depends.task[i].ptr->name,it_task->name);
 						it_task = end;
 					}
 					break;
@@ -271,16 +271,17 @@ int WorkingThread(void *data)
 /**
  * Execute all initialization for an specific type
  */
- int doit_type(task_type_t type)
- {
- 	unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
+int doit_type(task_type_t type)
+{
+  unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
   unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
- 	Prepare(__async_initcall_start, __async_initcall_end,type);
- 	for (; max_threads != 0; --max_threads)
+  Prepare(__async_initcall_start, __async_initcall_end, type);
+  if (max_threads == 0) WorkingThread(0);
+  for (; max_threads != 0; --max_threads)
   {
     //start working threads
-    thr = kthread_create(WorkingThread,(void*)( max_threads), "async thread");
+    thr = kthread_create(WorkingThread, (void* )(max_threads), "async thread");
     if (thr != ERR_PTR(-ENOMEM))
     {
       kthread_bind(thr, max_threads % max_cpus);
@@ -291,21 +292,24 @@ int WorkingThread(void *data)
       //WorkingThread(NULL);
     }
   }
- 	return 0;
- }
+  return 0;
+}
 /**
  * First initialization of module. Disk diver and AGP  
 */
 static int async_initialization(void)
 {
-		return doit_type(asynchronized);
+  printk_debug("async started asynchronized\n");
+  return doit_type(asynchronized);
 }
 /**
  * Second initialization USB devices, some PCI
- */ 
+ */
 static int deferred_initialization(void)
 {
- 	return doit_type(deferred);
+  printk_debug("async started deferred\n");
+  //return doit_type(deferred);
+  return 0;
 }
 
 module_init(async_initialization);
