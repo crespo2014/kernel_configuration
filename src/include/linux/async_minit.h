@@ -34,19 +34,43 @@ struct init_fn
 //
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT
 
-#define async_init(fnc, ... )  \
-  static struct init_fn init_fn_##fnc __used \
-  __attribute__((__section__(".async_initcall.init"))) = {asynchronized,#fnc,#__VA_ARGS__,fnc};
-
 #define async_module_init(fnc, ... )  \
   static struct init_fn init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {asynchronized,#fnc,#__VA_ARGS__,fnc};
 
-//#define async_init(fnc) async_init(fnc,);
+#define deferred_module_init(fnc, ... )  \
+  static struct init_fn init_fn_##fnc __used \
+  __attribute__((__section__(".async_initcall.init"))) = {deferred,#fnc,#__VA_ARGS__,fnc};
+
+// Usefull for ACPI and USB maybe PCI
+#define async_module_driver(__driver, __register, __unregister,__depends, ...) \
+static int __init __driver##_init(void) \
+{ \
+  return __register(&(__driver) , ##__VA_ARGS__); \
+} \
+async_module_init(__driver##_init,__depends); \
+static void __exit __driver##_exit(void) \
+{ \
+  __unregister(&(__driver) , ##__VA_ARGS__); \
+} \
+module_exit(__driver##_exit);
+
+#define deferred_module_driver(__driver, __register, __unregister,__depends, ...) \
+static int __init __driver##_init(void) \
+{ \
+  return __register(&(__driver) , ##__VA_ARGS__); \
+} \
+deferred_module_init(__driver##_init,__depends); \
+static void __exit __driver##_exit(void) \
+{ \
+  __unregister(&(__driver) , ##__VA_ARGS__); \
+} \
+module_exit(__driver##_exit);
 
 #else
 
-#define async_init(fnc, ... ) module_init(fnc);
+#define async_module_init(fnc, ... )                                            module_init(fnc);
+#define async_module_driver(__driver, __register, __unregister,__depends, ...)  module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
 
 #endif
 
