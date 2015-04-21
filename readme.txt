@@ -13,7 +13,6 @@ sed 's/.*\/\([[:alnum:]_-]*\.ko\)\(:.*\)/\1\2/g'
 Removing files from history
 git filter-branch --index-filter "git rm --cached -f --ignore-unmatch linux-4.0-patch.diff"  -- all
 
-
 how to build
 
 make KCONFIG_CONFIG=../linux/zbox-oi520.config menuconfig

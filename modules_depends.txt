@@ -737,7 +737,6 @@ kernel/arch/x86/crypto/aesni-intel.ko: kernel/arch/x86/crypto/aes-i586.ko kernel
 kernel/arch/x86/crypto/twofish-i586.ko: kernel/crypto/twofish_common.ko
 kernel/arch/x86/kvm/kvm-amd.ko: kernel/arch/x86/kvm/kvm.ko
 kernel/arch/x86/kvm/kvm-intel.ko: kernel/arch/x86/kvm/kvm.ko
-
 kernel/crypto/algif_hash.ko: kernel/crypto/af_alg.ko
 kernel/crypto/algif_skcipher.ko: kernel/crypto/af_alg.ko
 kernel/crypto/async_tx/async_memcpy.ko: kernel/crypto/async_tx/async_tx.ko
@@ -751,7 +750,6 @@ kernel/crypto/lrw.ko: kernel/crypto/gf128mul.ko
 kernel/crypto/twofish_generic.ko: kernel/crypto/twofish_common.ko
 kernel/crypto/xts.ko: kernel/crypto/gf128mul.ko
 kernel/crypto/zlib.ko: kernel/lib/zlib_deflate/zlib_deflate.ko
-
 kernel/drivers/acpi/ac.ko: kernel/drivers/power/power_supply.ko
 kernel/drivers/acpi/acpi_ipmi.ko: kernel/drivers/char/ipmi/ipmi_msghandler.ko
 kernel/drivers/acpi/battery.ko: kernel/drivers/power/power_supply.ko
@@ -760,7 +758,6 @@ kernel/drivers/acpi/processor.ko: kernel/drivers/thermal/thermal_sys.ko
 kernel/drivers/acpi/sbs.ko: kernel/drivers/acpi/sbshc.ko kernel/drivers/power/power_supply.ko
 kernel/drivers/acpi/thermal.ko: kernel/drivers/thermal/thermal_sys.ko
 kernel/drivers/acpi/video.ko: kernel/drivers/thermal/thermal_sys.ko
-
 kernel/drivers/ata/acard-ahci.ko: kernel/drivers/ata/libahci.ko kernel/drivers/ata/libata.ko kernel/drivers/scsi/scsi_mod.ko
 kernel/drivers/ata/ahci.ko: kernel/drivers/ata/libahci.ko kernel/drivers/ata/libata.ko kernel/drivers/scsi/scsi_mod.ko
 kernel/drivers/ata/ata_generic.ko: kernel/drivers/ata/libata.ko kernel/drivers/scsi/scsi_mod.ko
@@ -820,7 +817,6 @@ kernel/drivers/ata/sata_sx4.ko: kernel/drivers/ata/libata.ko kernel/drivers/scsi
 kernel/drivers/ata/sata_uli.ko: kernel/drivers/ata/libata.ko kernel/drivers/scsi/scsi_mod.ko
 kernel/drivers/ata/sata_via.ko: kernel/drivers/ata/libata.ko kernel/drivers/scsi/scsi_mod.ko
 kernel/drivers/ata/sata_vsc.ko: kernel/drivers/ata/libata.ko kernel/drivers/scsi/scsi_mod.ko
-
 kernel/drivers/atm/adummy.ko: kernel/net/atm/atm.ko
 kernel/drivers/atm/ambassador.ko: kernel/net/atm/atm.ko
 kernel/drivers/atm/atmtcp.ko: kernel/net/atm/atm.ko
