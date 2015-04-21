@@ -75,6 +75,29 @@
  */
 extern struct init_fn __async_initcall_start[], __async_initcall_end[];
 
+extern initcall_t __initcall_start[];
+extern initcall_t __initcall0_start[];
+extern initcall_t __initcall1_start[];
+extern initcall_t __initcall2_start[];
+extern initcall_t __initcall3_start[];
+extern initcall_t __initcall4_start[];
+extern initcall_t __initcall5_start[];
+extern initcall_t __initcall6_start[];
+extern initcall_t __initcall7_start[];
+extern initcall_t __initcall_end[];
+
+static initcall_t *initcall_levels[] __initdata = {
+	__initcall0_start,
+	__initcall1_start,
+	__initcall2_start,
+	__initcall3_start,
+	__initcall4_start,
+	__initcall5_start,
+	__initcall6_start,
+	__initcall7_start,
+	__initcall_end,
+};
+
 /**
  * at least one element has to be in the list in the position 0 that never executes
  */
@@ -294,12 +317,27 @@ int doit_type(task_type_t type)
   }
   return 0;
 }
+
+void traceInitCalls(void)
+{
+    initcall_t *fn;
+    int level;
+    for (level = 0; level < ARRAY_SIZE(initcall_levels) - 1; level++)
+    {
+        for (fn = initcall_levels[level]; fn < initcall_levels[level + 1]; fn++)
+        {
+            printk_debug("initcall %d , %pF ", level, fn);
+        }
+    }
+}
 /**
  * First initialization of module. Disk diver and AGP  
  */
 static int async_initialization(void)
 {
-  printk_debug("async started asynchronized\n");
+    traceInitCalls();
+    printk_debug("async started asynchronized\n");
+    return doit_type(asynchronized);
 }
 /**
  * Second initialization USB devices, some PCI
