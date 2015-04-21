@@ -355,7 +355,7 @@ RM_STATUS uvm_map_page(struct vm_area_struct *vma, struct page *page,
 
 
 //module_init(uvm_init);
-async_init(uvm_init,nvidia_frontend_init_module);
+async_module_init(uvm_init,nvidia_frontend_init_module);
 module_exit(uvm_exit);
 MODULE_LICENSE("MIT");
 MODULE_INFO(supported, "external");
