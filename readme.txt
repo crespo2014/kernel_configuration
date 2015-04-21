@@ -1,3 +1,7 @@
+Tips:
+
+diff -rupN --exclude .cproject --exclude=build --exclude=drivers/gpu/drm/nvidia-ion linux-4.0 linux-4.0.orig >> kernel_configuration/linux-4.0-patch.diff
+
 how to build
 
 make KCONFIG_CONFIG=../linux/zbox-oi520.config menuconfig
