@@ -10,6 +10,8 @@ reduce module name for dependencies.
 
 sed 's/.*\/\([[:alnum:]_-]*\.ko\)\(:.*\)/\1\2/g'
 
+depmod -v 4.0.0-311c-module > 311c.modules.dep
+
 Removing files from history
 git filter-branch --index-filter "git rm --cached -f --ignore-unmatch linux-4.0-patch.diff"  -- all
 
