@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
                 key = nullptr;
             };
         }
-        if (keys.size() == 2)
+        if (keys.size() > 1)
         {
             for (auto it2 = keys.begin() + 1; it2 != keys.end(); ++it2)
             {

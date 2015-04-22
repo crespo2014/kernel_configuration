@@ -1,6 +1,6 @@
 Tips:
 
-diff -rupN --exclude .cproject --exclude=build --exclude=drivers/gpu/drm/nvidia-ion linux-4.0 linux-4.0.orig >> kernel_configuration/linux-4.0-patch.diff
+diff -rup -x '*.o' -x '*.h' -x 'bzImage' --exclude=.cproject --exclude=build --exclude=drivers/gpu/drm/nvidia-ion linux-4.0 linux-4.0.orig >> kernel_configuration/linux-4.0-patch.diff
 
 Keep module name at the end
 
