@@ -16,6 +16,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <algorithm>
 
 static std::set<std::string> modules;
 static std::map<const char*, std::vector<const char*>> depends;
@@ -40,11 +41,16 @@ std::vector<const char*>& getModuleDependencies(const char* name)
 
 bool DependsOn(const char* name,const char* depends_on)
 {
-    auto &v = depends[name];
-    for (auto d : v)
+    if (depends_on != nullptr)
     {
-        if (d == depends_on) return true;
-        if (DependsOn(d,depends_on)) return true;
+        auto &v = depends[name];
+        for (auto d : v)
+        {
+            if (d == depends_on)
+                return true;
+            if (DependsOn(d, depends_on))
+                return true;
+        }
     }
     return false;
 }
@@ -70,15 +76,15 @@ int main(int argc, char* argv[])
     std::cout << R"(digraph {
     concentrate=true;
     rankdir=TB;
-    node [fontsize=8];
+    node [fontsize=10];
     node [nodesep=0.75];
     node [ranksep=0.75];
-    edge [weight=1.2];
+#    edge [weight=1.2];
     node [color=none];
     node [shape=plaintext];
 #    graph [bb="0,0,1000,1000"];
 #graph[size="100,100"]; 
-    graph [ratio=2];
+    graph [ratio=0.5];
 
     subgraph cluster_0 {
     )";
@@ -121,27 +127,49 @@ int main(int argc, char* argv[])
         }
         if (keys.size() > 1)
         {
-            auto& v = getModuleDependencies(*keys.begin());
+            auto& v = getModuleDependencies(getModule(*keys.begin()));
             for (auto it2 = keys.begin() + 1; it2 != keys.end(); ++it2)
             {
                 std::cout << "\"" << *it2 << "\" -> \"" << keys.front() << "\"" << std::endl;
-                v.push_back(*it2);
+                v.push_back(getModule(*it2));
             }
         }
     }
     std::cout << R"(}
-    subgraph cluster_1 { )";
+   subgraph cluster_1 { 
+)";
     // For each node check it its direct dependencies are found also in another path
-    for ( auto& it : depends)
+    for (auto& mod_it : depends)
     {
         // check only multiple dependencies module
-        if (it.second.size()>1)
+        if (mod_it.second.size() > 1)
         {
-
+            // for each direct dependency
+            for (auto& it1 : mod_it.second)
+            {
+                // check if it1 is included from it2
+                for (auto it2 : mod_it.second)
+                {
+                    if ((it1 != it2) && DependsOn(it2, it1))
+                    {
+                        it1 = nullptr;
+                        break;
+                    }
+                }
+            }
+            // remove all nullptr generated
+            auto it = std::remove(mod_it.second.begin(), mod_it.second.end(),nullptr);
+            mod_it.second.erase(it,mod_it.second.end());
+        }
+        // print out
+        for (auto& it1 : mod_it.second)
+        {
+            std::cout << "\"" << it1 << ".2\" -> \"" << mod_it.first << ".2\"" << std::endl;
         }
     }
-
-    std::cout << R"(}})";
+    std::cout << R"(
+}
+     })";
     fs.close();
     return 0;
 }
