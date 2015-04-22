@@ -62,7 +62,7 @@ ifeq ($(CONFIG_SMP),y)
 	@echo "#define NV_ON_EACH_CPU_PRESENT " >> $@
 	@echo "#define NV_ON_EACH_CPU_ARGUMENT_COUNT 3" >> $@  
 endif	
-ifeq ($(CONFIG_DRM),y)
+ifeq ($(CONFIG_DRM),$(filter y m,$(CONFIG_DRM)))
 	@echo "#define NV_DRM_DRMP_H_PRESENT " >> $@	
 	@echo "#define NV_DRM_AVAILABLE " >> $@	
 	@echo "#define NV_DRM_DRM_GEM_H_PRESENT   " >> $@
