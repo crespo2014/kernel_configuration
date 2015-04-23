@@ -71,6 +71,15 @@
 #endif
 
 /**
+ * Macro to create a string array
+ */
+#define STR_ITEM()
+#define STR_ITEM(x)  ,#x
+#define STR_ITEMS()
+#define STR_ITEMS(x,...) ,#x STR_ITEM(##__VA_ARG__)
+#define STR_ARRAY(x,...) { #x,STR_ITEMS(##__VA_ARG__)  }
+
+/**
  * Static struct holding all data
  */
 extern struct init_fn __async_initcall_start[], __async_initcall_end[];
@@ -351,6 +360,8 @@ static int deferred_initialization(void)
 
 module_init(async_initialization);
 late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
+
+static char* d = STR_ARRAY(a,b,c,d,e,f);
 
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
