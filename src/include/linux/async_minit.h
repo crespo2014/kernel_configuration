@@ -15,57 +15,54 @@
 /**
  * Full list of module init functions call
  */
-#define INIT_CALLS(fnc)  \
-        fnc(alsa_timer_init), \
-        fnc(alsa_mixer_oss_init), \
-        fnc(alsa_hwdep_init),\
-        fnc(alsa_seq_device_init),\
-        fnc(alsa_seq_init), \
-        fnc(ahci_pci_driver),\
-        fnc(agp_nvidia_init),\
-        fnc(drm_core_init),\
-        fnc(drm_fb_helper_modinit),\
+#define INIT_CALLS(fnc) \
+        fnc(ahci_pci_driver),      /* */ \
+        fnc(crypto_xcbc_module_init), /* */ \
+        fnc(init_cifs), /* */  \
+        fnc(drm_fb_helper_modinit), /* */  \
+        fnc(acpi_button_driver_init), /* */  \
+        fnc(init_iso9660_fs), /* */  \
         fnc(bt_init),      /* bluetooth.ko */  \
-        fnc(init_mtd1),  /* rfcomm.ko */ \
+        fnc(rfcomm_init),  /* rfcomm.ko */ \
         fnc(init_mtd2),  /* soundcore.ko */ \
         fnc(init_mtd3),  /* snd.ko */ \
-        fnc(init_mtd4),  /* snd-timer.ko */ \
-        fnc(init_mtd5),  /* snd-hwdep.ko */ \
-        fnc(init_mtd6),  /* snd-seq-device.ko */ \
-        fnc(init_mtd7),  /* snd-mixer-oss.ko */ \
-        fnc(init_mtd8),  /* snd-hrtimer.ko */ \
-        fnc(init_mtd9),  /* snd-pcm.ko */ \
-        fnc(init_mtd10),  /* snd-seq.ko */ \
+        fnc(alsa_timer_init),  /* snd-timer.ko */ \
+        fnc(alsa_hwdep_init),  /* snd-hwdep.ko */ \
+        fnc(alsa_seq_device_init),  /* snd-seq-device.ko */ \
+        fnc(alsa_mixer_oss_init),  /* snd-mixer-oss.ko */ \
+        fnc(snd_hrtimer_init),  /* snd-hrtimer.ko */ \
+        fnc(alsa_pcm_oss_init),  /* snd-pcm.ko */ \
+        fnc(alsa_seq_init),  /* snd-seq.ko */ \
         fnc(init_mtd11),  /* snd-pcm-oss.ko */ \
         fnc(init_mtd12),  /* snd-hda-codec.ko */ \
-        fnc(init_mtd13),  /* snd-seq-midi-event.ko */ \
-        fnc(init_mtd14),  /* snd-seq-dummy.ko */ \
+        fnc(alsa_seq_midi_init),  /* snd-seq-midi-event.ko */ \
+        fnc(alsa_seq_dummy_init),  /* snd-seq-dummy.ko */ \
         fnc(init_mtd15),  /* snd-hda-controller.ko */ \
         fnc(init_mtd16),  /* snd-hda-codec-generic.ko */ \
-        fnc(init_mtd17),  /* snd-hda-codec-si3054.ko */ \
-        fnc(init_mtd18),  /* snd-hda-codec-ca0132.ko */ \
-        fnc(init_mtd19),  /* snd-hda-codec-hdmi.ko */ \
+        fnc(patch_si3054_init),  /* snd-hda-codec-si3054.ko */ \
+        fnc(patch_ca0132_init),  /* snd-hda-codec-ca0132.ko */ \
+        fnc(patch_hdmi_init),  /* snd-hda-codec-hdmi.ko */ \
         fnc(init_mtd20),  /* snd-seq-oss.ko */ \
         fnc(init_mtd21),  /* snd-hda-intel.ko */ \
-        fnc(init_mtd22),  /* snd-hda-codec-idt.ko */ \
-        fnc(init_mtd23),  /* snd-hda-codec-cirrus.ko */ \
-        fnc(init_mtd24),  /* snd-hda-codec-ca0110.ko */ \
-        fnc(init_mtd25),  /* snd-hda-codec-via.ko */ \
-        fnc(init_mtd26),  /* snd-hda-codec-realtek.ko */ \
-        fnc(init_mtd27),  /* snd-hda-codec-conexant.ko */ \
-        fnc(init_mtd28),  /* snd-hda-codec-cmedia.ko */ \
-        fnc(init_mtd29),  /* snd-hda-codec-analog.ko */ \
+        fnc(patch_sigmantel_init),  /* snd-hda-codec-idt.ko */ \
+        fnc(patch_cirrus_init),  /* snd-hda-codec-cirrus.ko */ \
+        fnc(patch_ca0110_init),  /* snd-hda-codec-ca0110.ko */ \
+        fnc(patch_via_init),  /* snd-hda-codec-via.ko */ \
+        fnc(patch_realtek_init),  /* snd-hda-codec-realtek.ko */ \
+        fnc(patch_conexant_init),  /* snd-hda-codec-conexant.ko */ \
+        fnc(patch_cmedia_init),  /* snd-hda-codec-cmedia.ko */ \
+        fnc(patch_analog_init),  /* snd-hda-codec-analog.ko */ \
         fnc(init_mtd30),  /* hwmon.ko */ \
         fnc(init_mtd31),  /* coretemp.ko */ \
         fnc(init_mtd32),  /* gpio-fan.ko */ \
-        fnc(init_mtd33),  /* acpi-power-meter.ko */ \
-        fnc(init_mtd34),  /* mtd.ko */ \
-        fnc(init_mtd35),  /* ubi.ko */ \
+        fnc(acpi_processor_driver_init),  /* acpi-power-meter.ko */ \
+        fnc(init_mtd),  /* mtd.ko */ \
+        fnc(ubi_init),  /* ubi.ko */ \
         fnc(init_mtd36),  /* uio.ko */ \
         fnc(init_mtd37),  /* uio_cif.ko */ \
         fnc(init_mtd38),  /* libata.ko */ \
         fnc(init_mtd39),  /* libahci.ko */ \
-        fnc(init_mtd40),  /* ahci.ko */ \
+        fnc(ahci_pci_driver_init),  /* ahci.ko */ \
         fnc(init_mtd41),  /* wmi.ko */ \
         fnc(init_mtd42),  /* mxm-wmi.ko */ \
         fnc(init_mtd43),  /* speedstep-lib.ko */ \
@@ -87,20 +84,24 @@
         fnc(init_mtd59),  /* i2c-mux-pca954x.ko */ \
         fnc(init_mtd60),  /* usb-common.ko */ \
         fnc(init_mtd61),  /* usb-core.ko */ \
-        fnc(init_mtd62),  /* ohci-hcd.ko */ \
-        fnc(init_mtd63),  /* uhci-hcd.ko */ \
-        fnc(init_mtd64),  /* usbmon.ko */ \
-        fnc(init_mtd65),  /* usb-storage.ko */ \
-        fnc(init_mtd66),  /* usbled.ko */ \
-        fnc(init_mtd67),  /* usbhid.ko */ \
-        fnc(init_mtd68),  /* ehci-hcd.ko */ \
-        fnc(init_mtd69),  /* ohci-pci.ko */ \
-        fnc(init_mtd70),  /* ohci-platform.ko */ \
+        fnc(uhci_hcd_init),    /* uhci-hcd.ko */ \
+        fnc(init_mtd64),     /* usbmon.ko */ \
+        fnc(init_mtd65),     /* usb-storage.ko */ \
+        fnc(init_mtd66),     /* usbled.ko */ \
+        fnc(uhid_init),       /* usbhid.ko */ \
+        fnc(hid_init),        /* usbhid.ko */ \
+        fnc(elo_driver_init),  /* usbhid.ko */ \
+        fnc(ehci_hcd_init),  /* ehci-hcd.ko */ \
+        fnc(ohci_pci_init),  /* ohci-pci.ko */ \
+        fnc(ohci_platform_init),  /* ohci-platform.ko */ \
+        fnc(ohci_hcd_mod_init),  /* ohci-hcd.ko */ \
+        fnc(ehci_platform_init),  /* ehci-platform.ko */ \
+        fnc(agp_nvidia_init),  /* nvidia-agp.ko */ \
+        fnc(nvidia_frontend_init_module),  /* nvidia.ko */ \
         fnc(init_mtd71),  /* ums-eneub6250.ko */ \
         fnc(init_mtd72),  /* uas.ko */ \
         fnc(init_mtd73),  /* ums-realtek.ko */ \
-        fnc(init_mtd74),  /* ehci-pci.ko */ \
-        fnc(init_mtd75),  /* ehci-platform.ko */ \
+        fnc(ehci_pci_init),  /* ehci-pci.ko */ \
         fnc(init_mtd76),  /* libphy.ko */ \
         fnc(init_mtd77),  /* smsc.ko */ \
         fnc(init_mtd78),  /* lib80211.ko */ \
@@ -117,11 +118,9 @@
         fnc(init_mtd89),  /* b43.ko */ \
         fnc(init_mtd90),  /* b43legacy.ko */ \
         fnc(init_mtd91),  /* intel-rng.ko */ \
-        fnc(init_mtd92),  /* agpgart.ko */ \
-        fnc(init_mtd93),  /* drm.ko */ \
-        fnc(init_mtd94),  /* nvidia-agp.ko */ \
-        fnc(init_mtd95),  /* nvidia.ko */ \
-        fnc(init_mtd96),  /* nvidia-uvm.ko */ \
+        fnc(agp_init),  /* agpgart.ko */ \
+        fnc(drm_core),  /* drm.ko */ \
+        fnc(uvm_init),  /* nvidia-uvm.ko */ \
         fnc(init_mtd100),  /* dca.ko */ \
         fnc(init_mtd101),  /* ioatdma.ko */ \
         fnc(init_mtd102),  /* backlight.ko */ \
@@ -148,29 +147,77 @@
         fnc(init_mtd123),  /* zlib_deflate.ko */ \
         fnc(init_mtd124),  /* zlib_inflate.ko */ \
         fnc(init_mtd125),  /* zlib.ko */ \
+        fnc(prgn_mod_init), /**/ \
+        fnc(blowfish_mod_init), /**/ \
+        fnc(crypto_cbc_module_init), /**/ \
+        fnc(crc32_mod_init), /**/ \
+    fnc(twofish_mod_init), /**/ \
+    fnc(wp512_mod_init), /**/ \
+    fnc(crct10dif_mod_init), /**/ \
+    fnc(crypto_null_mod_init), /**/ \
+    fnc(crypto_ecb_module_init), /**/ \
+    fnc(crypto_module_init), /**/ \
+    fnc(crypto_user_init), /**/ \
+    fnc(lz4_mod_init), /**/ \
+    fnc(lzo_mod_init), /**/ \
+    fnc(md4_mod_init), /**/ \
+    fnc(md5_mod_init), /**/ \
+    fnc(rmd128_mod_init), /**/ \
+    fnc(rmd160_mod_init), /**/ \
+    fnc(rmd256_mod_init), /**/ \
+    fnc(rmd320_mod_init), /**/ \
+    fnc(sha1_generic_mod_init), /**/ \
+    fnc(sha256_generic_mod_init), /**/ \
+    fnc(sha512_generic_mod_init), /**/ \
+    fnc(tcrypt_mod_init), /**/ \
+    fnc(tea_mod_init), /**/ \
+    fnc(tgr192_mod_init), /**/ \
+        fnc(pcie_portdrv_init), /**/ \
         fnc(init_mtd126),  /* iosfs.ko */ \
         fnc(init_mtd127),  /* fuse.ko */ \
         fnc(init_mtd128),  /* cuse.ko */ \
         fnc(init_mtd129),  /* jbd.ko */ \
         fnc(init_mtd130),  /* ext3.ko */ \
-        fnc(init_mtd131),  /* fat.ko */ \
-        fnc(init_mtd132),  /* vfat.ko */ \
-        fnc(init_mtd133),  /* msdos.ko */ \
+        fnc(init_fat_fs),  /* fat.ko */ \
+        fnc(init_vfat_fs),  /* vfat.ko */ \
+        fnc(init_msdos_fs),  /* msdos.ko */ \
+        fnc(init_ntfs_fs), /**/ \
+        fnc(acpi_video_init),/**/ \
+        fnc(acpi_ipmi_init),/**/ \
+        fnc(acpi_pad_init),/**/ \
+        fnc(acpi_battery_init),/**/ \
+        fnc(acpi_sbs_init),/**/ \
+        fnc(acpi_thermal_init),/**/ \
+        fnc(cpufreq_gov_dbs_init), /**/ \
+        fnc(cpufreq_gov_powersave_init), /**/ \
+        fnc(cpufreq_stats_init), /**/ \
+        fnc(cpufreq_gov_userspace_init), /**/ \
+        fnc(hpet_init), /**/ \
+        fnc(pci_hotplug_init), /**/ \
+        fnc(pcied_init), /**/ \
+        fnc(shpcd_init), /**/ \
         fnc(init_mtd134),  /* twofish_common.ko */ \
         fnc(init_mtd135),  /* twofish_generic.ko */ \
-        fnc(init_mtd136)  /* twofish-i586.ko */
+        fnc(init_mtd136),  /* twofish-i586.ko */ \
+        fnc(asymmetric_key_init), /**/ \
+        fnc(pkcs7_key_init), /**/ \
+        fnc(x509_key_init), /**/ \
+        fnc(aes_init), /**/ \
+        fnc(acpi_ac_init) /**/
+
+        //fnc(init_msdos_fs), /* msdos.ko */
 
 #define macro_str(x)    #x
-#define macro_name(x)   x
+#define macro_name(x)   x ## _id
 
 /**
  * Implement static enum to string map
  */
-enum modules_e {
+typedef enum   {
     none = 0,           // not found or not element
     INIT_CALLS(macro_name)
     ,end
-};
+} modules_e;
 
 
 /**
@@ -180,11 +227,10 @@ enum modules_e {
  */
 typedef enum { asynchronized, deferred } task_type_t;
 
-struct init_fn
+struct init_fn_t
 {
   task_type_t type_;    // task type
-  enum modules_e  id;
-  enum modules_e child_id;
+  modules_e  id;
   initcall_t fnc;
 };
 
@@ -197,12 +243,14 @@ struct init_fn
 
 //
 #define async_module_init(fnc, ... )  \
-  static struct init_fn init_fn_##fnc __used \
-  __attribute__((__section__(".async_initcall.init"))) = {asynchronized,modules_e::fnc,#__VA_ARGS__,fnc};
+  static struct init_fn_t init_fn_##fnc __used \
+  __attribute__((__section__(".async_initcall.init"))) = {asynchronized,fnc ## _id,fnc};
 
-#define deferred_module_init(fnc, ... )  \
-  static struct init_fn init_fn_##fnc __used \
-  __attribute__((__section__(".async_initcall.init"))) = {deferred,modules_e::fnc,#__VA_ARGS__,fnc};
+//
+#define deferred_module_init(fnc,...)  \
+  static struct init_fn_t init_fn_##fnc __used \
+  __attribute__((__section__(".async_initcall.init"))) = {deferred,fnc ## _id,fnc};
+
 
 // Usefull for ACPI and USB maybe PCI
 #define async_module_driver(__driver, __register, __unregister,__depends, ...) \

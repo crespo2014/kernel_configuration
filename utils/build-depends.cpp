@@ -9,7 +9,6 @@
  *  dot -Tpng  -o sample.png graphviz-queue.dot
  */
 
-
 #include <vector>
 #include <fstream>
 #include <iostream>

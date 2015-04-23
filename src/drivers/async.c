@@ -58,7 +58,6 @@
 #include <linux/sched.h>
 #include <linux/poll.h>
 #include <linux/types.h>
-//#include <linux/atomic.h>
 #include <asm/atomic.h>
 #include <linux/kthread.h>  // for threads#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 #define printk_debug(...) printk(__VA_ARGS__)
@@ -104,8 +103,8 @@ static const char* const module_name[] =
 
 static const struct
 {
-    enum modules_e task_id;
-    enum modules_e parent_id;
+    modules_e task_id;
+    modules_e parent_id;
 } dependency_list[] =
 { //
         { init_mtd1, init_mtd2 }, //
