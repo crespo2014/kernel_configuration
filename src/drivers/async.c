@@ -100,9 +100,11 @@ static initcall_t *initcall_levels[] __initdata = {
 
 //static struct { initcall_typ typ_; const char* str_ ;} initcall_map[] = { {initcall_typ::arch_initcall,"arch_initcall" }};
 
-static const char* module_name[] = {"",INIT_CALLS(macro_str)};
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+static const char* const module_name[] = {"",INIT_CALLS(macro_str)};
+#endif
 
-static struct
+static const struct
 {
     enum modules_e task_id;
     enum modules_e parent_id;
@@ -114,12 +116,6 @@ static struct
 /**
  * Dependencies list will be keep here to avoid modifications on everywhere
  */
-enum task_status_e {
-    waiting , //
-    ready, //
-    running, //
-    done
-};
 
 #define MAX_TASKS 200
 
@@ -128,7 +124,7 @@ enum task_status_e {
  */
 struct task_v2
 {
-    task_type_t type;
+    task_type_t type;           //
     enum modules_e id;           // idx in string table
     initcall_t fnc;             // ptr to init function
     unsigned waiting_for;
@@ -145,20 +141,9 @@ struct task_list_t
     unsigned end_idx;       // last element on the list
     unsigned task_idx[MAX_TASKS];
     unsigned task_max;      // number of tasks
+    unsigned task_left;     // how many of global task are left to done
     struct task_v2 task[MAX_TASKS];
 };
-
-
-
-unsigned getId(const char* name)
-{
-    unsigned id = 0;
-    for (;id < sizeof(module_name)/sizeof(*module_name); ++id)
-    {
-        if (strcmp(module_name[id],name) == 0) break;
-    }
-    return id;
-}
 
 static struct task_list_t depends_2;
 
@@ -176,12 +161,13 @@ void FillTasks(struct init_fn* begin, struct init_fn* end)
         task->waiting_count = 1;
     }
     depends_2.task_max = end - begin;
+    depends_2.task_left =  depends_2.task_max;
     // resolve dependencies
     for (idx=0;idx<depends_2.task_max;++idx)
     {
         for (idx2 = 0; idx2 < sizeof(dependency_list)/sizeof(*dependency_list); ++idx2)
         {
-            // at the moment one one dependency is supported
+            // at the moment only one dependency is supported
             if (dependency_list[idx2].task_id == depends_2.task[ depends_2.task_idx[idx2]].id)
             {
                 ++depends_2.task[ depends_2.task_idx[idx2]].waiting_count;
@@ -198,7 +184,7 @@ void FillTasks(struct init_fn* begin, struct init_fn* end)
 /**
  * Prepare dependencies structure to process an specific type of task
  */
-void Prepare2(task_type_t type)
+void Prepare(task_type_t type)
 {
     // Pick only task of type from all task
     unsigned idx,idx2,id;
@@ -260,7 +246,7 @@ struct depends_list
 	struct task_data task[MAX_TASKS];   //TODO use dinamic allocation
 };
 
-struct depends_list depends;
+//struct depends_list depends;
 static DEFINE_SPINLOCK(list_lock);
 static DECLARE_WAIT_QUEUE_HEAD(list_wait);
 
@@ -269,86 +255,86 @@ static DECLARE_WAIT_QUEUE_HEAD(list_wait);
  * Get a task from the list for execution
  * nullptr - no more task available
  */
-struct init_fn* TaskDone(struct init_fn* prev_task)
+unsigned TaskDone(unsigned task_idx)
 {
 	unsigned i, j;
-	unsigned waiting;    // how many task has been wakeup
-	struct task_data task;
-	if (depends.running_last == 0)
+	unsigned child_count = 0;    // how many task has been wakeup
+	if (depends_2.running_last == 0)
 	  return 0;
 	//lock
 	spin_lock(&list_lock);
-	waiting = depends.waiting;    // detect how many task has been wake up
-	if (prev_task != 0)
+	//waiting = depends.waiting;    // detect how many task has been wake up
+	if (task_idx < depends_2.task_max)
 	{
-		for (i = depends.waiting_last; i < depends.running_last; ++i)
+	    // move to done list
+		for (i = depends_2.ready_last; i < depends_2.running_last; ++i)
 		{
-			if (depends.task[i].ptr == prev_task)
+			if (depends_2.task_idx[i] == task_idx)
 			{
 				// bring down a task to do
-				--depends.running_last;
-				depends.task[i] = depends.task[depends.running_last];
+				--depends_2.running_last;
+				depends_2.task_idx[i] = depends_2.task_idx[depends_2.running_last];
 				break;
 			}
 		}
-		// release all task that depends on the finished one and remember
-		for (i = 0; i < depends.waiting_last; ++i)
-		{
-			if (depends.task[i].waiting_for == prev_task)
-			{
-				depends.task[i].waiting_for = 0;
-				depends.waiting++;
-			}
-		}
+		i = 0;
+		child_count = depends_2.task[task_idx].child_count;
+		while (depends_2.task[task_idx].child_count != 0)
+        {
+            // release all task that depends_2 on the finished one and remember
+            for (i = 0; i < depends_2.waiting_last; ++i)
+            {
+                if (depends_2.task[depends_2.task_idx[i]].waiting_for == task_idx)
+                {
+                    //move to ready
+
+                    depends_2.task[i].waiting_for = 0;
+
+                }
+            }
+        }
 	}
 	// check if not running task and not pending one
-	if (depends.running_last == depends.waiting_last && depends.waiting == 0)
+	if (depends_2.running_last == depends_2.waiting_last)
 	{
-		// the unlock all task, maybe is better execute one by one task that we do not known what it depends on
-		for (i = 0; i < depends.waiting_last; ++i)
-		{
-			depends.task[i].waiting_for = 0;
-			depends.waiting++;
-		}
+	    depends_2.waiting_last = 0;
 	}
+
 	// pick a new task
-	if (depends.waiting != 0)
+	task_idx = depends_2.task_max;
+	if (depends_2.waiting_last != depends_2.ready_last)
 	{
 		// find the lower id task available
-		prev_task = 0;
 		j = 0;
-		for (i = 0; i < depends.waiting_last; ++i)
+		for (i = depends_2.waiting_last; i < depends_2.ready_last; ++i)
 		{
-			if ((depends.task[i].waiting_for == 0) && ((prev_task == 0) || (depends.task[i].ptr < prev_task)))
+			if (depends_2.task_idx[i] < task_idx)
 			{
-				prev_task = depends.task[i].ptr;
+			    task_idx = depends_2.task_idx[i];
 				j = i;
 			}
 		}
-		--depends.waiting;
-		--depends.waiting_last;
-		task = depends.task[j];
-		depends.task[j] = depends.task[depends.waiting_last];
-		depends.task[depends.waiting_last] = task;
+		--depends_2.waiting_last;
+		depends_2.task_idx[j] = depends_2.task_idx[depends_2.waiting_last];
+		depends_2.task_idx[depends_2.waiting_last] = task_idx;
 	} else
 	{
 		// check end of all task
-		if (depends.running_last == 0)
+		if (depends_2.running_last == 0)
 		{
 			// clean up all memory
 		}
-		prev_task = 0;
 	}
 	// spin unlock
 	spin_unlock(&list_lock);
 	// allow other thread pick a task
-	if ((depends.waiting > waiting + 1 ) || (depends.running_last == 0))
+	if (child_count > 1)
 	  wake_up_interruptible(&list_wait);
-	if ((prev_task == 0) && (depends.running_last == 0))
+	if (depends_2.running_last == 0 && (depends_2.task_left == 0))
 	{
-	  free_initmem();
+	  //free_initmem(); do not doit until deferred
 	}
-	return prev_task;
+	return task_idx;
 }
 
 /*
@@ -401,20 +387,19 @@ void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 int WorkingThread(void *data)
 {
   int ret;
-  //struct task_struct *kthread = *(struct task_struct**)data;
-	struct init_fn* task = 0;
+  unsigned task_idx = depends_2.task_max;
 	printk_debug("async %d starts\n",(unsigned)data);
 	do
 	{
-		task = TaskDone(task);
-		if (task != 0)
+	    task_idx = TaskDone(task_idx);
+		if (task_idx != depends_2.task_max)
 		{
-		  printk_debug("async %d %s\n",(unsigned)data,module_name[task->id]);
-		  do_one_initcall(task->fnc);
+		  printk_debug("async %d %s\n",(unsigned)data,module_name[depends_2.task[task_idx].id]);
+		  do_one_initcall(depends_2.task[task_idx].fnc);
 		} else
 		{
 		  printk_debug("async %d waiting ...\n",(unsigned)data);
-		  ret = wait_event_interruptible(list_wait, (depends.waiting !=0 || depends.waiting_last == 0));
+		  ret = wait_event_interruptible(list_wait, (depends_2.ready_last != depends_2.waiting_last || depends_2.waiting_last == 0));
 		  if (ret != 0)
 		  {
 		    printk("async init wake up returned %d\n",ret);
@@ -422,7 +407,7 @@ int WorkingThread(void *data)
 		  }
 			//wait for (depends.unlocked !=0 or depends.waiting_last == 0)
 		}
-	} while (depends.waiting_last != 0);	// something to do
+	} while (depends_2.waiting_last != 0);	// something to do
 	printk_debug("async %d ends\n",(unsigned)data);
 	return 0;
 }
@@ -435,7 +420,7 @@ int doit_type(task_type_t type)
   unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
   unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
-  Prepare2(type);
+  Prepare(type);
   if (max_threads == 0) WorkingThread(0);
   for (; max_threads != 0; --max_threads)
   {
@@ -472,7 +457,7 @@ void traceInitCalls(void)
 static int async_initialization(void)
 {
     FillTasks(__async_initcall_start, __async_initcall_end);
-    traceInitCalls();
+    //traceInitCalls();
     printk_debug("async started asynchronized\n");
     return doit_type(asynchronized);
 }
