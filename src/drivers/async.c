@@ -71,15 +71,6 @@
 #endif
 
 /**
- * Macro to create a string array
- */
-#define STR_ITEM()
-#define STR_ITEM(x)  ,#x
-#define STR_ITEMS()
-#define STR_ITEMS(x,...) ,#x STR_ITEM(##__VA_ARG__)
-#define STR_ARRAY(x,...) { #x,STR_ITEMS(##__VA_ARG__)  }
-
-/**
  * Static struct holding all data
  */
 extern struct init_fn __async_initcall_start[], __async_initcall_end[];
@@ -107,6 +98,141 @@ static initcall_t *initcall_levels[] __initdata = {
 	__initcall_end,
 };
 
+//static struct { initcall_typ typ_; const char* str_ ;} initcall_map[] = { {initcall_typ::arch_initcall,"arch_initcall" }};
+
+static const char* module_name[] = {"",INIT_CALLS(macro_str)};
+
+static struct
+{
+    enum modules_e task_id;
+    enum modules_e parent_id;
+} dependency_list[] = { //
+        {init_mtd1,init_mtd2},//
+        {init_mtd3,init_mtd4},//
+        {init_mtd5,init_mtd6} //
+        };
+/**
+ * Dependencies list will be keep here to avoid modifications on everywhere
+ */
+enum task_status_e {
+    waiting , //
+    ready, //
+    running, //
+    done
+};
+
+#define MAX_TASKS 200
+
+/**
+ * all initcall will be enums. a tbl will store all names
+ */
+struct task_v2
+{
+    task_type_t type;
+    enum modules_e id;           // idx in string table
+    initcall_t fnc;             // ptr to init function
+    unsigned waiting_for;
+    unsigned waiting_count; // how many task does it depend on
+    unsigned child_count;   // how many task it triggers
+};
+
+// TODO join together all task with taskid table to allow dynamic allocation
+struct task_list_t
+{
+    unsigned waiting_last;  // last task waiting to be release
+    unsigned ready_last;    // last task to be execute
+    unsigned running_last;  // the last task running
+    unsigned end_idx;       // last element on the list
+    unsigned task_idx[MAX_TASKS];
+    unsigned task_max;      // number of tasks
+    struct task_v2 task[MAX_TASKS];
+};
+
+
+
+unsigned getId(const char* name)
+{
+    unsigned id = 0;
+    for (;id < sizeof(module_name)/sizeof(*module_name); ++id)
+    {
+        if (strcmp(module_name[id],name) == 0) break;
+    }
+    return id;
+}
+
+static struct task_list_t depends_2;
+
+void FillTasks(struct init_fn* begin, struct init_fn* end)
+{
+    unsigned idx,idx2;
+    struct init_fn* it_task;
+    struct task_v2* task = depends_2.task;
+    for (it_task = begin; it_task < end; ++it_task,++task)
+    {
+        task->id = it_task->id;
+        task->type = it_task->type_;
+        task->fnc = it_task->fnc;
+        task->waiting_for = 0;
+        task->waiting_count = 1;
+    }
+    depends_2.task_max = end - begin;
+    // resolve dependencies
+    for (idx=0;idx<depends_2.task_max;++idx)
+    {
+        for (idx2 = 0; idx2 < sizeof(dependency_list)/sizeof(*dependency_list); ++idx2)
+        {
+            // at the moment one one dependency is supported
+            if (dependency_list[idx2].task_id == depends_2.task[ depends_2.task_idx[idx2]].id)
+            {
+                ++depends_2.task[ depends_2.task_idx[idx2]].waiting_count;
+                depends_2.task[ depends_2.task_idx[idx2]].waiting_for = dependency_list[idx2].parent_id;
+            }
+            if (dependency_list[idx2].parent_id == depends_2.task[ depends_2.task_idx[idx2]].id)
+            {
+                ++depends_2.task[ depends_2.task_idx[idx2]].child_count;
+            }
+        }
+        printk_debug("async registered '%s' depends on '%s'\n", module_name[depends_2.task[depends_2.task_idx[idx2]].id],depends_2.task[ depends_2.task_idx[idx2]].waiting_for != 0 ? module_name[depends_2.task[ depends_2.task_idx[idx2]].waiting_for]: "");
+    }
+}
+/**
+ * Prepare dependencies structure to process an specific type of task
+ */
+void Prepare2(task_type_t type)
+{
+    // Pick only task of type from all task
+    unsigned idx,idx2,id;
+    depends_2.end_idx = 0;
+    //
+    for (idx=0;idx<depends_2.task_max;++idx)
+    {
+        if (depends_2.task[idx].type == type)
+        {
+            depends_2.task_idx[depends_2.end_idx] = idx;
+            ++depends_2.end_idx;
+        }
+    }
+    depends_2.ready_last = depends_2.end_idx;
+    depends_2.waiting_last = depends_2.end_idx;
+    depends_2.running_last = depends_2.end_idx;
+    // jump waiting task
+    idx2 = 0;
+    while(depends_2.task[depends_2.task_idx[idx2]].waiting_count != 0)
+        ++idx2;
+    for (idx=idx2+1;idx<depends_2.task_max;++idx)
+    {
+        //move waiting task to front
+        if (depends_2.task[depends_2.task_idx[idx]].waiting_count != 0)
+        {
+            id = depends_2.task_idx[idx2];
+            depends_2.task_idx[idx2] = depends_2.task_idx[idx];
+            depends_2.task_idx[idx] = id;
+            ++idx2;
+        }
+    }
+    depends_2.waiting_last = idx2;
+}
+
 /**
  * at least one element has to be in the list in the position 0 that never executes
  */
@@ -124,14 +250,13 @@ struct task_data
  * threads end when waiting == 0
  * last thread is when running became 0
  */
-#define MAX_TASKS 200
+
 struct depends_list
 {
 	unsigned waiting_last;	// last task waiting to be release
 	unsigned running_last;	// the last task running
 	unsigned end_idx;		// last element on the list
 	unsigned waiting;		// how many task are ready to be executed
-  //struct init_fn* stask;  // static task structure
 	struct task_data task[MAX_TASKS];   //TODO use dinamic allocation
 };
 
@@ -226,6 +351,7 @@ struct init_fn* TaskDone(struct init_fn* prev_task)
 	return prev_task;
 }
 
+/*
 void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 {
 	// fill dependencies structure
@@ -270,6 +396,7 @@ void Prepare(struct init_fn* begin, struct init_fn* end,task_type_t type)
 		}
 	}
 }
+*/
 
 int WorkingThread(void *data)
 {
@@ -282,7 +409,7 @@ int WorkingThread(void *data)
 		task = TaskDone(task);
 		if (task != 0)
 		{
-		  printk_debug("async %d %s\n",(unsigned)data, task->name);
+		  printk_debug("async %d %s\n",(unsigned)data,module_name[task->id]);
 		  do_one_initcall(task->fnc);
 		} else
 		{
@@ -308,7 +435,7 @@ int doit_type(task_type_t type)
   unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
   unsigned max_cpus = num_online_cpus();
   static struct task_struct *thr;
-  Prepare(__async_initcall_start, __async_initcall_end, type);
+  Prepare2(type);
   if (max_threads == 0) WorkingThread(0);
   for (; max_threads != 0; --max_threads)
   {
@@ -344,6 +471,7 @@ void traceInitCalls(void)
  */
 static int async_initialization(void)
 {
+    FillTasks(__async_initcall_start, __async_initcall_end);
     traceInitCalls();
     printk_debug("async started asynchronized\n");
     return doit_type(asynchronized);
@@ -360,8 +488,6 @@ static int deferred_initialization(void)
 
 module_init(async_initialization);
 late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
-
-static char* d = STR_ARRAY(a,b,c,d,e,f);
 
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
