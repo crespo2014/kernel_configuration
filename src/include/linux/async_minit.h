@@ -35,7 +35,7 @@
         fnc(alsa_seq_init),          /* snd-seq.ko */ \
         fnc(alsa_pcm_oss_init),      /* snd-pcm-oss.ko */ \
         fnc(snd_hda_codec),          /* snd-hda-codec.ko */ \
-        fnc(alsa_seq_midi_init),     /* snd-seq-midi-event.ko */ \
+        fnc(alsa_seq_midi_event_init),     /* snd-seq-midi-event.ko */ \
         fnc(alsa_seq_dummy_init),    /* snd-seq-dummy.ko */ \
         fnc(snd_hda_controller),     /* snd-hda-controller.ko */ \
         fnc(snd_hda_codec_generic),  /* snd-hda-codec-generic.ko */ \
@@ -86,13 +86,12 @@
         fnc(usb_core),  /* usb-core.ko */ \
         fnc(uhci_hcd_init),    /* uhci-hcd.ko */ \
         fnc(usbmon),     /* usbmon.ko */ \
-        fnc(usb_storage),     /* usb-storage.ko */ \
+        fnc(usb_storage_driver_init),     /* usb-storage.ko */ \
         fnc(led_driver_init),     /* usbled.ko */ \
-        fnc(uhid_init),       /* usbhid.ko */ \
         fnc(hid_init),        /* usbhid.ko */ \
-        fnc(usbhid),  /* ums-eneub6250.ko */ \
-        fnc(uas),  /* uas.ko */ \
-        fnc(ums_realtek),  /* ums-realtek.ko */ \
+        fnc(ene_ub6250_driver_init),  /* ums-eneub6250.ko */ \
+        fnc(uas_driver_init),  /* uas.ko */ \
+        fnc(realtek_cr_driver_init),  /* ums-realtek.ko */ \
         fnc(ehci_pci_init),  /* ehci-pci.ko */ \
         fnc(libphy),  /* libphy.ko */ \
         fnc(smsc),  /* smsc.ko */ \
@@ -104,7 +103,7 @@
         fnc(cfg80211),  /* cfg80211.ko */ \
         fnc(mac80211),  /* mac80211.ko */ \
         fnc(led_class),  /* led-class.ko */ \
-        fnc(rng_core),  /* rng-core.ko */ \
+        fnc(prng_mod_init),  /* rng-core.ko */ \
         fnc(ipw2100_init),  /* ipw2100.ko */ \
         fnc(leds_pca955x),  /* leds-pca955x.ko */ \
         fnc(b43),  /* b43.ko */ \

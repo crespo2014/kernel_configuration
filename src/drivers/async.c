@@ -108,6 +108,7 @@ static const struct
 } dependency_list[] =
 { //
         MOD_DEPENDENCY_ITEM(rfcomm_init,bt_init), //
+		
 		MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),	//
 		MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),	//
 		MOD_DEPENDENCY_ITEM(alsa_pcm_oss_init,alsa_mixer_oss_init),	//
@@ -115,9 +116,9 @@ static const struct
 		MOD_DEPENDENCY_ITEM(alsa_hwdep_init,alsa_pcm_init),	//
 		MOD_DEPENDENCY_ITEM(alsa_seq_device_init,alsa_timer_init),	//
 		MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_seq_midi_init,alsa_seq_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_seq_midi_event_init,alsa_seq_init),	//
 		MOD_DEPENDENCY_ITEM(alsa_seq_dummy_init,alsa_seq_init),	//	
-		MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_init),	//	
+		MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_event_init),	//	
 /* HDA snd is exported function plus all patches */		
 		MOD_DEPENDENCY_ITEM(patch_si3054_init,alsa_hwdep_init),	//		
 		MOD_DEPENDENCY_ITEM(patch_ca0132_init,alsa_hwdep_init),	//		
@@ -149,9 +150,29 @@ static const struct
 			
 		MOD_DEPENDENCY_ITEM(uvcvideo,videobuf2_vmalloc),	//
 		MOD_DEPENDENCY_ITEM(gspca_main,videodev),	//
-		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
-		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
-		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
+		//USB
+		MOD_DEPENDENCY_ITEM(usb_core,usb_common),	//
+		MOD_DEPENDENCY_ITEM(ohci_hcd_mod_init,usb_core),	//
+		MOD_DEPENDENCY_ITEM(uhci_hcd_init,usb_core),	//
+		MOD_DEPENDENCY_ITEM(usbmon,usb_core),	//
+		MOD_DEPENDENCY_ITEM(usb_storage_driver_init,usb_core),	//
+		MOD_DEPENDENCY_ITEM(led_driver_init,usb_core),	//
+		MOD_DEPENDENCY_ITEM(hid_init,usb_core),	//
+		MOD_DEPENDENCY_ITEM(ehci_hcd_init,usb_core),	//
+		
+		MOD_DEPENDENCY_ITEM(ohci_pci_init,ohci_hcd_mod_init),	//
+		MOD_DEPENDENCY_ITEM(ehci_platform_init,ohci_hcd_mod_init),	//
+		MOD_DEPENDENCY_ITEM(hid_init,usb_storage_driver_init),	//
+		MOD_DEPENDENCY_ITEM(uas_driver_init,usb_storage_driver_init),	//
+		MOD_DEPENDENCY_ITEM(realtek_cr_driver_init,usb_storage_driver_init),	//
+		MOD_DEPENDENCY_ITEM(ene_ub6250_driver_init,usb_storage_driver_init),	//		
+		
+		MOD_DEPENDENCY_ITEM(ehci_pci_init,ehci_hcd_init),	//
+		MOD_DEPENDENCY_ITEM(ehci_platform_init,ehci_hcd_init),	//
+		
+		MOD_DEPENDENCY_ITEM(smsc,libphy),	//
+		
+		
 		
 		
         };
@@ -212,6 +233,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
             // at the moment only one dependency is supported
             if (dependency_list[idx2].task_id == tasks.all[tasks.idx_list[idx2]].id)
             {
+				// TODO check for parent process to be in the list with the same type
                 ++tasks.all[tasks.idx_list[idx2]].waiting_count;
                 tasks.all[tasks.idx_list[idx2]].waiting_for = dependency_list[idx2].parent_id;
             }
