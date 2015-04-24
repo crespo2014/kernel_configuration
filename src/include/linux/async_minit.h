@@ -44,7 +44,7 @@
         fnc(patch_hdmi_init),        /* snd-hda-codec-hdmi.ko */ \
         fnc(alsa_seq_oss_init),             /* snd-seq-oss.ko */ \
         fnc(snd_hda_intel),             /* snd-hda-intel.ko */ \
-        fnc(patch_sigmantel_init),   /* snd-hda-codec-idt.ko */ \
+        fnc(patch_sigmatel_init),   /* snd-hda-codec-idt.ko */ \
         fnc(patch_cirrus_init),      /* snd-hda-codec-cirrus.ko */ \
         fnc(patch_ca0110_init),      /* snd-hda-codec-ca0110.ko */ \
         fnc(patch_via_init),         /* snd-hda-codec-via.ko */ \
@@ -89,6 +89,7 @@
         fnc(usb_storage_driver_init),     /* usb-storage.ko */ \
         fnc(led_driver_init),     /* usbled.ko */ \
         fnc(hid_init),        /* usbhid.ko */ \
+		fnc(uhid_init),		 /* uhid.ko */ \
         fnc(ene_ub6250_driver_init),  /* ums-eneub6250.ko */ \
         fnc(uas_driver_init),  /* uas.ko */ \
         fnc(realtek_cr_driver_init),  /* ums-realtek.ko */ \
@@ -219,6 +220,11 @@
 
 #define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
 
+#define ADD_MODULE_DEPENDENCY(child,parent) \
+         static struct dependency_t child##parent __used \
+		 __attribute__((__section__(".async_modules_depends.init"))) = \
+		 {child ## _id, parent ## _id};    
+
 #define macro_str(x)    #x
 #define macro_name(x)   x ## _id
 
@@ -231,6 +237,11 @@ typedef enum   {
     ,end
 } modules_e;
 
+struct dependency_t
+{
+    modules_e task_id;
+    modules_e parent_id;
+};
 
 /**
  * Task type or execution priority
@@ -250,10 +261,8 @@ struct init_fn_t
  * TODO Disable when module build as module
  * add support for bus devices like acpi, pci, etc
 */
-//
-#ifdef CONFIG_ASYNCHRO_MODULE_INIT
+#if defined(CONFIG_ASYNCHRO_MODULE_INIT) && defined(MODULE)
 
-//
 #define async_module_init(fnc, ... )  \
   static struct init_fn_t init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {asynchronized,fnc ## _id,fnc};
@@ -262,7 +271,6 @@ struct init_fn_t
 #define deferred_module_init(fnc,...)  \
   static struct init_fn_t init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {deferred,fnc ## _id,fnc};
-
 
 // Usefull for ACPI and USB maybe PCI
 #define async_module_driver(__driver, __register, __unregister,__depends, ...) \
@@ -277,7 +285,7 @@ static void __exit __driver##_exit(void) \
 } \
 module_exit(__driver##_exit);
 
-//
+// ACPI USB PCI
 #define deferred_module_driver(__driver, __register, __unregister,__depends, ...) \
 static int __init __driver##_init(void) \
 { \

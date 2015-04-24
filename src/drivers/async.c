@@ -69,6 +69,7 @@
  * Static struct holding all data
  */
 extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
+extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
 
 extern initcall_t __initcall_start[];
 extern initcall_t __initcall0_start[];
@@ -94,92 +95,80 @@ static initcall_t *initcall_levels[] __initdata =
         __initcall_end //
         };
 
-//static struct { initcall_typ typ_; const char* str_ ;} initcall_map[] = { {initcall_typ::arch_initcall,"arch_initcall" }};
-
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 static const char* const module_name[] =
 {   "",INIT_CALLS(macro_str)};
 #endif
 
-static const struct
-{
-    modules_e task_id;
-    modules_e parent_id;
-} dependency_list[] =
-{ //
-        MOD_DEPENDENCY_ITEM(rfcomm_init,bt_init), //
-		
-		MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_pcm_oss_init,alsa_mixer_oss_init),	//
-		MOD_DEPENDENCY_ITEM(snd_hda_codec,alsa_hwdep_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_hwdep_init,alsa_pcm_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_seq_device_init,alsa_timer_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_seq_midi_event_init,alsa_seq_init),	//
-		MOD_DEPENDENCY_ITEM(alsa_seq_dummy_init,alsa_seq_init),	//	
-		MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_event_init),	//	
-/* HDA snd is exported function plus all patches */		
-		MOD_DEPENDENCY_ITEM(patch_si3054_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_ca0132_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_hdmi_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_sigmantel_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_cirrus_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_ca0110_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_via_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_realtek_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_conexant_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_cmedia_init,alsa_hwdep_init),	//		
-		MOD_DEPENDENCY_ITEM(patch_analog_init,alsa_hwdep_init),	//		
-		
-		MOD_DEPENDENCY_ITEM(coretemp,hwmon),	//
-		MOD_DEPENDENCY_ITEM(gpio_fan,hwmon),	//
-		MOD_DEPENDENCY_ITEM(acpi_processor_driver_init,hwmon),	//				
-
-		MOD_DEPENDENCY_ITEM(ubi_init,init_mtd),	//
-		MOD_DEPENDENCY_ITEM(uio_cif,uio),	//
-		MOD_DEPENDENCY_ITEM(mxm_wmi,wmi),	//
-		MOD_DEPENDENCY_ITEM(speedstep_ich,speedstep),	//
-		
-		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
-		MOD_DEPENDENCY_ITEM(videodev,usb_core),	//
-		MOD_DEPENDENCY_ITEM(v4l2_common,videodev),	//
-		MOD_DEPENDENCY_ITEM(videobuf2_core,v4l2_common),	//
-		MOD_DEPENDENCY_ITEM(videobuf2_memops,videobuf2_core),	//
-		MOD_DEPENDENCY_ITEM(videobuf2_vmalloc,videobuf2_memops),	//
-			
-		MOD_DEPENDENCY_ITEM(uvcvideo,videobuf2_vmalloc),	//
-		MOD_DEPENDENCY_ITEM(gspca_main,videodev),	//
-		//USB
-		MOD_DEPENDENCY_ITEM(usb_core,usb_common),	//
-		MOD_DEPENDENCY_ITEM(ohci_hcd_mod_init,usb_core),	//
-		MOD_DEPENDENCY_ITEM(uhci_hcd_init,usb_core),	//
-		MOD_DEPENDENCY_ITEM(usbmon,usb_core),	//
-		MOD_DEPENDENCY_ITEM(usb_storage_driver_init,usb_core),	//
-		MOD_DEPENDENCY_ITEM(led_driver_init,usb_core),	//
-		MOD_DEPENDENCY_ITEM(hid_init,usb_core),	//
-		MOD_DEPENDENCY_ITEM(ehci_hcd_init,usb_core),	//
-		
-		MOD_DEPENDENCY_ITEM(ohci_pci_init,ohci_hcd_mod_init),	//
-		MOD_DEPENDENCY_ITEM(ehci_platform_init,ohci_hcd_mod_init),	//
-		MOD_DEPENDENCY_ITEM(hid_init,usb_storage_driver_init),	//
-		MOD_DEPENDENCY_ITEM(uas_driver_init,usb_storage_driver_init),	//
-		MOD_DEPENDENCY_ITEM(realtek_cr_driver_init,usb_storage_driver_init),	//
-		MOD_DEPENDENCY_ITEM(ene_ub6250_driver_init,usb_storage_driver_init),	//		
-		
-		MOD_DEPENDENCY_ITEM(ehci_pci_init,ehci_hcd_init),	//
-		MOD_DEPENDENCY_ITEM(ehci_platform_init,ehci_hcd_init),	//
-		
-		MOD_DEPENDENCY_ITEM(smsc,libphy),	//
-		
-		
-		
-		
-        };
 /**
- * Dependencies list will be keep here to avoid modifications on everywhere
+ * Dependencies list can be declare any time in any c file
  */
+ADD_MODULE_DEPENDENCY(rfcomm_init,bt_init);
 
+ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
+ADD_MODULE_DEPENDENCY(alsa_mixer_oss_init,alsa_pcm_init);
+ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);
+ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
+ADD_MODULE_DEPENDENCY(alsa_hwdep_init,alsa_pcm_init);
+ADD_MODULE_DEPENDENCY(alsa_seq_device_init,alsa_timer_init);
+ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_seq_device_init);
+ADD_MODULE_DEPENDENCY(alsa_seq_midi_event_init,alsa_seq_init);
+ADD_MODULE_DEPENDENCY(alsa_seq_dummy_init,alsa_seq_init);	
+ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);	
+/* HDA snd is exported function plus all patches */		
+ADD_MODULE_DEPENDENCY(patch_si3054_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_ca0132_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_hdmi_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_sigmatel_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_cirrus_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_ca0110_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_via_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_realtek_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_conexant_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_cmedia_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_analog_init,alsa_hwdep_init);		
+
+ADD_MODULE_DEPENDENCY(coretemp,hwmon);
+ADD_MODULE_DEPENDENCY(gpio_fan,hwmon);
+ADD_MODULE_DEPENDENCY(acpi_processor_driver_init,hwmon);				
+
+ADD_MODULE_DEPENDENCY(ubi_init,init_mtd);
+ADD_MODULE_DEPENDENCY(uio_cif,uio);
+ADD_MODULE_DEPENDENCY(mxm_wmi,wmi);
+ADD_MODULE_DEPENDENCY(speedstep_ich,speedstep);
+
+ADD_MODULE_DEPENDENCY(mmc_block,mmc_core);
+ADD_MODULE_DEPENDENCY(videodev,usb_core);
+ADD_MODULE_DEPENDENCY(v4l2_common,videodev);
+ADD_MODULE_DEPENDENCY(videobuf2_core,v4l2_common);
+ADD_MODULE_DEPENDENCY(videobuf2_memops,videobuf2_core);
+ADD_MODULE_DEPENDENCY(videobuf2_vmalloc,videobuf2_memops);
+	
+ADD_MODULE_DEPENDENCY(uvcvideo,videobuf2_vmalloc);
+ADD_MODULE_DEPENDENCY(gspca_main,videodev);
+//USB
+ADD_MODULE_DEPENDENCY(usb_core,usb_common);
+ADD_MODULE_DEPENDENCY(ohci_hcd_mod_init,usb_core);
+ADD_MODULE_DEPENDENCY(uhci_hcd_init,usb_core);
+ADD_MODULE_DEPENDENCY(usbmon,usb_core);
+ADD_MODULE_DEPENDENCY(usb_storage_driver_init,usb_core);
+ADD_MODULE_DEPENDENCY(led_driver_init,usb_core);
+ADD_MODULE_DEPENDENCY(hid_init,usb_core);
+ADD_MODULE_DEPENDENCY(ehci_hcd_init,usb_core);
+
+ADD_MODULE_DEPENDENCY(ohci_pci_init,ohci_hcd_mod_init);
+ADD_MODULE_DEPENDENCY(ehci_platform_init,ohci_hcd_mod_init);
+ADD_MODULE_DEPENDENCY(hid_init,usb_storage_driver_init);
+ADD_MODULE_DEPENDENCY(uas_driver_init,usb_storage_driver_init);
+ADD_MODULE_DEPENDENCY(realtek_cr_driver_init,usb_storage_driver_init);
+ADD_MODULE_DEPENDENCY(ene_ub6250_driver_init,usb_storage_driver_init);		
+
+ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
+ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
+
+ADD_MODULE_DEPENDENCY(smsc,libphy);
+		
+		
 #define MAX_TASKS 200
 
 /**
@@ -212,7 +201,8 @@ static struct task_list_t tasks;
 
 void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 {
-    unsigned idx, idx2;
+    struct dependency_t *it_dependency;
+    unsigned idx;
     struct init_fn_t* it_init_fnc;
     struct task_t* task = tasks.all;
     for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++task)
@@ -228,18 +218,18 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
     // resolve dependencies
     for (idx = 0; idx < tasks.task_end; ++idx)
     {
-        for (idx2 = 0; idx2 < sizeof(dependency_list) / sizeof(*dependency_list); ++idx2)
+        for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
         {
             // at the moment only one dependency is supported
-            if (dependency_list[idx2].task_id == tasks.all[tasks.idx_list[idx2]].id)
+            if (it_dependency->task_id == tasks.all[tasks.idx_list[idx]].id)
             {
 				// TODO check for parent process to be in the list with the same type
-                ++tasks.all[tasks.idx_list[idx2]].waiting_count;
-                tasks.all[tasks.idx_list[idx2]].waiting_for = dependency_list[idx2].parent_id;
+                ++tasks.all[tasks.idx_list[idx]].waiting_count;
+                tasks.all[tasks.idx_list[idx]].waiting_for = it_dependency->parent_id;
             }
-            if (dependency_list[idx2].parent_id == tasks.all[tasks.idx_list[idx2]].id)
+            if (it_dependency->parent_id == tasks.all[tasks.idx_list[idx]].id)
             {
-                ++tasks.all[tasks.idx_list[idx2]].child_count;
+                ++tasks.all[tasks.idx_list[idx]].child_count;
             }
         }
         printk_debug("async registered '%s' depends on '%s'\n", module_name[tasks.all[tasks.idx_list[idx]].id], tasks.all[ tasks.idx_list[idx]].waiting_count != 0 ? module_name[tasks.all[ tasks.idx_list[idx]].waiting_for]: "");
