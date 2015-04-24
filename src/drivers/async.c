@@ -167,6 +167,8 @@ ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
+ADD_MODULE_DEPENDENCY(azx_driver,alsa_hwdep_init);
+
 		
 		
 #define MAX_TASKS 200

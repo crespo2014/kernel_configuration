@@ -16,7 +16,6 @@
  * Full list of module init functions call
  */
 #define INIT_CALLS(fnc) \
-        fnc(ahci_pci_driver),         /* */ \
         fnc(crypto_xcbc_module_init), /* */ \
         fnc(init_cifs),               /* */  \
         fnc(drm_fb_helper_modinit),   /* */  \
@@ -111,7 +110,7 @@
         fnc(b43legacy),  /* b43legacy.ko */ \
         fnc(intel_rng),  /* intel-rng.ko */ \
         fnc(agp_init),  /* agpgart.ko */ \
-        fnc(drm_core),  /* drm.ko */ \
+        fnc(drm_core_init),  /* drm.ko */ \
         fnc(uvm_init),  /* nvidia-uvm.ko */ \
         fnc(dca),  /* dca.ko */ \
         fnc(ioatdma),  /* ioatdma.ko */ \
@@ -214,7 +213,9 @@
         fnc(b43_init), /**/\
         fnc(vb2_thread_init), /**/\
         fnc(b43legacy_init), /**/\
+        fnc(azx_driver_init), /**/\
         fnc(i8042_init) /**/
+
 
         //fnc(init_msdos_fs), /* msdos.ko */
 
@@ -261,7 +262,7 @@ struct init_fn_t
  * TODO Disable when module build as module
  * add support for bus devices like acpi, pci, etc
 */
-#if defined(CONFIG_ASYNCHRO_MODULE_INIT) && defined(MODULE)
+#if defined(CONFIG_ASYNCHRO_MODULE_INIT) && !defined(MODULE)
 
 #define async_module_init(fnc, ... )  \
   static struct init_fn_t init_fn_##fnc __used \
@@ -273,39 +274,34 @@ struct init_fn_t
   __attribute__((__section__(".async_initcall.init"))) = {deferred,fnc ## _id,fnc};
 
 // Usefull for ACPI and USB maybe PCI
-#define async_module_driver(__driver, __register, __unregister,__depends, ...) \
+#define async_module_driver(__driver, __register, __unregister) \
 static int __init __driver##_init(void) \
 { \
-  return __register(&(__driver) , ##__VA_ARGS__); \
+  return __register(&(__driver)); \
 } \
-async_module_init(__driver##_init,__depends); \
+async_module_init(__driver##_init); \
 static void __exit __driver##_exit(void) \
 { \
-  __unregister(&(__driver) , ##__VA_ARGS__); \
+  __unregister(&(__driver)); \
 } \
 module_exit(__driver##_exit);
 
 // ACPI USB PCI
-#define deferred_module_driver(__driver, __register, __unregister,__depends, ...) \
+#define deferred_module_driver(__driver, __register, __unregister) \
 static int __init __driver##_init(void) \
 { \
-  return __register(&(__driver) , ##__VA_ARGS__); \
+  return __register(&(__driver)); \
 } \
-deferred_module_init(__driver##_init,__depends); \
+deferred_module_init(__driver##_init); \
 static void __exit __driver##_exit(void) \
 { \
-  __unregister(&(__driver) , ##__VA_ARGS__); \
+  __unregister(&(__driver)); \
 } \
 module_exit(__driver##_exit);
 
 //
-#define async_module_pci_driver(__pci_driver) \
-  async_module_driver(__pci_driver, pci_register_driver, \
-           pci_unregister_driver,)
-
-#define deferred_module_pci_driver(__pci_driver) \
-    deferred_module_driver(__pci_driver, pci_register_driver, \
-           pci_unregister_driver,)
+#define async_module_pci_driver(__pci_driver) async_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver)
+#define deferred_module_pci_driver(__pci_driver) deferred_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver)
 
 #else
 
@@ -314,6 +310,9 @@ module_exit(__driver##_exit);
 
 #define async_module_driver(__driver, __register, __unregister,__depends, ...)    module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
 #define deferred_module_driver(__driver, __register, __unregister,__depends, ...) module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
+
+#define async_module_pci_driver(__pci_driver)    module_pci_driver(__pci_driver);
+#define deferred_module_pci_driver(__pci_driver) module_pci_driver(__pci_driver);
 
 #endif
 
