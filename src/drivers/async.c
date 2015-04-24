@@ -179,7 +179,7 @@ struct task_t
     task_type_t type;           //
     modules_e id;           // idx in string table
     initcall_t fnc;             // ptr to init function
-    unsigned waiting_for;
+    unsigned waiting_for_id;
     unsigned waiting_count; // how many task does it depend on
     unsigned child_count;   // how many task it triggers
 };
@@ -187,52 +187,100 @@ struct task_t
 // TODO join together all task with taskid table to allow dynamic allocation
 struct task_list_t
 {
-    unsigned waiting_last;  // last task waiting to be release
-    unsigned ready_last;    // last task to be execute
-    unsigned running_last;  // the last task running
-    unsigned last;       // last element on the list
     unsigned idx_list[MAX_TASKS];
-    unsigned task_end;      // number of tasks
-    unsigned task_left;     // how many of global task are left to done
+    unsigned *waiting_last;  // last task waiting to be release
+    unsigned *ready_last;    // last task to be execute
+    unsigned *running_last;  // the last task running
+    unsigned *idx_end;      // number of idx on list
     struct task_t all[MAX_TASKS];
+    struct task_t* task_end;
+    unsigned task_left;     // how many of global task are left to done
 };
 
 static struct task_list_t tasks;
 
+struct task_t* getTask(modules_e id)
+{
+    struct task_t* t = tasks.all;
+    while(t != tasks.task_end && t->id != id)
+        ++t;
+    if (t == tasks.task_end)
+        t = NULL;
+    return t;
+}
+
+/**
+ * Find the waiting task on the list
+ */
+inline struct task_t* getWaitingTask(modules_e id)
+{
+    unsigned *it_idx;
+    for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
+    {
+        if (tasks.all[*it_idx].id == id)
+            return tasks.all + *it_idx;
+    }
+    return NULL;
+}
+
+/**
+ * Check if one task depends on another
+ * 0 - false
+ * 1 - true
+ */
+unsigned doesDepends(modules_e child, modules_e parent)
+{
+    struct dependency_t * it_dependency;
+    for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
+    {
+        if (it_dependency->parent_id == parent && it_dependency->task_id == child)
+            return 1;
+    }
+    return 0;
+}
+
 void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 {
     struct dependency_t *it_dependency;
-    unsigned idx;
+    //unsigned* it_idx;
     struct init_fn_t* it_init_fnc;
-    struct task_t* task = tasks.all;
-    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++task)
+    struct task_t* it_task;
+    struct task_t* ptask;
+    tasks.task_end = tasks.all;
+    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
     {
-        task->id = it_init_fnc->id;
-        task->type = it_init_fnc->type_;
-        task->fnc = it_init_fnc->fnc;
-        task->waiting_for = 0;
-        task->waiting_count = 1;
+        tasks.task_end->id = it_init_fnc->id;
+        tasks.task_end->type = it_init_fnc->type_;
+        tasks.task_end->fnc = it_init_fnc->fnc;
+        tasks.task_end->waiting_for_id = 0;
+        tasks.task_end->waiting_count = 1;
     }
-    tasks.task_end = end - begin;
-    tasks.task_left = tasks.task_end;
+    tasks.task_left = tasks.task_end - tasks.all;
     // resolve dependencies
-    for (idx = 0; idx < tasks.task_end; ++idx)
+    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
         for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
         {
             // at the moment only one dependency is supported
-            if (it_dependency->task_id == tasks.all[tasks.idx_list[idx]].id)
+            if (it_dependency->task_id == it_task->id)
             {
-				// TODO check for parent process to be in the list with the same type
-                ++tasks.all[tasks.idx_list[idx]].waiting_count;
-                tasks.all[tasks.idx_list[idx]].waiting_for = it_dependency->parent_id;
+                // Do not register a dependency that is not in the current list
+                ptask = getTask(it_dependency->parent_id);
+                if (ptask == NULL || ptask->type != it_task->type)
+                    printk("async Dependency %d not found for id %d",it_dependency->parent_id,it_dependency->task_id);
+                else
+                {
+                    // register dependency
+                    ++it_task->waiting_count;
+                    it_task->waiting_for_id = it_dependency->parent_id;
+                }
             }
-            if (it_dependency->parent_id == tasks.all[tasks.idx_list[idx]].id)
+            if (it_dependency->parent_id == it_task->id)
             {
-                ++tasks.all[tasks.idx_list[idx]].child_count;
+                ++it_task->child_count;
             }
         }
-        printk_debug("async registered '%s' depends on '%s'\n", module_name[tasks.all[tasks.idx_list[idx]].id], tasks.all[ tasks.idx_list[idx]].waiting_count != 0 ? module_name[tasks.all[ tasks.idx_list[idx]].waiting_for]: "");
+        printk_debug("async registered '%s' depends on '%s'\n", module_name[it_task->id], it_task->waiting_count != 0 ? module_name[it_task->waiting_for_id]: "");
     }
 }
 /**
@@ -241,36 +289,39 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 void Prepare(task_type_t type)
 {
     // Pick only task of type from all task
-    unsigned idx, idx2, id;
-    tasks.last = 0;
+    struct task_t* it_task;
+	unsigned *it_idx1;
+	unsigned *it_idx2;
+	unsigned id;
+	tasks.idx_end = tasks.idx_list;
     //
-    for (idx = 0; idx < tasks.task_end; ++idx)
+    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
-        if (tasks.all[idx].type == type)
+        if (it_task->type == type)
         {
-            tasks.idx_list[tasks.last] = idx;
-            ++tasks.last;
+			*tasks.idx_end  = it_task - tasks.all;
+            ++tasks.idx_end;
         }
     }
-    tasks.ready_last = tasks.last;
-    tasks.waiting_last = tasks.last;
-    tasks.running_last = tasks.last;
+    tasks.ready_last = tasks.idx_end;
+    tasks.waiting_last = tasks.idx_end;
+    tasks.running_last = tasks.idx_end;
     // jump waiting task
-    idx2 = 0;
-    while (tasks.all[tasks.idx_list[idx2]].waiting_count != 0)
-        ++idx2;
-    for (idx = idx2 + 1; idx < tasks.task_end; ++idx)
+    it_idx1 = tasks.idx_list;
+    while (it_idx1 != tasks.idx_end && tasks.all[*it_idx1].waiting_count != 0)
+        ++it_task;
+    for (it_idx2 = it_idx1 + 1; it_idx2 < tasks.idx_end; ++it_idx2)
     {
         //move waiting task to front
-        if (tasks.all[tasks.idx_list[idx]].waiting_count != 0)
+        if (tasks.all[*it_idx2].waiting_count != 0)
         {
-            id = tasks.idx_list[idx2];
-            tasks.idx_list[idx2] = tasks.idx_list[idx];
-            tasks.idx_list[idx] = id;
-            ++idx2;
+            id = *it_idx2;
+            *it_idx2 = *it_idx1;
+            *it_idx1 = id;
+            ++it_idx1;
         }
     }
-    tasks.waiting_last = idx2;
+    tasks.waiting_last = it_idx1;
 }
 
 /**
@@ -290,76 +341,97 @@ static DECLARE_WAIT_QUEUE_HEAD( list_wait);
  * Get a task from the list for execution
  * nullptr - no more task available
  */
-unsigned TaskDone(unsigned task_idx)
+struct task_t* TaskDone(struct task_t* ptask)
 {
-    unsigned i, j;
+    struct dependency_t * it_dependency;
+    unsigned* it_idx;
+    unsigned* it_idx2;
+    unsigned idx;
     unsigned child_count = 0;    // how many task has been wakeup
     if (tasks.running_last == 0)
         return 0;
     //lock
     spin_lock(&list_lock);
-    //waiting = depends.waiting;    // detect how many task has been wake up
-    if (task_idx < tasks.task_end)
+    if (ptask < tasks.task_end)
     {
         tasks.task_left--;
         // move to done list
-        for (i = tasks.ready_last; i < tasks.running_last; ++i)
+        for (it_idx = tasks.ready_last; it_idx < tasks.running_last; ++it_idx)
         {
-            if (tasks.idx_list[i] == task_idx)
+            if (tasks.all + *it_idx == ptask)
             {
                 // bring down a task to do
                 --tasks.running_last;
-                tasks.idx_list[i] = tasks.idx_list[tasks.running_last];
+                *it_idx = *tasks.running_last;
                 break;
             }
         }
-        i = 0;
-        child_count = tasks.all[task_idx].child_count;
-        while (tasks.all[task_idx].child_count != 0)
+        // release waiting tasks
+        child_count = ptask->child_count;
+        if (child_count)
         {
-            // release all task that depends_2 on the finished one and remember
-            for (i = 0; i < tasks.waiting_last; ++i)
+            // find parent task on dependency list
+            for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
             {
-                if (tasks.all[tasks.idx_list[i]].waiting_for == task_idx)
+                if (it_dependency->parent_id == ptask->id)
                 {
-                    //move to ready
-
-                    tasks.all[i].waiting_for = 0;
-
+                    //find child task on waiting list
+                    for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;)
+                    {
+                        if (tasks.all[*it_idx].id == it_dependency->task_id)
+                        {
+                            --tasks.all[*it_idx].waiting_count;
+                            // move to running list
+                            --tasks.waiting_last;
+                            idx = *tasks.waiting_last;
+                            *tasks.waiting_last = *it_idx;
+                            *it_idx = idx;
+                        }
+                        else
+                            ++it_idx;
+                    }
+                    --ptask->child_count;
+                    if (ptask->child_count == 0)
+                        break;
                 }
             }
+            //check for missing child
+            if (ptask->child_count != 0)
+                printk("async Failed to release all childs");
         }
+
     }
     // check if not running task and not pending one
     if (tasks.running_last == tasks.waiting_last)
     {
         tasks.waiting_last = 0;
     }
-
     // pick a new task
-    task_idx = tasks.task_end;
+    ptask = tasks.task_end;
     if (tasks.waiting_last != tasks.ready_last)
     {
         // find the lower id task available
-        j = 0;
-        for (i = tasks.waiting_last; i < tasks.ready_last; ++i)
+        it_idx2 = tasks.waiting_last;
+        // check ready list
+        for (it_idx = tasks.waiting_last+1;it_idx != tasks.ready_last;++it_idx)
         {
-            if (tasks.idx_list[i] < task_idx)
+            // pick the lower index to task table
+            if (*it_idx < *it_idx2)
             {
-                task_idx = tasks.idx_list[i];
-                j = i;
+                it_idx2 = it_idx;
             }
         }
         --tasks.waiting_last;
-        tasks.idx_list[j] = tasks.idx_list[tasks.waiting_last];
-        tasks.idx_list[tasks.waiting_last] = task_idx;
+        idx = *tasks.waiting_last;
+        *tasks.waiting_last = *it_idx2;
+        *it_idx2 = idx;
     }
     else
     {
         // check end of all task
         if (tasks.running_last == 0)
         {
-            // clean up all memory
+            // clean up all memory if apply
         }
     }
     // spin unlock
@@ -371,21 +443,21 @@ unsigned TaskDone(unsigned task_idx)
     {
         //free_initmem(); do not doit until deferred
     }
-    return task_idx;
+    return (ptask == tasks.task_end ? NULL : ptask);
 }
 
 int WorkingThread(void *data)
 {
     int ret;
-    unsigned task_idx = tasks.task_end;
+    struct task_t* ptask = NULL;
     printk_debug("async %d starts\n", (unsigned)data);
     do
     {
-        task_idx = TaskDone(task_idx);
-        if (task_idx != tasks.task_end)
+        ptask = TaskDone(ptask);
+        if (ptask != NULL)
         {
-            printk_debug("async %d %s\n", (unsigned)data, module_name[tasks.all[task_idx].id]);
-            do_one_initcall(tasks.all[task_idx].fnc);
+            printk_debug("async %d %s\n", (unsigned)data, module_name[ptask->id]);
+            do_one_initcall(ptask->fnc);
         }
         else
         {
