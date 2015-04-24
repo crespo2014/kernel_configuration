@@ -68,7 +68,7 @@
 /**
  * Static struct holding all data
  */
-extern struct init_fn __async_initcall_start[], __async_initcall_end[];
+extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 
 extern initcall_t __initcall_start[];
 extern initcall_t __initcall0_start[];
@@ -107,9 +107,53 @@ static const struct
     modules_e parent_id;
 } dependency_list[] =
 { //
-        { init_mtd1, init_mtd2 }, //
-                { init_mtd3, init_mtd4 }, //
-                { init_mtd5, init_mtd6 } //
+        MOD_DEPENDENCY_ITEM(rfcomm_init,bt_init), //
+		MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_pcm_oss_init,alsa_mixer_oss_init),	//
+		MOD_DEPENDENCY_ITEM(snd_hda_codec,alsa_hwdep_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_hwdep_init,alsa_pcm_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_seq_device_init,alsa_timer_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_seq_midi_init,alsa_seq_init),	//
+		MOD_DEPENDENCY_ITEM(alsa_seq_dummy_init,alsa_seq_init),	//	
+		MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_init),	//	
+/* HDA snd is exported function plus all patches */		
+		MOD_DEPENDENCY_ITEM(patch_si3054_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_ca0132_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_hdmi_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_sigmantel_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_cirrus_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_ca0110_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_via_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_realtek_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_conexant_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_cmedia_init,alsa_hwdep_init),	//		
+		MOD_DEPENDENCY_ITEM(patch_analog_init,alsa_hwdep_init),	//		
+		
+		MOD_DEPENDENCY_ITEM(coretemp,hwmon),	//
+		MOD_DEPENDENCY_ITEM(gpio_fan,hwmon),	//
+		MOD_DEPENDENCY_ITEM(acpi_processor_driver_init,hwmon),	//				
+
+		MOD_DEPENDENCY_ITEM(ubi_init,init_mtd),	//
+		MOD_DEPENDENCY_ITEM(uio_cif,uio),	//
+		MOD_DEPENDENCY_ITEM(mxm_wmi,wmi),	//
+		MOD_DEPENDENCY_ITEM(speedstep_ich,speedstep),	//
+		
+		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
+		MOD_DEPENDENCY_ITEM(videodev,usb_core),	//
+		MOD_DEPENDENCY_ITEM(v4l2_common,videodev),	//
+		MOD_DEPENDENCY_ITEM(videobuf2_core,v4l2_common),	//
+		MOD_DEPENDENCY_ITEM(videobuf2_memops,videobuf2_core),	//
+		MOD_DEPENDENCY_ITEM(videobuf2_vmalloc,videobuf2_memops),	//
+			
+		MOD_DEPENDENCY_ITEM(uvcvideo,videobuf2_vmalloc),	//
+		MOD_DEPENDENCY_ITEM(gspca_main,videodev),	//
+		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
+		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
+		MOD_DEPENDENCY_ITEM(mmc_block,mmc_core),	//
+		
+		
         };
 /**
  * Dependencies list will be keep here to avoid modifications on everywhere
@@ -120,10 +164,10 @@ static const struct
 /**
  * all initcall will be enums. a tbl will store all names
  */
-struct task_v2
+struct task_t
 {
     task_type_t type;           //
-    enum modules_e id;           // idx in string table
+    modules_e id;           // idx in string table
     initcall_t fnc;             // ptr to init function
     unsigned waiting_for;
     unsigned waiting_count; // how many task does it depend on
@@ -140,21 +184,21 @@ struct task_list_t
     unsigned idx_list[MAX_TASKS];
     unsigned task_end;      // number of tasks
     unsigned task_left;     // how many of global task are left to done
-    struct task_v2 all[MAX_TASKS];
+    struct task_t all[MAX_TASKS];
 };
 
 static struct task_list_t tasks;
 
-void FillTasks(struct init_fn* begin, struct init_fn* end)
+void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 {
     unsigned idx, idx2;
-    struct init_fn* it_task;
-    struct task_v2* task = tasks.all;
-    for (it_task = begin; it_task < end; ++it_task, ++task)
+    struct init_fn_t* it_init_fnc;
+    struct task_t* task = tasks.all;
+    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++task)
     {
-        task->id = it_task->id;
-        task->type = it_task->type_;
-        task->fnc = it_task->fnc;
+        task->id = it_init_fnc->id;
+        task->type = it_init_fnc->type_;
+        task->fnc = it_init_fnc->fnc;
         task->waiting_for = 0;
         task->waiting_count = 1;
     }
