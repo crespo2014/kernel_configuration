@@ -59,7 +59,8 @@
 #include <linux/poll.h>
 #include <linux/types.h>
 #include <asm/atomic.h>
-#include <linux/kthread.h>  // for threads#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+#include <linux/kthread.h>  // for threads
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 #define printk_debug(...) printk(__VA_ARGS__)
 #else
 #define printk_debug(...) do {} while(0)
@@ -103,11 +104,11 @@ static const char* const module_name[] =
 /**
  * Dependencies list can be declare any time in any c file
  */
-ADD_MODULE_DEPENDENCY(rfcomm_init,bt_init);
+//ADD_MODULE_DEPENDENCY(rfcomm_init,bt_init);
 
 ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
-ADD_MODULE_DEPENDENCY(alsa_mixer_oss_init,alsa_pcm_init);
-ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);
+ADD_MODULE_DEPENDENCY(alsa_mixer_oss_init,alsa_pcm_init);       //snd-mixer-oss
+ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);   // snd-pcm-oss
 ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
 ADD_MODULE_DEPENDENCY(alsa_hwdep_init,alsa_pcm_init);
 ADD_MODULE_DEPENDENCY(alsa_seq_device_init,alsa_timer_init);
@@ -128,24 +129,25 @@ ADD_MODULE_DEPENDENCY(patch_conexant_init,alsa_hwdep_init);
 ADD_MODULE_DEPENDENCY(patch_cmedia_init,alsa_hwdep_init);		
 ADD_MODULE_DEPENDENCY(patch_analog_init,alsa_hwdep_init);		
 
-ADD_MODULE_DEPENDENCY(coretemp,hwmon);
-ADD_MODULE_DEPENDENCY(gpio_fan,hwmon);
-ADD_MODULE_DEPENDENCY(acpi_processor_driver_init,hwmon);				
+//ADD_MODULE_DEPENDENCY(coretemp,hwmon);
+//ADD_MODULE_DEPENDENCY(gpio_fan,hwmon);
+//ADD_MODULE_DEPENDENCY(acpi_processor_driver_init,hwmon);
 
-ADD_MODULE_DEPENDENCY(ubi_init,init_mtd);
-ADD_MODULE_DEPENDENCY(uio_cif,uio);
-ADD_MODULE_DEPENDENCY(mxm_wmi,wmi);
-ADD_MODULE_DEPENDENCY(speedstep_ich,speedstep);
+ADD_MODULE_DEPENDENCY(ubi_init,init_mtd);       //mtd
 
-ADD_MODULE_DEPENDENCY(mmc_block,mmc_core);
-ADD_MODULE_DEPENDENCY(videodev,usb_core);
-ADD_MODULE_DEPENDENCY(v4l2_common,videodev);
-ADD_MODULE_DEPENDENCY(videobuf2_core,v4l2_common);
-ADD_MODULE_DEPENDENCY(videobuf2_memops,videobuf2_core);
-ADD_MODULE_DEPENDENCY(videobuf2_vmalloc,videobuf2_memops);
+ADD_MODULE_DEPENDENCY(hilscher_pci_driver_init,uio_init);             //uio -> uio_cif
+//ADD_MODULE_DEPENDENCY(mxm_wmi,wmi);
+//ADD_MODULE_DEPENDENCY(speedstep_ich,speedstep);
+
+//ADD_MODULE_DEPENDENCY(mmc_block,mmc_core);
+//ADD_MODULE_DEPENDENCY(videodev,usb_core);
+//ADD_MODULE_DEPENDENCY(v4l2_common,videodev);
+//ADD_MODULE_DEPENDENCY(videobuf2_core,v4l2_common);
+//ADD_MODULE_DEPENDENCY(videobuf2_memops,videobuf2_core);
+//ADD_MODULE_DEPENDENCY(videobuf2_vmalloc,videobuf2_memops);
 	
-ADD_MODULE_DEPENDENCY(uvcvideo,videobuf2_vmalloc);
-ADD_MODULE_DEPENDENCY(gspca_main,videodev);
+//ADD_MODULE_DEPENDENCY(uvcvideo,videobuf2_vmalloc);
+//ADD_MODULE_DEPENDENCY(gspca_main,videodev);
 //USB
 ADD_MODULE_DEPENDENCY(usb_core,usb_common);
 ADD_MODULE_DEPENDENCY(ohci_hcd_mod_init,usb_core);
@@ -167,7 +169,7 @@ ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
-ADD_MODULE_DEPENDENCY(azx_driver,alsa_hwdep_init);
+//ADD_MODULE_DEPENDENCY(azx_driver,alsa_hwdep_init);
 
 		
 		
@@ -434,6 +436,7 @@ struct task_t* TaskDone(struct task_t* ptask)
         if (tasks.running_last == 0)
         {
             // clean up all memory if apply
+            wake_up_interruptible(&list_wait);
         }
     }
     // spin unlock
@@ -501,9 +504,10 @@ int doit_type(task_type_t type)
         else
         {
             printk("Async module initialization thread failed .. fall back to normal mode");
-            //WorkingThread(NULL);
+            WorkingThread(NULL);
         }
     }
+
     return 0;
 }
 
@@ -524,10 +528,13 @@ void traceInitCalls(void)
  */
 static int async_initialization(void)
 {
+    int ret;
     FillTasks(__async_initcall_start, __async_initcall_end);
     //traceInitCalls();
     printk_debug("async started asynchronized\n");
-    return doit_type(asynchronized);
+    doit_type(asynchronized);
+    ret = wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
+    return 0;
 }
 /**
  * Second initialization USB devices, some PCI
@@ -545,24 +552,24 @@ late_initcall_sync(deferred_initialization);		// Second stage, last to do before
 #ifdef TEST
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
 
-int main()
+int main(void)
 {
     // single
-    struct s_task list1[] =
+    struct init_fn_t list1[] =
     {
-        {   "a", 0},
-        {   "b", "a"},
-        {   "c", "b"},
-        {   "d", "b"}};
+        {   asynchronized,},
+        {   asynchronized,alsa_pcm_init_id, "a"},
+        {   asynchronized,alsa_seq_init_id, "b"},
+        {   deferred,snd_hda_codec_id, "b"}};
     // keep order for single thread but can be all together
-    struct s_task list2[] =
+    struct init_fn_t list2[] =
     {
         {   "a", 0},
         {   "b",0},
         {   "c", 0},
         {   "d", 0}};
     // order is keep because dependences are resolved on time
-    struct s_task list3[] =
+    struct init_fn_t list3[] =
     {
         {   "a",0},
         {   "b","a"},
@@ -570,7 +577,7 @@ int main()
         {   "d",0},
         {   "e", 0}};
 
-    struct s_task list4[] =
+    struct init_fn_t list4[] =
     {
         {   "a",0},
         {   "d","c"},
@@ -581,7 +588,7 @@ int main()
     };
 
     //
-    struct s_task list5[] =
+    struct init_fn_t list5[] =
     {
         {   "a", 0}};
 

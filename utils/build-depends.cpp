@@ -42,14 +42,12 @@ static const char* const subsys[] = {
         "led-class.ko",
         "mac80211.ko",
         "rc-core.ko"   /* rc-main.c */
-
 };
 
 static const char* const symbols[] = {
         "soundcore.ko", /* sound/sound_core.c */
         "libata.ko" ,
         "libahci.ko",
-        "ahci.ko",
         "speedstep-lib.ko",
         "v4l2-common.ko",
         "videobuf2-memops.ko",

@@ -21,11 +21,7 @@
         fnc(drm_fb_helper_modinit),   /* */  \
         fnc(acpi_button_driver_init), /* */  \
         fnc(acpi_power_meter_init), /* */  \
-        fnc(init_iso9660_fs),          /* */  \
-        fnc(bt_init),                 /* bluetooth.ko */  \
         fnc(rfcomm_init),            /* rfcomm.ko */ \
-        fnc(soundcore),              /* soundcore.ko */ \
-        fnc(snd),              /* snd.ko */ \
         fnc(alsa_timer_init),        /* snd-timer.ko */ \
         fnc(alsa_hwdep_init),        /* snd-hwdep.ko */ \
         fnc(alsa_seq_device_init),   /* snd-seq-device.ko */ \
@@ -52,7 +48,6 @@
         fnc(patch_conexant_init),    /* snd-hda-codec-conexant.ko */ \
         fnc(patch_cmedia_init),      /* snd-hda-codec-cmedia.ko */ \
         fnc(patch_analog_init),      /* snd-hda-codec-analog.ko */ \
-        fnc(hwmon),             /* hwmon.ko */ \
         fnc(coretemp),  /* coretemp.ko */ \
         fnc(gpio_fan),  /* gpio-fan.ko */ \
         fnc(acpi_processor_driver_init),  /* acpi-power-meter.ko */ \
@@ -60,25 +55,14 @@
         fnc(ubi_init),  /* ubi.ko */ \
         fnc(uio_init),  /* uio.ko */ \
         fnc(hilscher_pci_driver_init),  /* uio_cif.ko */ \
-        fnc(libata),  /* libata.ko */ \
-        fnc(libahci),  /* libahci.ko */ \
         fnc(ahci_pci_driver_init),  /* ahci.ko */ \
-        fnc(wmi),  /* wmi.ko */ \
         fnc(mxm_wmi_init),  /* mxm-wmi.ko */ \
-        fnc(speedstep),  /* speedstep-lib.ko */ \
         fnc(speedstep_init),  /* speedstep-ich.ko */ \
-        fnc(mmc_core),  /* mmc_core.ko */ \
         fnc(mmc_blk_init),  /* mmc_block.ko */ \
         fnc(videodev_init),  /* videodev.ko */ \
-        fnc(v4l2_common),  /* v4l2-common.ko */ \
-        fnc(videobuf2_memops),  /* videobuf2-memops.ko */ \
-        fnc(videobuf2_core),  /* videobuf2-core.ko */ \
-        fnc(videobuf2_vmalloc),  /* videobuf2-vmalloc.ko */ \
         fnc(uvcvideo),  /* uvcvideo.ko */ \
         fnc(gspca_main),  /* gspca_main.ko */ \
-        fnc(rc_core),  /* rc-core.ko */ \
         fnc(ir_kbd_driver),  /* ir-kbd-i2c.ko module_i2c_driver */ \
-        fnc(i2c_mux),  /* i2c-mux.ko */ \
         fnc(i2c_mux_gpio_driver),  /* i2c-mux-gpio.ko module_platform_driver */ \
         fnc(pca9541_driver),  /* i2c-mux-pca9541.ko module_i2c_driver */ \
         fnc(pca954x_driver),  /* i2c-mux-pca954x.ko module_i2c_driver */ \
@@ -101,9 +85,9 @@
         fnc(lib80211_crypto_wep_init),  /* lib80211_crypt_wep.ko */ \
         fnc(lib80211_crypto_ccmp_init),  /* lib80211_crypt_ccmp.ko */ \
         fnc(libipw_init),  /* libipw.ko */ \
-        fnc(cfg80211),  /* cfg80211.ko */ \
         fnc(led_class),  /* led-class.ko */ \
         fnc(hwrng_modinit),  /* rng-core.ko */ \
+        fnc(prng_mod_init), /* */ \
         fnc(ipw2100_init),  /* ipw2100.ko */ \
         fnc(leds_pca955x),  /* leds-pca955x.ko */ \
         fnc(b43),  /* b43.ko */ \
@@ -114,18 +98,10 @@
         fnc(uvm_init),  /* nvidia-uvm.ko */ \
         fnc(ioat_init_module),  /* ioatdma.ko */ \
         fnc(acpi_video_init),  /* video.ko */ \
-        fnc(fbdev),  /* fbdev.ko */ \
-        fnc(fb),  /* fb.ko */ \
         fnc(af_alg_init),  /* af_alg.ko */ \
-        fnc(algif_hash_init),  /* algif_hash.ko */
+        fnc(algif_hash_init),  /* algif_hash.ko */ \
         fnc(algif_skcipher_init),  /* algif_skicupher.ko */ \
         fnc(alg_hash),  /* alg_hash.ko */ \
-        fnc(softcursor),  /* softcursor.ko */ \
-        fnc(font),  /* font.ko */ \
-        fnc(bitblit),  /* bitblit.ko */ \
-        fnc(fb_console_init),  /* fbcon.ko */ \
-        fnc(lzo_decompress),  /* lzo_decompress.ko */ \
-        fnc(lzo_compress),  /* lzo_compress.ko */ \
         fnc(lzo_mod_init),  /* lzo.ko */ \
         fnc(crypto_authenc_module_init),  /* authenc.ko */ \
         fnc(crypto_authenc_esn_module_init),  /* authencesn.ko */ \
@@ -134,7 +110,6 @@
         fnc(blowfish_mod_init),  /* blowfish_generic.ko */ \
         fnc(zlib_mod_init),  /* zlib.ko */ \
         fnc(prgn_mod_init), /**/ \
-        fnc(blowfish_mod_init), /**/ \
         fnc(crypto_cbc_module_init), /**/ \
         fnc(crc32_mod_init), /**/ \
 		fnc(crc32c_mod_init), /**/ \
@@ -146,7 +121,6 @@
         fnc(crypto_module_init), /**/ \
         fnc(crypto_user_init), /**/ \
         fnc(lz4_mod_init), /**/ \
-        fnc(lzo_mod_init), /**/ \
         fnc(md4_mod_init), /**/ \
         fnc(md5_mod_init), /**/ \
         fnc(rmd128_mod_init), /**/ \
@@ -177,7 +151,6 @@
         fnc(init_vfat_fs),  /* vfat.ko */ \
         fnc(init_msdos_fs),  /* msdos.ko */ \
         fnc(init_ntfs_fs), /**/ \
-        fnc(acpi_video_init),/**/ \
         fnc(acpi_ipmi_init),/**/ \
         fnc(acpi_pad_init),/**/ \
         fnc(acpi_battery_init),/**/ \
@@ -191,7 +164,6 @@
         fnc(pci_hotplug_init), /**/ \
         fnc(pcied_init), /**/ \
         fnc(shpcd_init), /**/ \
-        fnc(twofish_common),  /* twofish_common.ko */ \
         fnc(twofish_generic),  /* twofish_generic.ko */ \
         fnc(twofish_i586),  /* twofish-i586.ko */ \
         fnc(asymmetric_key_init), /**/ \
@@ -211,15 +183,41 @@
         fnc(azx_driver_init), /**/\
         fnc(i8042_init) /**/
 
-#if false
+#if 0
         /* ARCH  SUBSYS POSTCORE */
-        fnc(dca),  /* dca.ko */
+        fnc(dca),  /* dca.ko */  \
         fnc(backlight),  /* backlight.ko */ \
         fnc(cast_common),  /* cast_common.ko */ \
         fnc(zlib_deflate),  /* zlib_deflate.ko */ \
         fnc(zlib_inflate),  /* zlib_inflate.ko */ \
         fnc(blowfish_common),  /* blowfish_common.ko */ \
         fnc(ieee80211_init),  /* mac80211.ko */ \
+        fnc(v4l2_common),  /* v4l2-common.ko */ \
+        fnc(videobuf2_memops),  /* videobuf2-memops.ko */ \
+        fnc(videobuf2_core),  /* videobuf2-core.ko */ \
+        fnc(videobuf2_vmalloc),  /* videobuf2-vmalloc.ko */ \
+        fnc(rc_core),  /* rc-core.ko */ \
+        fnc(i2c_mux),  /* i2c-mux.ko */ \
+        fnc(libata),  /* libata.ko */ \
+        fnc(libahci),  /* libahci.ko */ \
+        fnc(bt_init),                 /* bluetooth.ko */  \
+        fnc(soundcore),              /* soundcore.ko */ \
+        fnc(snd),              /* snd.ko */ \
+        fnc(hwmon),             /* hwmon.ko */ \
+        fnc(wmi),  /* wmi.ko */ \
+        fnc(mmc_core),  /* mmc_core.ko */ \
+        fnc(speedstep),  /* speedstep-lib.ko */ \
+        fnc(cfg80211),  /* cfg80211.ko */ \
+        fnc(fbdev),  /* fbdev.ko */ \
+        fnc(fb),  /* fb.ko */ \
+        fnc(softcursor),  /* softcursor.ko */ \
+        fnc(font),  /* font.ko */ \
+        fnc(bitblit),  /* bitblit.ko */ \
+        fnc(fb_console_init),  /* fbcon.ko */ \
+        fnc(lzo_decompress),  /* lzo_decompress.ko */ \
+        fnc(lzo_compress),  /* lzo_compress.ko */ \
+        fnc(twofish_common),  /* twofish_common.ko */ \
+
 #endif
 
 
@@ -306,8 +304,8 @@ static void __exit __driver##_exit(void) \
 module_exit(__driver##_exit);
 
 //
-#define async_module_pci_driver(__pci_driver) async_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver)
-#define deferred_module_pci_driver(__pci_driver) deferred_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver)
+#define async_module_pci_driver(__pci_driver) async_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver);
+#define deferred_module_pci_driver(__pci_driver) deferred_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver);
 
 #else
 
