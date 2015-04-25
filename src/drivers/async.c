@@ -76,7 +76,6 @@ struct dependency_t __async_modules_depends_start[]  = {
         MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),
         MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),       //snd-mixer-oss
         MOD_DEPENDENCY_ITEM(alsa_pcm_oss_init,alsa_mixer_oss_init),   // snd-pcm-oss
-        MOD_DEPENDENCY_ITEM(snd_hda_codec,alsa_hwdep_init),
         MOD_DEPENDENCY_ITEM(alsa_hwdep_init,alsa_pcm_init),
         MOD_DEPENDENCY_ITEM(alsa_seq_device_init,alsa_timer_init),
         MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),
@@ -137,7 +136,7 @@ ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_seq_device_init);
 ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
 ADD_MODULE_DEPENDENCY(alsa_pcm_init,alsa_timer_init);
 
-ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
+//ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
 ADD_MODULE_DEPENDENCY(alsa_hwdep_init,alsa_pcm_init);
 
 ADD_MODULE_DEPENDENCY(alsa_mixer_oss_init,alsa_pcm_init);       //snd-mixer-oss
@@ -148,21 +147,21 @@ ADD_MODULE_DEPENDENCY(alsa_seq_dummy_init,alsa_seq_init);
 ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);
 
 /* HDA snd is exported function plus all patches */		
-ADD_MODULE_DEPENDENCY(patch_si3054_init,snd_hda_codec);
-ADD_MODULE_DEPENDENCY(patch_ca0132_init,snd_hda_codec);
-ADD_MODULE_DEPENDENCY(patch_hdmi_init,snd_hda_codec);
-ADD_MODULE_DEPENDENCY(snd_hda_controller,snd_hda_codec);
-ADD_MODULE_DEPENDENCY(snd_hda_codec_generic,snd_hda_codec);
+//ADD_MODULE_DEPENDENCY(patch_si3054_init,snd_hda_codec);
+//ADD_MODULE_DEPENDENCY(patch_ca0132_init,snd_hda_codec);
+//ADD_MODULE_DEPENDENCY(patch_hdmi_init,snd_hda_codec);
+//ADD_MODULE_DEPENDENCY(snd_hda_controller,snd_hda_codec);
+//ADD_MODULE_DEPENDENCY(snd_hda_codec_generic,snd_hda_codec);
 
 ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
-ADD_MODULE_DEPENDENCY(patch_sigmatel_init,snd_hda_codec_generic);
-ADD_MODULE_DEPENDENCY(patch_cirrus_init,snd_hda_codec_generic);
-ADD_MODULE_DEPENDENCY(patch_ca0110_init,snd_hda_codec_generic);
-ADD_MODULE_DEPENDENCY(patch_via_init,snd_hda_codec_generic);
-ADD_MODULE_DEPENDENCY(patch_realtek_init,snd_hda_codec_generic);
-ADD_MODULE_DEPENDENCY(patch_conexant_init,snd_hda_codec_generic);
-ADD_MODULE_DEPENDENCY(patch_cmedia_init,snd_hda_codec_generic);
-ADD_MODULE_DEPENDENCY(patch_analog_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_sigmatel_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_cirrus_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_ca0110_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_via_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_realtek_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_conexant_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_cmedia_init,snd_hda_codec_generic);
+//ADD_MODULE_DEPENDENCY(patch_analog_init,snd_hda_codec_generic);
 
 ADD_MODULE_DEPENDENCY(hilscher_pci_driver_init,uio_init);       //mtd
 
@@ -560,18 +559,6 @@ int doit_type(task_type_t type)
     return 0;
 }
 
-//void traceInitCalls(void)
-//{
-//    initcall_t *fn;
-//    int level;
-//    for (level = 0; level < ARRAY_SIZE(initcall_levels) - 1; level++)
-//    {
-//        for (fn = initcall_levels[level]; fn < initcall_levels[level + 1]; fn++)
-//        {
-//            printk_debug("initcall %d , %pF ", level, fn);
-//        }
-//    }
-//}
 /**
  * First initialization of module. Disk diver and AGP  
  */
@@ -610,14 +597,13 @@ int main(void)
         {   asynchronized,alsa_timer_init_id, 0},
         {   asynchronized,alsa_pcm_init_id, 0},
         {   asynchronized,alsa_mixer_oss_init_id, 0},
-        {   asynchronized,snd_hda_codec_id, 0},
         {   asynchronized,alsa_hwdep_init_id, 0},
         {   asynchronized,alsa_seq_device_init_id, 0},
         {   asynchronized,alsa_seq_init_id, 0},
         {   asynchronized,alsa_seq_midi_event_init_id, 0},
         {   asynchronized,alsa_seq_dummy_init_id, 0},
         {   asynchronized,alsa_seq_oss_init_id, 0}};
-    FillTasks(list1,list1+10);
+    FillTasks(list1,list1+9);
     doit_type(asynchronized);
     /*
     // keep order for single thread but can be all together

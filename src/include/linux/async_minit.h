@@ -30,11 +30,9 @@
         fnc(alsa_pcm_init),          /* snd-pcm.ko */ \
         fnc(alsa_seq_init),          /* snd-seq.ko */ \
         fnc(alsa_pcm_oss_init),      /* snd-pcm-oss.ko */ \
-        fnc(snd_hda_codec),          /* snd-hda-codec.ko */ \
         fnc(alsa_seq_midi_event_init),     /* snd-seq-midi-event.ko */ \
         fnc(alsa_seq_dummy_init),    /* snd-seq-dummy.ko */ \
         fnc(snd_hda_controller),     /* snd-hda-controller.ko */ \
-        fnc(snd_hda_codec_generic),  /* snd-hda-codec-generic.ko */ \
         fnc(patch_si3054_init),      /* snd-hda-codec-si3054.ko */ \
         fnc(patch_ca0132_init),      /* snd-hda-codec-ca0132.ko */ \
         fnc(patch_hdmi_init),        /* snd-hda-codec-hdmi.ko */ \
@@ -217,6 +215,8 @@
         fnc(videodev_init),  /* videodev.ko */ \
         fnc(usb_common),  /* usb-common.ko */ \
         fnc(usb_core),  /* usbcore.ko */ \
+        fnc(snd_hda_codec),          /* snd-hda-codec.ko */ \
+        fnc(snd_hda_codec_generic),  /* snd-hda-codec-generic.ko */ \
 
 #endif
 

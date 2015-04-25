@@ -67,6 +67,8 @@ static const char* const symbols[] = {
         "blowfish_common.ko",
         "twofish_common.ko",
         "usb-common.ko",
+        "snd-hda-codec.ko",
+        "snd-hda-codec-generic.ko",
         "i2c-mux.ko"
 };
 
@@ -176,11 +178,11 @@ int main(int argc, char* argv[])
     node [fontsize=10];
     node [nodesep=0.75];
     node [ranksep=0.75];
-    node [color=none];
+#    node [color=none];
     node [shape=box];
 #    graph [bb="0,0,1000,1000"];
 #graph[size="100,100"]; 
- graph [ratio=0.5];
+# graph [ratio=0.5];
     edge [weight=1.2];
 
     subgraph cluster_0 {
