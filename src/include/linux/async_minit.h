@@ -96,48 +96,42 @@
         fnc(ehci_pci_init),  /* ehci-pci.ko */ \
         fnc(libphy),  /* libphy.ko */ \
         fnc(smsc),  /* smsc.ko */ \
-        fnc(lib80211),  /* lib80211.ko */ \
-        fnc(lib80211_crypt_tkip),  /* lib80211_crypt_tkip.ko */ \
-        fnc(lib80211_crypt_wep),  /* lib80211_crypt_wep.ko */ \
-        fnc(lib80211_crypt_ccmp),  /* lib80211_crypt_ccmp.ko */ \
-        fnc(libipw),  /* libipw.ko */ \
+        fnc(lib80211_init),  /* lib80211.ko */ \
+        fnc(lib80211_crypto_tkip_init),  /* lib80211_crypt_tkip.ko */ \
+        fnc(lib80211_crypto_wep_init),  /* lib80211_crypt_wep.ko */ \
+        fnc(lib80211_crypto_ccmp_init),  /* lib80211_crypt_ccmp.ko */ \
+        fnc(libipw_init),  /* libipw.ko */ \
         fnc(cfg80211),  /* cfg80211.ko */ \
-        fnc(mac80211),  /* mac80211.ko */ \
         fnc(led_class),  /* led-class.ko */ \
-        fnc(prng_mod_init),  /* rng-core.ko */ \
+        fnc(hwrng_modinit),  /* rng-core.ko */ \
         fnc(ipw2100_init),  /* ipw2100.ko */ \
         fnc(leds_pca955x),  /* leds-pca955x.ko */ \
         fnc(b43),  /* b43.ko */ \
         fnc(b43legacy),  /* b43legacy.ko */ \
-        fnc(intel_rng),  /* intel-rng.ko */ \
+        fnc(intel_rng_mod_init),  /* intel-rng.ko */ \
         fnc(agp_init),  /* agpgart.ko */ \
         fnc(drm_core_init),  /* drm.ko */ \
         fnc(uvm_init),  /* nvidia-uvm.ko */ \
-        fnc(dca),  /* dca.ko */ \
-        fnc(ioatdma),  /* ioatdma.ko */ \
-        fnc(backlight),  /* backlight.ko */ \
-        fnc(video),  /* video.ko */ \
+        fnc(ioat_init_module),  /* ioatdma.ko */ \
+        fnc(acpi_video_init),  /* video.ko */ \
         fnc(fbdev),  /* fbdev.ko */ \
         fnc(fb),  /* fb.ko */ \
-        fnc(af_alg),  /* af_alg.ko */ \
-        fnc(algif_skicupher),  /* algif_skicupher.ko */ \
+        fnc(af_alg_init),  /* af_alg.ko */ \
+        fnc(algif_hash_init),  /* algif_hash.ko */
+        fnc(algif_skcipher_init),  /* algif_skicupher.ko */ \
         fnc(alg_hash),  /* alg_hash.ko */ \
         fnc(softcursor),  /* softcursor.ko */ \
         fnc(font),  /* font.ko */ \
         fnc(bitblit),  /* bitblit.ko */ \
-        fnc(fbcon),  /* fbcon.ko */ \
+        fnc(fb_console_init),  /* fbcon.ko */ \
         fnc(lzo_decompress),  /* lzo_decompress.ko */ \
         fnc(lzo_compress),  /* lzo_compress.ko */ \
-        fnc(lzo),  /* lzo.ko */ \
-        fnc(authenc),  /* authenc.ko */ \
-        fnc(authencesn),  /* authencesn.ko */ \
-        fnc(cast_common),  /* cast_common.ko */ \
-        fnc(cat5_generic),  /* cat5_generic.ko */ \
-        fnc(cast6_generic),  /* cast6_generic.ko */ \
-        fnc(blowfish_common),  /* blowfish_common.ko */ \
-        fnc(blowfish_generic),  /* blowfish_generic.ko */ \
-        fnc(zlib_deflate),  /* zlib_deflate.ko */ \
-        fnc(zlib_inflate),  /* zlib_inflate.ko */ \
+        fnc(lzo_mod_init),  /* lzo.ko */ \
+        fnc(crypto_authenc_module_init),  /* authenc.ko */ \
+        fnc(crypto_authenc_esn_module_init),  /* authencesn.ko */ \
+        fnc(cast5_mod_init),  /* cat5_generic.ko */ \
+        fnc(cast6_mod_init),  /* cast6_generic.ko */ \
+        fnc(blowfish_mod_init),  /* blowfish_generic.ko */ \
         fnc(zlib_mod_init),  /* zlib.ko */ \
         fnc(prgn_mod_init), /**/ \
         fnc(blowfish_mod_init), /**/ \
@@ -174,11 +168,11 @@
         fnc(tea_mod_init), /**/ \
         fnc(tgr192_mod_init), /**/ \
         fnc(pcie_portdrv_init), /**/ \
-        fnc(iosfs),  /* iosfs.ko */ \
-        fnc(fuse),  /* fuse.ko */ \
-        fnc(cuse),  /* cuse.ko */ \
-        fnc(jbd),  /* jbd.ko */ \
-        fnc(ext3),  /* ext3.ko */ \
+        fnc(init_iso9660_fs),  /* isofs.ko */ \
+        fnc(fuse_init),  /* fuse.ko */ \
+        fnc(cuse_init),  /* cuse.ko */ \
+        fnc(journal_init),  /* jbd.ko */ \
+        fnc(init_ext3_fs),  /* ext3.ko */ \
         fnc(init_fat_fs),  /* fat.ko */ \
         fnc(init_vfat_fs),  /* vfat.ko */ \
         fnc(init_msdos_fs),  /* msdos.ko */ \
@@ -216,6 +210,17 @@
         fnc(b43legacy_init), /**/\
         fnc(azx_driver_init), /**/\
         fnc(i8042_init) /**/
+
+#if false
+        /* ARCH  SUBSYS POSTCORE */
+        fnc(dca),  /* dca.ko */
+        fnc(backlight),  /* backlight.ko */ \
+        fnc(cast_common),  /* cast_common.ko */ \
+        fnc(zlib_deflate),  /* zlib_deflate.ko */ \
+        fnc(zlib_inflate),  /* zlib_inflate.ko */ \
+        fnc(blowfish_common),  /* blowfish_common.ko */ \
+        fnc(ieee80211_init),  /* mac80211.ko */ \
+#endif
 
 
         //fnc(init_msdos_fs), /* msdos.ko */

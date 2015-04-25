@@ -35,7 +35,14 @@ static const char* const subsys[] = {
         "wmi.ko",
         "mmc_core.ko",
         "videodev.ko",
+        "dca.ko",   /* arch init */
+        "backlight.ko",  /* postcore_initcall */
+        "cfg80211.ko", /*  cfg80211_init */
+        "fbcon.ko",   /* fs_initcall fb_console_init */
+        "led-class.ko",
+        "mac80211.ko",
         "rc-core.ko"   /* rc-main.c */
+
 };
 
 static const char* const symbols[] = {
@@ -48,6 +55,18 @@ static const char* const symbols[] = {
         "videobuf2-memops.ko",
         "videobuf2-vmalloc.ko",
         "videobuf2-core.ko",
+        "fbdev.ko",
+        "fb.ko",
+        "softcursor.ko",
+        "bitblit.ko",
+        "font.ko",
+        "lzo_compress.ko",
+        "lzo_decompress.ko",
+        "cast_common.ko",
+        "zlib_deflate.ko",
+        "zlib_inflate.ko",
+        "blowfish_common.ko",
+        "twofish_common.ko",
         "i2c-mux.ko"
 };
 
@@ -157,12 +176,12 @@ int main(int argc, char* argv[])
     node [fontsize=10];
     node [nodesep=0.75];
     node [ranksep=0.75];
-#    node [color=none];
+    node [color=none];
     node [shape=box];
 #    graph [bb="0,0,1000,1000"];
 #graph[size="100,100"]; 
-#graph [ratio=0.5];
-#    edge [weight=1.2];
+ graph [ratio=0.5];
+    edge [weight=1.2];
 
     subgraph cluster_0 {
     )";
