@@ -68,7 +68,7 @@
 //#define kthread_create_on_node(...) 0
 #define kthread_bind(...)
 #define wake_up_process(...)
-#define printk(...) printf( #__VA_ARGS__)
+#define printk(...) printf( __VA_ARGS__ )
 #define _raw_spin_lock(...)
 struct init_fn_t __async_initcall_start[1], __async_initcall_end[1];
 struct dependency_t __async_modules_depends_start[]  = {
@@ -329,7 +329,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 // Do not register a dependency that is not in the current list
                 ptask = getTask(it_dependency->parent_id);
                 if (ptask == NULL || ptask->type != it_task->type)
-                    printk("async Dependency %d not found for id %d",it_dependency->parent_id,it_dependency->task_id);
+                    printk("async Dependency %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
                 else
                 {
                     // register dependency
@@ -484,10 +484,10 @@ struct task_t* TaskDone(struct task_t* ptask)
             }
         }
         --tasks.ready_last;
-        idx = *tasks.ready_last;
-        *tasks.ready_last = *it_idx2;
-        *it_idx2 = idx;
-        ptask = tasks.all + *it_idx2;
+        idx = *it_idx2;
+        *it_idx2 = *tasks.ready_last;
+        *tasks.ready_last = idx;
+        ptask = tasks.all + *tasks.ready_last;
     }
     else
     {
@@ -534,7 +534,7 @@ int WorkingThread(void *data)
             }
             //wait for (depends.unlocked !=0 or depends.waiting_last == 0)
         }
-    } while (tasks.waiting_last != 0);	// something to do
+    } while (tasks.waiting_last != tasks.idx_list);	// something to do
     printk_debug("async %d ends\n", (unsigned)data);
     return 0;
 }
