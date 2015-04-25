@@ -20,6 +20,7 @@
         fnc(init_cifs),               /* */  \
         fnc(drm_fb_helper_modinit),   /* */  \
         fnc(acpi_button_driver_init), /* */  \
+        fnc(acpi_power_meter_init), /* */  \
         fnc(init_iso9660_fs),          /* */  \
         fnc(bt_init),                 /* bluetooth.ko */  \
         fnc(rfcomm_init),            /* rfcomm.ko */ \
@@ -57,18 +58,18 @@
         fnc(acpi_processor_driver_init),  /* acpi-power-meter.ko */ \
         fnc(init_mtd),  /* mtd.ko */ \
         fnc(ubi_init),  /* ubi.ko */ \
-        fnc(uio),  /* uio.ko */ \
-        fnc(uio_cif),  /* uio_cif.ko */ \
+        fnc(uio_init),  /* uio.ko */ \
+        fnc(hilscher_pci_driver_init),  /* uio_cif.ko */ \
         fnc(libata),  /* libata.ko */ \
         fnc(libahci),  /* libahci.ko */ \
         fnc(ahci_pci_driver_init),  /* ahci.ko */ \
         fnc(wmi),  /* wmi.ko */ \
-        fnc(mxm_wmi),  /* mxm-wmi.ko */ \
+        fnc(mxm_wmi_init),  /* mxm-wmi.ko */ \
         fnc(speedstep),  /* speedstep-lib.ko */ \
-        fnc(speedstep_ich),  /* speedstep-ich.ko */ \
+        fnc(speedstep_init),  /* speedstep-ich.ko */ \
         fnc(mmc_core),  /* mmc_core.ko */ \
-        fnc(mmc_block),  /* mmc_block.ko */ \
-        fnc(videodev),  /* videodev.ko */ \
+        fnc(mmc_blk_init),  /* mmc_block.ko */ \
+        fnc(videodev_init),  /* videodev.ko */ \
         fnc(v4l2_common),  /* v4l2-common.ko */ \
         fnc(videobuf2_memops),  /* videobuf2-memops.ko */ \
         fnc(videobuf2_core),  /* videobuf2-core.ko */ \
@@ -76,11 +77,11 @@
         fnc(uvcvideo),  /* uvcvideo.ko */ \
         fnc(gspca_main),  /* gspca_main.ko */ \
         fnc(rc_core),  /* rc-core.ko */ \
-        fnc(ir_kbd_i2c),  /* ir-kbd-i2c.ko */ \
+        fnc(ir_kbd_driver),  /* ir-kbd-i2c.ko module_i2c_driver */ \
         fnc(i2c_mux),  /* i2c-mux.ko */ \
-        fnc(i2c_mux_gpio),  /* i2c-mux-gpio.ko */ \
-        fnc(i2c_mux_pca9541),  /* i2c-mux-pca9541.ko */ \
-        fnc(i2c_mux_pca954x),  /* i2c-mux-pca954x.ko */ \
+        fnc(i2c_mux_gpio_driver),  /* i2c-mux-gpio.ko module_platform_driver */ \
+        fnc(pca9541_driver),  /* i2c-mux-pca9541.ko module_i2c_driver */ \
+        fnc(pca954x_driver),  /* i2c-mux-pca954x.ko module_i2c_driver */ \
         fnc(usb_common),  /* usb-common.ko */ \
         fnc(usb_core),  /* usb-core.ko */ \
         fnc(uhci_hcd_init),    /* uhci-hcd.ko */ \
