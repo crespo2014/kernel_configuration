@@ -16,43 +16,15 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <cstring>
 
-static std::set<std::string> modules;
-static std::map<const char*, std::vector<const char*>> depends;
-
-/**
- * Find internal char* base on external one
- */
-const char* getModule(const char* name)
+enum module_type_t
 {
-    auto it = modules.find(name);
-    if (it == modules.end())
-    {
-        it = modules.insert(modules.begin(), name);
-    }
-    return (*it).c_str();
-}
-
-std::vector<const char*>& getModuleDependencies(const char* name)
-{
-    return depends[getModule(name)];
-}
-
-bool DependsOn(const char* name,const char* depends_on)
-{
-    if (depends_on != nullptr)
-    {
-        auto &v = depends[name];
-        for (auto d : v)
-        {
-            if (d == depends_on)
-                return true;
-            if (DependsOn(d, depends_on))
-                return true;
-        }
-    }
-    return false;
-}
+    none, //
+    subsystem,//
+    symbol,
+    module //
+};
 
 /**
  * List of modules initialize at early level < 7
@@ -79,6 +51,88 @@ static const char* const symbols[] = {
         "videobuf2-core.ko",
         "i2c-mux.ko"
 };
+
+enum module_type_t getType(const char* name)
+{
+    for (const char* const * ptr = symbols; ptr != symbols + sizeof(symbols) / sizeof(*symbols); ++ptr)
+    {
+        if (strcmp(*ptr, name) == 0)
+            return symbol;
+    }
+    // Build subsystem box as green
+    for (const char* const * ptr = subsys; ptr != subsys + sizeof(subsys) / sizeof(*subsys); ++ptr)
+    {
+        if (strcmp(*ptr, name) == 0)
+            return subsystem;
+    }
+    return none;
+}
+
+class Module
+{
+public:
+    Module(const char* n,enum module_type_t t) : name_(n), type_(t)
+    {
+
+    }
+    Module(const Module& m) : name_(m.name_), type_(m.type_)
+    {
+
+    }
+    const char* getName() const
+    {
+        return name_.c_str();
+    }
+    std::string name_;
+    module_type_t type_;
+    template<class T>
+    bool operator ==(const T& m) const
+    {
+        return name_.compare(m);
+    }
+    bool operator <(const Module& m) const
+    {
+        return name_ < m.name_;
+    }
+};
+
+static std::set<Module> modules;
+static std::map<const Module*, std::vector<const Module*>> depends;
+
+/**
+ * Find internal char* base on external one
+ */
+const Module* getModule(const char* name)
+{
+    auto it = std::find(modules.begin(),modules.end(),name);
+    if (it == modules.end())
+    {
+        it = modules.insert(modules.begin(), Module(name,getType(name)));
+    }
+    return &(*it);
+}
+
+std::vector<const Module*>& getModuleDependencies(const Module* name)
+{
+    return depends[name];
+}
+
+bool DependsOn(const Module* name,const Module* depends_on)
+{
+    if (depends_on != nullptr)
+    {
+        auto &v = depends[name];
+        for (auto d : v)
+        {
+            if (d == depends_on)
+                return true;
+            if (DependsOn(d, depends_on))
+                return true;
+        }
+    }
+    return false;
+}
+
 
 int main(int argc, char* argv[])
 {
