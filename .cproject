@@ -212,6 +212,7 @@
 		<configuration configurationName="async module">
 			<resource resourceType="PROJECT" workspacePath="/liunx-conf"/>
 		</configuration>
+		<configuration configurationName="async all modules"/>
 		<configuration configurationName="builddep">
 			<resource resourceType="PROJECT" workspacePath="/liunx-conf"/>
 		</configuration>
