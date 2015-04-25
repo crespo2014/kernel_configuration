@@ -307,7 +307,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 {
                     printk("async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
                     printk_debug("async %s MISSIG -- %s BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
-                    msleep(2000);
+//                    msleep(2000);
                 }
                 else
                 {
@@ -506,7 +506,7 @@ int WorkingThread(void *data)
         if (ptask != NULL)
         {
             printk_debug("async %d %s\n", (unsigned)data, module_name[ptask->id]);
-            msleep(1000);
+//            msleep(1000);
             do_one_initcall(ptask->fnc);
         }
         else
@@ -578,7 +578,7 @@ static int async_initialization(void)
 static int deferred_initialization(void)
 {
     printk_debug("async started deferred\n");
-    //return doit_type(deferred);
+    doit_type(deferred);
     return 0;
 }
 
