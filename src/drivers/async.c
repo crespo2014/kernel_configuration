@@ -104,6 +104,7 @@ struct dependency_t* __async_modules_depends_end = __async_modules_depends_start
 #include <linux/poll.h>
 #include <linux/types.h>
 #include <asm/atomic.h>
+#include <linux/delay.h>
 #include <linux/kthread.h>  // for threads
 
 
@@ -121,31 +122,6 @@ extern struct dependency_t __async_modules_depends_start[], __async_modules_depe
 #endif
 
 
-//
-//extern initcall_t __initcall_start[];
-//extern initcall_t __initcall0_start[];
-//extern initcall_t __initcall1_start[];
-//extern initcall_t __initcall2_start[];
-//extern initcall_t __initcall3_start[];
-//extern initcall_t __initcall4_start[];
-//extern initcall_t __initcall5_start[];
-//extern initcall_t __initcall6_start[];
-//extern initcall_t __initcall7_start[];
-//extern initcall_t __initcall_end[];
-//
-//static initcall_t *initcall_levels[] __initdata =
-//{ //
-//        __initcall0_start, //
-//        __initcall1_start, //
-//        __initcall2_start, //
-//        __initcall3_start, //
-//        __initcall4_start, //
-//        __initcall5_start, //
-//        __initcall6_start, //
-//        __initcall7_start, //
-//        __initcall_end //
-//        };
-
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 static const char* const module_name[] =
 {   "",INIT_CALLS(macro_str)};
@@ -161,77 +137,76 @@ ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_seq_device_init);
 ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
 ADD_MODULE_DEPENDENCY(alsa_pcm_init,alsa_timer_init);
 
-ADD_MODULE_DEPENDENCY(alsa_mixer_oss_init,alsa_pcm_init);       //snd-mixer-oss
-ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);
-   // snd-pcm-oss
 ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
 ADD_MODULE_DEPENDENCY(alsa_hwdep_init,alsa_pcm_init);
 
+ADD_MODULE_DEPENDENCY(alsa_mixer_oss_init,alsa_pcm_init);       //snd-mixer-oss
+ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);  // snd-pcm-oss
+
 ADD_MODULE_DEPENDENCY(alsa_seq_midi_event_init,alsa_seq_init);
-ADD_MODULE_DEPENDENCY(alsa_seq_dummy_init,alsa_seq_init);	
-ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);	
+ADD_MODULE_DEPENDENCY(alsa_seq_dummy_init,alsa_seq_init);
+ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);
+
 /* HDA snd is exported function plus all patches */		
-ADD_MODULE_DEPENDENCY(patch_si3054_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_ca0132_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_hdmi_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_sigmatel_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_cirrus_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_ca0110_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_via_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_realtek_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_conexant_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_cmedia_init,alsa_hwdep_init);		
-ADD_MODULE_DEPENDENCY(patch_analog_init,alsa_hwdep_init);		
+ADD_MODULE_DEPENDENCY(patch_si3054_init,snd_hda_codec);
+ADD_MODULE_DEPENDENCY(patch_ca0132_init,snd_hda_codec);
+ADD_MODULE_DEPENDENCY(patch_hdmi_init,snd_hda_codec);
+ADD_MODULE_DEPENDENCY(snd_hda_controller,snd_hda_codec);
+ADD_MODULE_DEPENDENCY(snd_hda_codec_generic,snd_hda_codec);
 
+ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
+ADD_MODULE_DEPENDENCY(patch_sigmatel_init,snd_hda_codec_generic);
+ADD_MODULE_DEPENDENCY(patch_cirrus_init,snd_hda_codec_generic);
+ADD_MODULE_DEPENDENCY(patch_ca0110_init,snd_hda_codec_generic);
+ADD_MODULE_DEPENDENCY(patch_via_init,snd_hda_codec_generic);
+ADD_MODULE_DEPENDENCY(patch_realtek_init,snd_hda_codec_generic);
+ADD_MODULE_DEPENDENCY(patch_conexant_init,snd_hda_codec_generic);
+ADD_MODULE_DEPENDENCY(patch_cmedia_init,snd_hda_codec_generic);
+ADD_MODULE_DEPENDENCY(patch_analog_init,snd_hda_codec_generic);
 
+ADD_MODULE_DEPENDENCY(hilscher_pci_driver_init,uio_init);       //mtd
 
 ADD_MODULE_DEPENDENCY(ubi_init,init_mtd);       //mtd
 
-ADD_MODULE_DEPENDENCY(hilscher_pci_driver_init,uio_init);             //uio -> uio_cif
-
+ADD_MODULE_DEPENDENCY(uas_driver_init,usb_storage_driver_init);
+ADD_MODULE_DEPENDENCY(ene_ub6250_driver_init,usb_storage_driver_init);
+ADD_MODULE_DEPENDENCY(realtek_cr_driver_init,usb_storage_driver_init);
 
 //USB
-ADD_MODULE_DEPENDENCY(usb_core,usb_common);
-ADD_MODULE_DEPENDENCY(ohci_hcd_mod_init,usb_core);
-ADD_MODULE_DEPENDENCY(uhci_hcd_init,usb_core);
-ADD_MODULE_DEPENDENCY(usbmon,usb_core);
-ADD_MODULE_DEPENDENCY(usb_storage_driver_init,usb_core);
-ADD_MODULE_DEPENDENCY(led_driver_init,usb_core);
-ADD_MODULE_DEPENDENCY(hid_init,usb_core);
-ADD_MODULE_DEPENDENCY(ehci_hcd_init,usb_core);
-
 ADD_MODULE_DEPENDENCY(ohci_pci_init,ohci_hcd_mod_init);
-ADD_MODULE_DEPENDENCY(ehci_platform_init,ohci_hcd_mod_init);
-ADD_MODULE_DEPENDENCY(hid_init,usb_storage_driver_init);
-ADD_MODULE_DEPENDENCY(uas_driver_init,usb_storage_driver_init);
-ADD_MODULE_DEPENDENCY(realtek_cr_driver_init,usb_storage_driver_init);
-ADD_MODULE_DEPENDENCY(ene_ub6250_driver_init,usb_storage_driver_init);		
+ADD_MODULE_DEPENDENCY(ohci_platform_init,ohci_hcd_mod_init);
 
 ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
 
-//ADD_MODULE_DEPENDENCY(azx_driver,alsa_hwdep_init);
-//ADD_MODULE_DEPENDENCY(mxm_wmi,wmi);
-//ADD_MODULE_DEPENDENCY(speedstep_ich,speedstep);
+ADD_MODULE_DEPENDENCY(lib80211_crypto_ccmp_init,lib80211_init);
+ADD_MODULE_DEPENDENCY(lib80211_crypto_tkip_init,lib80211_init);
+ADD_MODULE_DEPENDENCY(lib80211_crypto_wep_init,lib80211_init);
+ADD_MODULE_DEPENDENCY(libipw_init,lib80211_init);
+ADD_MODULE_DEPENDENCY(ipw2100_init,libipw_init);
 
-//ADD_MODULE_DEPENDENCY(mmc_block,mmc_core);
-//ADD_MODULE_DEPENDENCY(videodev,usb_core);
-//ADD_MODULE_DEPENDENCY(v4l2_common,videodev);
-//ADD_MODULE_DEPENDENCY(videobuf2_core,v4l2_common);
-//ADD_MODULE_DEPENDENCY(videobuf2_memops,videobuf2_core);
-//ADD_MODULE_DEPENDENCY(videobuf2_vmalloc,videobuf2_memops);
+ADD_MODULE_DEPENDENCY(drm_core_init,agp_init);
+ADD_MODULE_DEPENDENCY(agp_nvidia_init,agp_init);
+ADD_MODULE_DEPENDENCY(nvidia_frontend_init_module,drm_core_init);
+ADD_MODULE_DEPENDENCY(uvm_init,nvidia_frontend_init_module);
 
-//ADD_MODULE_DEPENDENCY(uvcvideo,videobuf2_vmalloc);
-//ADD_MODULE_DEPENDENCY(gspca_main,videodev);
-//ADD_MODULE_DEPENDENCY(rfcomm_init,bt_init);
-//ADD_MODULE_DEPENDENCY(coretemp,hwmon);
-//ADD_MODULE_DEPENDENCY(gpio_fan,hwmon);
-//ADD_MODULE_DEPENDENCY(acpi_processor_driver_init,hwmon);
+ADD_MODULE_DEPENDENCY(algif_skcipher_init,af_alg_init);
+ADD_MODULE_DEPENDENCY(algif_hash_init,af_alg_init);
 
-		
-		
+ADD_MODULE_DEPENDENCY(crypto_authenc_esn_module_init,crypto_authenc_module_init);
+
+ADD_MODULE_DEPENDENCY(cuse_init,fuse_init);
+
+ADD_MODULE_DEPENDENCY(init_msdos_fs,init_fat_fs);
+ADD_MODULE_DEPENDENCY(init_vfat_fs,init_fat_fs);
+
+ADD_MODULE_DEPENDENCY(init_ext3_fs,journal_init);
+//ADD_MODULE_DEPENDENCY(,);
+//ADD_MODULE_DEPENDENCY(,);
+//ADD_MODULE_DEPENDENCY(,);
+
 #define MAX_TASKS 200
 
 /**
@@ -327,10 +302,14 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
             // at the moment only one dependency is supported
             if (it_dependency->task_id == it_task->id)
             {
-                // Do not register a dependency that is not in the current list
+                // Do not register a dependency that does not exist or it is executed later
                 ptask = getTask(it_dependency->parent_id);
-                if (ptask == NULL || ptask->type != it_task->type)
+                if (ptask == NULL || (ptask->type == deferred && it_task->type == asynchronized) )
+                {
                     printk("async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
+                    printk_debug("async %s MISSIG -- %s BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
+                    msleep(2000);
+                }
                 else
                 {
                     // register dependency
@@ -347,7 +326,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
             printk_debug("async registered '%s' depends on '%s'\n", module_name[it_task->id], module_name[it_task->waiting_for_id]);
         else
             printk_debug("async registered '%s'\n", module_name[it_task->id]);
-        msleep(1000);
+        //msleep(500);
     }
 }
 /**
@@ -528,6 +507,7 @@ int WorkingThread(void *data)
         if (ptask != NULL)
         {
             printk_debug("async %d %s\n", (unsigned)data, module_name[ptask->id]);
+            msleep(1000);
             do_one_initcall(ptask->fnc);
         }
         else
@@ -541,7 +521,7 @@ int WorkingThread(void *data)
             }
             //wait for (depends.unlocked !=0 or depends.waiting_last == 0)
         }
-    } while (tasks.waiting_last != tasks.idx_list);	// something to do
+    } while (tasks.all != 0 && tasks.waiting_last != tasks.idx_list);	// something to do
     printk_debug("async %d ends\n", (unsigned)data);
     return 0;
 }

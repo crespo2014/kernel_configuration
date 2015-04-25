@@ -41,6 +41,7 @@ static const char* const subsys[] = {
         "fbcon.ko",   /* fs_initcall fb_console_init */
         "led-class.ko",
         "mac80211.ko",
+        "usbcore.ko", /* subsys_initcall(usb_init); */
         "rc-core.ko"   /* rc-main.c */
 };
 
@@ -65,6 +66,7 @@ static const char* const symbols[] = {
         "zlib_inflate.ko",
         "blowfish_common.ko",
         "twofish_common.ko",
+        "usb-common.ko",
         "i2c-mux.ko"
 };
 

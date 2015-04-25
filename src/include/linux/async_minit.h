@@ -38,8 +38,8 @@
         fnc(patch_si3054_init),      /* snd-hda-codec-si3054.ko */ \
         fnc(patch_ca0132_init),      /* snd-hda-codec-ca0132.ko */ \
         fnc(patch_hdmi_init),        /* snd-hda-codec-hdmi.ko */ \
-        fnc(alsa_seq_oss_init),             /* snd-seq-oss.ko */ \
-        fnc(snd_hda_intel),             /* snd-hda-intel.ko */ \
+        fnc(alsa_seq_oss_init),      /* snd-seq-oss.ko */ \
+        fnc(snd_hda_intel),          /* snd-hda-intel.ko */ \
         fnc(patch_sigmatel_init),   /* snd-hda-codec-idt.ko */ \
         fnc(patch_cirrus_init),      /* snd-hda-codec-cirrus.ko */ \
         fnc(patch_ca0110_init),      /* snd-hda-codec-ca0110.ko */ \
@@ -59,15 +59,12 @@
         fnc(mxm_wmi_init),  /* mxm-wmi.ko */ \
         fnc(speedstep_init),  /* speedstep-ich.ko */ \
         fnc(mmc_blk_init),  /* mmc_block.ko */ \
-        fnc(videodev_init),  /* videodev.ko */ \
         fnc(uvcvideo),  /* uvcvideo.ko */ \
         fnc(gspca_main),  /* gspca_main.ko */ \
         fnc(ir_kbd_driver),  /* ir-kbd-i2c.ko module_i2c_driver */ \
         fnc(i2c_mux_gpio_driver),  /* i2c-mux-gpio.ko module_platform_driver */ \
         fnc(pca9541_driver),  /* i2c-mux-pca9541.ko module_i2c_driver */ \
         fnc(pca954x_driver),  /* i2c-mux-pca954x.ko module_i2c_driver */ \
-        fnc(usb_common),  /* usb-common.ko */ \
-        fnc(usb_core),  /* usb-core.ko */ \
         fnc(uhci_hcd_init),    /* uhci-hcd.ko */ \
         fnc(usbmon),     /* usbmon.ko */ \
         fnc(usb_storage_driver_init),     /* usb-storage.ko */ \
@@ -217,6 +214,9 @@
         fnc(lzo_decompress),  /* lzo_decompress.ko */ \
         fnc(lzo_compress),  /* lzo_compress.ko */ \
         fnc(twofish_common),  /* twofish_common.ko */ \
+        fnc(videodev_init),  /* videodev.ko */ \
+        fnc(usb_common),  /* usb-common.ko */ \
+        fnc(usb_core),  /* usbcore.ko */ \
 
 #endif
 
