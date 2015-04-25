@@ -20,7 +20,6 @@
 
 enum module_type_t
 {
-    none, //
     subsystem,//
     symbol,
     module //
@@ -65,7 +64,7 @@ enum module_type_t getType(const char* name)
         if (strcmp(*ptr, name) == 0)
             return subsystem;
     }
-    return none;
+    return module;
 }
 
 class Module
@@ -88,11 +87,11 @@ public:
     template<class T>
     bool operator ==(const T& m) const
     {
-        return name_.compare(m);
+        return (name_.compare(m) == 0);
     }
     bool operator <(const Module& m) const
     {
-        return name_ < m.name_;
+        return (name_.compare(m.name_) < 0) ;
     }
 };
 
@@ -158,12 +157,12 @@ int main(int argc, char* argv[])
     node [fontsize=10];
     node [nodesep=0.75];
     node [ranksep=0.75];
-#    edge [weight=1.2];
-    node [color=none];
+#    node [color=none];
     node [shape=box];
 #    graph [bb="0,0,1000,1000"];
 #graph[size="100,100"]; 
 #graph [ratio=0.5];
+#    edge [weight=1.2];
 
     subgraph cluster_0 {
     )";
@@ -206,7 +205,7 @@ int main(int argc, char* argv[])
         }
         if (keys.size() > 1)
         {
-            auto& v = getModuleDependencies(getModule(*keys.begin()));
+            auto& v = getModuleDependencies(getModule(keys.front()));
             for (auto it2 = keys.begin() + 1; it2 != keys.end(); ++it2)
             {
                 std::cout << "\"" << *it2 << "\" -> \"" << keys.front() << "\"" << std::endl;
@@ -228,7 +227,7 @@ int main(int argc, char* argv[])
    subgraph cluster_1 { 
 )";
     // For each node check it its direct dependencies are found also in another path
-    for (auto& mod_it : depends)
+    for (auto mod_it : depends)
     {
         // check only multiple dependencies module
         if (mod_it.second.size() > 1)
@@ -237,7 +236,7 @@ int main(int argc, char* argv[])
             for (auto& it1 : mod_it.second)
             {
                 // check if it1 is included from it2
-                for (auto it2 : mod_it.second)
+                for (auto& it2 : mod_it.second)
                 {
                     if ((it1 != it2) && DependsOn(it2, it1))
                     {
@@ -251,20 +250,24 @@ int main(int argc, char* argv[])
             mod_it.second.erase(it,mod_it.second.end());
         }
         // print out
-        for (auto& it1 : mod_it.second)
+        for (auto it1 : mod_it.second)
         {
-            std::cout << "\"" << it1 << ".2\" -> \"" << mod_it.first << ".2\"" << std::endl;
+            // print only dependencies on module type
+            if (it1->type_ == module)
+            {
+                std::cout << "\"" << it1->name_ << ".2\" -> \"" << mod_it.first->name_ << ".2\"" << std::endl;
+            }
         }
     }
     // Build symbols list
     for(const char* const* ptr = symbols;ptr != symbols + sizeof(symbols)/sizeof(*symbols);++ptr)
     {
-        std::cout << "\"" << *ptr << ".2\" [color=blue];" << std::endl;
+       // std::cout << "\"" << *ptr << ".2\" [color=blue];" << std::endl;
     }
     // Build subsystem box as green
     for(const char* const* ptr = subsys;ptr != subsys + sizeof(subsys)/sizeof(*subsys);++ptr)
     {
-        std::cout << "\"" << *ptr << ".2\" [color=green];" << std::endl;
+      //  std::cout << "\"" << *ptr << ".2\" [color=green];" << std::endl;
     }
     std::cout << R"(
 }
