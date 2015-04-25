@@ -54,6 +54,32 @@ bool DependsOn(const char* name,const char* depends_on)
     return false;
 }
 
+/**
+ * List of modules initialize at early level < 7
+ */
+static const char* const subsys[] = {
+        "bluetooth.ko", /* bt_init */
+        "snd.ko" ,  /* alsa_sound_init */
+        "hwmon.ko", /* hwmon_init */
+        "wmi.ko",
+        "mmc_core.ko",
+        "videodev.ko",
+        "rc-core.ko"   /* rc-main.c */
+};
+
+static const char* const symbols[] = {
+        "soundcore.ko", /* sound/sound_core.c */
+        "libata.ko" ,
+        "libahci.ko",
+        "ahci.ko",
+        "speedstep-lib.ko",
+        "v4l2-common.ko",
+        "videobuf2-memops.ko",
+        "videobuf2-vmalloc.ko",
+        "videobuf2-core.ko",
+        "i2c-mux.ko"
+};
+
 int main(int argc, char* argv[])
 {
     char    cline[1000];
@@ -80,10 +106,10 @@ int main(int argc, char* argv[])
     node [ranksep=0.75];
 #    edge [weight=1.2];
     node [color=none];
-    node [shape=plaintext];
+    node [shape=box];
 #    graph [bb="0,0,1000,1000"];
 #graph[size="100,100"]; 
-    graph [ratio=0.5];
+#graph [ratio=0.5];
 
     subgraph cluster_0 {
     )";
@@ -134,6 +160,16 @@ int main(int argc, char* argv[])
             }
         }
     }
+    // Build symbols list
+   for(const char* const* ptr = symbols;ptr != symbols + sizeof(symbols)/sizeof(*symbols);++ptr)
+   {
+       std::cout << "\"" << *ptr << "\" [color=blue];" << std::endl;
+   }
+   // Build subsystem box as green
+   for(const char* const* ptr = subsys;ptr != subsys + sizeof(subsys)/sizeof(*subsys);++ptr)
+   {
+       std::cout << "\"" << *ptr << "\" [color=green];" << std::endl;
+   }
     std::cout << R"(}
    subgraph cluster_1 { 
 )";
@@ -165,6 +201,16 @@ int main(int argc, char* argv[])
         {
             std::cout << "\"" << it1 << ".2\" -> \"" << mod_it.first << ".2\"" << std::endl;
         }
+    }
+    // Build symbols list
+    for(const char* const* ptr = symbols;ptr != symbols + sizeof(symbols)/sizeof(*symbols);++ptr)
+    {
+        std::cout << "\"" << *ptr << ".2\" [color=blue];" << std::endl;
+    }
+    // Build subsystem box as green
+    for(const char* const* ptr = subsys;ptr != subsys + sizeof(subsys)/sizeof(*subsys);++ptr)
+    {
+        std::cout << "\"" << *ptr << ".2\" [color=green];" << std::endl;
     }
     std::cout << R"(
 }
