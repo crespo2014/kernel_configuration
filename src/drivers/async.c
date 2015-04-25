@@ -256,7 +256,7 @@ struct task_list_t
     unsigned *idx_end;      // number of idx on list
     struct task_t all[MAX_TASKS];
     struct task_t* task_end;
-    unsigned task_left;     // how many of global task are left to done
+    //unsigned task_left;     // how many of global task are left to done
 };
 
 static struct task_list_t tasks;
@@ -317,7 +317,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
         tasks.task_end->waiting_for_id = 0;
         tasks.task_end->waiting_count = 0;
     }
-    tasks.task_left = tasks.task_end - tasks.all;
+    //tasks.task_left = tasks.task_end - tasks.all;
     // resolve dependencies
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
@@ -409,14 +409,15 @@ struct task_t* TaskDone(struct task_t* ptask)
     unsigned* it_idx;
     unsigned* it_idx2;
     unsigned idx;
-    unsigned child_count = 0;    // how many task has been wakeup
-    if (tasks.running_last == 0)
+    unsigned ready_count = 0;    // how many task has been wakeup
+    if (tasks.running_last == tasks.idx_list)
         return 0;
     //lock
     spin_lock(&list_lock);
-    if (ptask < tasks.task_end)
+    ready_count = tasks.ready_last - tasks.waiting_last;
+    if (ptask != 0)
     {
-        tasks.task_left--;
+        //tasks.task_left--;
         // move to done list
         for (it_idx = tasks.ready_last; it_idx < tasks.running_last; ++it_idx)
         {
@@ -429,8 +430,7 @@ struct task_t* TaskDone(struct task_t* ptask)
             }
         }
         // release waiting tasks
-        child_count = ptask->child_count;
-        if (child_count)
+        if (ptask->child_count)
         {
             // find parent task on dependency list
             for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
@@ -466,10 +466,10 @@ struct task_t* TaskDone(struct task_t* ptask)
     // check if not running task and not pending one
     if (tasks.running_last == tasks.waiting_last)
     {
-        tasks.waiting_last = 0;
+        tasks.waiting_last = tasks.idx_list;
     }
     // pick a new task
-    ptask = tasks.task_end;
+    ptask = 0;
     if (tasks.waiting_last != tasks.ready_last)
     {
         // find the lower id task available
@@ -483,30 +483,31 @@ struct task_t* TaskDone(struct task_t* ptask)
                 it_idx2 = it_idx;
             }
         }
-        --tasks.waiting_last;
-        idx = *tasks.waiting_last;
-        *tasks.waiting_last = *it_idx2;
+        --tasks.ready_last;
+        idx = *tasks.ready_last;
+        *tasks.ready_last = *it_idx2;
         *it_idx2 = idx;
+        ptask = tasks.all + *it_idx2;
     }
     else
     {
         // check end of all task
-        if (tasks.running_last == 0)
+        if (tasks.running_last == tasks.idx_list)
         {
-            // clean up all memory if apply
+            // clean up all task memory if apply
             wake_up_interruptible(&list_wait);
         }
     }
     // spin unlock
     spin_unlock(&list_lock);
-    // allow other thread pick a task
-    if (child_count > 1)
+    // allow other thread pick a task if it was not task before and now there is one
+    if (ready_count == 0 && tasks.ready_last != tasks.waiting_last)
         wake_up_interruptible(&list_wait);
-    if (tasks.running_last == 0 && (tasks.task_left == 0))
+    if (tasks.running_last == tasks.idx_list)
     {
         //free_initmem(); do not doit until deferred
     }
-    return (ptask == tasks.task_end ? NULL : ptask);
+    return ptask;
 }
 
 int WorkingThread(void *data)
@@ -617,8 +618,14 @@ int main(void)
     {
         {   asynchronized,rfcomm_init_id,0},
         {   asynchronized,alsa_pcm_init_id, 0},
+        {   asynchronized,alsa_mixer_oss_init_id, 0},
+        {   asynchronized,snd_hda_codec_id, 0},
+        {   asynchronized,alsa_hwdep_init_id, 0},
+        {   asynchronized,alsa_seq_device_init_id, 0},
         {   asynchronized,alsa_seq_init_id, 0},
-        {   deferred,snd_hda_codec_id, 0}};
+        {   asynchronized,alsa_seq_midi_event_init_id, 0},
+        {   asynchronized,alsa_seq_dummy_init_id, 0},
+        {   asynchronized,alsa_seq_oss_init_id, 0}};
     FillTasks(list1,list1+4);
     doit_type(asynchronized);
     /*
