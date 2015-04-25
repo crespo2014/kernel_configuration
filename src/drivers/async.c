@@ -63,6 +63,7 @@
 #define num_online_cpus(...) 1
 #define kthread_create(...) 1
 #define wait_event_interruptible(...) 0
+#define free_initmem(...)
 #define ERR_PTR(...) 6
 #define ENOMEM 6
 //#define kthread_create_on_node(...) 0
@@ -238,7 +239,7 @@ ADD_MODULE_DEPENDENCY(smsc,libphy);
  */
 struct task_t
 {
-    task_type_t type;           //
+    task_type_t type;        //
     modules_e id;           // idx in string table
     initcall_t fnc;             // ptr to init function
     unsigned waiting_for_id;
@@ -249,6 +250,7 @@ struct task_t
 // TODO join together all task with taskid table to allow dynamic allocation
 struct task_list_t
 {
+    task_type_t type_;          // current type in processing
     unsigned idx_list[MAX_TASKS];
     unsigned *waiting_last;  // last task waiting to be release
     unsigned *ready_last;    // last task to be execute
@@ -256,7 +258,6 @@ struct task_list_t
     unsigned *idx_end;      // number of idx on list
     struct task_t all[MAX_TASKS];
     struct task_t* task_end;
-    //unsigned task_left;     // how many of global task are left to done
 };
 
 static struct task_list_t tasks;
@@ -329,7 +330,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 // Do not register a dependency that is not in the current list
                 ptask = getTask(it_dependency->parent_id);
                 if (ptask == NULL || ptask->type != it_task->type)
-                    printk("async Dependency %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
+                    printk("async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
                 else
                 {
                     // register dependency
@@ -342,7 +343,11 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 ++it_task->child_count;
             }
         }
-        printk_debug("async registered '%s' depends on '%s'\n", module_name[it_task->id], it_task->waiting_count != 0 ? module_name[it_task->waiting_for_id]: "");
+        if (it_task->waiting_count != 0)
+            printk_debug("async registered '%s' depends on '%s'\n", module_name[it_task->id], module_name[it_task->waiting_for_id]);
+        else
+            printk_debug("async registered '%s'\n", module_name[it_task->id]);
+        msleep(1000);
     }
 }
 /**
@@ -356,6 +361,7 @@ void Prepare(task_type_t type)
 	unsigned *it_idx2;
 	unsigned id;
 	tasks.idx_end = tasks.idx_list;
+	tasks.type_ = type;
     //
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
@@ -503,9 +509,10 @@ struct task_t* TaskDone(struct task_t* ptask)
     // allow other thread pick a task if it was not task before and now there is one
     if (ready_count == 0 && tasks.ready_last != tasks.waiting_last)
         wake_up_interruptible(&list_wait);
-    if (tasks.running_last == tasks.idx_list)
+    if (tasks.running_last == tasks.idx_list && tasks.type_ == deferred)
     {
-        //free_initmem(); do not doit until deferred
+        // free task structure not sure threads use it
+        free_initmem(); //do not doit until deferred
     }
     return ptask;
 }
@@ -549,8 +556,8 @@ int doit_type(task_type_t type)
     unsigned max_cpus = num_online_cpus();
     static struct task_struct *thr;
     Prepare(type);
-    if (max_threads == 0)
-        WorkingThread(0);
+    if (type == asynchronized && max_threads > 0)
+        --max_threads;
     for (; max_threads != 0; --max_threads)
     {
         //start working threads
@@ -566,6 +573,9 @@ int doit_type(task_type_t type)
             WorkingThread(NULL);
         }
     }
+    // Run blocking thread
+    if (type == asynchronized || CONFIG_ASYNCHRO_MODULE_INIT_THREADS == 0)
+        WorkingThread(0);
 
     return 0;
 }
@@ -617,6 +627,7 @@ int main(void)
     struct init_fn_t list1[] =
     {
         {   asynchronized,rfcomm_init_id,0},
+        {   asynchronized,alsa_timer_init_id, 0},
         {   asynchronized,alsa_pcm_init_id, 0},
         {   asynchronized,alsa_mixer_oss_init_id, 0},
         {   asynchronized,snd_hda_codec_id, 0},
@@ -626,7 +637,7 @@ int main(void)
         {   asynchronized,alsa_seq_midi_event_init_id, 0},
         {   asynchronized,alsa_seq_dummy_init_id, 0},
         {   asynchronized,alsa_seq_oss_init_id, 0}};
-    FillTasks(list1,list1+4);
+    FillTasks(list1,list1+10);
     doit_type(asynchronized);
     /*
     // keep order for single thread but can be all together
