@@ -341,6 +341,7 @@ void Prepare(task_type_t type)
 	tasks.idx_end = tasks.idx_list;
 	tasks.type_ = type;
     //
+	printk_debug("async Preparing ... ");
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
         if (it_task->type == type)
@@ -368,6 +369,7 @@ void Prepare(task_type_t type)
         }
     }
     tasks.waiting_last = it_idx1;
+    printk_debug("async %d tasks",tasks.idx_end - tasks.idx_list);
 }
 
 /**
@@ -490,7 +492,7 @@ struct task_t* TaskDone(struct task_t* ptask)
     if (tasks.running_last == tasks.idx_list && tasks.type_ == deferred)
     {
         // free task structure not sure threads use it
-        free_initmem(); //do not doit until deferred
+        //free_initmem(); //do not doit until deferred
     }
     return ptask;
 }
@@ -506,13 +508,13 @@ int WorkingThread(void *data)
         if (ptask != NULL)
         {
             printk_debug("async %d %s\n", (unsigned)data, module_name[ptask->id]);
-//            msleep(1000);
+            msleep(2000);
             do_one_initcall(ptask->fnc);
         }
         else
         {
             printk_debug("async %d waiting ...\n", (unsigned)data);
-            ret = wait_event_interruptible(list_wait, (tasks.ready_last != tasks.waiting_last || tasks.waiting_last == 0));
+            ret = wait_event_interruptible(list_wait, (tasks.ready_last != tasks.waiting_last || tasks.waiting_last == tasks.idx_list));
             if (ret != 0)
             {
                 printk("async init wake up returned %d\n", ret);
@@ -535,6 +537,8 @@ int doit_type(task_type_t type)
     unsigned max_cpus = num_online_cpus();
     static struct task_struct *thr;
     Prepare(type);
+    if (tasks.idx_end == tasks.idx_list)
+        return 0;
     if (type == asynchronized && max_threads > 0)
         --max_threads;
     for (; max_threads != 0; --max_threads)
@@ -605,6 +609,7 @@ int main(void)
         {   asynchronized,alsa_seq_oss_init_id, 0}};
     FillTasks(list1,list1+9);
     doit_type(asynchronized);
+    doit_type(deferred);
     /*
     // keep order for single thread but can be all together
     struct init_fn_t list2[] =
