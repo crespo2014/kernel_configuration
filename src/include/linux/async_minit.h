@@ -21,6 +21,8 @@
         fnc(drm_fb_helper_modinit),   /* */  \
         fnc(acpi_button_driver_init), /* */  \
         fnc(acpi_power_meter_init), /* */  \
+        fnc(synusb_driver_init),    /*   */ \
+        fnc(usblp_driver_init),    /*   */ \
         fnc(rfcomm_init),            /* rfcomm.ko */ \
         fnc(alsa_timer_init),        /* snd-timer.ko */ \
         fnc(alsa_hwdep_init),        /* snd-hwdep.ko */ \
@@ -307,6 +309,9 @@ module_exit(__driver##_exit);
 #define async_module_pci_driver(__pci_driver) async_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver);
 #define deferred_module_pci_driver(__pci_driver) deferred_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver);
 
+#define async_module_platform_driver(__platform_driver) \
+    async_module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
+
 #else
 
 #define async_module_init(fnc, ... )      module_init(fnc);
@@ -317,6 +322,8 @@ module_exit(__driver##_exit);
 
 #define async_module_pci_driver(__pci_driver)    module_pci_driver(__pci_driver);
 #define deferred_module_pci_driver(__pci_driver) module_pci_driver(__pci_driver);
+
+#define async_module_platform_driver(__platform_driver) module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
 
 #endif
 

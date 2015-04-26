@@ -179,6 +179,7 @@ ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
+ADD_MODULE_DEPENDENCY(synusb_driver_init,);
 
 ADD_MODULE_DEPENDENCY(lib80211_crypto_ccmp_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(lib80211_crypto_tkip_init,lib80211_init);
@@ -202,7 +203,7 @@ ADD_MODULE_DEPENDENCY(init_msdos_fs,init_fat_fs);
 ADD_MODULE_DEPENDENCY(init_vfat_fs,init_fat_fs);
 
 ADD_MODULE_DEPENDENCY(init_ext3_fs,journal_init);
-//ADD_MODULE_DEPENDENCY(,);
+
 //ADD_MODULE_DEPENDENCY(,);
 //ADD_MODULE_DEPENDENCY(,);
 
