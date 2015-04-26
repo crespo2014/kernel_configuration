@@ -144,21 +144,22 @@ static const char* const module_name[] =
  */
 
 //ALSA
-ADD_MODULE_DEPENDENCY(alsa_seq_device_init,alsa_timer_init);
+ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
+
+ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_timer_init);
 ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_seq_device_init);
-ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
-ADD_MODULE_DEPENDENCY(alsa_pcm_init,alsa_timer_init);
-//alsa_pcm_init,alsa_mixer_oss_init
-
-//ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
-ADD_MODULE_DEPENDENCY(alsa_hwdep_init,alsa_pcm_init);
-
-ADD_MODULE_DEPENDENCY(alsa_mixer_oss_init,alsa_pcm_init);       //snd-mixer-oss
-ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);  // snd-pcm-oss
-
 ADD_MODULE_DEPENDENCY(alsa_seq_midi_event_init,alsa_seq_init);
 ADD_MODULE_DEPENDENCY(alsa_seq_dummy_init,alsa_seq_init);
 ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);
+
+ADD_MODULE_DEPENDENCY(alsa_pcm_init,alsa_timer_init);
+ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
+ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_pcm_init);
+
+ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
+
+ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);  // snd-pcm-oss
+ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_pcm_init);  // snd-pcm-oss
 
 /* HDA snd is exported function plus all patches */		
 //ADD_MODULE_DEPENDENCY(patch_si3054_init,snd_hda_codec);
@@ -166,8 +167,6 @@ ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);
 //ADD_MODULE_DEPENDENCY(patch_hdmi_init,snd_hda_codec);
 //ADD_MODULE_DEPENDENCY(snd_hda_controller,snd_hda_codec);
 //ADD_MODULE_DEPENDENCY(snd_hda_codec_generic,snd_hda_codec);
-
-ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
 //ADD_MODULE_DEPENDENCY(patch_sigmatel_init,snd_hda_codec_generic);
 //ADD_MODULE_DEPENDENCY(patch_cirrus_init,snd_hda_codec_generic);
 //ADD_MODULE_DEPENDENCY(patch_ca0110_init,snd_hda_codec_generic);
@@ -177,7 +176,7 @@ ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
 //ADD_MODULE_DEPENDENCY(patch_cmedia_init,snd_hda_codec_generic);
 //ADD_MODULE_DEPENDENCY(patch_analog_init,snd_hda_codec_generic);
 
-ADD_MODULE_DEPENDENCY(hilscher_pci_driver_init,uio_init);       //mtd
+ADD_MODULE_DEPENDENCY(hilscher_pci_driver_init,uio_init);  //uio - uio_cif
 
 ADD_MODULE_DEPENDENCY(ubi_init,init_mtd);       //mtd
 
@@ -193,13 +192,18 @@ ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
-//ADD_MODULE_DEPENDENCY(synusb_driver_init,);
 
 ADD_MODULE_DEPENDENCY(lib80211_crypto_ccmp_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(lib80211_crypto_tkip_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(lib80211_crypto_wep_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(libipw_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(ipw2100_init,libipw_init);
+
+// rng
+ADD_MODULE_DEPENDENCY(intel_rng_mod_init,hwrng_modinit);
+ADD_MODULE_DEPENDENCY(b43,hwrng_modinit);
+ADD_MODULE_DEPENDENCY(b43legacy,hwrng_modinit);
+
 
 // AGP DRM
 ADD_MODULE_DEPENDENCY(drm_core_init,agp_init);
@@ -219,7 +223,7 @@ ADD_MODULE_DEPENDENCY(init_vfat_fs,init_fat_fs);
 
 ADD_MODULE_DEPENDENCY(init_ext3_fs,journal_init);
 
-//ADD_MODULE_DEPENDENCY(,);
+//
 //ADD_MODULE_DEPENDENCY(,);
 
 #define MAX_TASKS 200
