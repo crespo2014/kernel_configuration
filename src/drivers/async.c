@@ -153,8 +153,8 @@ ADD_MODULE_DEPENDENCY(alsa_seq_dummy_init,alsa_seq_init);
 ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);
 
 ADD_MODULE_DEPENDENCY(alsa_pcm_init,alsa_timer_init);
-ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
-ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_pcm_init);
+//ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
+//ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_pcm_init);
 
 ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
 
