@@ -47,7 +47,7 @@
  */
 
 #include "linux/async_minit.h"
-#define CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+//#define CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 
 //this module is always enable
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_THREADS
@@ -68,10 +68,10 @@
 #define spin_unlock(...)
 #define wake_up_interruptible(...) 0
 #define num_online_cpus(...) 1
-#define kthread_create(...) 1
+#define kthread_create(...) NULL
 #define wait_event_interruptible(...) 0
 #define free_initmem(...)
-#define ERR_PTR(...) 6
+#define ERR_PTR(...) NULL
 #define ENOMEM 6
 //#define kthread_create_on_node(...) 0
 #define kthread_bind(...)
@@ -88,9 +88,16 @@ struct dependency_t __async_modules_depends_start[]  = {
         MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),
         MOD_DEPENDENCY_ITEM(alsa_seq_midi_event_init,alsa_seq_init),
         MOD_DEPENDENCY_ITEM(alsa_seq_dummy_init,alsa_seq_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_event_init)
+        MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_event_init),
+        // multiple dependencie
+        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,init_cifs),
+        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,drm_fb_helper_modinit),
+        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,acpi_power_meter_init),
+
+        MOD_DEPENDENCY_ITEM(init_cifs,usblp_driver_init),
+        MOD_DEPENDENCY_ITEM(init_cifs,acpi_power_meter_init)
         };
-struct dependency_t* __async_modules_depends_end = __async_modules_depends_start + 10;
+struct dependency_t* __async_modules_depends_end = __async_modules_depends_start + 14;
 
 #define DEFINE_SPINLOCK(a) int a
 #define DECLARE_WAIT_QUEUE_HEAD(a) int a
@@ -225,7 +232,6 @@ struct task_t
     task_type_t type;        //
     modules_e id;           // idx in string table
     initcall_t fnc;             // ptr to init function
-    unsigned waiting_for_id;
     unsigned waiting_count; // how many task does it depend on
     unsigned child_count;   // how many task it triggers
 };
@@ -298,7 +304,6 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
         tasks.task_end->id = it_init_fnc->id;
         tasks.task_end->type = it_init_fnc->type_;
         tasks.task_end->fnc = it_init_fnc->fnc;
-        tasks.task_end->waiting_for_id = 0;
         tasks.task_end->waiting_count = 0;
     }
     //tasks.task_left = tasks.task_end - tasks.all;
@@ -322,7 +327,6 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 {
                     // register dependency
                     ++it_task->waiting_count;
-                    it_task->waiting_for_id = it_dependency->parent_id;
                 }
             }
             if (it_dependency->parent_id == it_task->id)
@@ -330,10 +334,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 ++it_task->child_count;
             }
         }
-        if (it_task->waiting_count != 0)
-            printk_debug("async registered '%s' depends on '%s'\n", module_name[it_task->id], module_name[it_task->waiting_for_id]);
-        else
-            printk_debug("async registered '%s'\n", module_name[it_task->id]);
+        printk_debug("async registered '%s' depends on %d tasks\n", module_name[it_task->id],it_task->waiting_count);
         //msleep(500);
     }
 }
@@ -350,7 +351,7 @@ void Prepare(task_type_t type)
 	tasks.idx_end = tasks.idx_list;
 	tasks.type_ = type;
     //
-	printk_debug("async Preparing ... ");
+	printk_debug("async Preparing ... \n");
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
         if (it_task->type == type)
@@ -365,7 +366,7 @@ void Prepare(task_type_t type)
     // jump waiting task
     it_idx1 = tasks.idx_list;
     while (it_idx1 != tasks.idx_end && tasks.all[*it_idx1].waiting_count != 0)
-        ++it_task;
+        ++it_idx1;
     for (it_idx2 = it_idx1 + 1; it_idx2 < tasks.idx_end; ++it_idx2)
     {
         //move waiting task to front
@@ -378,7 +379,7 @@ void Prepare(task_type_t type)
         }
     }
     tasks.waiting_last = it_idx1;
-    printk_debug("async %d tasks",tasks.idx_end - tasks.idx_list);
+    printk_debug("async %d tasks \n",tasks.idx_end - tasks.idx_list);
 }
 
 /**
@@ -432,20 +433,23 @@ struct task_t* TaskDone(struct task_t* ptask)
             {
                 if (it_dependency->parent_id == ptask->id)
                 {
-                    //find child task on waiting list
+                    //find child task on waiting list and release
                     for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;)
                     {
                         if (tasks.all[*it_idx].id == it_dependency->task_id)
                         {
                             --tasks.all[*it_idx].waiting_count;
-                            // move to running list
-                            --tasks.waiting_last;
-                            idx = *tasks.waiting_last;
-                            *tasks.waiting_last = *it_idx;
-                            *it_idx = idx;
+                            // move to running list if not waiting
+                            if (tasks.all[*it_idx].waiting_count == 0)
+                            {
+                                --tasks.waiting_last;
+                                idx = *tasks.waiting_last;
+                                *tasks.waiting_last = *it_idx;
+                                *it_idx = idx;
+                                continue;
+                            }
                         }
-                        else
-                            ++it_idx;
+                        ++it_idx;
                     }
                     --ptask->child_count;
                     if (ptask->child_count == 0)
@@ -531,7 +535,7 @@ int WorkingThread(void *data)
             }
             //wait for (depends.unlocked !=0 or depends.waiting_last == 0)
         }
-    } while (tasks.all != 0 && tasks.waiting_last != tasks.idx_list);	// something to do
+    } while (tasks.all != 0 && tasks.ready_last != tasks.idx_list);	// something to do
     printk_debug("async %d ends\n", (unsigned)data);
     return 0;
 }
@@ -577,7 +581,6 @@ int doit_type(task_type_t type)
  */
 static int async_initialization(void)
 {
-    int ret;
     FillTasks(__async_initcall_start, __async_initcall_end);
     //traceInitCalls();
     printk_debug("async started asynchronized\n");
@@ -606,19 +609,34 @@ int main(void)
     // single
     struct init_fn_t list1[] =
     {
-        {   asynchronized,rfcomm_init_id,0},
-        {   asynchronized,alsa_timer_init_id, 0},
-        {   asynchronized,alsa_pcm_init_id, 0},
-        {   asynchronized,alsa_mixer_oss_init_id, 0},
-        {   asynchronized,alsa_hwdep_init_id, 0},
-        {   asynchronized,alsa_seq_device_init_id, 0},
-        {   asynchronized,alsa_seq_init_id, 0},
-        {   asynchronized,alsa_seq_midi_event_init_id, 0},
-        {   asynchronized,alsa_seq_dummy_init_id, 0},
-        {   asynchronized,alsa_seq_oss_init_id, 0}};
+    { asynchronized, rfcomm_init_id, 0 },
+    { asynchronized, alsa_timer_init_id, 0 },
+    { asynchronized, alsa_pcm_init_id, 0 },
+    { asynchronized, alsa_mixer_oss_init_id, 0 },
+    { asynchronized, alsa_hwdep_init_id, 0 },
+    { asynchronized, alsa_seq_device_init_id, 0 },
+    { asynchronized, alsa_seq_init_id, 0 },
+    { asynchronized, alsa_seq_midi_event_init_id, 0 },
+    { asynchronized, alsa_seq_dummy_init_id, 0 },
+    { asynchronized, alsa_seq_oss_init_id, 0 } };
+    // multiple dependnecies
+    struct init_fn_t list2[] =
+    {
+    { asynchronized, crypto_xcbc_module_init_id, 0 },
+    { asynchronized, init_cifs_id, 0 },
+    { asynchronized, drm_fb_helper_modinit_id, 0 },
+    { asynchronized, acpi_power_meter_init_id, 0 },
+    { asynchronized, usblp_driver_init_id, 0 },
+    { asynchronized, lz4_mod_init_id, 0 } };
+
     FillTasks(list1,list1+9);
     doit_type(asynchronized);
     doit_type(deferred);
+
+
+    FillTasks(list2,list2+6);
+    doit_type(asynchronized);
+    //unmeet dependnency force to do all modules in order
     /*
     // keep order for single thread but can be all together
     struct init_fn_t list2[] =
@@ -663,7 +681,7 @@ int main(void)
 //	WorkingThread();
 //	Prepare(list3,sizeof(list3)/sizeof(*list));
 //	WorkingThread();
-
+    return 0;
 }
 #endif
 
