@@ -312,8 +312,8 @@ module_exit(__driver##_exit);
 #define async_module_init(fnc, ... )      module_init(fnc);
 #define deferred_module_init(fnc, ... )   module_init(fnc);
 
-#define async_module_driver(__driver, __register, __unregister,__depends, ...)    module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
-#define deferred_module_driver(__driver, __register, __unregister,__depends, ...) module_driver(__driver, __register, __unregister, ##__VA_ARGS__);
+#define async_module_driver(__driver, __register, __unregister)    module_driver(__driver, __register, __unregister);
+#define deferred_module_driver(__driver, __register, __unregister) module_driver(__driver, __register, __unregister);
 
 #define async_module_pci_driver(__pci_driver)    module_pci_driver(__pci_driver);
 #define deferred_module_pci_driver(__pci_driver) module_pci_driver(__pci_driver);
