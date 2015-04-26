@@ -5296,3 +5296,1757 @@ diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '
 -module_init(alsa_util_mem_init)
 +deferred_module_init(alsa_util_mem_init)
  module_exit(alsa_util_mem_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/aes_generic.c linux-4.0/crypto/aes_generic.c
+--- linux-4.0.orig/crypto/aes_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/aes_generic.c	2015-04-26 00:56:07.796036683 +0100
+@@ -1469,7 +1469,7 @@ static void __exit aes_fini(void)
+ 	crypto_unregister_alg(&aes_alg);
+ }
+ 
+-module_init(aes_init);
++async_module_init(aes_init);
+ module_exit(aes_fini);
+ 
+ MODULE_DESCRIPTION("Rijndael (AES) Cipher Algorithm");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/af_alg.c linux-4.0/crypto/af_alg.c
+--- linux-4.0.orig/crypto/af_alg.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/af_alg.c	2015-04-26 00:56:07.798036683 +0100
+@@ -477,7 +477,7 @@ static void __exit af_alg_exit(void)
+ 	proto_unregister(&alg_proto);
+ }
+ 
+-module_init(af_alg_init);
++async_module_init(af_alg_init);
+ module_exit(af_alg_exit);
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS_NETPROTO(AF_ALG);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/algif_hash.c linux-4.0/crypto/algif_hash.c
+--- linux-4.0.orig/crypto/algif_hash.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/algif_hash.c	2015-04-26 00:56:07.803036683 +0100
+@@ -308,6 +308,6 @@ static void __exit algif_hash_exit(void)
+ 	BUG_ON(err);
+ }
+ 
+-module_init(algif_hash_init);
++async_module_init(algif_hash_init);
+ module_exit(algif_hash_exit);
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/algif_skcipher.c linux-4.0/crypto/algif_skcipher.c
+--- linux-4.0.orig/crypto/algif_skcipher.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/algif_skcipher.c	2015-04-26 00:56:07.805036683 +0100
+@@ -626,6 +626,6 @@ static void __exit algif_skcipher_exit(v
+ 	BUG_ON(err);
+ }
+ 
+-module_init(algif_skcipher_init);
++async_module_init(algif_skcipher_init);
+ module_exit(algif_skcipher_exit);
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/ansi_cprng.c linux-4.0/crypto/ansi_cprng.c
+--- linux-4.0.orig/crypto/ansi_cprng.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/ansi_cprng.c	2015-04-26 00:56:07.807036684 +0100
+@@ -474,7 +474,7 @@ MODULE_DESCRIPTION("Software Pseudo Rand
+ MODULE_AUTHOR("Neil Horman <nhorman@tuxdriver.com>");
+ module_param(dbg, int, 0);
+ MODULE_PARM_DESC(dbg, "Boolean to enable debugging (0/1 == off/on)");
+-module_init(prng_mod_init);
++async_module_init(prng_mod_init);
+ module_exit(prng_mod_fini);
+ MODULE_ALIAS_CRYPTO("stdrng");
+ MODULE_ALIAS_CRYPTO("ansi_cprng");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/asymmetric_keys/asymmetric_type.c linux-4.0/crypto/asymmetric_keys/asymmetric_type.c
+--- linux-4.0.orig/crypto/asymmetric_keys/asymmetric_type.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/asymmetric_keys/asymmetric_type.c	2015-04-26 00:56:07.837036684 +0100
+@@ -402,5 +402,5 @@ static void __exit asymmetric_key_cleanu
+ 	unregister_key_type(&key_type_asymmetric);
+ }
+ 
+-module_init(asymmetric_key_init);
++async_module_init(asymmetric_key_init);
+ module_exit(asymmetric_key_cleanup);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/asymmetric_keys/pkcs7_key_type.c linux-4.0/crypto/asymmetric_keys/pkcs7_key_type.c
+--- linux-4.0.orig/crypto/asymmetric_keys/pkcs7_key_type.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/asymmetric_keys/pkcs7_key_type.c	2015-04-26 00:56:07.838036684 +0100
+@@ -94,5 +94,5 @@ static void __exit pkcs7_key_cleanup(voi
+ 	unregister_key_type(&key_type_pkcs7);
+ }
+ 
+-module_init(pkcs7_key_init);
++async_module_init(pkcs7_key_init);
+ module_exit(pkcs7_key_cleanup);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/asymmetric_keys/x509_public_key.c linux-4.0/crypto/asymmetric_keys/x509_public_key.c
+--- linux-4.0.orig/crypto/asymmetric_keys/x509_public_key.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/asymmetric_keys/x509_public_key.c	2015-04-26 00:56:07.840036684 +0100
+@@ -357,7 +357,7 @@ static void __exit x509_key_exit(void)
+ 	unregister_asymmetric_key_parser(&x509_key_parser);
+ }
+ 
+-module_init(x509_key_init);
++async_module_init(x509_key_init);
+ module_exit(x509_key_exit);
+ 
+ MODULE_DESCRIPTION("X.509 certificate parser");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/authenc.c linux-4.0/crypto/authenc.c
+--- linux-4.0.orig/crypto/authenc.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/authenc.c	2015-04-26 00:56:07.843036684 +0100
+@@ -716,7 +716,7 @@ static void __exit crypto_authenc_module
+ 	crypto_unregister_template(&crypto_authenc_tmpl);
+ }
+ 
+-module_init(crypto_authenc_module_init);
++async_module_init(crypto_authenc_module_init);
+ module_exit(crypto_authenc_module_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/authencesn.c linux-4.0/crypto/authencesn.c
+--- linux-4.0.orig/crypto/authencesn.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/authencesn.c	2015-04-26 00:56:07.845036684 +0100
+@@ -808,7 +808,7 @@ static void __exit crypto_authenc_esn_mo
+ 	crypto_unregister_template(&crypto_authenc_esn_tmpl);
+ }
+ 
+-module_init(crypto_authenc_esn_module_init);
++async_module_init(crypto_authenc_esn_module_init);
+ module_exit(crypto_authenc_esn_module_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/blowfish_generic.c linux-4.0/crypto/blowfish_generic.c
+--- linux-4.0.orig/crypto/blowfish_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/blowfish_generic.c	2015-04-26 00:56:07.846036684 +0100
+@@ -133,7 +133,7 @@ static void __exit blowfish_mod_fini(voi
+ 	crypto_unregister_alg(&alg);
+ }
+ 
+-module_init(blowfish_mod_init);
++async_module_init(blowfish_mod_init);
+ module_exit(blowfish_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/cast5_generic.c linux-4.0/crypto/cast5_generic.c
+--- linux-4.0.orig/crypto/cast5_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/cast5_generic.c	2015-04-26 00:56:07.848036684 +0100
+@@ -544,7 +544,7 @@ static void __exit cast5_mod_fini(void)
+ 	crypto_unregister_alg(&alg);
+ }
+ 
+-module_init(cast5_mod_init);
++async_module_init(cast5_mod_init);
+ module_exit(cast5_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/cast6_generic.c linux-4.0/crypto/cast6_generic.c
+--- linux-4.0.orig/crypto/cast6_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/cast6_generic.c	2015-04-26 00:56:07.850036684 +0100
+@@ -286,7 +286,7 @@ static void __exit cast6_mod_fini(void)
+ 	crypto_unregister_alg(&alg);
+ }
+ 
+-module_init(cast6_mod_init);
++async_module_init(cast6_mod_init);
+ module_exit(cast6_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/cbc.c linux-4.0/crypto/cbc.c
+--- linux-4.0.orig/crypto/cbc.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/cbc.c	2015-04-26 00:56:07.851036684 +0100
+@@ -284,7 +284,7 @@ static void __exit crypto_cbc_module_exi
+ 	crypto_unregister_template(&crypto_cbc_tmpl);
+ }
+ 
+-module_init(crypto_cbc_module_init);
++async_module_init(crypto_cbc_module_init);
+ module_exit(crypto_cbc_module_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/crc32.c linux-4.0/crypto/crc32.c
+--- linux-4.0.orig/crypto/crc32.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/crc32.c	2015-04-26 00:56:07.853036684 +0100
+@@ -150,7 +150,7 @@ static void __exit crc32_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(crc32_mod_init);
++async_module_init(crc32_mod_init);
+ module_exit(crc32_mod_fini);
+ 
+ MODULE_AUTHOR("Alexander Boyko <alexander_boyko@xyratex.com>");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/crc32c_generic.c linux-4.0/crypto/crc32c_generic.c
+--- linux-4.0.orig/crypto/crc32c_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/crc32c_generic.c	2015-04-26 00:56:07.854036684 +0100
+@@ -164,7 +164,7 @@ static void __exit crc32c_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(crc32c_mod_init);
++async_module_init(crc32c_mod_init);
+ module_exit(crc32c_mod_fini);
+ 
+ MODULE_AUTHOR("Clay Haapala <chaapala@cisco.com>");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/crct10dif_generic.c linux-4.0/crypto/crct10dif_generic.c
+--- linux-4.0.orig/crypto/crct10dif_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/crct10dif_generic.c	2015-04-26 00:56:07.855036684 +0100
+@@ -118,7 +118,7 @@ static void __exit crct10dif_mod_fini(vo
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(crct10dif_mod_init);
++async_module_init(crct10dif_mod_init);
+ module_exit(crct10dif_mod_fini);
+ 
+ MODULE_AUTHOR("Tim Chen <tim.c.chen@linux.intel.com>");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/crypto_null.c linux-4.0/crypto/crypto_null.c
+--- linux-4.0.orig/crypto/crypto_null.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/crypto_null.c	2015-04-26 00:56:07.856036684 +0100
+@@ -175,7 +175,7 @@ static void __exit crypto_null_mod_fini(
+ 	crypto_unregister_algs(null_algs, ARRAY_SIZE(null_algs));
+ }
+ 
+-module_init(crypto_null_mod_init);
++async_module_init(crypto_null_mod_init);
+ module_exit(crypto_null_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/crypto_user.c linux-4.0/crypto/crypto_user.c
+--- linux-4.0.orig/crypto/crypto_user.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/crypto_user.c	2015-04-26 00:56:07.857036684 +0100
+@@ -529,7 +529,7 @@ static void __exit crypto_user_exit(void
+ 	netlink_kernel_release(crypto_nlsk);
+ }
+ 
+-module_init(crypto_user_init);
++async_module_init(crypto_user_init);
+ module_exit(crypto_user_exit);
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Steffen Klassert <steffen.klassert@secunet.com>");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/ecb.c linux-4.0/crypto/ecb.c
+--- linux-4.0.orig/crypto/ecb.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/ecb.c	2015-04-26 00:56:07.859036684 +0100
+@@ -180,7 +180,7 @@ static void __exit crypto_ecb_module_exi
+ 	crypto_unregister_template(&crypto_ecb_tmpl);
+ }
+ 
+-module_init(crypto_ecb_module_init);
++async_module_init(crypto_ecb_module_init);
+ module_exit(crypto_ecb_module_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/lrw.c linux-4.0/crypto/lrw.c
+--- linux-4.0.orig/crypto/lrw.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/lrw.c	2015-04-26 00:56:07.860036684 +0100
+@@ -395,7 +395,7 @@ static void __exit crypto_module_exit(vo
+ 	crypto_unregister_template(&crypto_tmpl);
+ }
+ 
+-module_init(crypto_module_init);
++async_module_init(crypto_module_init);
+ module_exit(crypto_module_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/lz4.c linux-4.0/crypto/lz4.c
+--- linux-4.0.orig/crypto/lz4.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/lz4.c	2015-04-26 00:56:07.861036684 +0100
+@@ -99,7 +99,7 @@ static void __exit lz4_mod_fini(void)
+ 	crypto_unregister_alg(&alg_lz4);
+ }
+ 
+-module_init(lz4_mod_init);
++async_module_init(lz4_mod_init);
+ module_exit(lz4_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/lz4hc.c linux-4.0/crypto/lz4hc.c
+--- linux-4.0.orig/crypto/lz4hc.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/lz4hc.c	2015-04-26 00:56:07.862036684 +0100
+@@ -99,7 +99,7 @@ static void __exit lz4hc_mod_fini(void)
+ 	crypto_unregister_alg(&alg_lz4hc);
+ }
+ 
+-module_init(lz4hc_mod_init);
++async_module_init(lz4hc_mod_init);
+ module_exit(lz4hc_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/lzo.c linux-4.0/crypto/lzo.c
+--- linux-4.0.orig/crypto/lzo.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/lzo.c	2015-04-26 00:56:07.864036684 +0100
+@@ -102,7 +102,7 @@ static void __exit lzo_mod_fini(void)
+ 	crypto_unregister_alg(&alg);
+ }
+ 
+-module_init(lzo_mod_init);
++async_module_init(lzo_mod_init);
+ module_exit(lzo_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/md4.c linux-4.0/crypto/md4.c
+--- linux-4.0.orig/crypto/md4.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/md4.c	2015-04-26 00:56:07.866036684 +0100
+@@ -250,7 +250,7 @@ static void __exit md4_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(md4_mod_init);
++async_module_init(md4_mod_init);
+ module_exit(md4_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/md5.c linux-4.0/crypto/md5.c
+--- linux-4.0.orig/crypto/md5.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/md5.c	2015-04-26 00:56:07.867036684 +0100
+@@ -163,7 +163,7 @@ static void __exit md5_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(md5_mod_init);
++async_module_init(md5_mod_init);
+ module_exit(md5_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/rmd128.c linux-4.0/crypto/rmd128.c
+--- linux-4.0.orig/crypto/rmd128.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/rmd128.c	2015-04-26 00:56:07.868036684 +0100
+@@ -321,7 +321,7 @@ static void __exit rmd128_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(rmd128_mod_init);
++async_module_init(rmd128_mod_init);
+ module_exit(rmd128_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/rmd160.c linux-4.0/crypto/rmd160.c
+--- linux-4.0.orig/crypto/rmd160.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/rmd160.c	2015-04-26 00:56:07.870036684 +0100
+@@ -365,7 +365,7 @@ static void __exit rmd160_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(rmd160_mod_init);
++async_module_init(rmd160_mod_init);
+ module_exit(rmd160_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/rmd256.c linux-4.0/crypto/rmd256.c
+--- linux-4.0.orig/crypto/rmd256.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/rmd256.c	2015-04-26 00:56:07.871036684 +0100
+@@ -340,7 +340,7 @@ static void __exit rmd256_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(rmd256_mod_init);
++async_module_init(rmd256_mod_init);
+ module_exit(rmd256_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/rmd320.c linux-4.0/crypto/rmd320.c
+--- linux-4.0.orig/crypto/rmd320.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/rmd320.c	2015-04-26 00:56:07.873036684 +0100
+@@ -389,7 +389,7 @@ static void __exit rmd320_mod_fini(void)
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(rmd320_mod_init);
++async_module_init(rmd320_mod_init);
+ module_exit(rmd320_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/sha1_generic.c linux-4.0/crypto/sha1_generic.c
+--- linux-4.0.orig/crypto/sha1_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/sha1_generic.c	2015-04-26 00:56:07.874036684 +0100
+@@ -147,7 +147,7 @@ static void __exit sha1_generic_mod_fini
+ 	crypto_unregister_shash(&alg);
+ }
+ 
+-module_init(sha1_generic_mod_init);
++async_module_init(sha1_generic_mod_init);
+ module_exit(sha1_generic_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/sha256_generic.c linux-4.0/crypto/sha256_generic.c
+--- linux-4.0.orig/crypto/sha256_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/sha256_generic.c	2015-04-26 00:56:07.875036684 +0100
+@@ -378,7 +378,7 @@ static void __exit sha256_generic_mod_fi
+ 	crypto_unregister_shashes(sha256_algs, ARRAY_SIZE(sha256_algs));
+ }
+ 
+-module_init(sha256_generic_mod_init);
++async_module_init(sha256_generic_mod_init);
+ module_exit(sha256_generic_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/sha512_generic.c linux-4.0/crypto/sha512_generic.c
+--- linux-4.0.orig/crypto/sha512_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/sha512_generic.c	2015-04-26 00:56:07.877036684 +0100
+@@ -282,7 +282,7 @@ static void __exit sha512_generic_mod_fi
+ 	crypto_unregister_shashes(sha512_algs, ARRAY_SIZE(sha512_algs));
+ }
+ 
+-module_init(sha512_generic_mod_init);
++async_module_init(sha512_generic_mod_init);
+ module_exit(sha512_generic_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/tcrypt.c linux-4.0/crypto/tcrypt.c
+--- linux-4.0.orig/crypto/tcrypt.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/tcrypt.c	2015-04-26 00:56:07.886036684 +0100
+@@ -2188,7 +2188,7 @@ err_free_tv:
+  */
+ static void __exit tcrypt_mod_fini(void) { }
+ 
+-module_init(tcrypt_mod_init);
++async_module_init(tcrypt_mod_init);
+ module_exit(tcrypt_mod_fini);
+ 
+ module_param(alg, charp, 0);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/tea.c linux-4.0/crypto/tea.c
+--- linux-4.0.orig/crypto/tea.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/tea.c	2015-04-26 00:56:07.888036684 +0100
+@@ -274,7 +274,7 @@ MODULE_ALIAS_CRYPTO("tea");
+ MODULE_ALIAS_CRYPTO("xtea");
+ MODULE_ALIAS_CRYPTO("xeta");
+ 
+-module_init(tea_mod_init);
++async_module_init(tea_mod_init);
+ module_exit(tea_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/tgr192.c linux-4.0/crypto/tgr192.c
+--- linux-4.0.orig/crypto/tgr192.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/tgr192.c	2015-04-26 00:56:07.890036684 +0100
+@@ -680,7 +680,7 @@ MODULE_ALIAS_CRYPTO("tgr192");
+ MODULE_ALIAS_CRYPTO("tgr160");
+ MODULE_ALIAS_CRYPTO("tgr128");
+ 
+-module_init(tgr192_mod_init);
++async_module_init(tgr192_mod_init);
+ module_exit(tgr192_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/twofish_generic.c linux-4.0/crypto/twofish_generic.c
+--- linux-4.0.orig/crypto/twofish_generic.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/twofish_generic.c	2015-04-26 00:56:07.892036685 +0100
+@@ -206,7 +206,7 @@ static void __exit twofish_mod_fini(void
+ 	crypto_unregister_alg(&alg);
+ }
+ 
+-module_init(twofish_mod_init);
++async_module_init(twofish_mod_init);
+ module_exit(twofish_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/wp512.c linux-4.0/crypto/wp512.c
+--- linux-4.0.orig/crypto/wp512.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/wp512.c	2015-04-26 00:56:07.896036685 +0100
+@@ -1171,7 +1171,7 @@ MODULE_ALIAS_CRYPTO("wp512");
+ MODULE_ALIAS_CRYPTO("wp384");
+ MODULE_ALIAS_CRYPTO("wp256");
+ 
+-module_init(wp512_mod_init);
++async_module_init(wp512_mod_init);
+ module_exit(wp512_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/xcbc.c linux-4.0/crypto/xcbc.c
+--- linux-4.0.orig/crypto/xcbc.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/xcbc.c	2015-04-26 00:56:07.897036685 +0100
+@@ -281,7 +281,7 @@ static void __exit crypto_xcbc_module_ex
+ 	crypto_unregister_template(&crypto_xcbc_tmpl);
+ }
+ 
+-module_init(crypto_xcbc_module_init);
++async_module_init(crypto_xcbc_module_init);
+ module_exit(crypto_xcbc_module_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/xts.c linux-4.0/crypto/xts.c
+--- linux-4.0.orig/crypto/xts.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/xts.c	2015-04-26 00:56:07.899036685 +0100
+@@ -357,7 +357,7 @@ static void __exit crypto_module_exit(vo
+ 	crypto_unregister_template(&crypto_tmpl);
+ }
+ 
+-module_init(crypto_module_init);
++async_module_init(crypto_module_init);
+ module_exit(crypto_module_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/crypto/zlib.c linux-4.0/crypto/zlib.c
+--- linux-4.0.orig/crypto/zlib.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/crypto/zlib.c	2015-04-26 00:56:07.900036685 +0100
+@@ -372,7 +372,7 @@ static void __exit zlib_mod_fini(void)
+ 	crypto_unregister_pcomp(&zlib_alg);
+ }
+ 
+-module_init(zlib_mod_init);
++async_module_init(zlib_mod_init);
+ module_exit(zlib_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/ac.c linux-4.0/drivers/acpi/ac.c
+--- linux-4.0.orig/drivers/acpi/ac.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/ac.c	2015-04-26 00:56:07.902036685 +0100
+@@ -452,5 +452,5 @@ static void __exit acpi_ac_exit(void)
+ 	acpi_unlock_ac_dir(acpi_ac_dir);
+ #endif
+ }
+-module_init(acpi_ac_init);
++async_module_init(acpi_ac_init);
+ module_exit(acpi_ac_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/acpi_ipmi.c linux-4.0/drivers/acpi/acpi_ipmi.c
+--- linux-4.0.orig/drivers/acpi/acpi_ipmi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/acpi_ipmi.c	2015-04-26 00:56:07.904036685 +0100
+@@ -657,5 +657,5 @@ static void __exit acpi_ipmi_exit(void)
+ 					  &acpi_ipmi_space_handler);
+ }
+ 
+-module_init(acpi_ipmi_init);
++async_module_init(acpi_ipmi_init);
+ module_exit(acpi_ipmi_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/acpi_pad.c linux-4.0/drivers/acpi/acpi_pad.c
+--- linux-4.0.orig/drivers/acpi/acpi_pad.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/acpi_pad.c	2015-04-26 00:56:07.906036685 +0100
+@@ -514,7 +514,7 @@ static void __exit acpi_pad_exit(void)
+ 	acpi_bus_unregister_driver(&acpi_pad_driver);
+ }
+ 
+-module_init(acpi_pad_init);
++async_module_init(acpi_pad_init);
+ module_exit(acpi_pad_exit);
+ MODULE_AUTHOR("Shaohua Li<shaohua.li@intel.com>");
+ MODULE_DESCRIPTION("ACPI Processor Aggregator Driver");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/battery.c linux-4.0/drivers/acpi/battery.c
+--- linux-4.0.orig/drivers/acpi/battery.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/battery.c	2015-04-26 00:56:07.909036685 +0100
+@@ -1319,5 +1319,5 @@ static void __exit acpi_battery_exit(voi
+ #endif
+ }
+ 
+-module_init(acpi_battery_init);
++async_module_init(acpi_battery_init);
+ module_exit(acpi_battery_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/processor_driver.c linux-4.0/drivers/acpi/processor_driver.c
+--- linux-4.0.orig/drivers/acpi/processor_driver.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/processor_driver.c	2015-04-26 00:56:07.910036685 +0100
+@@ -301,7 +301,7 @@ static void __exit acpi_processor_driver
+ 	driver_unregister(&acpi_processor_driver);
+ }
+ 
+-module_init(acpi_processor_driver_init);
++async_module_init(acpi_processor_driver_init);
+ module_exit(acpi_processor_driver_exit);
+ 
+ MODULE_ALIAS("processor");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/sbs.c linux-4.0/drivers/acpi/sbs.c
+--- linux-4.0.orig/drivers/acpi/sbs.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/sbs.c	2015-04-26 00:56:07.912036685 +0100
+@@ -755,5 +755,5 @@ static void __exit acpi_sbs_exit(void)
+ 	return;
+ }
+ 
+-module_init(acpi_sbs_init);
++async_module_init(acpi_sbs_init);
+ module_exit(acpi_sbs_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/thermal.c linux-4.0/drivers/acpi/thermal.c
+--- linux-4.0.orig/drivers/acpi/thermal.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/thermal.c	2015-04-26 00:56:07.915036685 +0100
+@@ -1281,5 +1281,5 @@ static void __exit acpi_thermal_exit(voi
+ 	return;
+ }
+ 
+-module_init(acpi_thermal_init);
++async_module_init(acpi_thermal_init);
+ module_exit(acpi_thermal_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/acpi/video.c linux-4.0/drivers/acpi/video.c
+--- linux-4.0.orig/drivers/acpi/video.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/acpi/video.c	2015-04-26 00:56:07.919036685 +0100
+@@ -2203,5 +2203,5 @@ static void __exit acpi_video_exit(void)
+ 	return;
+ }
+ 
+-module_init(acpi_video_init);
++async_module_init(acpi_video_init);
+ module_exit(acpi_video_exit);
+Only in linux-4.0/drivers: async.c
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/ata/ahci.c linux-4.0/drivers/ata/ahci.c
+--- linux-4.0.orig/drivers/ata/ahci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/ata/ahci.c	2015-04-19 23:24:31.701009415 +0100
+@@ -1465,7 +1465,7 @@ static int ahci_init_one(struct pci_dev
+ 	return ahci_host_activate(host, pdev->irq, &ahci_sht);
+ }
+ 
+-module_pci_driver(ahci_pci_driver);
++async_module_pci_driver(ahci_pci_driver);
+ 
+ MODULE_AUTHOR("Jeff Garzik");
+ MODULE_DESCRIPTION("AHCI SATA low-level driver");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/char/agp/backend.c linux-4.0/drivers/char/agp/backend.c
+--- linux-4.0.orig/drivers/char/agp/backend.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/char/agp/backend.c	2015-04-26 00:56:07.920036685 +0100
+@@ -361,6 +361,6 @@ MODULE_DESCRIPTION("AGP GART driver");
+ MODULE_LICENSE("GPL and additional rights");
+ MODULE_ALIAS_MISCDEV(AGPGART_MINOR);
+ 
+-module_init(agp_init);
++async_module_init(agp_init);
+ module_exit(agp_exit);
+ 
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/char/agp/nvidia-agp.c linux-4.0/drivers/char/agp/nvidia-agp.c
+--- linux-4.0.orig/drivers/char/agp/nvidia-agp.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/char/agp/nvidia-agp.c	2015-04-26 00:56:07.922036685 +0100
+@@ -468,7 +468,7 @@ static void __exit agp_nvidia_cleanup(vo
+ 	pci_dev_put(nvidia_private.dev_3);
+ }
+ 
+-module_init(agp_nvidia_init);
++async_module_init(agp_nvidia_init,agp_init);
+ module_exit(agp_nvidia_cleanup);
+ 
+ MODULE_LICENSE("GPL and additional rights");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/char/hpet.c linux-4.0/drivers/char/hpet.c
+--- linux-4.0.orig/drivers/char/hpet.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/char/hpet.c	2015-04-26 00:56:07.924036685 +0100
+@@ -1098,7 +1098,7 @@ static void __exit hpet_exit(void)
+ 	return;
+ }
+ 
+-module_init(hpet_init);
++async_module_init(hpet_init);
+ module_exit(hpet_exit);
+ MODULE_AUTHOR("Bob Picco <Robert.Picco@hp.com>");
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/char/hw_random/core.c linux-4.0/drivers/char/hw_random/core.c
+--- linux-4.0.orig/drivers/char/hw_random/core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/char/hw_random/core.c	2015-04-26 00:56:07.927036685 +0100
+@@ -552,7 +552,7 @@ static void __exit hwrng_modexit(void)
+ 	unregister_miscdev();
+ }
+ 
+-module_init(hwrng_modinit);
++async_module_init(hwrng_modinit);
+ module_exit(hwrng_modexit);
+ 
+ MODULE_DESCRIPTION("H/W Random Number Generator (RNG) driver");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/char/hw_random/intel-rng.c linux-4.0/drivers/char/hw_random/intel-rng.c
+--- linux-4.0.orig/drivers/char/hw_random/intel-rng.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/char/hw_random/intel-rng.c	2015-04-26 00:56:07.928036685 +0100
+@@ -325,7 +325,7 @@ PFX "RNG, try using the 'no_fwh_detect'
+ }
+ 
+ 
+-static int __init mod_init(void)
++static int __init intel_rng_mod_init(void)
+ {
+ 	int err = -ENODEV;
+ 	int i;
+@@ -411,7 +411,7 @@ static void __exit mod_exit(void)
+ 	iounmap(mem);
+ }
+ 
+-module_init(mod_init);
++async_module_init(intel_rng_mod_init);
+ module_exit(mod_exit);
+ 
+ MODULE_DESCRIPTION("H/W RNG driver for Intel chipsets");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/cpufreq/cpufreq_conservative.c linux-4.0/drivers/cpufreq/cpufreq_conservative.c
+--- linux-4.0.orig/drivers/cpufreq/cpufreq_conservative.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/cpufreq/cpufreq_conservative.c	2015-04-26 00:56:07.930036685 +0100
+@@ -403,6 +403,6 @@ MODULE_LICENSE("GPL");
+ #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
+ fs_initcall(cpufreq_gov_dbs_init);
+ #else
+-module_init(cpufreq_gov_dbs_init);
++async_module_init(cpufreq_gov_dbs_init);
+ #endif
+ module_exit(cpufreq_gov_dbs_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/cpufreq/cpufreq_ondemand.c linux-4.0/drivers/cpufreq/cpufreq_ondemand.c
+--- linux-4.0.orig/drivers/cpufreq/cpufreq_ondemand.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/cpufreq/cpufreq_ondemand.c	2015-04-26 00:56:07.932036685 +0100
+@@ -626,6 +626,6 @@ MODULE_LICENSE("GPL");
+ #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND
+ fs_initcall(cpufreq_gov_dbs_init);
+ #else
+-module_init(cpufreq_gov_dbs_init);
++async_module_init(cpufreq_gov_dbs_init);
+ #endif
+ module_exit(cpufreq_gov_dbs_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/cpufreq/cpufreq_powersave.c linux-4.0/drivers/cpufreq/cpufreq_powersave.c
+--- linux-4.0.orig/drivers/cpufreq/cpufreq_powersave.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/cpufreq/cpufreq_powersave.c	2015-04-26 00:56:07.933036685 +0100
+@@ -59,6 +59,6 @@ MODULE_LICENSE("GPL");
+ #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_POWERSAVE
+ fs_initcall(cpufreq_gov_powersave_init);
+ #else
+-module_init(cpufreq_gov_powersave_init);
++async_module_init(cpufreq_gov_powersave_init);
+ #endif
+ module_exit(cpufreq_gov_powersave_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/cpufreq/cpufreq_stats.c linux-4.0/drivers/cpufreq/cpufreq_stats.c
+--- linux-4.0.orig/drivers/cpufreq/cpufreq_stats.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/cpufreq/cpufreq_stats.c	2015-04-26 00:56:07.957036685 +0100
+@@ -353,5 +353,5 @@ MODULE_AUTHOR("Zou Nan hai <nanhai.zou@i
+ MODULE_DESCRIPTION("Export cpufreq stats via sysfs");
+ MODULE_LICENSE("GPL");
+ 
+-module_init(cpufreq_stats_init);
++async_module_init(cpufreq_stats_init);
+ module_exit(cpufreq_stats_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/cpufreq/cpufreq_userspace.c linux-4.0/drivers/cpufreq/cpufreq_userspace.c
+--- linux-4.0.orig/drivers/cpufreq/cpufreq_userspace.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/cpufreq/cpufreq_userspace.c	2015-04-26 00:56:07.958036685 +0100
+@@ -118,6 +118,6 @@ MODULE_LICENSE("GPL");
+ #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE
+ fs_initcall(cpufreq_gov_userspace_init);
+ #else
+-module_init(cpufreq_gov_userspace_init);
++async_module_init(cpufreq_gov_userspace_init);
+ #endif
+ module_exit(cpufreq_gov_userspace_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/cpufreq/speedstep-ich.c linux-4.0/drivers/cpufreq/speedstep-ich.c
+--- linux-4.0.orig/drivers/cpufreq/speedstep-ich.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/cpufreq/speedstep-ich.c	2015-04-26 00:56:07.960036685 +0100
+@@ -383,5 +383,5 @@ MODULE_DESCRIPTION("Speedstep driver for
+ 		"with ICH-M southbridges.");
+ MODULE_LICENSE("GPL");
+ 
+-module_init(speedstep_init);
++async_module_init(speedstep_init);
+ module_exit(speedstep_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/dma/ioat/pci.c linux-4.0/drivers/dma/ioat/pci.c
+--- linux-4.0.orig/drivers/dma/ioat/pci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/dma/ioat/pci.c	2015-04-26 00:56:07.961036685 +0100
+@@ -252,7 +252,7 @@ static int __init ioat_init_module(void)
+ 
+ 	return err;
+ }
+-module_init(ioat_init_module);
++async_module_init(ioat_init_module);
+ 
+ static void __exit ioat_exit_module(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/gpu/drm/drm_drv.c linux-4.0/drivers/gpu/drm/drm_drv.c
+--- linux-4.0.orig/drivers/gpu/drm/drm_drv.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/gpu/drm/drm_drv.c	2015-04-26 00:56:07.963036685 +0100
+@@ -908,5 +908,5 @@ static void __exit drm_core_exit(void)
+ 	idr_destroy(&drm_minors_idr);
+ }
+ 
+-module_init(drm_core_init);
++async_module_init(drm_core_init,agp_init);
+ module_exit(drm_core_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/gpu/drm/Kconfig linux-4.0/drivers/gpu/drm/Kconfig
+--- linux-4.0.orig/drivers/gpu/drm/Kconfig	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/gpu/drm/Kconfig	2015-04-13 23:52:11.415705252 +0100
+@@ -77,10 +77,13 @@ config DRM_KMS_CMA_HELPER
+ 	help
+ 	  Choose this if you need the KMS CMA helper functions
+ 
++
+ source "drivers/gpu/drm/i2c/Kconfig"
+ 
+ source "drivers/gpu/drm/bridge/Kconfig"
+ 
++source "drivers/gpu/drm/nvidia-ion/Kconfig"
++
+ config DRM_TDFX
+ 	tristate "3dfx Banshee/Voodoo3+"
+ 	depends on DRM && PCI
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/gpu/drm/Makefile linux-4.0/drivers/gpu/drm/Makefile
+--- linux-4.0.orig/drivers/gpu/drm/Makefile	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/gpu/drm/Makefile	2015-04-13 23:49:11.367703122 +0100
+@@ -34,6 +34,7 @@ CFLAGS_drm_trace_points.o := -I$(src)
+ 
+ obj-$(CONFIG_DRM)	+= drm.o
+ obj-$(CONFIG_DRM_MIPI_DSI) += drm_mipi_dsi.o
++obj-$(CONFIG_NVIDIA_ION)	+= nvidia-ion/
+ obj-$(CONFIG_DRM_TTM)	+= ttm/
+ obj-$(CONFIG_DRM_TDFX)	+= tdfx/
+ obj-$(CONFIG_DRM_R128)	+= r128/
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/hid/hid-core.c linux-4.0/drivers/hid/hid-core.c
+--- linux-4.0.orig/drivers/hid/hid-core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/hid/hid-core.c	2015-04-26 00:56:07.972036685 +0100
+@@ -2734,7 +2734,7 @@ static void __exit hid_exit(void)
+ 	bus_unregister(&hid_bus_type);
+ }
+ 
+-module_init(hid_init);
++async_module_init(hid_init);
+ module_exit(hid_exit);
+ 
+ MODULE_AUTHOR("Andreas Gal");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/hid/hid-elo.c linux-4.0/drivers/hid/hid-elo.c
+--- linux-4.0.orig/drivers/hid/hid-elo.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/hid/hid-elo.c	2015-04-26 00:56:07.973036685 +0100
+@@ -293,7 +293,7 @@ static int __init elo_driver_init(void)
+ 
+ 	return ret;
+ }
+-module_init(elo_driver_init);
++async_module_init(elo_driver_init);
+ 
+ static void __exit elo_driver_exit(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/hid/uhid.c linux-4.0/drivers/hid/uhid.c
+--- linux-4.0.orig/drivers/hid/uhid.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/hid/uhid.c	2015-04-26 00:56:07.976036686 +0100
+@@ -775,7 +775,7 @@ static void __exit uhid_exit(void)
+ 	misc_deregister(&uhid_misc);
+ }
+ 
+-module_init(uhid_init);
++async_module_init(uhid_init);
+ module_exit(uhid_exit);
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("David Herrmann <dh.herrmann@gmail.com>");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/hid/usbhid/hid-core.c linux-4.0/drivers/hid/usbhid/hid-core.c
+--- linux-4.0.orig/drivers/hid/usbhid/hid-core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/hid/usbhid/hid-core.c	2015-04-26 00:56:07.992036686 +0100
+@@ -1651,7 +1651,7 @@ static void __exit hid_exit(void)
+ 	usbhid_quirks_exit();
+ }
+ 
+-module_init(hid_init);
++async_module_init(hid_init);
+ module_exit(hid_exit);
+ 
+ MODULE_AUTHOR("Andreas Gal");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/hwmon/acpi_power_meter.c linux-4.0/drivers/hwmon/acpi_power_meter.c
+--- linux-4.0.orig/drivers/hwmon/acpi_power_meter.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/hwmon/acpi_power_meter.c	2015-04-26 00:56:07.995036686 +0100
+@@ -1011,5 +1011,5 @@ MODULE_LICENSE("GPL");
+ module_param(force_cap_on, bool, 0644);
+ MODULE_PARM_DESC(force_cap_on, "Enable power cap even it is unsafe to do so.");
+ 
+-module_init(acpi_power_meter_init);
++async_module_init(acpi_power_meter_init);
+ module_exit(acpi_power_meter_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/input/keyboard/atkbd.c linux-4.0/drivers/input/keyboard/atkbd.c
+--- linux-4.0.orig/drivers/input/keyboard/atkbd.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/input/keyboard/atkbd.c	2015-04-26 00:56:08.017036686 +0100
+@@ -1811,5 +1811,5 @@ static void __exit atkbd_exit(void)
+ 	serio_unregister_driver(&atkbd_drv);
+ }
+ 
+-module_init(atkbd_init);
++async_module_init(atkbd_init);
+ module_exit(atkbd_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/input/misc/uinput.c linux-4.0/drivers/input/misc/uinput.c
+--- linux-4.0.orig/drivers/input/misc/uinput.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/input/misc/uinput.c	2015-04-26 00:56:08.020036686 +0100
+@@ -939,5 +939,5 @@ MODULE_DESCRIPTION("User level driver su
+ MODULE_LICENSE("GPL");
+ MODULE_VERSION("0.3");
+ 
+-module_init(uinput_init);
++async_module_init(uinput_init);
+ module_exit(uinput_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/input/mouse/psmouse-base.c linux-4.0/drivers/input/mouse/psmouse-base.c
+--- linux-4.0.orig/drivers/input/mouse/psmouse-base.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/input/mouse/psmouse-base.c	2015-04-26 00:56:08.083036687 +0100
+@@ -1894,5 +1894,5 @@ static void __exit psmouse_exit(void)
+ 	destroy_workqueue(kpsmoused_wq);
+ }
+ 
+-module_init(psmouse_init);
++async_module_init(psmouse_init);
+ module_exit(psmouse_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/input/mousedev.c linux-4.0/drivers/input/mousedev.c
+--- linux-4.0.orig/drivers/input/mousedev.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/input/mousedev.c	2015-04-26 00:56:08.087036687 +0100
+@@ -1124,5 +1124,5 @@ static void __exit mousedev_exit(void)
+ 	mousedev_destroy(mousedev_mix);
+ }
+ 
+-module_init(mousedev_init);
++async_module_init(mousedev_init);
+ module_exit(mousedev_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/input/serio/i8042.c linux-4.0/drivers/input/serio/i8042.c
+--- linux-4.0.orig/drivers/input/serio/i8042.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/input/serio/i8042.c	2015-04-26 00:56:08.091036687 +0100
+@@ -1524,5 +1524,5 @@ static void __exit i8042_exit(void)
+ 	panic_blink = NULL;
+ }
+ 
+-module_init(i8042_init);
++async_module_init(i8042_init);
+ module_exit(i8042_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/input/serio/serport.c linux-4.0/drivers/input/serio/serport.c
+--- linux-4.0.orig/drivers/input/serio/serport.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/input/serio/serport.c	2015-04-26 00:56:08.093036687 +0100
+@@ -297,5 +297,5 @@ static void __exit serport_exit(void)
+ 	tty_unregister_ldisc(N_MOUSE);
+ }
+ 
+-module_init(serport_init);
++async_module_init(serport_init);
+ module_exit(serport_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/Kconfig linux-4.0/drivers/Kconfig
+--- linux-4.0.orig/drivers/Kconfig	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/Kconfig	2015-04-26 13:27:00.931339793 +0100
+@@ -1,5 +1,20 @@
+ menu "Device Drivers"
+ 
++config ASYNCHRO_MODULE_INIT
++	bool "Initialize module in Asynchronize way using single module dependencies"
++	---help---
++	Asynchrone drivers initialization routine 
++	
++if ASYNCHRO_MODULE_INIT
++	config ASYNCHRO_MODULE_INIT_DEBUG
++	bool "Debug mode"
++	
++	config ASYNCHRO_MODULE_INIT_THREADS	
++	int "Maximum number of threads"
++	range 0 4
++	default "2" 
++endif
++	
+ source "drivers/amba/Kconfig"
+ 
+ source "drivers/base/Kconfig"
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/Makefile linux-4.0/drivers/Makefile
+--- linux-4.0.orig/drivers/Makefile	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/Makefile	2015-04-26 19:19:45.103180931 +0100
+@@ -33,6 +33,9 @@ obj-y				+= amba/
+ # really early.
+ obj-$(CONFIG_DMADEVICES)	+= dma/
+ 
++#ready for asyncronized initialization
++obj-y += async.o
++
+ # SOC specific infrastructure drivers.
+ obj-y				+= soc/
+ 
+@@ -165,3 +168,5 @@ obj-$(CONFIG_RAS)		+= ras/
+ obj-$(CONFIG_THUNDERBOLT)	+= thunderbolt/
+ obj-$(CONFIG_CORESIGHT)		+= coresight/
+ obj-$(CONFIG_ANDROID)		+= android/
++
++
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/mmc/card/block.c linux-4.0/drivers/mmc/card/block.c
+--- linux-4.0.orig/drivers/mmc/card/block.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/mmc/card/block.c	2015-04-26 00:56:08.097036687 +0100
+@@ -2579,7 +2579,7 @@ static void __exit mmc_blk_exit(void)
+ 	unregister_blkdev(MMC_BLOCK_MAJOR, "mmc");
+ }
+ 
+-module_init(mmc_blk_init);
++async_module_init(mmc_blk_init);
+ module_exit(mmc_blk_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/mtd/mtdcore.c linux-4.0/drivers/mtd/mtdcore.c
+--- linux-4.0.orig/drivers/mtd/mtdcore.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/mtd/mtdcore.c	2015-04-26 00:56:08.100036687 +0100
+@@ -1275,7 +1275,7 @@ static void __exit cleanup_mtd(void)
+ 	bdi_destroy(&mtd_bdi);
+ }
+ 
+-module_init(init_mtd);
++async_module_init(init_mtd);
+ module_exit(cleanup_mtd);
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/mtd/ubi/build.c linux-4.0/drivers/mtd/ubi/build.c
+--- linux-4.0.orig/drivers/mtd/ubi/build.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/mtd/ubi/build.c	2015-04-26 00:56:08.104036687 +0100
+@@ -1336,7 +1336,7 @@ out:
+ 	pr_err("UBI error: cannot initialize UBI, error %d", err);
+ 	return err;
+ }
+-late_initcall(ubi_init);
++async_module_init(ubi_init);
+ 
+ static void __exit ubi_exit(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/net/wireless/b43/main.c linux-4.0/drivers/net/wireless/b43/main.c
+--- linux-4.0.orig/drivers/net/wireless/b43/main.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/net/wireless/b43/main.c	2015-04-26 00:56:08.114036687 +0100
+@@ -5897,5 +5897,5 @@ static void __exit b43_exit(void)
+ 	b43_debugfs_exit();
+ }
+ 
+-module_init(b43_init)
++async_module_init(b43_init)
+ module_exit(b43_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/net/wireless/b43legacy/main.c linux-4.0/drivers/net/wireless/b43legacy/main.c
+--- linux-4.0.orig/drivers/net/wireless/b43legacy/main.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/net/wireless/b43legacy/main.c	2015-04-26 00:56:08.122036687 +0100
+@@ -4061,5 +4061,5 @@ static void __exit b43legacy_exit(void)
+ 	b43legacy_debugfs_exit();
+ }
+ 
+-module_init(b43legacy_init)
++async_module_init(b43legacy_init)
+ module_exit(b43legacy_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/net/wireless/ipw2x00/ipw2100.c linux-4.0/drivers/net/wireless/ipw2x00/ipw2100.c
+--- linux-4.0.orig/drivers/net/wireless/ipw2x00/ipw2100.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/net/wireless/ipw2x00/ipw2100.c	2015-04-26 00:56:08.134036687 +0100
+@@ -6611,7 +6611,7 @@ static void __exit ipw2100_exit(void)
+ 	pm_qos_remove_request(&ipw2100_pm_qos_req);
+ }
+ 
+-module_init(ipw2100_init);
++async_module_init(ipw2100_init);
+ module_exit(ipw2100_exit);
+ 
+ static int ipw2100_wx_get_name(struct net_device *dev,
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/net/wireless/ipw2x00/libipw_module.c linux-4.0/drivers/net/wireless/ipw2x00/libipw_module.c
+--- linux-4.0.orig/drivers/net/wireless/ipw2x00/libipw_module.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/net/wireless/ipw2x00/libipw_module.c	2015-04-26 00:56:08.136036687 +0100
+@@ -318,4 +318,4 @@ MODULE_PARM_DESC(debug, "debug output ma
+ #endif				/* CONFIG_LIBIPW_DEBUG */
+ 
+ module_exit(libipw_exit);
+-module_init(libipw_init);
++async_module_init(libipw_init);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/pci/hotplug/pciehp_core.c linux-4.0/drivers/pci/hotplug/pciehp_core.c
+--- linux-4.0.orig/drivers/pci/hotplug/pciehp_core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/pci/hotplug/pciehp_core.c	2015-04-26 00:56:08.140036687 +0100
+@@ -383,5 +383,5 @@ static void __exit pcied_cleanup(void)
+ 	info(DRIVER_DESC " version: " DRIVER_VERSION " unloaded\n");
+ }
+ 
+-module_init(pcied_init);
++async_module_init(pcied_init,pci_hotplug_init);
+ module_exit(pcied_cleanup);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/pci/hotplug/pci_hotplug_core.c linux-4.0/drivers/pci/hotplug/pci_hotplug_core.c
+--- linux-4.0.orig/drivers/pci/hotplug/pci_hotplug_core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/pci/hotplug/pci_hotplug_core.c	2015-04-26 00:56:08.138036687 +0100
+@@ -545,7 +545,7 @@ static void __exit pci_hotplug_exit(void
+ 	cpci_hotplug_exit();
+ }
+ 
+-module_init(pci_hotplug_init);
++async_module_init(pci_hotplug_init,pcie_portdrv_init);
+ module_exit(pci_hotplug_exit);
+ 
+ MODULE_AUTHOR(DRIVER_AUTHOR);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/pci/hotplug/shpchp_core.c linux-4.0/drivers/pci/hotplug/shpchp_core.c
+--- linux-4.0.orig/drivers/pci/hotplug/shpchp_core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/pci/hotplug/shpchp_core.c	2015-04-26 00:56:08.142036687 +0100
+@@ -385,5 +385,5 @@ static void __exit shpcd_cleanup(void)
+ 	info(DRIVER_DESC " version: " DRIVER_VERSION " unloaded\n");
+ }
+ 
+-module_init(shpcd_init);
++async_module_init(shpcd_init,pcied_init);
+ module_exit(shpcd_cleanup);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/pci/pcie/portdrv_pci.c linux-4.0/drivers/pci/pcie/portdrv_pci.c
+--- linux-4.0.orig/drivers/pci/pcie/portdrv_pci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/pci/pcie/portdrv_pci.c	2015-04-26 00:56:08.144036688 +0100
+@@ -361,4 +361,4 @@ static int __init pcie_portdrv_init(void
+ 	return retval;
+ }
+ 
+-module_init(pcie_portdrv_init);
++async_module_init(pcie_portdrv_init);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/platform/x86/mxm-wmi.c linux-4.0/drivers/platform/x86/mxm-wmi.c
+--- linux-4.0.orig/drivers/platform/x86/mxm-wmi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/platform/x86/mxm-wmi.c	2015-04-26 00:56:08.145036688 +0100
+@@ -107,5 +107,5 @@ static void __exit mxm_wmi_exit(void)
+ {
+ }
+ 
+-module_init(mxm_wmi_init);
++async_module_init(mxm_wmi_init);
+ module_exit(mxm_wmi_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/uio/uio.c linux-4.0/drivers/uio/uio.c
+--- linux-4.0.orig/drivers/uio/uio.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/uio/uio.c	2015-04-26 00:56:08.147036688 +0100
+@@ -887,6 +887,6 @@ static void __exit uio_exit(void)
+ 	release_uio_class();
+ }
+ 
+-module_init(uio_init)
++async_module_init(uio_init)
+ module_exit(uio_exit)
+ MODULE_LICENSE("GPL v2");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/uio/uio_cif.c linux-4.0/drivers/uio/uio_cif.c
+--- linux-4.0.orig/drivers/uio/uio_cif.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/uio/uio_cif.c	2015-04-25 00:22:42.880197388 +0100
+@@ -134,7 +134,7 @@ static struct pci_driver hilscher_pci_dr
+ 	.remove = hilscher_pci_remove,
+ };
+ 
+-module_pci_driver(hilscher_pci_driver);
++async_module_pci_driver(hilscher_pci_driver);
+ MODULE_DEVICE_TABLE(pci, hilscher_pci_ids);
+ MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Hans J. Koch, Benedikt Spranger");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ehci-hcd.c linux-4.0/drivers/usb/host/ehci-hcd.c
+--- linux-4.0.orig/drivers/usb/host/ehci-hcd.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ehci-hcd.c	2015-04-26 00:56:08.150036688 +0100
+@@ -1376,7 +1376,7 @@ err_debug:
+ 	clear_bit(USB_EHCI_LOADED, &usb_hcds_loaded);
+ 	return retval;
+ }
+-module_init(ehci_hcd_init);
++async_module_init(ehci_hcd_init);
+ 
+ static void __exit ehci_hcd_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ehci-pci.c linux-4.0/drivers/usb/host/ehci-pci.c
+--- linux-4.0.orig/drivers/usb/host/ehci-pci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ehci-pci.c	2015-04-26 00:56:08.152036688 +0100
+@@ -421,7 +421,7 @@ static int __init ehci_pci_init(void)
+ 
+ 	return pci_register_driver(&ehci_pci_driver);
+ }
+-module_init(ehci_pci_init);
++async_module_init(ehci_pci_init,ehci_hcd_init);
+ 
+ static void __exit ehci_pci_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ehci-platform.c linux-4.0/drivers/usb/host/ehci-platform.c
+--- linux-4.0.orig/drivers/usb/host/ehci-platform.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ehci-platform.c	2015-04-26 00:56:08.153036688 +0100
+@@ -428,7 +428,7 @@ static int __init ehci_platform_init(voi
+ 	ehci_init_driver(&ehci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ehci_platform_driver);
+ }
+-module_init(ehci_platform_init);
++async_module_init(ehci_platform_init,ehci_hcd_init);
+ 
+ static void __exit ehci_platform_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ohci-hcd.c linux-4.0/drivers/usb/host/ohci-hcd.c
+--- linux-4.0.orig/drivers/usb/host/ohci-hcd.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ohci-hcd.c	2015-04-26 00:56:08.156036688 +0100
+@@ -1352,7 +1352,7 @@ static int __init ohci_hcd_mod_init(void
+ 	clear_bit(USB_OHCI_LOADED, &usb_hcds_loaded);
+ 	return retval;
+ }
+-module_init(ohci_hcd_mod_init);
++async_module_init(ohci_hcd_mod_init,ehci_platform_init);
+ 
+ static void __exit ohci_hcd_mod_exit(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ohci-pci.c linux-4.0/drivers/usb/host/ohci-pci.c
+--- linux-4.0.orig/drivers/usb/host/ohci-pci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ohci-pci.c	2015-04-26 00:56:08.158036688 +0100
+@@ -302,7 +302,7 @@ static int __init ohci_pci_init(void)
+ 
+ 	return pci_register_driver(&ohci_pci_driver);
+ }
+-module_init(ohci_pci_init);
++async_module_init(ohci_pci_init,ohci_hcd_mod_init);
+ 
+ static void __exit ohci_pci_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ohci-platform.c linux-4.0/drivers/usb/host/ohci-platform.c
+--- linux-4.0.orig/drivers/usb/host/ohci-platform.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ohci-platform.c	2015-04-26 00:56:08.159036688 +0100
+@@ -402,7 +402,7 @@ static int __init ohci_platform_init(voi
+ 	ohci_init_driver(&ohci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ohci_platform_driver);
+ }
+-module_init(ohci_platform_init);
++async_module_init(ohci_platform_init,ohci_hcd_mod_init);
+ 
+ static void __exit ohci_platform_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ssb-hcd.c linux-4.0/drivers/usb/host/ssb-hcd.c
+--- linux-4.0.orig/drivers/usb/host/ssb-hcd.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ssb-hcd.c	2015-04-26 00:56:08.161036688 +0100
+@@ -269,7 +269,7 @@ static int __init ssb_hcd_init(void)
+ {
+ 	return ssb_driver_register(&ssb_hcd_driver);
+ }
+-module_init(ssb_hcd_init);
++async_module_init(ssb_hcd_init);
+ 
+ static void __exit ssb_hcd_exit(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/uhci-hcd.c linux-4.0/drivers/usb/host/uhci-hcd.c
+--- linux-4.0.orig/drivers/usb/host/uhci-hcd.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/uhci-hcd.c	2015-04-26 00:56:08.163036688 +0100
+@@ -937,7 +937,7 @@ static void __exit uhci_hcd_cleanup(void
+ 	clear_bit(USB_UHCI_LOADED, &usb_hcds_loaded);
+ }
+ 
+-module_init(uhci_hcd_init);
++async_module_init(uhci_hcd_init);
+ module_exit(uhci_hcd_cleanup);
+ 
+ MODULE_AUTHOR(DRIVER_AUTHOR);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/cifs/cifsfs.c linux-4.0/fs/cifs/cifsfs.c
+--- linux-4.0.orig/fs/cifs/cifsfs.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/cifs/cifsfs.c	2015-04-23 23:19:45.719851229 +0100
+@@ -1314,5 +1314,5 @@ MODULE_DESCRIPTION
+     ("VFS to access servers complying with the SNIA CIFS Specification "
+      "e.g. Samba and Windows");
+ MODULE_VERSION(CIFS_VERSION);
+-module_init(init_cifs)
++module_init(init_cifs);
+ module_exit(exit_cifs)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/ext3/super.c linux-4.0/fs/ext3/super.c
+--- linux-4.0.orig/fs/ext3/super.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/ext3/super.c	2015-04-26 00:56:08.168036688 +0100
+@@ -3161,5 +3161,5 @@ static void __exit exit_ext3_fs(void)
+ MODULE_AUTHOR("Remy Card, Stephen Tweedie, Andrew Morton, Andreas Dilger, Theodore Ts'o and others");
+ MODULE_DESCRIPTION("Second Extended Filesystem with journaling extensions");
+ MODULE_LICENSE("GPL");
+-module_init(init_ext3_fs)
++async_module_init(init_ext3_fs)
+ module_exit(exit_ext3_fs)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/fat/inode.c linux-4.0/fs/fat/inode.c
+--- linux-4.0.orig/fs/fat/inode.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/fat/inode.c	2015-04-26 00:56:08.172036688 +0100
+@@ -1855,7 +1855,7 @@ static void __exit exit_fat_fs(void)
+ 	fat_destroy_inodecache();
+ }
+ 
+-module_init(init_fat_fs)
++async_module_init(init_fat_fs)
+ module_exit(exit_fat_fs)
+ 
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/fat/namei_msdos.c linux-4.0/fs/fat/namei_msdos.c
+--- linux-4.0.orig/fs/fat/namei_msdos.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/fat/namei_msdos.c	2015-04-26 00:56:08.174036688 +0100
+@@ -682,5 +682,5 @@ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Werner Almesberger");
+ MODULE_DESCRIPTION("MS-DOS filesystem support");
+ 
+-module_init(init_msdos_fs)
++async_module_init(init_msdos_fs)
+ module_exit(exit_msdos_fs)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/fat/namei_vfat.c linux-4.0/fs/fat/namei_vfat.c
+--- linux-4.0.orig/fs/fat/namei_vfat.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/fat/namei_vfat.c	2015-04-26 00:56:08.176036688 +0100
+@@ -1087,5 +1087,5 @@ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("VFAT filesystem support");
+ MODULE_AUTHOR("Gordon Chaffee");
+ 
+-module_init(init_vfat_fs)
++async_module_init(init_vfat_fs)
+ module_exit(exit_vfat_fs)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/fuse/cuse.c linux-4.0/fs/fuse/cuse.c
+--- linux-4.0.orig/fs/fuse/cuse.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/fuse/cuse.c	2015-04-26 00:56:08.178036688 +0100
+@@ -637,7 +637,7 @@ static void __exit cuse_exit(void)
+ 	class_destroy(cuse_class);
+ }
+ 
+-module_init(cuse_init);
++async_module_init(cuse_init);
+ module_exit(cuse_exit);
+ 
+ MODULE_AUTHOR("Tejun Heo <tj@kernel.org>");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/fuse/inode.c linux-4.0/fs/fuse/inode.c
+--- linux-4.0.orig/fs/fuse/inode.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/fuse/inode.c	2015-04-26 00:56:08.181036688 +0100
+@@ -1319,5 +1319,5 @@ static void __exit fuse_exit(void)
+ 	fuse_dev_cleanup();
+ }
+ 
+-module_init(fuse_init);
++async_module_init(fuse_init);
+ module_exit(fuse_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/isofs/inode.c linux-4.0/fs/isofs/inode.c
+--- linux-4.0.orig/fs/isofs/inode.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/isofs/inode.c	2015-04-26 00:56:08.184036688 +0100
+@@ -1552,6 +1552,6 @@ static void __exit exit_iso9660_fs(void)
+ 	destroy_inodecache();
+ }
+ 
+-module_init(init_iso9660_fs)
++async_module_init(init_iso9660_fs)
+ module_exit(exit_iso9660_fs)
+ MODULE_LICENSE("GPL");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/jbd/journal.c linux-4.0/fs/jbd/journal.c
+--- linux-4.0.orig/fs/jbd/journal.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/jbd/journal.c	2015-04-26 00:56:08.188036688 +0100
+@@ -2140,6 +2140,6 @@ static void __exit journal_exit(void)
+ }
+ 
+ MODULE_LICENSE("GPL");
+-module_init(journal_init);
++async_module_init(journal_init);
+ module_exit(journal_exit);
+ 
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/ntfs/super.c linux-4.0/fs/ntfs/super.c
+--- linux-4.0.orig/fs/ntfs/super.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/ntfs/super.c	2015-04-26 00:56:08.194036688 +0100
+@@ -3216,5 +3216,5 @@ module_param(debug_msgs, bint, 0);
+ MODULE_PARM_DESC(debug_msgs, "Enable debug messages.");
+ #endif
+ 
+-module_init(init_ntfs_fs)
++async_module_init(init_ntfs_fs)
+ module_exit(exit_ntfs_fs)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/init/main.c linux-4.0/init/main.c
+--- linux-4.0.orig/init/main.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/init/main.c	2015-04-18 22:19:31.372041768 +0100
+@@ -928,7 +928,7 @@ static int __ref kernel_init(void *unuse
+ 	kernel_init_freeable();
+ 	/* need to finish all async __init code before freeing the memory */
+ 	async_synchronize_full();
+-	free_initmem();
++	//free_initmem();
+ 	mark_rodata_ro();
+ 	system_state = SYSTEM_RUNNING;
+ 	numa_default_policy();
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/net/bluetooth/rfcomm/core.c linux-4.0/net/bluetooth/rfcomm/core.c
+--- linux-4.0.orig/net/bluetooth/rfcomm/core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/net/bluetooth/rfcomm/core.c	2015-04-26 00:56:08.198036688 +0100
+@@ -2255,7 +2255,7 @@ static void __exit rfcomm_exit(void)
+ 	rfcomm_cleanup_sockets();
+ }
+ 
+-module_init(rfcomm_init);
++async_module_init(rfcomm_init);
+ module_exit(rfcomm_exit);
+ 
+ module_param(disable_cfc, bool, 0644);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/net/wireless/lib80211.c linux-4.0/net/wireless/lib80211.c
+--- linux-4.0.orig/net/wireless/lib80211.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/net/wireless/lib80211.c	2015-04-26 00:56:08.206036688 +0100
+@@ -253,5 +253,5 @@ static void __exit lib80211_exit(void)
+ 	BUG_ON(!list_empty(&lib80211_crypto_algs));
+ }
+ 
+-module_init(lib80211_init);
++async_module_init(lib80211_init);
+ module_exit(lib80211_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/net/wireless/lib80211_crypt_ccmp.c linux-4.0/net/wireless/lib80211_crypt_ccmp.c
+--- linux-4.0.orig/net/wireless/lib80211_crypt_ccmp.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/net/wireless/lib80211_crypt_ccmp.c	2015-04-26 00:56:08.200036688 +0100
+@@ -475,5 +475,5 @@ static void __exit lib80211_crypto_ccmp_
+ 	lib80211_unregister_crypto_ops(&lib80211_crypt_ccmp);
+ }
+ 
+-module_init(lib80211_crypto_ccmp_init);
++async_module_init(lib80211_crypto_ccmp_init);
+ module_exit(lib80211_crypto_ccmp_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/net/wireless/lib80211_crypt_tkip.c linux-4.0/net/wireless/lib80211_crypt_tkip.c
+--- linux-4.0.orig/net/wireless/lib80211_crypt_tkip.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/net/wireless/lib80211_crypt_tkip.c	2015-04-26 00:56:08.203036688 +0100
+@@ -758,5 +758,5 @@ static void __exit lib80211_crypto_tkip_
+ 	lib80211_unregister_crypto_ops(&lib80211_crypt_tkip);
+ }
+ 
+-module_init(lib80211_crypto_tkip_init);
++async_module_init(lib80211_crypto_tkip_init);
+ module_exit(lib80211_crypto_tkip_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/net/wireless/lib80211_crypt_wep.c linux-4.0/net/wireless/lib80211_crypt_wep.c
+--- linux-4.0.orig/net/wireless/lib80211_crypt_wep.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/net/wireless/lib80211_crypt_wep.c	2015-04-26 00:56:08.205036688 +0100
+@@ -285,5 +285,5 @@ static void __exit lib80211_crypto_wep_e
+ 	lib80211_unregister_crypto_ops(&lib80211_crypt_wep);
+ }
+ 
+-module_init(lib80211_crypto_wep_init);
++async_module_init(lib80211_crypto_wep_init);
+ module_exit(lib80211_crypto_wep_exit);
+Only in linux-4.0: .project
+Only in linux-4.0: .settings
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/compress_offload.c linux-4.0/sound/core/compress_offload.c
+--- linux-4.0.orig/sound/core/compress_offload.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/compress_offload.c	2015-04-26 00:56:08.209036688 +0100
+@@ -1002,7 +1002,7 @@ static void __exit snd_compress_exit(voi
+ {
+ }
+ 
+-module_init(snd_compress_init);
++async_module_init(snd_compress_init);
+ module_exit(snd_compress_exit);
+ 
+ MODULE_DESCRIPTION("ALSA Compressed offload framework");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/hrtimer.c linux-4.0/sound/core/hrtimer.c
+--- linux-4.0.orig/sound/core/hrtimer.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/hrtimer.c	2015-04-26 00:56:08.211036688 +0100
+@@ -162,5 +162,5 @@ static void __exit snd_hrtimer_exit(void
+ 	}
+ }
+ 
+-module_init(snd_hrtimer_init);
++async_module_init(snd_hrtimer_init,alsa_timer_init);
+ module_exit(snd_hrtimer_exit);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/hwdep.c linux-4.0/sound/core/hwdep.c
+--- linux-4.0.orig/sound/core/hwdep.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/hwdep.c	2015-04-26 00:56:08.213036688 +0100
+@@ -548,5 +548,5 @@ static void __exit alsa_hwdep_exit(void)
+ 	snd_hwdep_proc_done();
+ }
+ 
+-module_init(alsa_hwdep_init)
++async_module_init(alsa_hwdep_init);
+ module_exit(alsa_hwdep_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/oss/mixer_oss.c linux-4.0/sound/core/oss/mixer_oss.c
+--- linux-4.0.orig/sound/core/oss/mixer_oss.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/oss/mixer_oss.c	2015-04-26 00:56:08.216036688 +0100
+@@ -1418,7 +1418,7 @@ static void __exit alsa_mixer_oss_exit(v
+ 	}
+ }
+ 
+-module_init(alsa_mixer_oss_init)
++async_module_init(alsa_mixer_oss_init,alsa_timer_init)
+ module_exit(alsa_mixer_oss_exit)
+ 
+ EXPORT_SYMBOL(snd_mixer_oss_ioctl_card);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/oss/pcm_oss.c linux-4.0/sound/core/oss/pcm_oss.c
+--- linux-4.0.orig/sound/core/oss/pcm_oss.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/oss/pcm_oss.c	2015-04-26 00:56:08.221036688 +0100
+@@ -3108,5 +3108,5 @@ static void __exit alsa_pcm_oss_exit(voi
+ 	snd_pcm_notify(&snd_pcm_oss_notify, 1);
+ }
+ 
+-module_init(alsa_pcm_oss_init)
++async_module_init(alsa_pcm_oss_init,alsa_pcm_init)
+ module_exit(alsa_pcm_oss_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/pcm.c linux-4.0/sound/core/pcm.c
+--- linux-4.0.orig/sound/core/pcm.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/pcm.c	2015-04-26 00:56:08.225036688 +0100
+@@ -1269,5 +1269,5 @@ static void __exit alsa_pcm_exit(void)
+ 	snd_pcm_proc_done();
+ }
+ 
+-module_init(alsa_pcm_init)
++async_module_init(alsa_pcm_init,alsa_mixer_oss_init)
+ module_exit(alsa_pcm_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/rawmidi.c linux-4.0/sound/core/rawmidi.c
+--- linux-4.0.orig/sound/core/rawmidi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/rawmidi.c	2015-04-26 00:56:08.228036688 +0100
+@@ -1739,5 +1739,5 @@ static void __exit alsa_rawmidi_exit(voi
+ 	snd_ctl_unregister_ioctl_compat(snd_rawmidi_control_ioctl);
+ }
+ 
+-module_init(alsa_rawmidi_init)
++async_module_init(alsa_rawmidi_init)
+ module_exit(alsa_rawmidi_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/rtctimer.c linux-4.0/sound/core/rtctimer.c
+--- linux-4.0.orig/sound/core/rtctimer.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/rtctimer.c	2015-04-26 00:56:08.230036689 +0100
+@@ -174,7 +174,7 @@ static void __exit rtctimer_exit(void)
+ /*
+  * exported stuff
+  */
+-module_init(rtctimer_init)
++async_module_init(rtctimer_init)
+ module_exit(rtctimer_exit)
+ 
+ module_param(rtctimer_freq, int, 0444);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/oss/seq_oss.c linux-4.0/sound/core/seq/oss/seq_oss.c
+--- linux-4.0.orig/sound/core/seq/oss/seq_oss.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/oss/seq_oss.c	2015-04-26 00:56:08.277036689 +0100
+@@ -110,7 +110,7 @@ static void __exit alsa_seq_oss_exit(voi
+ 	unregister_device();
+ }
+ 
+-module_init(alsa_seq_oss_init)
++async_module_init(alsa_seq_oss_init)
+ module_exit(alsa_seq_oss_exit)
+ 
+ /*
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq.c linux-4.0/sound/core/seq/seq.c
+--- linux-4.0.orig/sound/core/seq/seq.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq.c	2015-04-26 00:56:08.292036689 +0100
+@@ -134,5 +134,5 @@ static void __exit alsa_seq_exit(void)
+ 	snd_seq_autoload_exit();
+ }
+ 
+-module_init(alsa_seq_init)
++async_module_init(alsa_seq_init,alsa_seq_device_init)
+ module_exit(alsa_seq_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq_device.c linux-4.0/sound/core/seq/seq_device.c
+--- linux-4.0.orig/sound/core/seq/seq_device.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq_device.c	2015-04-26 00:56:08.279036689 +0100
+@@ -602,7 +602,7 @@ static void __exit alsa_seq_device_exit(
+ 		pr_err("ALSA: seq: drivers not released (%d)\n", num_ops);
+ }
+ 
+-module_init(alsa_seq_device_init)
++async_module_init(alsa_seq_device_init,alsa_timer_init)
+ module_exit(alsa_seq_device_exit)
+ 
+ EXPORT_SYMBOL(snd_seq_device_load_drivers);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq_dummy.c linux-4.0/sound/core/seq/seq_dummy.c
+--- linux-4.0.orig/sound/core/seq/seq_dummy.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq_dummy.c	2015-04-26 00:56:08.281036689 +0100
+@@ -226,5 +226,5 @@ static void __exit alsa_seq_dummy_exit(v
+ 	delete_client();
+ }
+ 
+-module_init(alsa_seq_dummy_init)
++async_module_init(alsa_seq_dummy_init,alsa_seq_init)
+ module_exit(alsa_seq_dummy_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq_midi.c linux-4.0/sound/core/seq/seq_midi.c
+--- linux-4.0.orig/sound/core/seq/seq_midi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq_midi.c	2015-04-26 00:56:08.288036689 +0100
+@@ -476,5 +476,5 @@ static void __exit alsa_seq_midi_exit(vo
+ 	snd_seq_device_unregister_driver(SNDRV_SEQ_DEV_ID_MIDISYNTH);
+ }
+ 
+-module_init(alsa_seq_midi_init)
++async_module_init(alsa_seq_midi_init,alsa_seq_init)
+ module_exit(alsa_seq_midi_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq_midi_emul.c linux-4.0/sound/core/seq/seq_midi_emul.c
+--- linux-4.0.orig/sound/core/seq/seq_midi_emul.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq_midi_emul.c	2015-04-26 00:56:08.285036689 +0100
+@@ -734,7 +734,7 @@ static void __exit alsa_seq_midi_emul_ex
+ {
+ }
+ 
+-module_init(alsa_seq_midi_emul_init)
++async_module_init(alsa_seq_midi_emul_init)
+ module_exit(alsa_seq_midi_emul_exit)
+ 
+ EXPORT_SYMBOL(snd_midi_process_event);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq_midi_event.c linux-4.0/sound/core/seq/seq_midi_event.c
+--- linux-4.0.orig/sound/core/seq/seq_midi_event.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq_midi_event.c	2015-04-26 00:56:08.287036689 +0100
+@@ -546,5 +546,5 @@ static void __exit alsa_seq_midi_event_e
+ {
+ }
+ 
+-module_init(alsa_seq_midi_event_init)
++async_module_init(alsa_seq_midi_event_init)
+ module_exit(alsa_seq_midi_event_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq_virmidi.c linux-4.0/sound/core/seq/seq_virmidi.c
+--- linux-4.0.orig/sound/core/seq/seq_virmidi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq_virmidi.c	2015-04-26 00:56:08.290036689 +0100
+@@ -537,7 +537,7 @@ static void __exit alsa_virmidi_exit(voi
+ {
+ }
+ 
+-module_init(alsa_virmidi_init)
++async_module_init(alsa_virmidi_init)
+ module_exit(alsa_virmidi_exit)
+ 
+ EXPORT_SYMBOL(snd_virmidi_new);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/timer.c linux-4.0/sound/core/timer.c
+--- linux-4.0.orig/sound/core/timer.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/timer.c	2015-04-26 00:56:08.295036689 +0100
+@@ -1998,7 +1998,7 @@ static void __exit alsa_timer_exit(void)
+ #endif
+ }
+ 
+-module_init(alsa_timer_init)
++async_module_init(alsa_timer_init)
+ module_exit(alsa_timer_exit)
+ 
+ EXPORT_SYMBOL(snd_timer_open);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/drivers/aloop.c linux-4.0/sound/drivers/aloop.c
+--- linux-4.0.orig/sound/drivers/aloop.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/drivers/aloop.c	2015-04-26 00:56:08.373036690 +0100
+@@ -1272,5 +1272,5 @@ static void __exit alsa_card_loopback_ex
+ 	loopback_unregister_all();
+ }
+ 
+-module_init(alsa_card_loopback_init)
++async_module_init(alsa_card_loopback_init)
+ module_exit(alsa_card_loopback_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/drivers/dummy.c linux-4.0/sound/drivers/dummy.c
+--- linux-4.0.orig/sound/drivers/dummy.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/drivers/dummy.c	2015-04-26 00:56:08.390036690 +0100
+@@ -1219,5 +1219,5 @@ static void __exit alsa_card_dummy_exit(
+ 	snd_dummy_unregister_all();
+ }
+ 
+-module_init(alsa_card_dummy_init)
++async_module_init(alsa_card_dummy_init)
+ module_exit(alsa_card_dummy_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/drivers/mpu401/mpu401.c linux-4.0/sound/drivers/mpu401/mpu401.c
+--- linux-4.0.orig/sound/drivers/mpu401/mpu401.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/drivers/mpu401/mpu401.c	2015-04-26 00:56:08.416036691 +0100
+@@ -283,5 +283,5 @@ static void __exit alsa_card_mpu401_exit
+ 	snd_mpu401_unregister_all();
+ }
+ 
+-module_init(alsa_card_mpu401_init)
++async_module_init(alsa_card_mpu401_init)
+ module_exit(alsa_card_mpu401_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/drivers/mpu401/mpu401_uart.c linux-4.0/sound/drivers/mpu401/mpu401_uart.c
+--- linux-4.0.orig/sound/drivers/mpu401/mpu401_uart.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/drivers/mpu401/mpu401_uart.c	2015-04-26 00:56:08.414036691 +0100
+@@ -630,5 +630,5 @@ static void __exit alsa_mpu401_uart_exit
+ {
+ }
+ 
+-module_init(alsa_mpu401_uart_init)
++async_module_init(alsa_mpu401_uart_init)
+ module_exit(alsa_mpu401_uart_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/drivers/virmidi.c linux-4.0/sound/drivers/virmidi.c
+--- linux-4.0.orig/sound/drivers/virmidi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/drivers/virmidi.c	2015-04-26 00:56:08.418036691 +0100
+@@ -195,5 +195,5 @@ static void __exit alsa_card_virmidi_exi
+ 	snd_virmidi_unregister_all();
+ }
+ 
+-module_init(alsa_card_virmidi_init)
++async_module_init(alsa_card_virmidi_init)
+ module_exit(alsa_card_virmidi_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/oss/soundcard.c linux-4.0/sound/oss/soundcard.c
+--- linux-4.0.orig/sound/oss/soundcard.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/oss/soundcard.c	2015-04-26 00:56:08.420036691 +0100
+@@ -599,7 +599,7 @@ static void __exit oss_cleanup(void)
+ 
+ }
+ 
+-module_init(oss_init);
++async_module_init(oss_init);
+ module_exit(oss_cleanup);
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("OSS Sound subsystem");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/hda_intel.c linux-4.0/sound/pci/hda/hda_intel.c
+--- linux-4.0.orig/sound/pci/hda/hda_intel.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/hda_intel.c	2015-04-24 18:38:21.477953059 +0100
+@@ -2183,4 +2183,4 @@ static struct pci_driver azx_driver = {
+ 	},
+ };
+ 
+-module_pci_driver(azx_driver);
++async_module_pci_driver(azx_driver);
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_analog.c linux-4.0/sound/pci/hda/patch_analog.c
+--- linux-4.0.orig/sound/pci/hda/patch_analog.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_analog.c	2015-04-26 00:56:08.423036691 +0100
+@@ -1209,5 +1209,5 @@ static void __exit patch_analog_exit(voi
+ 	snd_hda_delete_codec_preset(&analog_list);
+ }
+ 
+-module_init(patch_analog_init)
++async_module_init(patch_analog_init,alsa_hwdep_init)
+ module_exit(patch_analog_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_ca0110.c linux-4.0/sound/pci/hda/patch_ca0110.c
+--- linux-4.0.orig/sound/pci/hda/patch_ca0110.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_ca0110.c	2015-04-26 00:56:08.425036691 +0100
+@@ -113,5 +113,5 @@ static void __exit patch_ca0110_exit(voi
+ 	snd_hda_delete_codec_preset(&ca0110_list);
+ }
+ 
+-module_init(patch_ca0110_init)
++async_module_init(patch_ca0110_init,alsa_hwdep_init)
+ module_exit(patch_ca0110_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_ca0132.c linux-4.0/sound/pci/hda/patch_ca0132.c
+--- linux-4.0.orig/sound/pci/hda/patch_ca0132.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_ca0132.c	2015-04-26 00:56:08.431036691 +0100
+@@ -4717,5 +4717,5 @@ static void __exit patch_ca0132_exit(voi
+ 	snd_hda_delete_codec_preset(&ca0132_list);
+ }
+ 
+-module_init(patch_ca0132_init)
++async_module_init(patch_ca0132_init,alsa_hwdep_init)
+ module_exit(patch_ca0132_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_cirrus.c linux-4.0/sound/pci/hda/patch_cirrus.c
+--- linux-4.0.orig/sound/pci/hda/patch_cirrus.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_cirrus.c	2015-04-26 00:56:08.434036691 +0100
+@@ -1236,5 +1236,5 @@ static void __exit patch_cirrus_exit(voi
+ 	snd_hda_delete_codec_preset(&cirrus_list);
+ }
+ 
+-module_init(patch_cirrus_init)
++async_module_init(patch_cirrus_init,alsa_hwdep_init)
+ module_exit(patch_cirrus_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_cmedia.c linux-4.0/sound/pci/hda/patch_cmedia.c
+--- linux-4.0.orig/sound/pci/hda/patch_cmedia.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_cmedia.c	2015-04-26 00:56:08.436036691 +0100
+@@ -152,5 +152,5 @@ static void __exit patch_cmedia_exit(voi
+ 	snd_hda_delete_codec_preset(&cmedia_list);
+ }
+ 
+-module_init(patch_cmedia_init)
++async_module_init(patch_cmedia_init,alsa_hwdep_init)
+ module_exit(patch_cmedia_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_conexant.c linux-4.0/sound/pci/hda/patch_conexant.c
+--- linux-4.0.orig/sound/pci/hda/patch_conexant.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_conexant.c	2015-04-26 00:56:08.439036691 +0100
+@@ -1033,5 +1033,5 @@ static void __exit patch_conexant_exit(v
+ 	snd_hda_delete_codec_preset(&conexant_list);
+ }
+ 
+-module_init(patch_conexant_init)
++async_module_init(patch_conexant_init,alsa_hwdep_init)
+ module_exit(patch_conexant_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_hdmi.c linux-4.0/sound/pci/hda/patch_hdmi.c
+--- linux-4.0.orig/sound/pci/hda/patch_hdmi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_hdmi.c	2015-04-26 00:56:08.445036691 +0100
+@@ -3457,5 +3457,5 @@ static void __exit patch_hdmi_exit(void)
+ 	snd_hda_delete_codec_preset(&intel_list);
+ }
+ 
+-module_init(patch_hdmi_init)
++async_module_init(patch_hdmi_init,alsa_hwdep_init)
+ module_exit(patch_hdmi_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_realtek.c linux-4.0/sound/pci/hda/patch_realtek.c
+--- linux-4.0.orig/sound/pci/hda/patch_realtek.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_realtek.c	2015-04-26 00:56:08.454036691 +0100
+@@ -6564,5 +6564,5 @@ static void __exit patch_realtek_exit(vo
+ 	snd_hda_delete_codec_preset(&realtek_list);
+ }
+ 
+-module_init(patch_realtek_init)
++async_module_init(patch_realtek_init,alsa_hwdep_init)
+ module_exit(patch_realtek_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_si3054.c linux-4.0/sound/pci/hda/patch_si3054.c
+--- linux-4.0.orig/sound/pci/hda/patch_si3054.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_si3054.c	2015-04-26 00:56:08.456036691 +0100
+@@ -334,5 +334,5 @@ static void __exit patch_si3054_exit(voi
+ 	snd_hda_delete_codec_preset(&si3054_list);
+ }
+ 
+-module_init(patch_si3054_init)
++async_module_init(patch_si3054_init,alsa_hwdep_init)
+ module_exit(patch_si3054_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_sigmatel.c linux-4.0/sound/pci/hda/patch_sigmatel.c
+--- linux-4.0.orig/sound/pci/hda/patch_sigmatel.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_sigmatel.c	2015-04-26 00:56:08.463036691 +0100
+@@ -5106,5 +5106,5 @@ static void __exit patch_sigmatel_exit(v
+ 	snd_hda_delete_codec_preset(&sigmatel_list);
+ }
+ 
+-module_init(patch_sigmatel_init)
++async_module_init(patch_sigmatel_init,alsa_hwdep_init)
+ module_exit(patch_sigmatel_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/patch_via.c linux-4.0/sound/pci/hda/patch_via.c
+--- linux-4.0.orig/sound/pci/hda/patch_via.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/patch_via.c	2015-04-26 00:56:08.467036691 +0100
+@@ -1902,5 +1902,5 @@ static void __exit patch_via_exit(void)
+ 	snd_hda_delete_codec_preset(&via_list);
+ }
+ 
+-module_init(patch_via_init)
++async_module_init(patch_via_init,alsa_hwdep_init)
+ module_exit(patch_via_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/ppc/powermac.c linux-4.0/sound/ppc/powermac.c
+--- linux-4.0.orig/sound/ppc/powermac.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/ppc/powermac.c	2015-04-26 00:56:08.510036692 +0100
+@@ -190,5 +190,5 @@ static void __exit alsa_card_pmac_exit(v
+ 	platform_driver_unregister(&snd_pmac_driver);
+ }
+ 
+-module_init(alsa_card_pmac_init)
++async_module_init(alsa_card_pmac_init)
+ module_exit(alsa_card_pmac_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/ppc/snd_ps3.c linux-4.0/sound/ppc/snd_ps3.c
+--- linux-4.0.orig/sound/ppc/snd_ps3.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/ppc/snd_ps3.c	2015-04-26 00:56:08.513036692 +0100
+@@ -1147,7 +1147,7 @@ static int __init snd_ps3_init(void)
+ 
+ 	return ret;
+ }
+-module_init(snd_ps3_init);
++async_module_init(snd_ps3_init);
+ 
+ static void __exit snd_ps3_exit(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/synth/emux/emux.c linux-4.0/sound/synth/emux/emux.c
+--- linux-4.0.orig/sound/synth/emux/emux.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/synth/emux/emux.c	2015-04-26 00:56:08.515036692 +0100
+@@ -182,5 +182,5 @@ static void __exit alsa_emux_exit(void)
+ {
+ }
+ 
+-module_init(alsa_emux_init)
++async_module_init(alsa_emux_init)
+ module_exit(alsa_emux_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/synth/util_mem.c linux-4.0/sound/synth/util_mem.c
+--- linux-4.0.orig/sound/synth/util_mem.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/synth/util_mem.c	2015-04-26 00:56:08.518036692 +0100
+@@ -207,5 +207,5 @@ static void __exit alsa_util_mem_exit(vo
+ {
+ }
+ 
+-module_init(alsa_util_mem_init)
++async_module_init(alsa_util_mem_init)
+ module_exit(alsa_util_mem_exit)
