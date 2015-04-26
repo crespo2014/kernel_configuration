@@ -270,12 +270,12 @@ struct init_fn_t
 */
 #if defined(CONFIG_ASYNCHRO_MODULE_INIT) && !defined(MODULE)
 
-#define async_module_init(fnc, ... )  \
+#define async_module_init(fnc)  \
   static struct init_fn_t init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {asynchronized,fnc ## _id,fnc};
 
 //
-#define deferred_module_init(fnc,...)  \
+#define deferred_module_init(fnc)  \
   static struct init_fn_t init_fn_##fnc __used \
   __attribute__((__section__(".async_initcall.init"))) = {deferred,fnc ## _id,fnc};
 
@@ -314,8 +314,8 @@ module_exit(__driver##_exit);
 
 #else
 
-#define async_module_init(fnc, ... )      module_init(fnc);
-#define deferred_module_init(fnc, ... )   module_init(fnc);
+#define async_module_init(fnc)      module_init(fnc);
+#define deferred_module_init(fnc)   module_init(fnc);
 
 #define async_module_driver(__driver, __register, __unregister)    module_driver(__driver, __register, __unregister);
 #define deferred_module_driver(__driver, __register, __unregister) module_driver(__driver, __register, __unregister);

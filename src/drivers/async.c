@@ -47,12 +47,12 @@
  */
 
 #include "linux/async_minit.h"
+#define CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 
 //this module is always enable
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_THREADS
 #else
 #define CONFIG_ASYNCHRO_MODULE_INIT_THREADS 1
-#define CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 #endif
 
 #ifdef TEST
@@ -113,7 +113,6 @@ struct dependency_t* __async_modules_depends_end = __async_modules_depends_start
 #include <linux/delay.h>
 #include <linux/kthread.h>  // for threads
 
-
 /**
  * Static struct holding all data
  */
@@ -142,6 +141,7 @@ ADD_MODULE_DEPENDENCY(alsa_seq_device_init,alsa_timer_init);
 ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_seq_device_init);
 ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
 ADD_MODULE_DEPENDENCY(alsa_pcm_init,alsa_timer_init);
+//alsa_pcm_init,alsa_mixer_oss_init
 
 //ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
 ADD_MODULE_DEPENDENCY(alsa_hwdep_init,alsa_pcm_init);
@@ -194,6 +194,7 @@ ADD_MODULE_DEPENDENCY(lib80211_crypto_wep_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(libipw_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(ipw2100_init,libipw_init);
 
+// AGP DRM
 ADD_MODULE_DEPENDENCY(drm_core_init,agp_init);
 ADD_MODULE_DEPENDENCY(agp_nvidia_init,agp_init);
 ADD_MODULE_DEPENDENCY(nvidia_frontend_init_module,drm_core_init);
@@ -516,7 +517,7 @@ int WorkingThread(void *data)
         if (ptask != NULL)
         {
             printk_debug("async %d %s\n", (unsigned)data, module_name[ptask->id]);
-            msleep(2000);
+            //msleep(2000);
             do_one_initcall(ptask->fnc);
         }
         else
