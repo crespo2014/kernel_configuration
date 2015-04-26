@@ -1,2 +1,2 @@
 
-obj-$(ASYNCHRO_MODULE_INIT) += async.o
+obj-y += async.o

@@ -48,6 +48,13 @@
 
 #include "linux/async_minit.h"
 
+//this module is always enable
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_THREADS
+#else
+#define CONFIG_ASYNCHRO_MODULE_INIT_THREADS 1
+#define CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+#endif
+
 #ifdef TEST
 #include <stdio.h>
 
@@ -179,7 +186,7 @@ ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
-ADD_MODULE_DEPENDENCY(synusb_driver_init,);
+//ADD_MODULE_DEPENDENCY(synusb_driver_init,);
 
 ADD_MODULE_DEPENDENCY(lib80211_crypto_ccmp_init,lib80211_init);
 ADD_MODULE_DEPENDENCY(lib80211_crypto_tkip_init,lib80211_init);
@@ -574,7 +581,7 @@ static int async_initialization(void)
     //traceInitCalls();
     printk_debug("async started asynchronized\n");
     doit_type(asynchronized);
-    ret = wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
+    //ret = wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
     return 0;
 }
 /**
