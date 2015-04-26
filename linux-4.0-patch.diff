@@ -7050,3 +7050,269 @@ diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '
 -module_init(alsa_util_mem_init)
 +async_module_init(alsa_util_mem_init)
  module_exit(alsa_util_mem_exit)
+Only in linux-4.0/drivers: async.c
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/ata/ahci.c linux-4.0/drivers/ata/ahci.c
+--- linux-4.0.orig/drivers/ata/ahci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/ata/ahci.c	2015-04-19 23:24:31.701009415 +0100
+@@ -1465,7 +1465,7 @@ static int ahci_init_one(struct pci_dev
+ 	return ahci_host_activate(host, pdev->irq, &ahci_sht);
+ }
+ 
+-module_pci_driver(ahci_pci_driver);
++async_module_pci_driver(ahci_pci_driver);
+ 
+ MODULE_AUTHOR("Jeff Garzik");
+ MODULE_DESCRIPTION("AHCI SATA low-level driver");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/char/hw_random/intel-rng.c linux-4.0/drivers/char/hw_random/intel-rng.c
+--- linux-4.0.orig/drivers/char/hw_random/intel-rng.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/char/hw_random/intel-rng.c	2015-04-26 20:57:08.776250035 +0100
+@@ -325,7 +325,7 @@ PFX "RNG, try using the 'no_fwh_detect'
+ }
+ 
+ 
+-static int __init mod_init(void)
++static int __init intel_rng_mod_init(void)
+ {
+ 	int err = -ENODEV;
+ 	int i;
+@@ -411,7 +411,7 @@ static void __exit mod_exit(void)
+ 	iounmap(mem);
+ }
+ 
+-module_init(mod_init);
++module_init(intel_rng_mod_init);
+ module_exit(mod_exit);
+ 
+ MODULE_DESCRIPTION("H/W RNG driver for Intel chipsets");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/gpu/drm/Kconfig linux-4.0/drivers/gpu/drm/Kconfig
+--- linux-4.0.orig/drivers/gpu/drm/Kconfig	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/gpu/drm/Kconfig	2015-04-13 23:52:11.415705252 +0100
+@@ -77,10 +77,13 @@ config DRM_KMS_CMA_HELPER
+ 	help
+ 	  Choose this if you need the KMS CMA helper functions
+ 
++
+ source "drivers/gpu/drm/i2c/Kconfig"
+ 
+ source "drivers/gpu/drm/bridge/Kconfig"
+ 
++source "drivers/gpu/drm/nvidia-ion/Kconfig"
++
+ config DRM_TDFX
+ 	tristate "3dfx Banshee/Voodoo3+"
+ 	depends on DRM && PCI
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/gpu/drm/Makefile linux-4.0/drivers/gpu/drm/Makefile
+--- linux-4.0.orig/drivers/gpu/drm/Makefile	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/gpu/drm/Makefile	2015-04-13 23:49:11.367703122 +0100
+@@ -34,6 +34,7 @@ CFLAGS_drm_trace_points.o := -I$(src)
+ 
+ obj-$(CONFIG_DRM)	+= drm.o
+ obj-$(CONFIG_DRM_MIPI_DSI) += drm_mipi_dsi.o
++obj-$(CONFIG_NVIDIA_ION)	+= nvidia-ion/
+ obj-$(CONFIG_DRM_TTM)	+= ttm/
+ obj-$(CONFIG_DRM_TDFX)	+= tdfx/
+ obj-$(CONFIG_DRM_R128)	+= r128/
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/Kconfig linux-4.0/drivers/Kconfig
+--- linux-4.0.orig/drivers/Kconfig	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/Kconfig	2015-04-26 13:27:00.931339793 +0100
+@@ -1,5 +1,20 @@
+ menu "Device Drivers"
+ 
++config ASYNCHRO_MODULE_INIT
++	bool "Initialize module in Asynchronize way using single module dependencies"
++	---help---
++	Asynchrone drivers initialization routine 
++	
++if ASYNCHRO_MODULE_INIT
++	config ASYNCHRO_MODULE_INIT_DEBUG
++	bool "Debug mode"
++	
++	config ASYNCHRO_MODULE_INIT_THREADS	
++	int "Maximum number of threads"
++	range 0 4
++	default "2" 
++endif
++	
+ source "drivers/amba/Kconfig"
+ 
+ source "drivers/base/Kconfig"
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/Makefile linux-4.0/drivers/Makefile
+--- linux-4.0.orig/drivers/Makefile	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/Makefile	2015-04-26 19:19:45.103180931 +0100
+@@ -33,6 +33,9 @@ obj-y				+= amba/
+ # really early.
+ obj-$(CONFIG_DMADEVICES)	+= dma/
+ 
++#ready for asyncronized initialization
++obj-y += async.o
++
+ # SOC specific infrastructure drivers.
+ obj-y				+= soc/
+ 
+@@ -165,3 +168,5 @@ obj-$(CONFIG_RAS)		+= ras/
+ obj-$(CONFIG_THUNDERBOLT)	+= thunderbolt/
+ obj-$(CONFIG_CORESIGHT)		+= coresight/
+ obj-$(CONFIG_ANDROID)		+= android/
++
++
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/mtd/ubi/build.c linux-4.0/drivers/mtd/ubi/build.c
+--- linux-4.0.orig/drivers/mtd/ubi/build.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/mtd/ubi/build.c	2015-04-26 20:57:08.927250037 +0100
+@@ -1336,7 +1336,7 @@ out:
+ 	pr_err("UBI error: cannot initialize UBI, error %d", err);
+ 	return err;
+ }
+-late_initcall(ubi_init);
++module_init(ubi_init);
+ 
+ static void __exit ubi_exit(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/uio/uio_cif.c linux-4.0/drivers/uio/uio_cif.c
+--- linux-4.0.orig/drivers/uio/uio_cif.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/uio/uio_cif.c	2015-04-25 00:22:42.880197388 +0100
+@@ -134,7 +134,7 @@ static struct pci_driver hilscher_pci_dr
+ 	.remove = hilscher_pci_remove,
+ };
+ 
+-module_pci_driver(hilscher_pci_driver);
++async_module_pci_driver(hilscher_pci_driver);
+ MODULE_DEVICE_TABLE(pci, hilscher_pci_ids);
+ MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Hans J. Koch, Benedikt Spranger");
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ehci-hcd.c linux-4.0/drivers/usb/host/ehci-hcd.c
+--- linux-4.0.orig/drivers/usb/host/ehci-hcd.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ehci-hcd.c	2015-04-26 00:56:08.150036688 +0100
+@@ -1376,7 +1376,7 @@ err_debug:
+ 	clear_bit(USB_EHCI_LOADED, &usb_hcds_loaded);
+ 	return retval;
+ }
+-module_init(ehci_hcd_init);
++async_module_init(ehci_hcd_init);
+ 
+ static void __exit ehci_hcd_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ehci-pci.c linux-4.0/drivers/usb/host/ehci-pci.c
+--- linux-4.0.orig/drivers/usb/host/ehci-pci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ehci-pci.c	2015-04-26 21:13:53.230261913 +0100
+@@ -421,7 +421,7 @@ static int __init ehci_pci_init(void)
+ 
+ 	return pci_register_driver(&ehci_pci_driver);
+ }
+-module_init(ehci_pci_init);
++async_module_init(ehci_pci_init);
+ 
+ static void __exit ehci_pci_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ehci-platform.c linux-4.0/drivers/usb/host/ehci-platform.c
+--- linux-4.0.orig/drivers/usb/host/ehci-platform.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ehci-platform.c	2015-04-26 21:16:16.350263605 +0100
+@@ -428,7 +428,7 @@ static int __init ehci_platform_init(voi
+ 	ehci_init_driver(&ehci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ehci_platform_driver);
+ }
+-module_init(ehci_platform_init);
++async_module_init(ehci_platform_init);
+ 
+ static void __exit ehci_platform_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ohci-hcd.c linux-4.0/drivers/usb/host/ohci-hcd.c
+--- linux-4.0.orig/drivers/usb/host/ohci-hcd.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ohci-hcd.c	2015-04-26 21:18:21.790265089 +0100
+@@ -1352,7 +1352,7 @@ static int __init ohci_hcd_mod_init(void
+ 	clear_bit(USB_OHCI_LOADED, &usb_hcds_loaded);
+ 	return retval;
+ }
+-module_init(ohci_hcd_mod_init);
++async_module_init(ohci_hcd_mod_init);
+ 
+ static void __exit ohci_hcd_mod_exit(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ohci-pci.c linux-4.0/drivers/usb/host/ohci-pci.c
+--- linux-4.0.orig/drivers/usb/host/ohci-pci.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ohci-pci.c	2015-04-26 21:20:03.919266296 +0100
+@@ -302,7 +302,7 @@ static int __init ohci_pci_init(void)
+ 
+ 	return pci_register_driver(&ohci_pci_driver);
+ }
+-module_init(ohci_pci_init);
++async_module_init(ohci_pci_init);
+ 
+ static void __exit ohci_pci_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/drivers/usb/host/ohci-platform.c linux-4.0/drivers/usb/host/ohci-platform.c
+--- linux-4.0.orig/drivers/usb/host/ohci-platform.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/drivers/usb/host/ohci-platform.c	2015-04-26 21:19:00.678265549 +0100
+@@ -402,7 +402,7 @@ static int __init ohci_platform_init(voi
+ 	ohci_init_driver(&ohci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ohci_platform_driver);
+ }
+-module_init(ohci_platform_init);
++async_module_init(ohci_platform_init);
+ 
+ static void __exit ohci_platform_cleanup(void)
+ {
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/fs/cifs/cifsfs.c linux-4.0/fs/cifs/cifsfs.c
+--- linux-4.0.orig/fs/cifs/cifsfs.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/fs/cifs/cifsfs.c	2015-04-23 23:19:45.719851229 +0100
+@@ -1314,5 +1314,5 @@ MODULE_DESCRIPTION
+     ("VFS to access servers complying with the SNIA CIFS Specification "
+      "e.g. Samba and Windows");
+ MODULE_VERSION(CIFS_VERSION);
+-module_init(init_cifs)
++module_init(init_cifs);
+ module_exit(exit_cifs)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/init/main.c linux-4.0/init/main.c
+--- linux-4.0.orig/init/main.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/init/main.c	2015-04-18 22:19:31.372041768 +0100
+@@ -928,7 +928,7 @@ static int __ref kernel_init(void *unuse
+ 	kernel_init_freeable();
+ 	/* need to finish all async __init code before freeing the memory */
+ 	async_synchronize_full();
+-	free_initmem();
++	//free_initmem();
+ 	mark_rodata_ro();
+ 	system_state = SYSTEM_RUNNING;
+ 	numa_default_policy();
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/net/bluetooth/rfcomm/core.c linux-4.0/net/bluetooth/rfcomm/core.c
+--- linux-4.0.orig/net/bluetooth/rfcomm/core.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/net/bluetooth/rfcomm/core.c	2015-04-26 00:56:08.198036688 +0100
+@@ -2255,7 +2255,7 @@ static void __exit rfcomm_exit(void)
+ 	rfcomm_cleanup_sockets();
+ }
+ 
+-module_init(rfcomm_init);
++async_module_init(rfcomm_init);
+ module_exit(rfcomm_exit);
+ 
+ module_param(disable_cfc, bool, 0644);
+Only in linux-4.0: .project
+Only in linux-4.0: .settings
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/hwdep.c linux-4.0/sound/core/hwdep.c
+--- linux-4.0.orig/sound/core/hwdep.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/hwdep.c	2015-04-26 20:57:09.139250039 +0100
+@@ -548,5 +548,5 @@ static void __exit alsa_hwdep_exit(void)
+ 	snd_hwdep_proc_done();
+ }
+ 
+-module_init(alsa_hwdep_init)
++module_init(alsa_hwdep_init);
+ module_exit(alsa_hwdep_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/core/seq/seq_midi.c linux-4.0/sound/core/seq/seq_midi.c
+--- linux-4.0.orig/sound/core/seq/seq_midi.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/core/seq/seq_midi.c	2015-04-26 20:57:09.194250040 +0100
+@@ -476,5 +476,5 @@ static void __exit alsa_seq_midi_exit(vo
+ 	snd_seq_device_unregister_driver(SNDRV_SEQ_DEV_ID_MIDISYNTH);
+ }
+ 
+-module_init(alsa_seq_midi_init)
++module_init(alsa_seq_midi_init,alsa_seq_init)
+ module_exit(alsa_seq_midi_exit)
+diff -rup -x '*.o' -x '*.h' -x bzImage '--exclude=.cproject' '--exclude=build' '--exclude=drivers/gpu/drm/nvidia-ion' linux-4.0.orig/sound/pci/hda/hda_intel.c linux-4.0/sound/pci/hda/hda_intel.c
+--- linux-4.0.orig/sound/pci/hda/hda_intel.c	2015-04-12 23:12:50.000000000 +0100
++++ linux-4.0/sound/pci/hda/hda_intel.c	2015-04-24 18:38:21.477953059 +0100
+@@ -2183,4 +2183,4 @@ static struct pci_driver azx_driver = {
+ 	},
+ };
+ 
+-module_pci_driver(azx_driver);
++async_module_pci_driver(azx_driver);
