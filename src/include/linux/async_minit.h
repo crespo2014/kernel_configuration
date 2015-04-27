@@ -18,6 +18,22 @@
 #define INIT_CALLS(fnc) \
         fnc(crypto_xcbc_module_init), /* */ \
         fnc(init_cifs),               /* */  \
+        fnc(acpi_pcc_driver), \
+        fnc(acpi_button_driver),               /* */  \
+        fnc(acpi_hed_driver),               /* */  \
+        fnc(acpi_smb_hc_driver),               /* */  \
+        fnc(crb_acpi_driver),               /* */  \
+        fnc(acpi_smbus_cmi_driver),               /* */  \
+        fnc(atlas_acpi_driver),               /* */  \
+        fnc(smo8800_driver),               /* */  \
+        fnc(lis3lv02d_driver),               /* */  \
+        fnc(irst_driver),               /* */  \
+        fnc(smartconnect_driver),               /* */  \
+        fnc(pvpanic_driver),               /* */  \
+        fnc(acpi_topstar_driver),               /* */  \
+        fnc(toshiba_bt_rfkill_driver),               /* */  \
+        fnc(toshiba_haps_driver),               /* */  \
+        fnc(xo15_ebook_driver),               /* */  \
         fnc(drm_fb_helper_modinit),   /* */  \
         fnc(acpi_button_driver_init), /* */  \
         fnc(acpi_power_meter_init), /* */  \

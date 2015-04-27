@@ -33,8 +33,8 @@
  *
  *	List holding task
  *
- *  |----------------|----------|------------|
- *  begin            waiting    running      done/end
+ *  |----------|---------|----------|------------|
+ *    waiting     ready    running      done     |end
  *
  *  if waiting == running then all task became ready
  *
@@ -45,64 +45,6 @@
  *  Created on: 16 Apr 2015
  *      Author: lester.crespo
  */
-
-#include "linux/async_minit.h"
-//#define CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
-
-//this module is always enable
-#ifdef CONFIG_ASYNCHRO_MODULE_INIT_THREADS
-#else
-#define CONFIG_ASYNCHRO_MODULE_INIT_THREADS 1
-#endif
-
-#ifdef TEST
-#include <stdio.h>
-
-#define __wake_up(...)
-#define do_one_initcall(...)
-#define schedule(...)
-#define prepare_to_wait_for(...)
-#define finish_wait(...)
-#define cpu_online_mask(...) 0
-#define spin_lock(...)
-#define spin_unlock(...)
-#define wake_up_interruptible(...) 0
-#define num_online_cpus(...) 1
-#define kthread_create(...) NULL
-#define wait_event_interruptible(...) 0
-#define free_initmem(...)
-#define ERR_PTR(...) NULL
-#define ENOMEM 6
-//#define kthread_create_on_node(...) 0
-#define kthread_bind(...)
-#define wake_up_process(...)
-#define printk(...) printf( __VA_ARGS__ )
-#define _raw_spin_lock(...)
-struct init_fn_t __async_initcall_start[1], __async_initcall_end[1];
-struct dependency_t __async_modules_depends_start[]  = {
-        MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),
-        MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),       //snd-mixer-oss
-        MOD_DEPENDENCY_ITEM(alsa_pcm_oss_init,alsa_mixer_oss_init),   // snd-pcm-oss
-        MOD_DEPENDENCY_ITEM(alsa_hwdep_init,alsa_pcm_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_device_init,alsa_timer_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_midi_event_init,alsa_seq_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_dummy_init,alsa_seq_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_event_init),
-        // multiple dependencie
-        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,init_cifs),
-        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,drm_fb_helper_modinit),
-        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,acpi_power_meter_init),
-
-        MOD_DEPENDENCY_ITEM(init_cifs,usblp_driver_init),
-        MOD_DEPENDENCY_ITEM(init_cifs,acpi_power_meter_init)
-        };
-struct dependency_t* __async_modules_depends_end = __async_modules_depends_start + 14;
-
-#define DEFINE_SPINLOCK(a) int a
-#define DECLARE_WAIT_QUEUE_HEAD(a) int a
-
-#else
 
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -126,8 +68,7 @@ struct dependency_t* __async_modules_depends_end = __async_modules_depends_start
 extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
 
-#endif
-#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 #define printk_debug(...) printk(__VA_ARGS__)
 #else
 #define printk_debug(...) do {} while(0)
@@ -148,8 +89,6 @@ ADD_MODULE_DEPENDENCY(acpi_button_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(acpi_hed_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(crb_acpi_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(crb_acpi_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(acpi_smbus_cmi_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(atlas_acpi_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(smo8800_driver, acpi_ac_init);
@@ -163,6 +102,10 @@ ADD_MODULE_DEPENDENCY(toshiba_bt_rfkill_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(toshiba_haps_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(xo15_ebook_driver, acpi_ac_init);
 
+
+ADD_MODULE_DEPENDENCY(pci_hotplug_init, pcie_portdrv_init);
+ADD_MODULE_DEPENDENCY(pcied_init, pci_hotplug_init);
+ADD_MODULE_DEPENDENCY(shpcd_init, pcied_init);
 
 //ALSA
 ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
@@ -211,6 +154,9 @@ ADD_MODULE_DEPENDENCY(ohci_platform_init,ohci_hcd_mod_init);
 
 ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
+
+ADD_MODULE_DEPENDENCY(ohci_hcd_mod_init,ehci_platform_init);
+
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
 
@@ -626,87 +572,4 @@ static int deferred_initialization(void)
 module_init(async_initialization);
 late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
-#ifdef TEST
-#define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
-
-int main(void)
-{
-    // single
-    struct init_fn_t list1[] =
-    {
-    { asynchronized, rfcomm_init_id, 0 },
-    { asynchronized, alsa_timer_init_id, 0 },
-    { asynchronized, alsa_pcm_init_id, 0 },
-    { asynchronized, alsa_mixer_oss_init_id, 0 },
-    { asynchronized, alsa_hwdep_init_id, 0 },
-    { asynchronized, alsa_seq_device_init_id, 0 },
-    { asynchronized, alsa_seq_init_id, 0 },
-    { asynchronized, alsa_seq_midi_event_init_id, 0 },
-    { asynchronized, alsa_seq_dummy_init_id, 0 },
-    { asynchronized, alsa_seq_oss_init_id, 0 } };
-    // multiple dependnecies
-    struct init_fn_t list2[] =
-    {
-    { asynchronized, crypto_xcbc_module_init_id, 0 },
-    { asynchronized, init_cifs_id, 0 },
-    { asynchronized, drm_fb_helper_modinit_id, 0 },
-    { asynchronized, acpi_power_meter_init_id, 0 },
-    { asynchronized, usblp_driver_init_id, 0 },
-    { asynchronized, lz4_mod_init_id, 0 } };
-
-    FillTasks(list1,list1+9);
-    doit_type(asynchronized);
-    doit_type(deferred);
-
-
-    FillTasks(list2,list2+6);
-    doit_type(asynchronized);
-    //unmeet dependnency force to do all modules in order
-    /*
-    // keep order for single thread but can be all together
-    struct init_fn_t list2[] =
-    {
-        {   asynchronized,"a", 0},
-        {   asynchronized,"b",0},
-        {   asynchronized,"c", 0},
-        {   asynchronized,"d", 0}};
-    // order is keep because dependences are resolved on time
-    struct init_fn_t list3[] =
-    {
-        {   asynchronized,"a",0},
-        {   asynchronized,"b","a"},
-        {   asynchronized,"c","b"},
-        {   asynchronized,"d",0},
-        {   asynchronized,"e", 0}};
-
-    struct init_fn_t list4[] =
-    {
-        {   asynchronized,"a",0},
-        {   asynchronized,"d","c"},
-        {   asynchronized,"e",0},
-        {   asynchronized,"b","a"},
-        {   asynchronized,"c","b"}
-
-    };
-
-
-    //
-    struct init_fn_t list5[] =
-    {
-        {   "a", 0}};
-
-    DOIT(list1);
-    DOIT(list2);
-    DOIT(list3);
-    DOIT(list4);
-    */
-//	Prepare(list1,sizeof(list1)/sizeof(*list1));
-//	WorkingThread();
-//	Prepare(list2,sizeof(list2)/sizeof(*list2));
-//	WorkingThread();
-//	Prepare(list3,sizeof(list3)/sizeof(*list));
-//	WorkingThread();
-    return 0;
-}
-#endif
 
