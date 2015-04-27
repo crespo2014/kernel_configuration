@@ -151,6 +151,9 @@ ADD_MODULE_DEPENDENCY(realtek_cr_driver_init,usb_storage_driver_init);
 //USB
 ADD_MODULE_DEPENDENCY(ohci_pci_init,ohci_hcd_mod_init);
 ADD_MODULE_DEPENDENCY(ohci_platform_init,ohci_hcd_mod_init);
+ADD_MODULE_DEPENDENCY(ohci_pci_init,ehci_hcd_init);
+
+ADD_MODULE_DEPENDENCY(uhci_hcd_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
 ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
@@ -274,21 +277,19 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
         tasks.task_end->fnc = it_init_fnc->fnc;
         tasks.task_end->waiting_count = 0;
     }
-    //tasks.task_left = tasks.task_end - tasks.all;
     // resolve dependencies
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
         for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
         {
-            // at the moment only one dependency is supported
             if (it_dependency->task_id == it_task->id)
             {
-                // Do not register a dependency that does not exist or it is executed later
+                // Do not register a dependency that does not exist
                 ptask = getTask(it_dependency->parent_id);
                 if (ptask == NULL)
                 {
-                    printk("async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
-                    printk_debug("async %s MISSIG -- %s BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
+                    printk(KERN_ERR "async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
+                    printk_debug("async %s MISSIG -- %s is BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
 //                    msleep(2000);
                 }
                 else
@@ -440,10 +441,10 @@ struct task_t* TaskDone(struct task_t* ptask)
     {
         if (tasks.waiting_last != tasks.idx_list)
         {
-            printk("async Failed some tasks was not released\n");
+            printk(KERN_EMERG "async Failed some tasks was not released\n");
             for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
             {
-                printk("async Failed task %d waiting for %d tasks\n",tasks.all[*it_idx].id,tasks.all[*it_idx].waiting_count);
+                printk(KERN_EMERG "async Failed task %d waiting for %d tasks\n",tasks.all[*it_idx].id,tasks.all[*it_idx].waiting_count);
                 printk_debug("async %s still waiting for %d tasks\n",module_name[tasks.all[*it_idx].id],tasks.all[*it_idx].waiting_count);
             }
         }
@@ -559,18 +560,6 @@ int doit_type(task_type_t type)
 }
 
 /**
- * First initialization of module. Disk diver and AGP  
- */
-static int async_initialization(void)
-{
-    FillTasks(__async_initcall_start, __async_initcall_end);
-    //traceInitCalls();
-    printk_debug("async started asynchronized\n");
-    doit_type(asynchronized);
-    //ret = wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
-    return 0;
-}
-/**
  * Second initialization USB devices, some PCI
  */
 static int deferred_initialization(void)
@@ -580,7 +569,51 @@ static int deferred_initialization(void)
     return 0;
 }
 
+static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
+                      size_t nbytes, loff_t *ppos)
+{
+   static int deferred_initcalls_done = 0;
+   int len, ret;
+   char tmp[3] = "1\n";
+
+   if (*ppos >= 3)
+       return 0;
+
+   if ((! deferred_initcalls_done) && ! (*ppos)) {
+       tmp[0] = '0';
+       deferred_initialization();
+       //do_deferred_initcalls();
+       deferred_initcalls_done = 1;
+   }
+
+   len = min(nbytes, (size_t)3);
+   ret = copy_to_user(buf, tmp, len);
+   if (ret)
+       return -EFAULT;
+   *ppos += len;
+   return len;
+}
+
+static const struct file_operations deferred_initcalls_fops = {
+   .read           = deferred_initcalls_read_proc,
+};
+
+/**
+ * First initialization of module. Disk diver and AGP  
+ */
+static int async_initialization(void)
+{
+    printk_debug("async started asynchronized\n");
+    FillTasks(__async_initcall_start, __async_initcall_end);
+    // register in proc filesystem
+    proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
+    doit_type(asynchronized);
+    //ret = wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
+    return 0;
+}
+
+
 module_init(async_initialization);
-late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
+//late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
 

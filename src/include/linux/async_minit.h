@@ -16,6 +16,8 @@
  * Full list of module init functions call
  */
 #define INIT_CALLS(fnc) \
+        fnc(serial8250_init), /* */ \
+        fnc(nforce2_driver_init), /* */ \
         fnc(crypto_xcbc_module_init), /* */ \
         fnc(init_cifs),               /* */  \
         fnc(acpi_pcc_driver), \
