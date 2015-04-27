@@ -143,6 +143,27 @@ static const char* const module_name[] =
  * Dependencies list can be declare any time in any c file
  */
 
+//ACPI
+ADD_MODULE_DEPENDENCY(acpi_button_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_hed_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(crb_acpi_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(crb_acpi_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_smbus_cmi_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(atlas_acpi_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(smo8800_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(lis3lv02d_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(irst_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(smartconnect_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_pcc_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(pvpanic_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_topstar_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(toshiba_bt_rfkill_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(toshiba_haps_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(xo15_ebook_driver, acpi_ac_init);
+
+
 //ALSA
 ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
 
