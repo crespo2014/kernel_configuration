@@ -227,9 +227,7 @@ struct task_t* getTask(modules_e id)
     struct task_t* t = tasks.all;
     while(t != tasks.task_end && t->id != id)
         ++t;
-    if (t == tasks.task_end)
-        t = NULL;
-    return t;
+    return (t == tasks.task_end) ? NULL : t;
 }
 
 /**
@@ -265,7 +263,6 @@ unsigned doesDepends(modules_e child, modules_e parent)
 void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 {
     struct dependency_t *it_dependency;
-    //unsigned* it_idx;
     struct init_fn_t* it_init_fnc;
     struct task_t* it_task;
     struct task_t* ptask;
@@ -288,7 +285,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
             {
                 // Do not register a dependency that does not exist or it is executed later
                 ptask = getTask(it_dependency->parent_id);
-                if (ptask == NULL || (ptask->type == deferred && it_task->type == asynchronized) )
+                if (ptask == NULL)
                 {
                     printk("async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
                     printk_debug("async %s MISSIG -- %s BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
@@ -373,6 +370,7 @@ static DECLARE_WAIT_QUEUE_HEAD( list_wait);
 struct task_t* TaskDone(struct task_t* ptask)
 {
     struct dependency_t * it_dependency;
+    struct task_t* child_task;
     unsigned* it_idx;
     unsigned* it_idx2;
     unsigned idx;
@@ -396,46 +394,59 @@ struct task_t* TaskDone(struct task_t* ptask)
                 break;
             }
         }
-        // release waiting tasks
+        // release child tasks
         if (ptask->child_count)
         {
             // find parent task on dependency list
-            for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
+            for (it_dependency = __async_modules_depends_start;ptask->child_count != 0 &&  it_dependency != __async_modules_depends_end; ++it_dependency)
             {
                 if (it_dependency->parent_id == ptask->id)
                 {
-                    //find child task on waiting list and release
-                    for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;)
+                    child_task = getTask(it_dependency->task_id);
+                    if (child_task != 0)
                     {
-                        if (tasks.all[*it_idx].id == it_dependency->task_id)
-                        {
-                            --tasks.all[*it_idx].waiting_count;
-                            // move to running list if not waiting
-                            if (tasks.all[*it_idx].waiting_count == 0)
-                            {
-                                --tasks.waiting_last;
-                                idx = *tasks.waiting_last;
-                                *tasks.waiting_last = *it_idx;
-                                *it_idx = idx;
-                                continue;
-                            }
-                        }
-                        ++it_idx;
-                    }
+                    --child_task->waiting_count;
                     --ptask->child_count;
-                    if (ptask->child_count == 0)
-                        break;
+                    }
+                    else
+                    {
+                        printk("async Failed to release task %d\n",it_dependency->task_id);
+                        printk_debug("async %s not release \n",module_name[it_dependency->task_id]);
+                    }
                 }
             }
             //check for missing child
             if (ptask->child_count != 0)
-                printk("async Failed to release all childs");
-        }
+                printk("async Failed to release all childs\n");
 
+            // move waiting task to ready list if necessary
+            for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;)
+            {
+                // move to running list if not waiting
+                if (tasks.all[*it_idx].waiting_count == 0)
+                {
+                    --tasks.waiting_last;
+                    idx = *tasks.waiting_last;
+                    *tasks.waiting_last = *it_idx;
+                    *it_idx = idx;
+                }
+                else
+                    ++it_idx;
+            }
+        }
     }
     // check if not running task and not pending one
     if (tasks.running_last == tasks.waiting_last)
     {
+        if (tasks.waiting_last != tasks.idx_list)
+        {
+            printk("async Failed some tasks was not released\n");
+            for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
+            {
+                printk("async Failed task %d waiting for %d tasks\n",tasks.all[*it_idx].id,tasks.all[*it_idx].waiting_count);
+                printk_debug("async %s still waiting for %d tasks\n",module_name[tasks.all[*it_idx].id],tasks.all[*it_idx].waiting_count);
+            }
+        }
         tasks.waiting_last = tasks.idx_list;
     }
     // pick a new task
