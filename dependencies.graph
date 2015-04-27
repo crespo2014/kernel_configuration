@@ -1,0 +1,30 @@
+digraph {
+    concentrate=true;
+    rankdir=TB;
+    node [fontsize=10];
+    node [nodesep=0.75];
+    node [ranksep=0.75];
+#    node [color=none];
+    node [shape=box];
+#    graph [bb="0,0,1000,1000"];
+#graph[size="100,100"]; 
+# graph [ratio=0.5];
+    edge [weight=1.2];
+    
+    
+	pinctrl -> gpio;
+	"char/ipmi" -> acpi
+	acpi -> pnp;
+	dma -> regulator;
+	regulator -> reset;
+	reset -> gpu;      
+	tty -> char;
+	iommu -> gpu;
+	char -> gpu;
+	iommu -> drm;
+	"char/agp/" ->  i810fb;
+	"char/agp/" -> intelfb;
+	ehci_hcd -> uhci_hcd
+	ehci_hcd -> ohci_hcd 
+
+    }

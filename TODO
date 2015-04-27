@@ -3,3 +3,19 @@ All usb modules will be deferred
 Create full list of modules dependencies 
 
 Free  init memory to be done twice - use atomic counter starting in two when reach zero the do free
+
+
+Module initialization
+
+video
+sound
+ehci
+ohci
+rfcomm
+
++b43
++uhci_hcd
++xhci_hcd
++nforce2
++cpu-freq 
++
