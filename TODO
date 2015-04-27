@@ -18,4 +18,5 @@ rfcomm
 +xhci_hcd
 +nforce2
 +cpu-freq 
-+
++forcedeth_pci_driver
++i8042
