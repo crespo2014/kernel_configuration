@@ -1,5 +1,5 @@
 File system has to be online as soon as posible to allow system tools execution
 All usb modules will be deferred
-Create full list of modules dependecies 
+Create full list of modules dependencies 
 
 Free  init memory to be done twice - use atomic counter starting in two when reach zero the do free
