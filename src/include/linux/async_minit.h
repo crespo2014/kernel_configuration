@@ -22,7 +22,6 @@
         fnc(forcedeth_pci_driver_init), /* */ \
         fnc(init_cifs),               /* */  \
         fnc(acpi_pcc_driver), \
-        fnc(acpi_button_driver),               /* */  \
         fnc(acpi_hed_driver),               /* */  \
         fnc(acpi_smb_hc_driver),               /* */  \
         fnc(crb_acpi_driver),               /* */  \

@@ -85,7 +85,7 @@ static const char* const module_name[] =
  */
 
 //ACPI
-ADD_MODULE_DEPENDENCY(acpi_button_driver, acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_button_driver_init, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(acpi_hed_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(crb_acpi_driver, acpi_ac_init);
@@ -376,6 +376,8 @@ struct task_t* TaskDone(struct task_t* ptask)
     unsigned* it_idx2;
     unsigned idx;
     unsigned ready_count = 0;    // how many task has been wakeup
+    unsigned wake_count = 0;     // how many task has been wake up bool indicated a wake up is necessary
+    // nothing in the list
     if (tasks.running_last == tasks.idx_list)
         return 0;
     //lock
@@ -430,6 +432,7 @@ struct task_t* TaskDone(struct task_t* ptask)
                     idx = *tasks.waiting_last;
                     *tasks.waiting_last = *it_idx;
                     *it_idx = idx;
+                    ++wake_count;
                 }
                 else
                     ++it_idx;
@@ -480,16 +483,29 @@ struct task_t* TaskDone(struct task_t* ptask)
             wake_up_interruptible(&list_wait);
         }
     }
+    // check for waked up tasks, more than one will trigger
+    if (wake_count  < 2)
+    {
+        wake_count = 0;
+    }
+    // all tasks done
+    if (tasks.running_last == tasks.idx_list)
+    {
+        wake_count = 1;
+    }
     // spin unlock
     spin_unlock(&list_lock);
-    // allow other thread pick a task if it was not task before and now there is one
-    if (ready_count == 0 && tasks.ready_last != tasks.waiting_last)
-        wake_up_interruptible(&list_wait);
+    // all task done at last stage release all data
     if (tasks.running_last == tasks.idx_list && tasks.type_ == deferred)
     {
+        wake_count =1 ;
+        {
         // free task structure not sure threads use it
         //free_initmem(); //do not doit until deferred
+        }
     }
+    if (wake_count != 0)
+        wake_up_interruptible(&list_wait);
     return ptask;
 }
 
@@ -530,22 +546,31 @@ int WorkingThread(void *data)
 int doit_type(task_type_t type)
 {
     unsigned max_cpus = num_online_cpus();
-    if (max_cpus > CONFIG_ASYNCHRO_MODULE_INIT_THREADS)
-        max_cpus = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
+    unsigned it;
     static struct task_struct *thr;
+    if (max_cpus > CONFIG_ASYNCHRO_MODULE_INIT_THREADS)
+    {
+        max_cpus = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
+    }
+    // validated cpu count
+    if (max_cpus == 0)
+        max_cpus = 1;
     Prepare(type);
     if (tasks.idx_end == tasks.idx_list)
         return 0;
-    // leave one thread free for the system
-    if (max_cpus > 0)
+    // leave one thread free for the system on deferred mode
+    if (type == deferred &&  max_cpus > 1)
+    {
         --max_cpus;
-    for (; max_cpus != 0; --max_cpus)
+    }
+    printk_debug("async using %d cpus\n", max_cpus);
+    for (it=0; it < max_cpus;  ++it)
     {
         //start working threads
         thr = kthread_create(WorkingThread, (void* )(max_cpus), "async thread");
         if (thr != ERR_PTR(-ENOMEM))
         {
-            kthread_bind(thr, max_cpus);
+            kthread_bind(thr, it);
             wake_up_process(thr);
         }
         else
@@ -554,10 +579,6 @@ int doit_type(task_type_t type)
             WorkingThread(NULL);
         }
     }
-    // initial initialization block all threads
-    if (type == asynchronized)
-        WorkingThread((void* )max_cpus);
-
     return 0;
 }
 
@@ -607,14 +628,14 @@ static int async_initialization(void)
     printk_debug("async started asynchronized\n");
     FillTasks(__async_initcall_start, __async_initcall_end);
     // register in proc filesystem
-    proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
+    //proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     doit_type(asynchronized);
-    //ret = wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
+    wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
     return 0;
 }
 
 
 module_init(async_initialization);
-//late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
+late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
 
