@@ -589,27 +589,30 @@ int doit_type(task_type_t type)
  */
 static int deferred_initialization(void)
 {
-    printk_debug("async started deferred\n");
-    doit_type(deferred);
+    static int deferred_initcalls_done = 0;
+    if (deferred_initcalls_done == 0)
+    {
+        deferred_initcalls_done = 1;
+        printk_debug("async started deferred\n");
+        doit_type(deferred);
+    }
     return 0;
 }
 
+
+
 static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
-   static int deferred_initcalls_done = 0;
    int len, ret;
    char tmp[3] = "1\n";
 
    if (*ppos >= 3)
        return 0;
 
-   if ((! deferred_initcalls_done) && ! (*ppos)) {
+   if (! (*ppos)) {
        tmp[0] = '0';
        deferred_initialization();
-       //do_deferred_initcalls();
-       deferred_initcalls_done = 1;
    }
-
    len = min(nbytes, (size_t)3);
    ret = copy_to_user(buf, tmp, len);
    if (ret)
