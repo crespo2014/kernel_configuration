@@ -56,7 +56,7 @@
 [    0.040000] initcall init_pit_clocksource+0x0/0x2e returned 0 after 0 usecs
 [    0.040000] initcall mtrr_if_init+0x0/0x55 returned 0 after 0 usecs
 [    0.040000] initcall ffh_cstate_init+0x0/0x24 returned 0 after 0 usecs
-[    0.040000] initcall acpi_pci_init+0x0/0x51 returned 0 after 0 usecs
+[6   0.040000] initcall acpi_pci_init+0x0/0x51 returned 0 after 0 usecs
 [    0.040000] initcall dma_bus_init+0x0/0xcd returned 0 after 0 usecs
 [    0.040000] initcall dma_channel_table_init+0x0/0xbc returned 0 after 0 usecs
 [    0.040000] initcall dmi_id_init+0x0/0x27f returned 0 after 0 usecs

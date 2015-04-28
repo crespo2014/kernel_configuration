@@ -29,4 +29,7 @@ rfcomm
 +sound
 +crypto
 
+module_hid_driver to be modified, add dependencie
++hid usb
++hid core
 +hid seems to be failing

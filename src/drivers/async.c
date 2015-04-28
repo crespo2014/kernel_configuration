@@ -378,14 +378,12 @@ struct task_t* TaskDone(struct task_t* ptask)
     unsigned* it_idx;
     unsigned* it_idx2;
     unsigned idx;
-    unsigned ready_count = 0;    // how many task has been wakeup
-    unsigned wake_count = 0;     // how many task has been wake up bool indicated a wake up is necessary
+     unsigned wake_count = 0;     // how many task has been wake up bool indicated a wake up is necessary
     // nothing in the list
     if (tasks.running_last == tasks.idx_list)
         return 0;
     //lock
     spin_lock(&list_lock);
-    ready_count = tasks.ready_last - tasks.waiting_last;
     if (ptask != 0)
     {
         //tasks.task_left--;
