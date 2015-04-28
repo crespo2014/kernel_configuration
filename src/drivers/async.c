@@ -85,9 +85,9 @@ static const char* const module_name[] =
  */
 
 //ACPI
-ADD_MODULE_DEPENDENCY(acpi_button_driver_init, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(acpi_hed_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
+//ADD_MODULE_DEPENDENCY(acpi_button_driver_init, acpi_ac_init);
+//ADD_MODULE_DEPENDENCY(acpi_hed_driver, acpi_ac_init);
+//ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(crb_acpi_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(acpi_smbus_cmi_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(atlas_acpi_driver, acpi_ac_init);
