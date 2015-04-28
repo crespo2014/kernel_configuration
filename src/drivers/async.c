@@ -160,6 +160,9 @@ ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
 
 ADD_MODULE_DEPENDENCY(ohci_hcd_mod_init,ehci_platform_init);
 
+ADD_MODULE_DEPENDENCY(hid_init,ohci_platform_init);
+ADD_MODULE_DEPENDENCY(uhid_init,ohci_platform_init);
+
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
 
@@ -567,7 +570,7 @@ int doit_type(task_type_t type)
     for (it=0; it < max_cpus;  ++it)
     {
         //start working threads
-        thr = kthread_create(WorkingThread, (void* )(max_cpus), "async thread");
+        thr = kthread_create(WorkingThread, (void* )(it), "async thread");
         if (thr != ERR_PTR(-ENOMEM))
         {
             kthread_bind(thr, it);
