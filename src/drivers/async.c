@@ -529,21 +529,23 @@ int WorkingThread(void *data)
  */
 int doit_type(task_type_t type)
 {
-    unsigned max_threads = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
     unsigned max_cpus = num_online_cpus();
+    if (max_cpus > CONFIG_ASYNCHRO_MODULE_INIT_THREADS)
+        max_cpus = CONFIG_ASYNCHRO_MODULE_INIT_THREADS;
     static struct task_struct *thr;
     Prepare(type);
     if (tasks.idx_end == tasks.idx_list)
         return 0;
-    if (type == asynchronized && max_threads > 0)
-        --max_threads;
-    for (; max_threads != 0; --max_threads)
+    // leave one thread free for the system
+    if (max_cpus > 0)
+        --max_cpus;
+    for (; max_cpus != 0; --max_cpus)
     {
         //start working threads
-        thr = kthread_create(WorkingThread, (void* )(max_threads), "async thread");
+        thr = kthread_create(WorkingThread, (void* )(max_cpus), "async thread");
         if (thr != ERR_PTR(-ENOMEM))
         {
-            kthread_bind(thr, max_threads % max_cpus);
+            kthread_bind(thr, max_cpus);
             wake_up_process(thr);
         }
         else
@@ -552,9 +554,9 @@ int doit_type(task_type_t type)
             WorkingThread(NULL);
         }
     }
-    // Run blocking thread
-    if (type == asynchronized || CONFIG_ASYNCHRO_MODULE_INIT_THREADS == 0)
-        WorkingThread(0);
+    // initial initialization block all threads
+    if (type == asynchronized)
+        WorkingThread((void* )max_cpus);
 
     return 0;
 }
@@ -569,8 +571,7 @@ static int deferred_initialization(void)
     return 0;
 }
 
-static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
-                      size_t nbytes, loff_t *ppos)
+static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
    static int deferred_initcalls_done = 0;
    int len, ret;

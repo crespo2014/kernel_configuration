@@ -64,6 +64,28 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 #define __used
 #define __u64   uint64_t
 
+#define KERN_ERR ""
+#define KERN_EMERG ""
+#define EFAULT 5
+
+# define __user
+#define loff_t  unsigned
+#define ssize_t unsigned
+#define copy_to_user(...)   0
+#define proc_create(...)   0
+
+#define min(a,b)    (a <b) ? a :b
+
+struct file
+{
+
+};
+
+struct file_operations
+{
+    unsigned int (*read)(struct file*,char*,size_t,unsigned int*);
+};
+
 #include "../src/drivers/async.c"
 
 
