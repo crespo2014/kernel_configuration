@@ -163,6 +163,7 @@ ADD_MODULE_DEPENDENCY(ohci_hcd_mod_init,ehci_platform_init);
 ADD_MODULE_DEPENDENCY(hid_init,ohci_platform_init);
 ADD_MODULE_DEPENDENCY(uhid_init,ohci_platform_init);
 
+//ADD_MODULE_DEPENDENCY(usb_hid_init,ohci_platform_init);
 
 ADD_MODULE_DEPENDENCY(smsc,libphy);
 
@@ -448,7 +449,7 @@ struct task_t* TaskDone(struct task_t* ptask)
             printk(KERN_EMERG "async Failed some tasks was not released\n");
             for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
             {
-                printk(KERN_EMERG "async Failed task %d waiting for %d tasks\n",tasks.all[*it_idx].id,tasks.all[*it_idx].waiting_count);
+                printk(KERN_EMERG "async Failed task %pF waiting for %d tasks\n",tasks.all[*it_idx].fnc,tasks.all[*it_idx].waiting_count);
                 printk_debug("async %s still waiting for %d tasks\n",module_name[tasks.all[*it_idx].id],tasks.all[*it_idx].waiting_count);
             }
         }

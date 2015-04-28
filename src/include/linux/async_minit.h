@@ -89,11 +89,13 @@
         fnc(led_driver_init),     /* usbled.ko */ \
         fnc(hid_generic_init), /**/ \
         fnc(hid_generic), /**/ \
-        fnc(hid_init),        /* usbhid.ko */ \
+        fnc(hid_init),       /**/ \
+        fnc(cherry_driver_init),  /**/ \
+        fnc(chicony_driver_init), /**/ \
+        fnc(usb_hid_init),  /* usbhid.ko */ \
 		fnc(uhid_init),		 /* uhid.ko */ \
 		fnc(apple_driver_init), /**/ \
 		fnc(a4_driver_init), /**/ \
-		fnc(ch_driver_init), /**/ \
         fnc(ez_driver_init), /**/ \
         fnc(cp_driver_init), /**/ \
         fnc(ks_driver_init), /**/ \
