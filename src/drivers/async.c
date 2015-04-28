@@ -476,15 +476,15 @@ struct task_t* TaskDone(struct task_t* ptask)
         *tasks.ready_last = idx;
         ptask = tasks.all + *tasks.ready_last;
     }
-    else
-    {
-        // check end of all task
-        if (tasks.running_last == tasks.idx_list)
-        {
-            // clean up all task memory if apply
-            wake_up_interruptible(&list_wait);
-        }
-    }
+//    else
+//    {
+//        // check end of all task
+//        if (tasks.running_last == tasks.idx_list)
+//        {
+//            // clean up all task memory if apply
+//            wake_up_interruptible(&list_wait);
+//        }
+//    }
     // check for waked up tasks, more than one will trigger
     if (wake_count  < 2)
     {
@@ -633,14 +633,14 @@ static int async_initialization(void)
     printk_debug("async started asynchronized\n");
     FillTasks(__async_initcall_start, __async_initcall_end);
     // register in proc filesystem
-    //proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
+    proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     doit_type(asynchronized);
-    wait_event_interruptible(list_wait, (tasks.running_last != tasks.idx_list));
+ //   wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
     return 0;
 }
 
 
 module_init(async_initialization);
-late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
+//late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
 
