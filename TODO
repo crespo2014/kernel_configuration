@@ -4,6 +4,8 @@ Create full list of modules dependencies
 
 Free  init memory to be done twice - use atomic counter starting in two when reach zero the do free
 
+Main thread is in a unknown cpu. Best option is to create all threads and wait for completition.
+
 
 Module initialization
 
@@ -20,3 +22,11 @@ rfcomm
 +cpu-freq 
 +forcedeth_pci_driver
 +i8042
++hpet_init
+
++pci-hotplug  (pci-hotplug,pcied,shpcd,pci_portdrv)
++fs(
++sound
++crypto
+
++hid seems to be failing
