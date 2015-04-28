@@ -92,29 +92,17 @@
         fnc(hid_init),        /* usbhid.ko */ \
 		fnc(uhid_init),		 /* uhid.ko */ \
 		fnc(apple_driver_init), /**/ \
-		fnc(apple_driver), /**/ \
 		fnc(a4_driver_init), /**/ \
-		fnc(a4_driver), /**/ \
 		fnc(ch_driver_init), /**/ \
-		fnc(ch_driver), /**/ \
-		fnc(belkin_driver_init), /**/ \
-		fnc(belkin_driver), /**/ \
         fnc(ez_driver_init), /**/ \
-        fnc(ez_driver), /**/ \
         fnc(cp_driver_init), /**/ \
-        fnc(cp_driver), /**/ \
         fnc(ks_driver_init), /**/ \
-        fnc(ks_driver), /**/ \
         fnc(ms_driver_init), /**/ \
-        fnc(ms_driver), /**/ \
         fnc(lg_driver_init), /**/ \
-        fnc(lg_driver), /**/ \
         fnc(mr_driver_init), /**/ \
-        fnc(mr_driver), /**/ \
+        fnc(belkin_driver_init), /**/ \
         fnc(plantronics_driver_init), /**/ \
-        fnc(plantronics_driver), /**/ \
         fnc(keytouch_driver_init), /**/ \
-        fnc(keytouch_driver), /**/ \
         fnc(ene_ub6250_driver_init),  /* ums-eneub6250.ko */ \
         fnc(uas_driver_init),  /* uas.ko */ \
         fnc(realtek_cr_driver_init),  /* ums-realtek.ko */ \
