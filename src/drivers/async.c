@@ -476,15 +476,6 @@ struct task_t* TaskDone(struct task_t* ptask)
         *tasks.ready_last = idx;
         ptask = tasks.all + *tasks.ready_last;
     }
-//    else
-//    {
-//        // check end of all task
-//        if (tasks.running_last == tasks.idx_list)
-//        {
-//            // clean up all task memory if apply
-//            wake_up_interruptible(&list_wait);
-//        }
-//    }
     // check for waked up tasks, more than one will trigger
     if (wake_count  < 2)
     {
@@ -500,11 +491,8 @@ struct task_t* TaskDone(struct task_t* ptask)
     // all task done at last stage release all data
     if (tasks.running_last == tasks.idx_list && tasks.type_ == deferred)
     {
-        wake_count =1 ;
-        {
         // free task structure not sure threads use it
         //free_initmem(); //do not doit until deferred
-        }
     }
     if (wake_count != 0)
         wake_up_interruptible(&list_wait);
@@ -563,7 +551,7 @@ int doit_type(task_type_t type)
     // leave one thread free for the system on deferred mode
     if (type == deferred &&  max_cpus > 1)
     {
-        --max_cpus;
+        //--max_cpus;
     }
     printk_debug("async using %d cpus\n", max_cpus);
     for (it=0; it < max_cpus;  ++it)
