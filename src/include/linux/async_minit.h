@@ -212,10 +212,45 @@
         fnc(vb2_thread_init), /**/\
         fnc(b43legacy_init), /**/\
         fnc(azx_driver_init), /**/\
+        fnc(crypto_algapi_init),  /**/ \
+        fnc(chainiv_module_init),  /**/ \
         fnc(pcie_pme_service_init),  /**/ \
+        fnc(seqiv_module_init),  /**/ \
+		fnc(eseqiv_module_init),  /**/ \
+		fnc(crypto_cmac_module_init),  /**/ \
+		fnc(crypto_pcbc_module_init),  /**/ \
+		fnc(crypto_ctr_module_init),  /**/ \
+		fnc(crypto_gcm_module_init),  /**/ \
+		fnc(hmac_module_init),  /**/ \
+		fnc(crypto_cts_module_init),  /**/ \
+		fnc(crypto_ccm_module_init),  /**/ \
+		fnc(des_generic_mod_init),  /**/ \
+		fnc(fcrypt_mod_init),  /**/ \
+		fnc(serpent_mod_init),  /**/ \
+		fnc(camellia_init),  /**/ \
+		fnc(arc4_init),  /**/ \
+		fnc(khazad_mod_init),  /**/ \
+		fnc(seed_init),  /**/ \
+		fnc(anubis_mod_init),  /**/ \
+		fnc(salsa20_generic_mod_init),  /**/ \
+		fnc(krng_mod_init),  /**/ \
+		fnc(michael_mic_init),  /**/ \
+		fnc(ghash_mod_init),  /**/ \
+		fnc(async_pq_init),  /**/ \
+		fnc(deflate_mod_init),  /**/ \
         fnc(i8042_init) /**/
 
+
 #if 0
+
+
+fnc(),  /**/ \
+fnc(),  /**/ \
+fnc(),  /**/ \
+fnc(),  /**/ \
+fnc(),  /**/ \
+fnc(),  /**/ \
+
         /* ARCH  SUBSYS POSTCORE */
         fnc(dca),  /* dca.ko */  \
         fnc(backlight),  /* backlight.ko */ \

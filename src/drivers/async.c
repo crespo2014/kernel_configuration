@@ -187,8 +187,7 @@ ADD_MODULE_DEPENDENCY(agp_nvidia_init,agp_init);
 ADD_MODULE_DEPENDENCY(nvidia_frontend_init_module,drm_core_init);
 ADD_MODULE_DEPENDENCY(uvm_init,nvidia_frontend_init_module);
 
-ADD_MODULE_DEPENDENCY(algif_skcipher_init,af_alg_init);
-ADD_MODULE_DEPENDENCY(algif_hash_init,af_alg_init);
+
 
 ADD_MODULE_DEPENDENCY(crypto_authenc_esn_module_init,crypto_authenc_module_init);
 
@@ -198,6 +197,23 @@ ADD_MODULE_DEPENDENCY(init_msdos_fs,init_fat_fs);
 ADD_MODULE_DEPENDENCY(init_vfat_fs,init_fat_fs);
 
 ADD_MODULE_DEPENDENCY(init_ext3_fs,journal_init);
+
+//CRYPTO
+//ADD_MODULE_DEPENDENCY(async_pq_init,raid6_pq);
+//ADD_MODULE_DEPENDENCY(async_pq_init,async_xor);
+//ADD_MODULE_DEPENDENCY(async_pq_init,async_tx_init);
+//ADD_MODULE_DEPENDENCY(blowfish_mod_init,blowfish_common);
+
+ADD_MODULE_DEPENDENCY(algif_skcipher_init,af_alg_init);
+ADD_MODULE_DEPENDENCY(algif_hash_init,af_alg_init);
+
+//ADD_MODULE_DEPENDENCY(deflate_mod_init,zlib_deflate);
+//ADD_MODULE_DEPENDENCY(ghash_mod_init,gf128mul);
+//ADD_MODULE_DEPENDENCY(,);
+//ADD_MODULE_DEPENDENCY(,);
+//ADD_MODULE_DEPENDENCY(,);
+
+
 
 //
 //ADD_MODULE_DEPENDENCY(,);
@@ -416,7 +432,7 @@ struct task_t* TaskDone(struct task_t* ptask)
                     }
                     else
                     {
-                        printk("async Failed to release task %d\n",it_dependency->task_id);
+                        printk("async Failed %pF does not release task %d\n",ptask->fnc,it_dependency->task_id);
                         printk_debug("async %s not release \n",module_name[it_dependency->task_id]);
                     }
                 }
