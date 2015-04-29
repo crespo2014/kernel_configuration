@@ -102,7 +102,7 @@ ADD_MODULE_DEPENDENCY(toshiba_bt_rfkill_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(toshiba_haps_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(xo15_ebook_driver, acpi_ac_init);
 
-ADD_MODULE_DEPENDENCY(pcie_pme_service_init,acpi_ac_init);
+ADD_MODULE_DEPENDENCY(acpi_ac_init,pcie_pme_service_init);
 
 
 ADD_MODULE_DEPENDENCY(pci_hotplug_init, pcie_portdrv_init);
