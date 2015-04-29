@@ -32,6 +32,8 @@ rfcomm
 +hid core
 +hid_init works fine from deferred
 
+preemptible kernel works fine
+
 Errors 
 pci/pcie/pme.c failed to initialize with preemptible kernel, failed in all kernels
 my need acpi
