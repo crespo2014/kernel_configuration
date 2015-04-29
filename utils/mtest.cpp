@@ -7,6 +7,7 @@
 
 
 #define CONFIG_ASYNCHRO_MODULE_INIT_THREADS 1
+#define CONFIG_ASYNCHRO_MODULE_INIT_DEBUG 1
 #define TEST
 
 
@@ -14,6 +15,8 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <ostream>
+#include <iostream>
 
 #define __wake_up(...)
 #define do_one_initcall(...)
@@ -24,12 +27,13 @@
 #define spin_lock(...)
 #define spin_unlock(...)
 #define wake_up_interruptible(...) 0
+#define wake_up_interruptible_all(...)  0
 #define num_online_cpus(...) 1
 #define kthread_create(...) NULL
 #define wait_event_interruptible(...) 0
 #define free_initmem(...)
 #define ERR_PTR(...) NULL
-#define ENOMEM 6
+//#define ENOMEM 6
 //#define kthread_create_on_node(...) 0
 #define kthread_bind(...)
 #define wake_up_process(...)
@@ -66,7 +70,7 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 
 #define KERN_ERR ""
 #define KERN_EMERG ""
-#define EFAULT 5
+//#define EFAULT 5
 
 # define __user
 #define loff_t  unsigned
@@ -116,58 +120,23 @@ int main(void)
     { asynchronized, usblp_driver_init_id, 0 },
     { asynchronized, lz4_mod_init_id, 0 } };
 
+
     FillTasks(list1,list1+9);
-    doit_type(asynchronized);
-    doit_type(deferred);
+    Prepare(asynchronized);
+    WorkingThread(0);
+
+    std::cout << "idx" << tasks.idx_list << std::endl;
+    std::cout << "waiting" << tasks.waiting_last << std::endl;
+    std::cout << "ready" << tasks.ready_last << std::endl;
+    std::cout << "running" << tasks.running_last << std::endl;
+
+//    doit_type(asynchronized);
+//    doit_type(deferred);
 
 
     FillTasks(list2,list2+6);
-    doit_type(asynchronized);
-    //unmeet dependnency force to do all modules in order
-    /*
-    // keep order for single thread but can be all together
-    struct init_fn_t list2[] =
-    {
-        {   asynchronized,"a", 0},
-        {   asynchronized,"b",0},
-        {   asynchronized,"c", 0},
-        {   asynchronized,"d", 0}};
-    // order is keep because dependences are resolved on time
-    struct init_fn_t list3[] =
-    {
-        {   asynchronized,"a",0},
-        {   asynchronized,"b","a"},
-        {   asynchronized,"c","b"},
-        {   asynchronized,"d",0},
-        {   asynchronized,"e", 0}};
-
-    struct init_fn_t list4[] =
-    {
-        {   asynchronized,"a",0},
-        {   asynchronized,"d","c"},
-        {   asynchronized,"e",0},
-        {   asynchronized,"b","a"},
-        {   asynchronized,"c","b"}
-
-    };
 
 
-    //
-    struct init_fn_t list5[] =
-    {
-        {   "a", 0}};
-
-    DOIT(list1);
-    DOIT(list2);
-    DOIT(list3);
-    DOIT(list4);
-    */
-//  Prepare(list1,sizeof(list1)/sizeof(*list1));
-//  WorkingThread();
-//  Prepare(list2,sizeof(list2)/sizeof(*list2));
-//  WorkingThread();
-//  Prepare(list3,sizeof(list3)/sizeof(*list));
-//  WorkingThread();
     return 0;
 }
 

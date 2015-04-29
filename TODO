@@ -36,3 +36,5 @@ Errors
 pci/pcie/pme.c failed to initialize with preemptible kernel, failed in all kernels
 my need acpi
 using async the problems continues by it does not stop the system for working
+disabled..
+
