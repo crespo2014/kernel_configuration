@@ -69,7 +69,7 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
-#define printk_debug(...) printk(__VA_ARGS__)
+#define printk_debug(...) printk(KERN_ERR  __VA_ARGS__)
 #else
 #define printk_debug(...) do {} while(0)
 #endif
@@ -101,6 +101,8 @@ ADD_MODULE_DEPENDENCY(acpi_topstar_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(toshiba_bt_rfkill_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(toshiba_haps_driver, acpi_ac_init);
 ADD_MODULE_DEPENDENCY(xo15_ebook_driver, acpi_ac_init);
+
+ADD_MODULE_DEPENDENCY(pcie_pme_service_init,acpi_ac_init);
 
 
 ADD_MODULE_DEPENDENCY(pci_hotplug_init, pcie_portdrv_init);

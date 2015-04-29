@@ -212,6 +212,7 @@
         fnc(vb2_thread_init), /**/\
         fnc(b43legacy_init), /**/\
         fnc(azx_driver_init), /**/\
+        fnc(pcie_pme_service_init),  /**/ \
         fnc(i8042_init) /**/
 
 #if 0
