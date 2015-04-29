@@ -389,7 +389,6 @@ struct task_t* TaskDone(struct task_t* ptask)
     spin_lock(&list_lock);
     if (ptask != 0)
     {
-        //tasks.task_left--;
         // move to done list
         for (it_idx = tasks.ready_last; it_idx < tasks.running_last; ++it_idx)
         {
@@ -486,6 +485,7 @@ struct task_t* TaskDone(struct task_t* ptask)
     // all tasks done
     if (tasks.running_last == tasks.idx_list)
     {
+        printk_debug("async all done\n");
         wake_count = 1;
     }
     // spin unlock
@@ -497,7 +497,7 @@ struct task_t* TaskDone(struct task_t* ptask)
         //free_initmem(); //do not doit until deferred
     }
     if (wake_count != 0)
-        wake_up_interruptible(&list_wait);
+        wake_up_interruptible_all(&list_wait);
     return ptask;
 }
 
@@ -518,7 +518,7 @@ int WorkingThread(void *data)
         else
         {
             printk_debug("async %d waiting ...\n", (unsigned)data);
-            ret = wait_event_interruptible(list_wait, (tasks.ready_last != tasks.waiting_last || tasks.waiting_last == tasks.idx_list));
+            ret = wait_event_interruptible(list_wait, (tasks.ready_last != tasks.waiting_last || tasks.ready_last == tasks.idx_list));
             if (ret != 0)
             {
                 printk("async init wake up returned %d\n", ret);
@@ -526,7 +526,8 @@ int WorkingThread(void *data)
             }
             //wait for (depends.unlocked !=0 or depends.waiting_last == 0)
         }
-    } while (tasks.all != 0 && tasks.ready_last != tasks.idx_list);	// something to do
+        // loop again if a task was done or something can be done
+    } while (ptask != 0 || tasks.ready_last != tasks.idx_list);
     printk_debug("async %d ends\n", (unsigned)data);
     return 0;
 }
@@ -550,7 +551,7 @@ int doit_type(task_type_t type)
     Prepare(type);
     if (tasks.idx_end == tasks.idx_list)
         return 0;
-    // leave one thread free for the system on deferred mode
+    // leave one thread free
     if (type == deferred &&  max_cpus > 1)
     {
         //--max_cpus;
@@ -571,6 +572,9 @@ int doit_type(task_type_t type)
             WorkingThread(NULL);
         }
     }
+    // do not return untill everything is done
+//    if (type == asynchronized)
+//        WorkingThread((void*)max_cpus);
     return 0;
 }
 
@@ -625,7 +629,7 @@ static int async_initialization(void)
     // register in proc filesystem
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     doit_type(asynchronized);
- //   wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
+    wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
     return 0;
 }
 
