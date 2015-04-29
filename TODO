@@ -8,6 +8,8 @@ expand initcalls macro to contain initialization type and depndencies.
 a macro can build all of them.
 a table with id and type can be build
 
+do not block on async initialization. 
+deferred have to wait for async to finish before do something
 
 Module initialization
 
