@@ -241,6 +241,13 @@
 		fnc(brd_init), /**/ \
 		fnc(loop_init), /**/ \
 		fnc(tcp_congestion_default), /**/ \
+		fnc(i2c_hid_driver_init), /**/ \
+		fnc(smbalert_driver_init), /**/ \
+		fnc(pca9541_driver_init), /**/ \
+		fnc(ahci_driver_init), /**/ \
+		fnc(pca954x_driver_init), /**/ \
+		fnc(pca955x_driver_init), /**/ \
+		fnc(ir_kbd_driver_init), /**/ \
         fnc(i8042_init) /**/
 
 
@@ -385,6 +392,9 @@ module_exit(__driver##_exit);
 #define async_module_platform_driver(__platform_driver) \
     async_module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
 
+#define deferred_module_platform_driver(__platform_driver) \
+    async_module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
+
 #else
 
 #define async_module_init(fnc)      module_init(fnc);
@@ -397,6 +407,7 @@ module_exit(__driver##_exit);
 #define deferred_module_pci_driver(__pci_driver) module_pci_driver(__pci_driver);
 
 #define async_module_platform_driver(__platform_driver) module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
+#define deferred_module_platform_driver(__platform_driver) module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
 
 #endif
 

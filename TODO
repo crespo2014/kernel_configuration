@@ -4,7 +4,9 @@ Create full list of modules dependencies
 
 Free  init memory to be done twice - use atomic counter starting in two when reach zero the do free
 
-Main thread is in a unknown cpu. Best option is to create all threads and wait for completition.
+expand initcalls macro to contain initialization type and depndencies.
+a macro can build all of them.
+a table with id and type can be build
 
 
 Module initialization

@@ -84,6 +84,9 @@ static const char* const module_name[] =
  * Dependencies list can be declare any time in any c file
  */
 
+//disk
+ADD_MODULE_DEPENDENCY(ahci_driver_init,ahci_pci_driver_init);
+
 //ACPI
 //ADD_MODULE_DEPENDENCY(acpi_button_driver_init, acpi_ac_init);
 //ADD_MODULE_DEPENDENCY(acpi_hed_driver, acpi_ac_init);
