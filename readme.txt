@@ -1,6 +1,7 @@
 Tips:
 
 diff -rup -x '*.o' -x 'Documentation' -x 'bzImage' --exclude=.cproject --exclude=build --exclude=nvidia-ion linux-4.0.orig linux-4.0 >> kernel_configuration/linux-4.0-patch.diff
+patch -r out -f -p1 < ../kernel_configuration/linux-4.0-patch.diff 
 
 Keep module name at the end
 

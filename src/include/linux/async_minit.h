@@ -238,6 +238,9 @@
 		fnc(ghash_mod_init),  /**/ \
 		fnc(async_pq_init),  /**/ \
 		fnc(deflate_mod_init),  /**/ \
+		fnc(brd_init), /**/ \
+		fnc(loop_init), /**/ \
+		fnc(tcp_congestion_default), /**/ \
         fnc(i8042_init) /**/
 
 
