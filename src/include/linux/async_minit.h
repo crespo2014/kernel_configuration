@@ -493,9 +493,8 @@
     \
     fnc(serial_pci_driver_init,deferred)  /* drivers/tty/serial/8250/8250_pci.c  chipset */ \
     \
-    fnc(spi_gpio_driver_init,deferred) \
-    \
-    fnc(serial_pci_driver)
+    fnc(spi_gpio_driver_init,deferred)
+
 
 
 
@@ -628,7 +627,6 @@ module_exit(__driver##_exit);
 
 //
 #define async_module_pci_driver(__pci_driver) async_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver);
-
 
 #define async_module_platform_driver(__platform_driver) \
     async_module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
