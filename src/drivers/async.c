@@ -66,7 +66,7 @@
  * Static struct holding all data
  */
 extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
-extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
+//extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 #define printk_debug(...) printk(KERN_ERR  __VA_ARGS__)
@@ -112,142 +112,6 @@ static const struct async_module_info_t module_info[] =
 static const struct dependency_t module_depends[] =
 { INIT_CALLS(DEPENDS_BUILD) };
 
-
-//disk
-ADD_MODULE_DEPENDENCY(ahci_driver_init,ahci_pci_driver_init);
-//ACPI
-//ADD_MODULE_DEPENDENCY(acpi_button_driver_init, acpi_ac_init);
-//ADD_MODULE_DEPENDENCY(acpi_hed_driver, acpi_ac_init);
-//ADD_MODULE_DEPENDENCY(acpi_smb_hc_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(crb_acpi_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(acpi_smbus_cmi_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(atlas_acpi_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(smo8800_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(lis3lv02d_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(irst_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(smartconnect_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(acpi_pcc_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(pvpanic_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(acpi_topstar_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(toshiba_bt_rfkill_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(toshiba_haps_driver, acpi_ac_init);
-ADD_MODULE_DEPENDENCY(xo15_ebook_driver, acpi_ac_init);
-
-ADD_MODULE_DEPENDENCY(acpi_ac_init,pcie_pme_service_init);
-
-
-ADD_MODULE_DEPENDENCY(pci_hotplug_init, pcie_portdrv_init);
-ADD_MODULE_DEPENDENCY(pcied_init, pci_hotplug_init);
-ADD_MODULE_DEPENDENCY(shpcd_init, pcied_init);
-
-//ALSA
-ADD_MODULE_DEPENDENCY(snd_hda_intel,snd_hda_controller);
-
-ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_timer_init);
-ADD_MODULE_DEPENDENCY(alsa_seq_init,alsa_seq_device_init);
-ADD_MODULE_DEPENDENCY(alsa_seq_midi_event_init,alsa_seq_init);
-ADD_MODULE_DEPENDENCY(alsa_seq_dummy_init,alsa_seq_init);
-ADD_MODULE_DEPENDENCY(alsa_seq_oss_init,alsa_seq_midi_event_init);
-
-ADD_MODULE_DEPENDENCY(alsa_pcm_init,alsa_timer_init);
-//ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_hwdep_init);
-//ADD_MODULE_DEPENDENCY(snd_hda_codec,alsa_pcm_init);
-
-ADD_MODULE_DEPENDENCY(snd_hrtimer_init,alsa_timer_init);
-
-ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_mixer_oss_init);  // snd-pcm-oss
-ADD_MODULE_DEPENDENCY(alsa_pcm_oss_init,alsa_pcm_init);  // snd-pcm-oss
-
-/* HDA snd is exported function plus all patches */		
-//ADD_MODULE_DEPENDENCY(patch_si3054_init,snd_hda_codec);
-//ADD_MODULE_DEPENDENCY(patch_ca0132_init,snd_hda_codec);
-//ADD_MODULE_DEPENDENCY(patch_hdmi_init,snd_hda_codec);
-//ADD_MODULE_DEPENDENCY(snd_hda_controller,snd_hda_codec);
-//ADD_MODULE_DEPENDENCY(snd_hda_codec_generic,snd_hda_codec);
-//ADD_MODULE_DEPENDENCY(patch_sigmatel_init,snd_hda_codec_generic);
-//ADD_MODULE_DEPENDENCY(patch_cirrus_init,snd_hda_codec_generic);
-//ADD_MODULE_DEPENDENCY(patch_ca0110_init,snd_hda_codec_generic);
-//ADD_MODULE_DEPENDENCY(patch_via_init,snd_hda_codec_generic);
-//ADD_MODULE_DEPENDENCY(patch_realtek_init,snd_hda_codec_generic);
-//ADD_MODULE_DEPENDENCY(patch_conexant_init,snd_hda_codec_generic);
-//ADD_MODULE_DEPENDENCY(patch_cmedia_init,snd_hda_codec_generic);
-//ADD_MODULE_DEPENDENCY(patch_analog_init,snd_hda_codec_generic);
-
-ADD_MODULE_DEPENDENCY(hilscher_pci_driver_init,uio_init);  //uio - uio_cif
-
-ADD_MODULE_DEPENDENCY(ubi_init,init_mtd);       //mtd
-
-ADD_MODULE_DEPENDENCY(uas_driver_init,usb_storage_driver_init);
-ADD_MODULE_DEPENDENCY(ene_ub6250_driver_init,usb_storage_driver_init);
-ADD_MODULE_DEPENDENCY(realtek_cr_driver_init,usb_storage_driver_init);
-
-//USB
-ADD_MODULE_DEPENDENCY(ohci_pci_init,ohci_hcd_mod_init);
-ADD_MODULE_DEPENDENCY(ohci_platform_init,ohci_hcd_mod_init);
-ADD_MODULE_DEPENDENCY(ohci_pci_init,ehci_hcd_init);
-
-ADD_MODULE_DEPENDENCY(uhci_hcd_init,ehci_hcd_init);
-
-ADD_MODULE_DEPENDENCY(ehci_pci_init,ehci_hcd_init);
-ADD_MODULE_DEPENDENCY(ehci_platform_init,ehci_hcd_init);
-
-ADD_MODULE_DEPENDENCY(ohci_hcd_mod_init,ehci_platform_init);
-
-ADD_MODULE_DEPENDENCY(hid_init,ohci_platform_init);
-ADD_MODULE_DEPENDENCY(uhid_init,ohci_platform_init);
-
-//ADD_MODULE_DEPENDENCY(usb_hid_init,ohci_platform_init);
-
-ADD_MODULE_DEPENDENCY(smsc,libphy);
-
-ADD_MODULE_DEPENDENCY(lib80211_crypto_ccmp_init,lib80211_init);
-ADD_MODULE_DEPENDENCY(lib80211_crypto_tkip_init,lib80211_init);
-ADD_MODULE_DEPENDENCY(lib80211_crypto_wep_init,lib80211_init);
-ADD_MODULE_DEPENDENCY(libipw_init,lib80211_init);
-ADD_MODULE_DEPENDENCY(ipw2100_init,libipw_init);
-
-// rng
-ADD_MODULE_DEPENDENCY(intel_rng_mod_init,hwrng_modinit);
-ADD_MODULE_DEPENDENCY(b43,hwrng_modinit);
-ADD_MODULE_DEPENDENCY(b43legacy,hwrng_modinit);
-
-
-// AGP DRM
-ADD_MODULE_DEPENDENCY(drm_core_init,agp_init);
-ADD_MODULE_DEPENDENCY(agp_nvidia_init,agp_init);
-ADD_MODULE_DEPENDENCY(nvidia_frontend_init_module,drm_core_init);
-ADD_MODULE_DEPENDENCY(uvm_init,nvidia_frontend_init_module);
-
-
-
-ADD_MODULE_DEPENDENCY(crypto_authenc_esn_module_init,crypto_authenc_module_init);
-
-ADD_MODULE_DEPENDENCY(cuse_init,fuse_init);
-
-ADD_MODULE_DEPENDENCY(init_msdos_fs,init_fat_fs);
-ADD_MODULE_DEPENDENCY(init_vfat_fs,init_fat_fs);
-
-ADD_MODULE_DEPENDENCY(init_ext3_fs,journal_init);
-
-//CRYPTO
-//ADD_MODULE_DEPENDENCY(async_pq_init,raid6_pq);
-//ADD_MODULE_DEPENDENCY(async_pq_init,async_xor);
-//ADD_MODULE_DEPENDENCY(async_pq_init,async_tx_init);
-//ADD_MODULE_DEPENDENCY(blowfish_mod_init,blowfish_common);
-
-ADD_MODULE_DEPENDENCY(algif_skcipher_init,af_alg_init);
-ADD_MODULE_DEPENDENCY(algif_hash_init,af_alg_init);
-
-//ADD_MODULE_DEPENDENCY(deflate_mod_init,zlib_deflate);
-//ADD_MODULE_DEPENDENCY(ghash_mod_init,gf128mul);
-//ADD_MODULE_DEPENDENCY(,);
-//ADD_MODULE_DEPENDENCY(,);
-//ADD_MODULE_DEPENDENCY(,);
-
-
-
-//
-//ADD_MODULE_DEPENDENCY(,);
 
 #define MAX_TASKS (unsigned)module_last
 
@@ -307,8 +171,8 @@ inline struct task_t* getWaitingTask(modules_e id)
  */
 unsigned doesDepends(modules_e child, modules_e parent)
 {
-    struct dependency_t * it_dependency;
-    for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
+    const struct dependency_t * it_dependency;
+    for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
     {
         if (it_dependency->parent_id == parent && it_dependency->task_id == child)
             return 1;
@@ -318,7 +182,7 @@ unsigned doesDepends(modules_e child, modules_e parent)
 
 void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 {
-    struct dependency_t *it_dependency;
+    const struct dependency_t *it_dependency;
     struct init_fn_t* it_init_fnc;
     struct task_t* it_task;
     struct task_t* ptask;
@@ -333,7 +197,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
     // resolve dependencies
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
-        for (it_dependency = __async_modules_depends_start; it_dependency != __async_modules_depends_end; ++it_dependency)
+        for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
         {
             if (it_dependency->task_id == it_task->id)
             {
@@ -423,7 +287,7 @@ static DECLARE_WAIT_QUEUE_HEAD( list_wait);
  */
 struct task_t* TaskDone(struct task_t* ptask)
 {
-    struct dependency_t * it_dependency;
+    const struct dependency_t * it_dependency;
     struct task_t* child_task;
     unsigned* it_idx;
     unsigned* it_idx2;
@@ -451,7 +315,7 @@ struct task_t* TaskDone(struct task_t* ptask)
         if (ptask->child_count)
         {
             // find parent task on dependency list
-            for (it_dependency = __async_modules_depends_start;ptask->child_count != 0 &&  it_dependency != __async_modules_depends_end; ++it_dependency)
+            for (it_dependency = module_depends;ptask->child_count != 0 &&  it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
             {
                 if (it_dependency->parent_id == ptask->id)
                 {
