@@ -491,7 +491,11 @@
     \
     fnc(lpc_ich_driver_init,asynchronized)  /* drivers/mfd/lpc_ich.c  chipset */\
     \
-    fnc(serial_pci_driver_init,asynchronized)  /* drivers/tty/serial/8250/8250_pci.c  chipset */
+    fnc(serial_pci_driver_init,deferred)  /* drivers/tty/serial/8250/8250_pci.c  chipset */ \
+    \
+    fnc(spi_gpio_driver_init,deferred) \
+    \
+    fnc(serial_pci_driver)
 
 
 
