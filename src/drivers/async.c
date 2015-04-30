@@ -599,20 +599,23 @@ int doit_type(task_type_t type)
 
 /**
  * Second initialization USB devices, some PCI
+ *
+ *     int test_and_clear_bit(int nr, void *addr)
+ *
  */
+static atomic_t deferred_initcalls_done = ATOMIC_INIT(0);
 static int deferred_initialization(void)
 {
-    static int deferred_initcalls_done = 0;
-    if (deferred_initcalls_done == 0)
+    int old = atomic_xchg(&deferred_initcalls_done,1);
+    if (old == 0)
     {
-        deferred_initcalls_done = 1;
+        // wait for async completion
+        wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
         printk_debug("async started deferred\n");
         doit_type(deferred);
     }
     return 0;
 }
-
-
 
 static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
@@ -622,7 +625,8 @@ static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
    if (*ppos >= 3)
        return 0;
 
-   if (! (*ppos)) {
+   // if offset != 0
+   if (!(*ppos)) {
        tmp[0] = '0';
        deferred_initialization();
    }
@@ -648,7 +652,6 @@ static int async_initialization(void)
     // register in proc filesystem
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     doit_type(asynchronized);
-    wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
     return 0;
 }
 
