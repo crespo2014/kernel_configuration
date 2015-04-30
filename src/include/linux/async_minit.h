@@ -16,239 +16,471 @@
  * Full list of module init functions call
  */
 #define INIT_CALLS(fnc) \
-        fnc(serial8250_init,deferred) /* */ \
-        fnc(nforce2_driver_init,deferred) /* */ \
-        fnc(crypto_xcbc_module_init,deferred) /* */ \
-        fnc(forcedeth_pci_driver_init,deferred) /* */ \
-        fnc(init_cifs,deferred)               /* */  \
-        fnc(acpi_pcc_driver,deferred) \
-        fnc(acpi_hed_driver,deferred)               /* */  \
-        fnc(acpi_smb_hc_driver,deferred)               /* */  \
-        fnc(crb_acpi_driver,deferred)               /* */  \
-        fnc(acpi_smbus_cmi_driver,deferred)               /* */  \
-        fnc(atlas_acpi_driver,deferred)               /* */  \
-        fnc(smo8800_driver,deferred)               /* */  \
-        fnc(lis3lv02d_driver,deferred)               /* */  \
-        fnc(irst_driver,deferred)               /* */  \
-        fnc(smartconnect_driver,deferred)               /* */  \
-        fnc(pvpanic_driver,deferred)               /* */  \
-        fnc(acpi_topstar_driver,deferred)               /* */  \
-        fnc(toshiba_bt_rfkill_driver,deferred)               /* */  \
-        fnc(toshiba_haps_driver,deferred)               /* */  \
-        fnc(xo15_ebook_driver,deferred)               /* */  \
-        fnc(drm_fb_helper_modinit,deferred)   /* */  \
-        fnc(acpi_button_driver_init,deferred) /* */  \
-        fnc(acpi_power_meter_init,deferred) /* */  \
-        fnc(synusb_driver_init,deferred)    /*   */ \
-        fnc(usblp_driver_init,deferred)    /*   */ \
-        fnc(rfcomm_init,deferred)            /* rfcomm.ko */ \
-        fnc(alsa_timer_init,deferred)        /* snd-timer.ko */ \
-        fnc(alsa_hwdep_init,deferred)        /* snd-hwdep.ko */ \
-        fnc(alsa_seq_device_init,deferred)   /* snd-seq-device.ko */ \
-        fnc(alsa_mixer_oss_init,deferred)    /* snd-mixer-oss.ko */ \
-        fnc(snd_hrtimer_init,deferred)       /* snd-hrtimer.ko */ \
-        fnc(alsa_pcm_init,deferred)          /* snd-pcm.ko */ \
-        fnc(alsa_seq_init,deferred)          /* snd-seq.ko */ \
-        fnc(alsa_pcm_oss_init,deferred)      /* snd-pcm-oss.ko */ \
-        fnc(alsa_seq_midi_event_init,deferred)     /* snd-seq-midi-event.ko */ \
-        fnc(alsa_seq_dummy_init,deferred)    /* snd-seq-dummy.ko */ \
-        fnc(snd_hda_controller,deferred)     /* snd-hda-controller.ko */ \
-        fnc(patch_si3054_init,deferred)      /* snd-hda-codec-si3054.ko */ \
-        fnc(patch_ca0132_init,deferred)      /* snd-hda-codec-ca0132.ko */ \
-        fnc(patch_hdmi_init,deferred)        /* snd-hda-codec-hdmi.ko */ \
-        fnc(alsa_seq_oss_init,deferred)      /* snd-seq-oss.ko */ \
-        fnc(snd_hda_intel,deferred)          /* snd-hda-intel.ko */ \
-        fnc(patch_sigmatel_init,deferred)   /* snd-hda-codec-idt.ko */ \
-        fnc(patch_cirrus_init,deferred)      /* snd-hda-codec-cirrus.ko */ \
-        fnc(patch_ca0110_init,deferred)      /* snd-hda-codec-ca0110.ko */ \
-        fnc(patch_via_init,deferred)         /* snd-hda-codec-via.ko */ \
-        fnc(patch_realtek_init,deferred)     /* snd-hda-codec-realtek.ko */ \
-        fnc(patch_conexant_init,deferred)    /* snd-hda-codec-conexant.ko */ \
-        fnc(patch_cmedia_init,deferred)      /* snd-hda-codec-cmedia.ko */ \
-        fnc(patch_analog_init,deferred)      /* snd-hda-codec-analog.ko */ \
-        fnc(coretemp,deferred)  /* coretemp.ko */ \
-        fnc(gpio_fan,deferred)  /* gpio-fan.ko */ \
-        fnc(acpi_processor_driver_init,deferred)  /* acpi-power-meter.ko */ \
-        fnc(init_mtd,deferred)  /* mtd.ko */ \
-        fnc(ubi_init,deferred)  /* ubi.ko */ \
-        fnc(uio_init,deferred)  /* uio.ko */ \
-        fnc(hilscher_pci_driver_init,deferred)  /* uio_cif.ko */ \
-        fnc(ahci_pci_driver_init,deferred)  /* ahci.ko */ \
-        fnc(mxm_wmi_init,deferred)  /* mxm-wmi.ko */ \
-        fnc(speedstep_init,deferred)  /* speedstep-ich.ko */ \
-        fnc(mmc_blk_init,deferred)  /* mmc_block.ko */ \
-        fnc(uvcvideo,deferred)  /* uvcvideo.ko */ \
-        fnc(gspca_main,deferred)  /* gspca_main.ko */ \
-        fnc(ir_kbd_driver,deferred)  /* ir-kbd-i2c.ko module_i2c_driver */ \
-        fnc(i2c_mux_gpio_driver,deferred)  /* i2c-mux-gpio.ko module_platform_driver */ \
-        fnc(pca9541_driver,deferred)  /* i2c-mux-pca9541.ko module_i2c_driver */ \
-        fnc(pca954x_driver,deferred)  /* i2c-mux-pca954x.ko module_i2c_driver */ \
-        fnc(uhci_hcd_init,deferred)    /* uhci-hcd.ko */ \
-        fnc(usbmon,deferred)     /* usbmon.ko */ \
-        fnc(usb_storage_driver_init,deferred)     /* usb-storage.ko */ \
-        fnc(led_driver_init,deferred)     /* usbled.ko */ \
-        fnc(hid_generic_init,deferred) /**/ \
-        fnc(hid_generic,deferred) /**/ \
-        fnc(hid_init,deferred)       /**/ \
-        fnc(cherry_driver_init,deferred)  /**/ \
-        fnc(chicony_driver_init,deferred) /**/ \
-        fnc(usb_hid_init,deferred)  /* usbhid.ko */ \
-		fnc(uhid_init,deferred)		 /* uhid.ko */ \
-		fnc(apple_driver_init,deferred) /**/ \
-		fnc(a4_driver_init,deferred) /**/ \
-        fnc(ez_driver_init,deferred) /**/ \
-        fnc(cp_driver_init,deferred) /**/ \
-        fnc(ks_driver_init,deferred) /**/ \
-        fnc(ms_driver_init,deferred) /**/ \
-        fnc(lg_driver_init,deferred) /**/ \
-        fnc(mr_driver_init,deferred) /**/ \
-        fnc(belkin_driver_init,deferred) /**/ \
-        fnc(plantronics_driver_init,deferred) /**/ \
-        fnc(keytouch_driver_init,deferred) /**/ \
-        fnc(ene_ub6250_driver_init,deferred)  /* ums-eneub6250.ko */ \
-        fnc(uas_driver_init,deferred)  /* uas.ko */ \
-        fnc(realtek_cr_driver_init,deferred)  /* ums-realtek.ko */ \
-        fnc(ehci_pci_init,deferred)  /* ehci-pci.ko */ \
-        fnc(libphy,deferred)  /* libphy.ko */ \
-        fnc(smsc,deferred)  /* smsc.ko */ \
-        fnc(lib80211_init,deferred)  /* lib80211.ko */ \
-        fnc(lib80211_crypto_tkip_init,deferred)  /* lib80211_crypt_tkip.ko */ \
-        fnc(lib80211_crypto_wep_init,deferred)  /* lib80211_crypt_wep.ko */ \
-        fnc(lib80211_crypto_ccmp_init,deferred)  /* lib80211_crypt_ccmp.ko */ \
-        fnc(libipw_init,deferred)  /* libipw.ko */ \
-        fnc(led_class,deferred)  /* led-class.ko */ \
-        fnc(hwrng_modinit,deferred)  /* rng-core.ko */ \
-        fnc(prng_mod_init,deferred) /* */ \
-        fnc(ipw2100_init,deferred)  /* ipw2100.ko */ \
-        fnc(leds_pca955x,deferred)  /* leds-pca955x.ko */ \
-        fnc(b43,deferred)  /* b43.ko */ \
-        fnc(b43legacy,deferred)  /* b43legacy.ko */ \
-        fnc(intel_rng_mod_init,deferred)  /* intel-rng.ko */ \
-        fnc(agp_init,deferred)  /* agpgart.ko */ \
-        fnc(drm_core_init,deferred)  /* drm.ko */ \
-        fnc(uvm_init,deferred)  /* nvidia-uvm.ko */ \
-        fnc(ioat_init_module,deferred)  /* ioatdma.ko */ \
-        fnc(acpi_video_init,deferred)  /* video.ko */ \
-        fnc(af_alg_init,deferred)  /* af_alg.ko */ \
-        fnc(algif_hash_init,deferred)  /* algif_hash.ko */ \
-        fnc(algif_skcipher_init,deferred)  /* algif_skicupher.ko */ \
-        fnc(alg_hash,deferred)  /* alg_hash.ko */ \
-        fnc(lzo_mod_init,deferred)  /* lzo.ko */ \
-        fnc(crypto_authenc_module_init,deferred)  /* authenc.ko */ \
-        fnc(crypto_authenc_esn_module_init,deferred)  /* authencesn.ko */ \
-        fnc(cast5_mod_init,deferred)  /* cat5_generic.ko */ \
-        fnc(cast6_mod_init,deferred)  /* cast6_generic.ko */ \
-        fnc(blowfish_mod_init,deferred)  /* blowfish_generic.ko */ \
-        fnc(zlib_mod_init,deferred)  /* zlib.ko */ \
-        fnc(prgn_mod_init,deferred) /**/ \
-        fnc(crypto_cbc_module_init,deferred) /**/ \
-        fnc(crc32_mod_init,deferred) /**/ \
-		fnc(crc32c_mod_init,deferred) /**/ \
-        fnc(twofish_mod_init,deferred) /**/ \
-        fnc(wp512_mod_init,deferred) /**/ \
-        fnc(crct10dif_mod_init,deferred) /**/ \
-        fnc(crypto_null_mod_init,deferred) /**/ \
-        fnc(crypto_ecb_module_init,deferred) /**/ \
-        fnc(crypto_module_init,deferred) /**/ \
-        fnc(crypto_user_init,deferred) /**/ \
-        fnc(lz4_mod_init,deferred) /**/ \
-        fnc(md4_mod_init,deferred) /**/ \
-        fnc(md5_mod_init,deferred) /**/ \
-        fnc(rmd128_mod_init,deferred) /**/ \
-        fnc(rmd160_mod_init,deferred) /**/ \
-        fnc(rmd256_mod_init,deferred) /**/ \
-        fnc(rmd320_mod_init,deferred) /**/ \
-        fnc(sha1_generic_mod_init,deferred) /**/ \
-        fnc(sha256_generic_mod_init,deferred) /**/ \
-        fnc(sha512_generic_mod_init,deferred) /**/ \
-        fnc(elo_driver_init,deferred)  /* usbhid.ko */ \
-        fnc(ehci_hcd_init,deferred)  /* ehci-hcd.ko */ \
-        fnc(ohci_pci_init,deferred)  /* ohci-pci.ko */ \
-        fnc(ohci_platform_init,deferred)  /* ohci-platform.ko */ \
-        fnc(ohci_hcd_mod_init,deferred)  /* ohci-hcd.ko */ \
-        fnc(ehci_platform_init,deferred)  /* ehci-platform.ko */ \
-        fnc(agp_nvidia_init,deferred)  /* nvidia-agp.ko */ \
-        fnc(nvidia_frontend_init_module,deferred)  /* nvidia.ko */ \
-        fnc(tcrypt_mod_init,deferred) /**/ \
-        fnc(tea_mod_init,deferred) /**/ \
-        fnc(tgr192_mod_init,deferred) /**/ \
-        fnc(pcie_portdrv_init,deferred) /**/ \
-        fnc(init_iso9660_fs,deferred)  /* isofs.ko */ \
-        fnc(fuse_init,deferred)  /* fuse.ko */ \
-        fnc(cuse_init,deferred)  /* cuse.ko */ \
-        fnc(journal_init,deferred)  /* jbd.ko */ \
-        fnc(init_ext3_fs,deferred)  /* ext3.ko */ \
-        fnc(init_fat_fs,deferred)  /* fat.ko */ \
-        fnc(init_vfat_fs,deferred)  /* vfat.ko */ \
-        fnc(init_msdos_fs,deferred)  /* msdos.ko */ \
-        fnc(init_ntfs_fs,deferred) /**/ \
-        fnc(acpi_ipmi_init,deferred)/**/ \
-        fnc(acpi_pad_init,deferred)/**/ \
-        fnc(acpi_battery_init,deferred)/**/ \
-        fnc(acpi_sbs_init,deferred)/**/ \
-        fnc(acpi_thermal_init,deferred)/**/ \
-        fnc(cpufreq_gov_dbs_init,deferred) /**/ \
-        fnc(cpufreq_gov_powersave_init,deferred) /**/ \
-        fnc(cpufreq_stats_init,deferred) /**/ \
-        fnc(cpufreq_gov_userspace_init,deferred) /**/ \
-        fnc(hpet_init,deferred) /**/ \
-        fnc(pci_hotplug_init,deferred) /**/ \
-        fnc(pcied_init,deferred) /**/ \
-        fnc(shpcd_init,deferred) /**/ \
-        fnc(twofish_generic,deferred)  /* twofish_generic.ko */ \
-        fnc(twofish_i586,deferred)  /* twofish-i586.ko */ \
-        fnc(asymmetric_key_init,deferred) /**/ \
-        fnc(pkcs7_key_init,deferred) /**/ \
-        fnc(x509_key_init,deferred) /**/ \
-        fnc(aes_init,deferred) /**/ \
-        fnc(vmac_module_init,deferred) /**/ \
-        fnc(mousedev_init,deferred) /**/ \
-        fnc(acpi_ac_init,deferred) /**/ \
-        fnc(atkbd_init,deferred) /**/\
-        fnc(uinput_init,deferred) /**/\
-        fnc(psmouse_init,deferred) /**/\
-        fnc(serport_init,deferred) /**/\
-        fnc(b43_init,deferred) /**/\
-        fnc(vb2_thread_init,deferred) /**/\
-        fnc(b43legacy_init,deferred) /**/\
-        fnc(azx_driver_init,deferred) /**/\
-        fnc(crypto_algapi_init,deferred)  /**/ \
-        fnc(chainiv_module_init,deferred)  /**/ \
-        fnc(pcie_pme_service_init,deferred)  /**/ \
-        fnc(seqiv_module_init,deferred)  /**/ \
-		fnc(eseqiv_module_init,deferred)  /**/ \
-		fnc(crypto_cmac_module_init,deferred)  /**/ \
-		fnc(crypto_pcbc_module_init,deferred)  /**/ \
-		fnc(crypto_ctr_module_init,deferred)  /**/ \
-		fnc(crypto_gcm_module_init,deferred)  /**/ \
-		fnc(hmac_module_init,deferred)  /**/ \
-		fnc(crypto_cts_module_init,deferred)  /**/ \
-		fnc(crypto_ccm_module_init,deferred)  /**/ \
-		fnc(des_generic_mod_init,deferred)  /**/ \
-		fnc(fcrypt_mod_init,deferred)  /**/ \
-		fnc(serpent_mod_init,deferred)  /**/ \
-		fnc(camellia_init,deferred)  /**/ \
-		fnc(arc4_init,deferred)  /**/ \
-		fnc(khazad_mod_init,deferred)  /**/ \
-		fnc(seed_init,deferred)  /**/ \
-		fnc(anubis_mod_init,deferred)  /**/ \
-		fnc(salsa20_generic_mod_init,deferred)  /**/ \
-		fnc(krng_mod_init,deferred)  /**/ \
-		fnc(michael_mic_init,deferred)  /**/ \
-		fnc(ghash_mod_init,deferred)  /**/ \
-		fnc(async_pq_init,deferred)  /**/ \
-		fnc(deflate_mod_init,deferred)  /**/ \
-		fnc(brd_init,deferred) /**/ \
-		fnc(loop_init,deferred) /**/ \
-		fnc(tcp_congestion_default,deferred) /**/ \
-		fnc(i2c_hid_driver_init,deferred) /**/ \
-		fnc(smbalert_driver_init,deferred) /**/ \
-		fnc(pca9541_driver_init,deferred) /**/ \
-		fnc(ahci_driver_init,deferred) /**/ \
-		fnc(pca954x_driver_init,deferred) /**/ \
-		fnc(pca955x_driver_init,deferred) /**/ \
-		fnc(ir_kbd_driver_init,deferred) /**/ \
-        fnc(i8042_init,deferred) /**/
+    fnc(ahci_pci_driver_init,asynchronized)  /* ahci.ko */ \
+    \
+    fnc(ahci_driver_init,asynchronized,ahci_pci_driver_init) /**/ \
+    \
+    fnc(acpi_ac_init,asynchronized) /**/ \
+    \
+    fnc(serial8250_init,deferred) /* */ \
+    \
+    fnc(nforce2_driver_init,deferred) /* */ \
+    \
+    fnc(crypto_xcbc_module_init,deferred) /* */ \
+    \
+    fnc(forcedeth_pci_driver_init,deferred) /* */ \
+    \
+    fnc(init_cifs,deferred)               /* */  \
+    \
+    fnc(acpi_pcc_driver,deferred,acpi_ac_init) \
+    \
+    fnc(acpi_hed_driver,deferred)               /* */  \
+    \
+    fnc(acpi_smb_hc_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(crb_acpi_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(acpi_smbus_cmi_driver,deferred)               /* */  \
+    \
+    fnc(atlas_acpi_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(smo8800_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(lis3lv02d_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(irst_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(smartconnect_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(pvpanic_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(acpi_topstar_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(toshiba_bt_rfkill_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(toshiba_haps_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(xo15_ebook_driver,deferred,acpi_ac_init)               /* */  \
+    \
+    fnc(drm_fb_helper_modinit,deferred)   /* */  \
+    \
+    fnc(acpi_button_driver_init,deferred) /* */  \
+    \
+    fnc(acpi_power_meter_init,deferred) /* */  \
+    \
+    fnc(synusb_driver_init,deferred)    /*   */ \
+    \
+    fnc(usblp_driver_init,deferred)    /*   */ \
+    \
+    fnc(rfcomm_init,deferred)            /* rfcomm.ko */ \
+    \
+    fnc(alsa_timer_init,deferred)        /* snd-timer.ko */ \
+    \
+    fnc(alsa_hwdep_init,deferred)        /* snd-hwdep.ko */ \
+    \
+    fnc(alsa_seq_device_init,deferred)   /* snd-seq-device.ko */ \
+    \
+    fnc(alsa_mixer_oss_init,deferred)    /* snd-mixer-oss.ko */ \
+    \
+    fnc(snd_hrtimer_init,deferred,alsa_timer_init)   /* snd-hrtimer.ko */ \
+    \
+    fnc(alsa_pcm_init,deferred,alsa_timer_init)          /* snd-pcm.ko */ \
+    \
+    fnc(alsa_seq_init,deferred,alsa_seq_device_init,alsa_timer_init)          /* snd-seq.ko */ \
+    \
+    fnc(alsa_pcm_oss_init,deferred,alsa_mixer_oss_init,alsa_pcm_init)      /* snd-pcm-oss.ko */ \
+    \
+    fnc(alsa_seq_midi_event_init,deferred,alsa_seq_init)     /* snd-seq-midi-event.ko */ \
+    \
+    fnc(alsa_seq_dummy_init,deferred,alsa_seq_init)    /* snd-seq-dummy.ko */ \
+    \
+    fnc(snd_hda_controller,deferred)     /* snd-hda-controller.ko */ \
+    \
+    fnc(patch_si3054_init,deferred)      /* snd-hda-codec-si3054.ko */ \
+    \
+    fnc(patch_ca0132_init,deferred)      /* snd-hda-codec-ca0132.ko */ \
+    \
+    fnc(patch_hdmi_init,deferred)        /* snd-hda-codec-hdmi.ko */ \
+    \
+    fnc(alsa_seq_oss_init,deferred,alsa_seq_midi_event_init)      /* snd-seq-oss.ko */ \
+    \
+    fnc(snd_hda_intel,deferred,snd_hda_controller)          /* snd-hda-intel.ko */ \
+    \
+    fnc(patch_sigmatel_init,deferred)   /* snd-hda-codec-idt.ko */ \
+    \
+    fnc(patch_cirrus_init,deferred)      /* snd-hda-codec-cirrus.ko */ \
+    \
+    fnc(patch_ca0110_init,deferred)      /* snd-hda-codec-ca0110.ko */ \
+    \
+    fnc(patch_via_init,deferred)         /* snd-hda-codec-via.ko */ \
+    \
+    fnc(patch_realtek_init,deferred)     /* snd-hda-codec-realtek.ko */ \
+    \
+    fnc(patch_conexant_init,deferred)    /* snd-hda-codec-conexant.ko */ \
+    \
+    fnc(patch_cmedia_init,deferred)      /* snd-hda-codec-cmedia.ko */ \
+    \
+    fnc(patch_analog_init,deferred)      /* snd-hda-codec-analog.ko */ \
+    \
+    fnc(coretemp,deferred)  /* coretemp.ko */ \
+    \
+    fnc(gpio_fan,deferred)  /* gpio-fan.ko */ \
+    \
+    fnc(acpi_processor_driver_init,deferred)  /* acpi-power-meter.ko */ \
+    \
+    fnc(init_mtd,deferred)  /* mtd.ko */ \
+    \
+    fnc(ubi_init,deferred,init_mtd)  /* ubi.ko */ \
+    \
+    fnc(uio_init,deferred)  /* uio.ko */ \
+    \
+    fnc(hilscher_pci_driver_init,deferred,uio_init)  /* uio_cif.ko */ \
+    \
+    fnc(mxm_wmi_init,deferred)  /* mxm-wmi.ko */ \
+    \
+    fnc(speedstep_init,deferred)  /* speedstep-ich.ko */ \
+    \
+    fnc(mmc_blk_init,deferred)  /* mmc_block.ko */ \
+    \
+    fnc(uvcvideo,deferred)  /* uvcvideo.ko */ \
+    \
+    fnc(gspca_main,deferred)  /* gspca_main.ko */ \
+    \
+    fnc(ir_kbd_driver,deferred)  /* ir-kbd-i2c.ko module_i2c_driver */ \
+    \
+    fnc(i2c_mux_gpio_driver,deferred)  /* i2c-mux-gpio.ko module_platform_driver */ \
+    \
+    fnc(pca9541_driver,deferred)  /* i2c-mux-pca9541.ko module_i2c_driver */ \
+    \
+    fnc(pca954x_driver,deferred)  /* i2c-mux-pca954x.ko module_i2c_driver */ \
+    \
+    fnc(uhci_hcd_init,deferred,ehci_hcd_init)    /* uhci-hcd.ko */ \
+    \
+    fnc(usbmon,deferred)     /* usbmon.ko */ \
+    \
+    fnc(usb_storage_driver_init,deferred)     /* usb-storage.ko */ \
+    \
+    fnc(led_driver_init,deferred)     /* usbled.ko */ \
+    \
+    fnc(hid_generic_init,deferred) /**/ \
+    \
+    fnc(hid_generic,deferred) /**/ \
+    \
+    fnc(hid_init,deferred,ohci_platform_init)       /**/ \
+    \
+    fnc(cherry_driver_init,deferred)  /**/ \
+    \
+    fnc(chicony_driver_init,deferred) /**/ \
+    \
+    fnc(usb_hid_init,deferred)  /* usbhid.ko */ \
+	\
+	fnc(uhid_init,deferred,ohci_platform_init)		 /* uhid.ko */ \
+	\
+	fnc(apple_driver_init,deferred) /**/ \
+	\
+	fnc(a4_driver_init,deferred) /**/ \
+    \
+    fnc(ez_driver_init,deferred) /**/ \
+    \
+    fnc(cp_driver_init,deferred) /**/ \
+    \
+    fnc(ks_driver_init,deferred) /**/ \
+    \
+    fnc(ms_driver_init,deferred) /**/ \
+    \
+    fnc(lg_driver_init,deferred) /**/ \
+    \
+    fnc(mr_driver_init,deferred) /**/ \
+    \
+    fnc(belkin_driver_init,deferred) /**/ \
+    \
+    fnc(plantronics_driver_init,deferred) /**/ \
+    \
+    fnc(keytouch_driver_init,deferred) /**/ \
+    \
+    fnc(ene_ub6250_driver_init,deferred,usb_storage_driver_init)  /* ums-eneub6250.ko */ \
+    \
+    fnc(uas_driver_init,deferred,usb_storage_driver_init)  /* uas.ko */ \
+    \
+    fnc(realtek_cr_driver_init,deferred,usb_storage_driver_init)  /* ums-realtek.ko */ \
+    \
+    fnc(ehci_pci_init,deferred,ehci_hcd_init)  /* ehci-pci.ko */ \
+    \
+    fnc(libphy,deferred)  /* libphy.ko */ \
+    \
+    fnc(smsc,deferred,libphy)  /* smsc.ko */ \
+    \
+    fnc(lib80211_init,deferred)  /* lib80211.ko */ \
+    \
+    fnc(lib80211_crypto_tkip_init,deferred,lib80211_init)  /* lib80211_crypt_tkip.ko */ \
+    \
+    fnc(lib80211_crypto_wep_init,deferred,lib80211_init)  /* lib80211_crypt_wep.ko */ \
+    \
+    fnc(lib80211_crypto_ccmp_init,deferred,lib80211_init)  /* lib80211_crypt_ccmp.ko */ \
+    \
+    fnc(libipw_init,deferred,lib80211_init)  /* libipw.ko */ \
+    \
+    fnc(led_class,deferred)  /* led-class.ko */ \
+    \
+    fnc(hwrng_modinit,deferred)  /* rng-core.ko */ \
+    \
+    fnc(prng_mod_init,deferred) /* */ \
+    \
+    fnc(ipw2100_init,deferred,lib80211_init)  /* ipw2100.ko */ \
+    \
+    fnc(leds_pca955x,deferred)  /* leds-pca955x.ko */ \
+    \
+    fnc(b43,deferred,hwrng_modinit)  /* b43.ko */ \
+    \
+    fnc(b43legacy,deferred,hwrng_modinit)  /* b43legacy.ko */ \
+    \
+    fnc(intel_rng_mod_init,deferred,hwrng_modinit)  /* intel-rng.ko */ \
+    \
+    fnc(agp_init,deferred)  /* agpgart.ko */ \
+    \
+    fnc(drm_core_init,deferred,agp_init)  /* drm.ko */ \
+    \
+    fnc(uvm_init,deferred,nvidia_frontend_init_module)  /* nvidia-uvm.ko */ \
+    \
+    fnc(ioat_init_module,deferred)  /* ioatdma.ko */ \
+    \
+    fnc(acpi_video_init,deferred)  /* video.ko */ \
+    \
+    fnc(af_alg_init,deferred)  /* af_alg.ko */ \
+    \
+    fnc(algif_hash_init,deferred,af_alg_init)  /* algif_hash.ko */ \
+    \
+    fnc(algif_skcipher_init,deferred,af_alg_init)  /* algif_skicupher.ko */ \
+    \
+    fnc(alg_hash,deferred)  /* alg_hash.ko */ \
+    \
+    fnc(lzo_mod_init,deferred)  /* lzo.ko */ \
+    \
+    fnc(crypto_authenc_module_init,deferred)  /* authenc.ko */ \
+    \
+    fnc(crypto_authenc_esn_module_init,deferred,crypto_authenc_module_init)  /* authencesn.ko */ \
+    \
+    fnc(cast5_mod_init,deferred)  /* cat5_generic.ko */ \
+    \
+    fnc(cast6_mod_init,deferred)  /* cast6_generic.ko */ \
+    \
+    fnc(blowfish_mod_init,deferred)  /* blowfish_generic.ko */ \
+    \
+    fnc(zlib_mod_init,deferred)  /* zlib.ko */ \
+    \
+    fnc(prgn_mod_init,deferred) /**/ \
+    \
+    fnc(crypto_cbc_module_init,deferred) /**/ \
+    \
+    fnc(crc32_mod_init,deferred) /**/ \
+	\
+	fnc(crc32c_mod_init,deferred) /**/ \
+    \
+    fnc(twofish_mod_init,deferred) /**/ \
+    \
+    fnc(wp512_mod_init,deferred) /**/ \
+    \
+    fnc(crct10dif_mod_init,deferred) /**/ \
+    \
+    fnc(crypto_null_mod_init,deferred) /**/ \
+    \
+    fnc(crypto_ecb_module_init,deferred) /**/ \
+    \
+    fnc(crypto_module_init,deferred) /**/ \
+    \
+    fnc(crypto_user_init,deferred) /**/ \
+    \
+    fnc(lz4_mod_init,deferred) /**/ \
+    \
+    fnc(md4_mod_init,deferred) /**/ \
+    \
+    fnc(md5_mod_init,deferred) /**/ \
+    \
+    fnc(rmd128_mod_init,deferred) /**/ \
+    \
+    fnc(rmd160_mod_init,deferred) /**/ \
+    \
+    fnc(rmd256_mod_init,deferred) /**/ \
+    \
+    fnc(rmd320_mod_init,deferred) /**/ \
+    \
+    fnc(sha1_generic_mod_init,deferred) /**/ \
+    \
+    fnc(sha256_generic_mod_init,deferred) /**/ \
+    \
+    fnc(sha512_generic_mod_init,deferred) /**/ \
+    \
+    fnc(elo_driver_init,deferred)  /* usbhid.ko */ \
+    \
+    fnc(ehci_hcd_init,deferred)  /* ehci-hcd.ko */ \
+    \
+    fnc(ohci_pci_init,deferred,ohci_hcd_mod_init,ehci_hcd_init)  /* ohci-pci.ko */ \
+    \
+    fnc(ohci_platform_init,deferred,ohci_hcd_mod_init)  /* ohci-platform.ko */ \
+    \
+    fnc(ohci_hcd_mod_init,deferred,ehci_platform_init)  /* ohci-hcd.ko */ \
+    \
+    fnc(ehci_platform_init,deferred,ehci_hcd_init)  /* ehci-platform.ko */ \
+    \
+    fnc(agp_nvidia_init,deferred,agp_init)  /* nvidia-agp.ko */ \
+    \
+    fnc(nvidia_frontend_init_module,deferred,drm_core_init)  /* nvidia.ko */ \
+    \
+    fnc(tcrypt_mod_init,deferred) /**/ \
+    \
+    fnc(tea_mod_init,deferred) /**/ \
+    \
+    fnc(tgr192_mod_init,deferred) /**/ \
+    \
+    fnc(pcie_portdrv_init,deferred) /**/ \
+    \
+    fnc(init_iso9660_fs,deferred)  /* isofs.ko */ \
+    \
+    fnc(fuse_init,deferred)  /* fuse.ko */ \
+    \
+    fnc(cuse_init,deferred,fuse_init)  /* cuse.ko */ \
+    \
+    fnc(journal_init,deferred)  /* jbd.ko */ \
+    \
+    fnc(init_ext3_fs,deferred,journal_init)  /* ext3.ko */ \
+    \
+    fnc(init_fat_fs,deferred)  /* fat.ko */ \
+    \
+    fnc(init_vfat_fs,deferred,init_fat_fs)  /* vfat.ko */ \
+    \
+    fnc(init_msdos_fs,deferred,init_fat_fs)  /* msdos.ko */ \
+    \
+    fnc(init_ntfs_fs,deferred) /**/ \
+    \
+    fnc(acpi_ipmi_init,deferred)/**/ \
+    \
+    fnc(acpi_pad_init,deferred)/**/ \
+    \
+    fnc(acpi_battery_init,deferred)/**/ \
+    \
+    fnc(acpi_sbs_init,deferred)/**/ \
+    \
+    fnc(acpi_thermal_init,deferred)/**/ \
+    \
+    fnc(cpufreq_gov_dbs_init,deferred) /**/ \
+    \
+    fnc(cpufreq_gov_powersave_init,deferred) /**/ \
+    \
+    fnc(cpufreq_stats_init,deferred) /**/ \
+    \
+    fnc(cpufreq_gov_userspace_init,deferred) /**/ \
+    \
+    fnc(hpet_init,deferred) /**/ \
+    \
+    fnc(pci_hotplug_init,deferred,pcie_portdrv_init) /**/ \
+    \
+    fnc(pcied_init,deferred,pci_hotplug_init) /**/ \
+    \
+    fnc(shpcd_init,deferred,pcied_init) /**/ \
+    \
+    fnc(twofish_generic,deferred)  /* twofish_generic.ko */ \
+    \
+    fnc(twofish_i586,deferred)  /* twofish-i586.ko */ \
+    \
+    fnc(asymmetric_key_init,deferred) /**/ \
+    \
+    fnc(pkcs7_key_init,deferred) /**/ \
+    \
+    fnc(x509_key_init,deferred) /**/ \
+    \
+    fnc(aes_init,deferred) /**/ \
+    \
+    fnc(vmac_module_init,deferred) /**/ \
+    \
+    fnc(mousedev_init,deferred) /**/ \
+    \
+    fnc(atkbd_init,deferred) /**/\
+    \
+    fnc(uinput_init,deferred) /**/\
+    \
+    fnc(psmouse_init,deferred) /**/\
+    \
+    fnc(serport_init,deferred) /**/\
+    \
+    fnc(b43_init,deferred) /**/\
+    \
+    fnc(vb2_thread_init,deferred) /**/\
+    \
+    fnc(b43legacy_init,deferred) /**/\
+    \
+    fnc(azx_driver_init,deferred) /**/\
+    \
+    fnc(crypto_algapi_init,deferred)  /**/ \
+    \
+    fnc(chainiv_module_init,deferred)  /**/ \
+    \
+    fnc(pcie_pme_service_init,deferred)  /**/ \
+    \
+    fnc(seqiv_module_init,deferred)  /**/ \
+	\
+	fnc(eseqiv_module_init,deferred)  /**/ \
+	\
+	fnc(crypto_cmac_module_init,deferred)  /**/ \
+	\
+	fnc(crypto_pcbc_module_init,deferred)  /**/ \
+	\
+	fnc(crypto_ctr_module_init,deferred)  /**/ \
+	\
+	fnc(crypto_gcm_module_init,deferred)  /**/ \
+	\
+	fnc(hmac_module_init,deferred)  /**/ \
+	\
+	fnc(crypto_cts_module_init,deferred)  /**/ \
+	\
+	fnc(crypto_ccm_module_init,deferred)  /**/ \
+	\
+	fnc(des_generic_mod_init,deferred)  /**/ \
+	\
+	fnc(fcrypt_mod_init,deferred)  /**/ \
+	\
+	fnc(serpent_mod_init,deferred)  /**/ \
+	\
+	fnc(camellia_init,deferred)  /**/ \
+	\
+	fnc(arc4_init,deferred)  /**/ \
+	\
+	fnc(khazad_mod_init,deferred)  /**/ \
+	\
+	fnc(seed_init,deferred)  /**/ \
+	\
+	fnc(anubis_mod_init,deferred)  /**/ \
+	\
+	fnc(salsa20_generic_mod_init,deferred)  /**/ \
+	\
+	fnc(krng_mod_init,deferred)  /**/ \
+	\
+	fnc(michael_mic_init,deferred)  /**/ \
+	\
+	fnc(ghash_mod_init,deferred)  /**/ \
+	\
+	fnc(async_pq_init,deferred)  /**/ \
+	\
+	fnc(deflate_mod_init,deferred)  /**/ \
+	\
+	fnc(brd_init,deferred) /**/ \
+	\
+	fnc(loop_init,deferred) /**/ \
+	\
+	fnc(tcp_congestion_default,deferred) /**/ \
+	\
+	fnc(i2c_hid_driver_init,deferred) /**/ \
+	\
+	fnc(smbalert_driver_init,deferred) /**/ \
+	\
+	fnc(pca9541_driver_init,deferred) /**/ \
+	\
+	fnc(pca954x_driver_init,deferred) /**/ \
+	\
+	fnc(pca955x_driver_init,deferred) /**/ \
+	\
+	fnc(ir_kbd_driver_init,deferred) /**/ \
+    \
+    fnc(i8042_init,deferred) /**/
 
 
 #if 0
@@ -323,7 +555,7 @@ fnc(),  /**/ \
 typedef enum   {
     none = 0,           // not found or not element
     INIT_CALLS(TASK_ID)
-    end
+    module_last
 } modules_e;
 
 struct dependency_t
@@ -337,7 +569,7 @@ struct dependency_t
  * async - needs to be execute in an asynchronized way
  * deferred - it can be execute at user initialization time
  */
-typedef enum { asynchronized, deferred } task_type_t;
+typedef enum { disable,asynchronized, deferred } task_type_t;
 
 /**
  * Module static information.
