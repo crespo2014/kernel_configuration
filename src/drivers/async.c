@@ -82,18 +82,23 @@ extern struct dependency_t __async_modules_depends_start[], __async_modules_depe
 
 #define DEPENDS_0()
 #define DEPENDS_1(a)
-#define DEPENDS_2(a,b)      ADD_MODULE_DEPENDENCY(a,b);
-#define DEPENDS_3(a,b,...)  DEPENDS_2(a,b) DEPENDS_2(a,__VA_ARGS__)
-#define DEPENDS_4(a,b,...)  DEPENDS_2(a,b) DEPENDS_3(a,__VA_ARGS__)
-#define DEPENDS_5(a,b,...)  DEPENDS_2(a,b) DEPENDS_4(a,__VA_ARGS__)
-#define DEPENDS_6(a,b,...)  DEPENDS_2(a,b) DEPENDS_5(a,__VA_ARGS__)
-#define DEPENDS_7(a,b,...)  DEPENDS_2(a,b) DEPENDS_6(a,__VA_ARGS__)
-#define DEPENDS_8(a,b,...)  DEPENDS_2(a,b) DEPENDS_7(a,__VA_ARGS__)
-#define DEPENDS_9(a,b,...)  DEPENDS_2(a,b) DEPENDS_8(a,__VA_ARGS__)
-#define DEPENDS_10(a,b,...) DEPENDS_2(a,b) DEPENDS_9(a,__VA_ARGS__)
+#define DEPENDS_2(a,b)      MOD_DEPENDENCY_ITEM(a,b)
+#define DEPENDS_3(a,b,...)  DEPENDS_2(a,b), DEPENDS_2(a,__VA_ARGS__)
+#define DEPENDS_4(a,b,...)  DEPENDS_2(a,b), DEPENDS_3(a,__VA_ARGS__)
+#define DEPENDS_5(a,b,...)  DEPENDS_2(a,b), DEPENDS_4(a,__VA_ARGS__)
+#define DEPENDS_6(a,b,...)  DEPENDS_2(a,b), DEPENDS_5(a,__VA_ARGS__)
+#define DEPENDS_7(a,b,...)  DEPENDS_2(a,b), DEPENDS_6(a,__VA_ARGS__)
+#define DEPENDS_8(a,b,...)  DEPENDS_2(a,b), DEPENDS_7(a,__VA_ARGS__)
+#define DEPENDS_9(a,b,...)  DEPENDS_2(a,b), DEPENDS_8(a,__VA_ARGS__)
+#define DEPENDS_10(a,b,...) DEPENDS_2(a,b), DEPENDS_9(a,__VA_ARGS__)
 
+#define GET_10(fnc,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,...) fnc##n10
+#define COUNT(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)
+#define CALL_FNC(fnc,...) COUNT(fnc,__VA_ARGS__)(__VA_ARGS__)
 
+#define DEPENDS_BUILD(id,type,...) CALL_FNC(DEPENDS_,id,##__VA_ARGS__)
 
+//#define DEPENDS_BUILD(id,type,...) id
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 static const char* const module_name[] =
@@ -104,8 +109,15 @@ static const struct async_module_info_t module_info[] =
 {   {0}, INIT_CALLS(ASYNC_MODULE_INFO) };
 
 /**
- * Dependencies list can be declare any time in any c file
+ * Dependencies list is declared next
  */
+//static const struct dependency_t module_depends[] =
+//{ INIT_CALLS(DEPENDS_BUILD) };
+
+static struct dependency_t dependencies[] =
+{
+        INIT_CALLS(DEPENDS_BUILD)
+};
 
 //disk
 ADD_MODULE_DEPENDENCY(ahci_driver_init,ahci_pci_driver_init);

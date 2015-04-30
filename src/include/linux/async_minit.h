@@ -309,14 +309,12 @@ fnc(),  /**/ \
 		 __attribute__((__section__(".async_modules_depends.init"))) = \
 		 {child ## _id, parent ## _id};    
 
-#define macro_str(x)    #x
-#define macro_name(x)   x ## _id
 
-#define TASK_STRING(id)     #id
-#define TASK_NAME(id,...)   TASK_STRING(id)
-#define TASK_ID(id,...)        id ## _id
-#define TASK_TYPE(id,type,...)      type
-#define TASK_DEPENDS(id,type,...)   id,##__VA_ARGS__
+#define TASK_STRING(id)                   #id
+#define TASK_NAME(id,...)                 TASK_STRING(id)
+#define TASK_ID(id,...)                   id ## _id
+#define TASK_TYPE(id,type,...)            type
+#define TASK_DEPENDS(id,type,...)         id,##__VA_ARGS__
 #define ASYNC_MODULE_INFO(id,type,...)    {type}
 
 /**
