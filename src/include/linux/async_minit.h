@@ -162,41 +162,41 @@
     \
     fnc(led_driver_init,deferred)     /* usbled.ko */ \
     \
-    fnc(hid_generic_init,deferred) /**/ \
+    fnc(hid_generic_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(hid_generic,deferred) /**/ \
+    fnc(hid_generic,deferred,hid_init,uhid_init) /**/ \
     \
     fnc(hid_init,deferred,ohci_platform_init)       /**/ \
     \
-    fnc(cherry_driver_init,deferred)  /**/ \
+    fnc(cherry_driver_init,deferred,hid_init,uhid_init)  /**/ \
     \
-    fnc(chicony_driver_init,deferred) /**/ \
+    fnc(chicony_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
     fnc(usb_hid_init,deferred)  /* usbhid.ko */ \
 	\
 	fnc(uhid_init,deferred,ohci_platform_init)		 /* uhid.ko */ \
 	\
-	fnc(apple_driver_init,deferred) /**/ \
+	fnc(apple_driver_init,deferred,hid_init,uhid_init) /**/ \
 	\
-	fnc(a4_driver_init,deferred) /**/ \
+	fnc(a4_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(ez_driver_init,deferred) /**/ \
+    fnc(ez_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(cp_driver_init,deferred) /**/ \
+    fnc(cp_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(ks_driver_init,deferred) /**/ \
+    fnc(ks_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(ms_driver_init,deferred) /**/ \
+    fnc(ms_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(lg_driver_init,deferred) /**/ \
+    fnc(lg_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(mr_driver_init,deferred) /**/ \
+    fnc(mr_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(belkin_driver_init,deferred) /**/ \
+    fnc(belkin_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(plantronics_driver_init,deferred) /**/ \
+    fnc(plantronics_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
-    fnc(keytouch_driver_init,deferred) /**/ \
+    fnc(keytouch_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
     fnc(ene_ub6250_driver_init,deferred,usb_storage_driver_init)  /* ums-eneub6250.ko */ \
     \
@@ -480,7 +480,20 @@
 	\
 	fnc(ir_kbd_driver_init,deferred) /**/ \
     \
-    fnc(i8042_init,deferred) /**/
+    fnc(i8042_init,deferred) /**/ \
+    \
+    /* ALL pci devices to be analize and add */ \
+    fnc(pch_dma_driver_init,asynchronized)  /* drivers/dma/pch_dma.c */ \
+    \
+    fnc(ismt_driver_init,asynchronized)  /* drivers/i2c/busses/i2c-ismt.c */  \
+    \
+    fnc(lpc_sch_driver_init,asynchronized)  /* /drivers/mfd/lpc_sch.c */\
+    \
+    fnc(lpc_ich_driver_init,asynchronized)  /* drivers/mfd/lpc_ich.c  chipset */\
+    \
+    fnc(serial_pci_driver_init,asynchronized)  /* drivers/tty/serial/8250/8250_pci.c  chipset */
+
+
 
 
 #if 0
@@ -582,7 +595,6 @@ struct async_module_info_t
 
 struct init_fn_t
 {
-  task_type_t type_;    // task type
   modules_e  id;
   initcall_t fnc;
 };
@@ -595,12 +607,7 @@ struct init_fn_t
 
 #define async_module_init(fnc)  \
   static struct init_fn_t init_fn_##fnc __used \
-  __attribute__((__section__(".async_initcall.init"))) = {asynchronized,fnc ## _id,fnc};
-
-//
-#define deferred_module_init(fnc)  \
-  static struct init_fn_t init_fn_##fnc __used \
-  __attribute__((__section__(".async_initcall.init"))) = {deferred,fnc ## _id,fnc};
+  __attribute__((__section__(".async_initcall.init"))) = {fnc ## _id,fnc};
 
 // Usefull for ACPI and USB maybe PCI
 #define async_module_driver(__driver, __register, __unregister) \
@@ -615,42 +622,23 @@ static void __exit __driver##_exit(void) \
 } \
 module_exit(__driver##_exit);
 
-// ACPI USB PCI
-#define deferred_module_driver(__driver, __register, __unregister) \
-static int __init __driver##_init(void) \
-{ \
-  return __register(&(__driver)); \
-} \
-deferred_module_init(__driver##_init); \
-static void __exit __driver##_exit(void) \
-{ \
-  __unregister(&(__driver)); \
-} \
-module_exit(__driver##_exit);
-
 //
 #define async_module_pci_driver(__pci_driver) async_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver);
-#define deferred_module_pci_driver(__pci_driver) deferred_module_driver(__pci_driver, pci_register_driver,pci_unregister_driver);
+
 
 #define async_module_platform_driver(__platform_driver) \
-    async_module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
-
-#define deferred_module_platform_driver(__platform_driver) \
     async_module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
 
 #else
 
 #define async_module_init(fnc)      module_init(fnc);
-#define deferred_module_init(fnc)   module_init(fnc);
 
 #define async_module_driver(__driver, __register, __unregister)    module_driver(__driver, __register, __unregister);
-#define deferred_module_driver(__driver, __register, __unregister) module_driver(__driver, __register, __unregister);
 
 #define async_module_pci_driver(__pci_driver)    module_pci_driver(__pci_driver);
-#define deferred_module_pci_driver(__pci_driver) module_pci_driver(__pci_driver);
 
 #define async_module_platform_driver(__platform_driver) module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
-#define deferred_module_platform_driver(__platform_driver) module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
+
 
 #endif
 

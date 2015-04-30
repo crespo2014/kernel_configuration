@@ -190,7 +190,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
     for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
     {
         tasks.task_end->id = it_init_fnc->id;
-        tasks.task_end->type = it_init_fnc->type_;
+        tasks.task_end->type = module_info[it_init_fnc->id].type_;
         tasks.task_end->fnc = it_init_fnc->fnc;
         tasks.task_end->waiting_count = 0;
     }
