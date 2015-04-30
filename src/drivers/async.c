@@ -74,11 +74,34 @@ extern struct dependency_t __async_modules_depends_start[], __async_modules_depe
 #define printk_debug(...) do {} while(0)
 #endif
 
+/**
+ * Macros to build static data about modules from arguments.
+ * until 10 dependencies available
+ * (module_id,module_type,dependencies ... )
+ */
+
+#define DEPENDS_0()
+#define DEPENDS_1(a)
+#define DEPENDS_2(a,b)      ADD_MODULE_DEPENDENCY(a,b);
+#define DEPENDS_3(a,b,...)  DEPENDS_2(a,b) DEPENDS_2(a,__VA_ARGS__)
+#define DEPENDS_4(a,b,...)  DEPENDS_2(a,b) DEPENDS_3(a,__VA_ARGS__)
+#define DEPENDS_5(a,b,...)  DEPENDS_2(a,b) DEPENDS_4(a,__VA_ARGS__)
+#define DEPENDS_6(a,b,...)  DEPENDS_2(a,b) DEPENDS_5(a,__VA_ARGS__)
+#define DEPENDS_7(a,b,...)  DEPENDS_2(a,b) DEPENDS_6(a,__VA_ARGS__)
+#define DEPENDS_8(a,b,...)  DEPENDS_2(a,b) DEPENDS_7(a,__VA_ARGS__)
+#define DEPENDS_9(a,b,...)  DEPENDS_2(a,b) DEPENDS_8(a,__VA_ARGS__)
+#define DEPENDS_10(a,b,...) DEPENDS_2(a,b) DEPENDS_9(a,__VA_ARGS__)
+
+
+
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 static const char* const module_name[] =
-{   "",INIT_CALLS(macro_str)};
+{   "",INIT_CALLS(TASK_NAME)};
 #endif
+
+static const struct async_module_info_t module_info[] =
+{   {0}, INIT_CALLS(ASYNC_MODULE_INFO) };
 
 /**
  * Dependencies list can be declare any time in any c file
