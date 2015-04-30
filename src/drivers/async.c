@@ -106,7 +106,7 @@ static const char* const module_name[] =
 #endif
 
 static const struct async_module_info_t module_info[] =
-{   {0}, INIT_CALLS(ASYNC_MODULE_INFO) };
+{   {0}, INIT_CALLS(ASYNC_MODULE_INFO) {0}};
 
 /**
  * Dependencies list is declared next
@@ -114,10 +114,10 @@ static const struct async_module_info_t module_info[] =
 //static const struct dependency_t module_depends[] =
 //{ INIT_CALLS(DEPENDS_BUILD) };
 
-static struct dependency_t dependencies[] =
-{
-        INIT_CALLS(DEPENDS_BUILD)
-};
+//static struct dependency_t dependencies[] =
+//{
+//        INIT_CALLS(DEPENDS_BUILD)
+//};
 
 //disk
 ADD_MODULE_DEPENDENCY(ahci_driver_init,ahci_pci_driver_init);
