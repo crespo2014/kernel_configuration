@@ -1,15 +1,30 @@
 File system has to be online as soon as posible to allow system tools execution
-All usb modules will be deferred
-Create full list of modules dependencies 
 
 Free  init memory to be done twice - use atomic counter starting in two when reach zero the do free
 
-expand initcalls macro to contain initialization type and depndencies.
-a macro can build all of them.
-a table with id and type can be build
+Optimization
+Organize data for better performance.
+Dependencies table has to be reorganize grouping by parent id.
+Keep process list in the same order that it was registered. + waiting count, + first dependencies index.
+Try to execute all task in the order that it was registered. 
+use a pointer to indicate the first undone task to start loooking for a new one.
+task can be waiting or working-done. 
+use atomic to try to peek a task from list.
+use spin_lock to update first waiting task idx.
+How a thread sleep ( try to peek a task, no locking needed, sleep)
+all task done when first waiting task reach end of the list
 
-do not block on async initialization. 
-deferred have to wait for async to finish before do something
+If a tasks depends on another with less idx is wrong.
+
+keep all data on init memory to allow free it when done
+
+Steps to initialization.
+Expand all task data
+Organize dependencies using only one pointer to child task 
+keep idx list to task, use first waiting. thread that done with first waiting can update the pointer
+task pointer will be replaced with idx. 
+task (0 - none, 1 - running , 2- done). //pointer to first none, only leaving behing done task.
+
 
 Module initialization
 
