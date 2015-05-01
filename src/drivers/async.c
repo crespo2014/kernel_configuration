@@ -113,7 +113,7 @@ static const struct dependency_t module_depends[] =
 { INIT_CALLS(DEPENDS_BUILD) };
 
 
-#define MAX_TASKS (unsigned)module_last
+#define MAX_TASKS (unsigned)module_last+2
 
 /**
  * all initcall will be enums. a tbl will store all names
@@ -220,7 +220,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 ++it_task->child_count;
             }
         }
-        printk_debug("async registered '%s' depends on %d tasks\n", module_name[it_task->id],it_task->waiting_count);
+        printk_debug("async registered '%pF' depends on %d tasks\n", it_task->fnc,it_task->waiting_count);
         //msleep(500);
     }
 }
