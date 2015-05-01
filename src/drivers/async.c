@@ -548,7 +548,7 @@ static int async_initialization(void)
 }
 
 
-module_init(async_initialization);
+__initcall(async_initialization);
 //late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
 

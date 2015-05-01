@@ -493,21 +493,169 @@
     \
     fnc(serial_pci_driver_init,deferred)  /* drivers/tty/serial/8250/8250_pci.c  chipset */ \
     \
-    fnc(spi_gpio_driver_init,deferred)
-
-
-
-
-
+    fnc(spi_gpio_driver_init,deferred) \
+    \
+    /* Full module list */ \
+    fnc(init_per_zone_wmark_min,asynchronized)  /* mm/page_alloc.c */ \
+	\
+	fnc(init,asynchronized)  /**/ \
+	\
+	fnc(proc_execdomains_init,asynchronized)  /**/ \
+	\
+	fnc(kswapd_init,asynchronized)  /**/ \
+	\
+	fnc(proc_modules_init,asynchronized)  /**/ \
+	\
+	fnc(fcntl_init,asynchronized)  /**/ \
+	\
+	fnc(acpi_fan_driver_init,asynchronized)  /**/ \
+	\
+	fnc(cn_proc_init,asynchronized)  /* connector/cn_proc.c */ \
+	\
+	fnc(nvram_init,asynchronized)  /* drivers/char/nvram.c */ \
+	\
+	fnc(mod_init,asynchronized)  /* /drivers/char/hw_random/intel-rng.c */ \
+	\
+	fnc(coretemp_init,asynchronized)  /* /hwmon/coretemp.c  */ \
+	\
+	fnc(gpio_fan_driver_init,asynchronized)  /*  /hwmon/gpio-fan.c  */ \
+	\
+	fnc(i2c_dev_init,asynchronized)  /* /drivers/i2c/i2c-dev.c */ \
+	\
+	fnc(i2c_i801_init,asynchronized)  /* /i2c/busses/i2c-i801.c */ \
+	\
+	fnc(smbus_sch_driver_init,asynchronized)  /*  drivers/i2c/busses/i2c-isch.c  */ \
+	\
+	fnc(i2c_mux_gpio_driver_init ,asynchronized)  /* drivers/i2c/muxes/i2c-mux-gpio.c */ \
+	\
+	fnc(intel_idle_init,asynchronized)  /* /drivers/idle/intel_idle.c */ \
+	\
+	fnc(simtec_i2c_driver_init,asynchronized)  /* drivers/i2c/busses/i2c-simtec.c  */ \
+	\
+	fnc(evdev_init,asynchronized)  /*  drivers/input/evdev.c  */ \
+	\
+	fnc(gspca_init,asynchronized)  /*  /drivers/media/usb/gspca/gspca.c */ \
+	\
+	fnc(uvc_init,deferred)  /*  drivers/media/usb/uvc/uvc_driver.c   */ \
+	\
+	fnc(ptp_pch_init,asynchronized)  /* drivers/ptp/ptp_pch.c  */ \
+	\
+	fnc(phy_module_init,asynchronized)  /* /include/linux/phy.h   */ \
+	\
+	fnc(cmos_init,asynchronized)  /* rtc/rtc-cmos.c   */ \
+	\
+	fnc(init_sd,asynchronized)  /* /drivers/scsi/sd.c   */ \
+	\
+	fnc(pty_init,asynchronized)  /*  drivers/tty/pty.c  */ \
+	\
+	fnc(init_sg,asynchronized)  /* /drivers/scsi/sg.c   */ \
+	\
+	fnc(sbf_init,asynchronized)  /*  arch/x86/kernel/bootflag.c  */ \
+	\
+	fnc(setup_vmstat,asynchronized)  /* /mm/vmstat.c  */ \
+	\
+	fnc(extfrag_debug_init,asynchronized)  /* mm/vmstat.c  */ \
+	\
+	fnc(proc_filesystems_init,asynchronized)  /* fs/filesystems.c */ \
+	\
+	fnc(dio_init,asynchronized)  /*  fs/direct-io.c  */ \
+	\
+	fnc(init_autofs4_fs,deferred)  /*  /fs/autofs4/init.c  */ \
+	\
+	fnc(configfs_init,asynchronized)  /* fs/configfs/mount.c  */ \
+	\
+	fnc(init_devpts_fs,asynchronized)  /* fs/devpts/inode.c  */ \
+	\
+	fnc(ext4_init_fs,asynchronized,init_hugetlbfs_fs)  /* fs/ext4/super.c  */ \
+	\
+	fnc(init_ext2_fs,deferred)  /* fs/ext2/super.c  */ \
+	\
+	fnc(init_hugetlbfs_fs,asynchronized)  /* /fs/hugetlbfs/inode.c  */ \
+	\
+	fnc(init_nls_cp437,asynchronized)  /* fs/nls/nls_cp437.c  */ \
+	\
+	fnc(init_nls_cp850,asynchronized)  /* fs/nls/nls_cp850.c */ \
+	\
+	fnc(init_nls_cp852,asynchronized)  /* fs/nls/nls_cp852.c   */ \
+	\
+	fnc(dnotify_init,asynchronized)  /* /fs/notify/dnotify/dnotify.c  */ \
+	\
+	fnc(init_nls_ascii,asynchronized)  /* fs/nls/nls_ascii.c  */ \
+	\
+	fnc(init_nls_iso8859_1,asynchronized)  /*  fs/nls/nls_iso8859-1.c  */ \
+	\
+	fnc(init_nls_utf8,asynchronized)  /* fs/nls/nls_utf8.c */ \
+	\
+	fnc(inotify_user_setup,asynchronized)  /*  fs/notify/inotify/inotify_user.c  */ \
+	\
+	fnc(proc_locks_init,asynchronized)  /* fs/locks.c  */ \
+	\
+	fnc(init_udf_fs,deferred)  /* fs/udf/super.c */ \
+	\
+	fnc(init_mbcache,asynchronized)  /* /fs/mbcache.c  */ \
+	\
+	fnc(proc_genhd_init,asynchronized)  /* block/genhd.c   */ \
+	\
+	fnc(noop_init,asynchronized)  /*  /block/noop-iosched.c  */ \
+	\
+	fnc(deadline_init,asynchronized)  /* /block/deadline-iosched.c */ \
+	\
+	fnc(cfq_init,asynchronized)  /* block/cfq-iosched.c  */ \
+	\
+	fnc(init_dns_resolver,asynchronized)  /* net/dns_resolver/dns_key.c  */ \
+	\
+	fnc(sock_diag_init ,asynchronized)  /* /net/core/sock_diag.c  */ \
+	\
+	fnc(cubictcp_register,asynchronized)  /* net/ipv4/tcp_cubic.c   */ \
+	\
+	fnc(packet_init,asynchronized)  /* net/packet/af_packet.c   */ \
+	\
+	fnc(slab_proc_init,asynchronized)  /* /mm/slab_common.c  */ \
+	\
+	fnc(workingset_init,asynchronized)  /* mm/workingset.c  */ \
+	\
+	fnc(hugetlb_init,asynchronized)  /* mm/hugetlb.c  */ \
+	\
+	fnc(proc_vmalloc_init,asynchronized)  /* /mm/vmalloc.c  */ \
+	\
+	fnc(ikconfig_init,asynchronized)  /* kernel/configs.c */ \
+	\
+	fnc(pmc_atom_init,asynchronized)  /* /arch/x86/kernel/pmc_atom.c  */ \
+	\
+	fnc(crc_t10dif_mod_init,asynchronized)  /* lib/crc-t10dif.c   */ \
+	\
+	fnc(libcrc32c_mod_init,asynchronized)  /* lib/libcrc32c.c  */ \
+	\
+	fnc(percpu_counter_startup,asynchronized)  /*  lib/percpu_counter.c  */ \
+	
+		
+	
 #if 0
 
 
 fnc(,deferred),  /**/ \
 fnc(,deferred),  /**/ \
-fnc(),  /**/ \
-fnc(),  /**/ \
-fnc(),  /**/ \
-fnc(),  /**/ \
+
+
+
+
+
+fnc(,asynchronized)  /**/ \
+
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+fnc(,asynchronized)  /**/ \
+
 
         /* ARCH  SUBSYS POSTCORE */
         fnc(dca),  /* dca.ko */  \
@@ -551,12 +699,6 @@ fnc(),  /**/ \
 #endif
 
 #define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
-
-#define ADD_MODULE_DEPENDENCY(child,parent) \
-         static struct dependency_t child##parent __used \
-		 __attribute__((__section__(".async_modules_depends.init"))) = \
-		 {child ## _id, parent ## _id};    
-
 
 #define TASK_STRING(id)                   #id
 #define TASK_NAME(id,...)                 TASK_STRING(id)
