@@ -98,10 +98,10 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 
 #define DEPENDS_BUILD(id,type,...) CALL_FNC(DEPENDS_,id,##__VA_ARGS__)
 
-#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
-static const char* const module_name[] =
-{   "",INIT_CALLS(TASK_NAME)};
-#endif
+//#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+//static const char* const module_name[] =
+//{   "",INIT_CALLS(TASK_NAME)};
+//#endif
 
 static const struct async_module_info_t module_info[] =
 {   {0}, INIT_CALLS(ASYNC_MODULE_INFO) {0}};
@@ -206,7 +206,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 if (ptask == NULL)
                 {
                     printk(KERN_ERR "async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
-                    printk_debug("async %s MISSIG -- %s is BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
+                    //printk_debug("async %s MISSIG -- %s is BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
 //                    msleep(2000);
                 }
                 else
@@ -328,7 +328,7 @@ struct task_t* TaskDone(struct task_t* ptask)
                     else
                     {
                         printk("async Failed %pF does not release task %d\n",ptask->fnc,it_dependency->task_id);
-                        printk_debug("async %s not release \n",module_name[it_dependency->task_id]);
+                        //printk_debug("async %s not release \n",module_name[it_dependency->task_id]);
                     }
                 }
             }
@@ -361,8 +361,7 @@ struct task_t* TaskDone(struct task_t* ptask)
             printk(KERN_EMERG "async Failed some tasks was not released\n");
             for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
             {
-                printk(KERN_EMERG "async Failed task %pF waiting for %d tasks\n",tasks.all[*it_idx].fnc,tasks.all[*it_idx].waiting_count);
-                printk_debug("async %s still waiting for %d tasks\n",module_name[tasks.all[*it_idx].id],tasks.all[*it_idx].waiting_count);
+                printk(KERN_EMERG "async Failed id %d task %pF waiting for %d tasks\n",*it_idx,tasks.all[*it_idx].fnc,tasks.all[*it_idx].waiting_count);
             }
         }
         tasks.waiting_last = tasks.idx_list;
@@ -422,7 +421,7 @@ int WorkingThread(void *data)
         ptask = TaskDone(ptask);
         if (ptask != NULL)
         {
-            printk_debug("async %d %s\n", (unsigned)data, module_name[ptask->id]);
+            printk_debug("async %d %pF\n", (unsigned)data, ptask->fnc);
             //msleep(2000);
             do_one_initcall(ptask->fnc);
         }
