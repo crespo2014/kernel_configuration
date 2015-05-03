@@ -125,6 +125,9 @@ int main(void)
     struct init_fn_t list1[] =
     {
     { rfcomm_init_id, 0 },
+    { snd_hrtimer_init_id , 0},
+    { alsa_pcm_oss_init_id ,0 },
+    { alsa_seq_oss_init_id, 0},
     { alsa_timer_init_id, 0 },
     { alsa_pcm_init_id, 0 },
     { alsa_mixer_oss_init_id, 0 },
@@ -144,7 +147,7 @@ int main(void)
     {  usblp_driver_init_id, 0 },
     {  lz4_mod_init_id, 0 } };
 
-    FillTasks2(list1,list1+9);
+    FillTasks2(list1,list1+13);
     Prepare2(deferred);
     struct task_t* t;
 
@@ -163,10 +166,10 @@ int main(void)
     Prepare(asynchronized);
     WorkingThread(0);
 
-    std::cout << "idx" << tasks.idx_list << std::endl;
-    std::cout << "waiting" << tasks.waiting_last << std::endl;
-    std::cout << "ready" << tasks.ready_last << std::endl;
-    std::cout << "running" << tasks.running_last << std::endl;
+//    std::cout << "idx" << tasks.idx_list << std::endl;
+//    std::cout << "waiting" << tasks.waiting_last << std::endl;
+//    std::cout << "ready" << tasks.ready_last << std::endl;
+//    std::cout << "running" << tasks.running_last << std::endl;
 
 //    doit_type(asynchronized);
 //    doit_type(deferred);
