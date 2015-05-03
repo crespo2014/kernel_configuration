@@ -104,7 +104,7 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 //#endif
 
 static const struct async_module_info_t module_info[] =
-{   {0}, INIT_CALLS(ASYNC_MODULE_INFO) {0}};
+{   {disable}, INIT_CALLS(ASYNC_MODULE_INFO) {disable}};
 
 /**
  * Dependencies list is declared next
@@ -124,8 +124,9 @@ struct task_t
     modules_e id;           // idx in string table
     initcall_t fnc;         // ptr to init function
     atomic_t waiting_count; // how many task does it depend on
+    volatile unsigned long status;        // bit 0 1 free to get, bit 1 1 doing
     unsigned child_count;   // how many task it triggers
-    struct task_t*  first_cild; // first child to be release
+    struct task_t**  first_cild; // first child to be release
 };
 
 // TODO join together all task with taskid table to allow dynamic allocation
@@ -140,8 +141,8 @@ struct task_list_t
     struct task_t all[MAX_TASKS];       // full list of task
     struct task_t* task_end;
     struct task_t* current_tasks[MAX_TASKS];        // list of actived task
-    struct task_t* task_last_done;      // first task to be done
-    struct task_t* task_last;           // one pass last task to be done
+    struct task_t** task_last_done;      // first task to be done
+    struct task_t** task_last;           // one pass last task to be done
     struct task_t* childs[sizeof(module_depends)/sizeof(*module_depends)];  //  list of child to be relase ordered by parent
 };
 
@@ -154,6 +155,9 @@ struct task_t* getTask(modules_e id)
         ++t;
     return (t == tasks.task_end) ? NULL : t;
 }
+
+static DEFINE_SPINLOCK(list_lock);
+static DECLARE_WAIT_QUEUE_HEAD( list_wait);
 
 /**
  * Find the waiting task on the list
@@ -227,16 +231,134 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 ++it_task->child_count;
             }
         }
-        printk_debug("async registered '%pF' depends on %d tasks\n", it_task->fnc,it_task->waiting_count);
+        printk_debug("async registered '%pF' depends on %d tasks\n", it_task->fnc,atomic_read(&it_task->waiting_count));
         //msleep(500);
     }
 }
 /*
  * Prepare task to be done using task pointer list
  */
-void PrepareTasks(task_type_t type)
+void FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
 {
+    const struct dependency_t *it_dependency;
+    struct init_fn_t* it_init_fnc;
+    struct task_t* it_task;
+    struct task_t* ptask;
+    struct task_t** release_end;            // pointer to list of childs
+    tasks.task_end = tasks.all;
+    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
+    {
+        tasks.task_end->id = it_init_fnc->id;
+        tasks.task_end->type = module_info[it_init_fnc->id].type_;
+        tasks.task_end->fnc = it_init_fnc->fnc;
+        atomic_set(&tasks.task_end->waiting_count,0);
+        tasks.task_end->first_cild = NULL;
+        tasks.task_end->child_count = 0;
+        tasks.task_end->status = 3;
+    }
+    // for every task find all child to be release and store.
+    release_end = tasks.childs;
+    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
+    {
+        it_task->first_cild = release_end;
+        for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
+        {
+            // get all childs
+            if (it_dependency->parent_id == it_task->id)
+            {
+                // Do not register a dependency that does not exist
+                ptask = getTask(it_dependency->task_id);
+                if (ptask == NULL)
+                {
+                    printk(KERN_ERR "async Child id %d not found for parent id %d\n",it_dependency->task_id,it_dependency->parent_id);
+                }
+                else
+                {
+                    // register dependency
+                    ++it_task->child_count;
+                    *release_end = ptask;
+                    ++release_end;
+                    if (it_task->type == deferred && ptask->type == asynchronized)
+                    {
+                        printk(KERN_ERR "async Child id %d will not released by parent id %d\n",it_dependency->task_id,it_dependency->parent_id);
+                    }
+                    if (it_task > ptask)
+                    {
+                        printk(KERN_ERR "async child id %d was registered before parent id %d\n",it_dependency->task_id,it_dependency->parent_id);
+                    }
+                    atomic_inc(&ptask->waiting_count);
+                }
+            }
+        }
+        printk_debug("async registered '%pF' release %d tasks\n", it_task->fnc,it_task->child_count);
+    }
+}
+/*
+ * Prepare pointers to task do not use index
+ */
+void Prepare2(task_type_t type)
+{
+    // Pick only task of type from all task
+    struct task_t* it_task;
 
+    tasks.task_last = tasks.current_tasks;
+    tasks.task_last_done = tasks.current_tasks;
+    tasks.type_ = type;
+    //
+    printk_debug("async Preparing ... \n");
+    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
+    {
+        if (it_task->type == type)
+        {
+            *tasks.task_last  = it_task;
+            ++tasks.task_last;
+        }
+    }
+}
+/**
+ * Mark task as done
+ */
+void TaskDone2(struct task_t* ptask)
+{
+    struct task_t** it_task;
+    unsigned i;
+    if (ptask != NULL)
+    {
+       clear_bit(1,&ptask->status);      // task done
+       // release all childs
+       it_task = ptask->first_cild;
+       for(i = 0;i<ptask->child_count;++i,++it_task)
+       {
+           atomic_dec(&(*it_task)->waiting_count);
+       }
+       if (ptask->child_count > 1)
+           wake_up_interruptible(&list_wait);
+    }
+    // try to update last done task
+    spin_lock(&list_lock);
+    while (tasks.task_last_done != tasks.task_last && (*tasks.task_last_done)->status == 0)
+        ++tasks.task_last_done;
+    spin_unlock(&list_lock);
+
+    // Check for end condition
+    if (tasks.task_last_done == tasks.task_last)
+        wake_up_interruptible_all(&list_wait);
+}
+
+/*
+ * Try to get a task ready to run
+ */
+struct task_t* PeekTask(void)
+{
+    struct task_t** it_task;
+    for (it_task = tasks.task_last_done;it_task != tasks.task_last;++it_task)
+    {
+        if (atomic_read(&(*it_task)->waiting_count) == 0)
+        {
+            if (test_and_set_bit(0,&(*it_task)->status) == 0) return *it_task;
+        }
+    }
+    return NULL;
 }
 
 /**
@@ -282,18 +404,6 @@ void Prepare(task_type_t type)
     tasks.waiting_last = it_idx1;
     printk_debug("async %d tasks \n",tasks.idx_end - tasks.idx_list);
 }
-
-/**
- * wait on the queue until unlocked != 0 then pick a task
- * locked == running; unlock all remaining task and scheduler
- *
- * main thread wait for unlocked !=0 or waiting == running
- * threads end when waiting == 0
- * last thread is when running became 0
- */
-
-static DEFINE_SPINLOCK(list_lock);
-static DECLARE_WAIT_QUEUE_HEAD( list_wait);
 
 /**
  * Mark task as done and get

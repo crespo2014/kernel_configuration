@@ -18,6 +18,29 @@
 #include <ostream>
 #include <iostream>
 
+#define ATOMIC_INIT(a)      a
+#define atomic_t unsigned
+
+#define atomic_set(a,b)  *a = b
+#define atomic_read(a)   *a
+#define atomic_inc(a)    ++(*a)
+#define atomic_dec(a)    --(*a)
+#define clear_bit(b,v)   (*v) &= ~(1 << b)
+
+unsigned test_and_set_bit(unsigned b,  volatile unsigned long * v)
+{
+    unsigned r = (*v) & (1 <<b) != 0;
+    (*v) |= (1 << b);
+    return r;
+}
+
+int atomic_xchg(atomic_t* v,int n)
+{
+    int a = *v;
+    *v = n;
+    return a;
+}
+
 #define __wake_up(...)
 #define do_one_initcall(...)
 #define schedule(...)
@@ -64,6 +87,7 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 #define DECLARE_WAIT_QUEUE_HEAD(a) int a
 
 #define module_init(...)    ;
+#define __initcall(...)   ;
 #define late_initcall_sync(...)   ;
 #define __used
 #define __u64   uint64_t
@@ -100,26 +124,40 @@ int main(void)
     // single
     struct init_fn_t list1[] =
     {
-    { asynchronized, rfcomm_init_id, 0 },
-    { asynchronized, alsa_timer_init_id, 0 },
-    { asynchronized, alsa_pcm_init_id, 0 },
-    { asynchronized, alsa_mixer_oss_init_id, 0 },
-    { asynchronized, alsa_hwdep_init_id, 0 },
-    { asynchronized, alsa_seq_device_init_id, 0 },
-    { asynchronized, alsa_seq_init_id, 0 },
-    { asynchronized, alsa_seq_midi_event_init_id, 0 },
-    { asynchronized, alsa_seq_dummy_init_id, 0 },
-    { asynchronized, alsa_seq_oss_init_id, 0 } };
+    { rfcomm_init_id, 0 },
+    { alsa_timer_init_id, 0 },
+    { alsa_pcm_init_id, 0 },
+    { alsa_mixer_oss_init_id, 0 },
+    { alsa_hwdep_init_id, 0 },
+    { alsa_seq_device_init_id, 0 },
+    { alsa_seq_init_id, 0 },
+    { alsa_seq_midi_event_init_id, 0 },
+    { alsa_seq_dummy_init_id, 0 },
+    { alsa_seq_oss_init_id, 0 } };
     // multiple dependnecies
     struct init_fn_t list2[] =
     {
-    { asynchronized, crypto_xcbc_module_init_id, 0 },
-    { asynchronized, init_cifs_id, 0 },
-    { asynchronized, drm_fb_helper_modinit_id, 0 },
-    { asynchronized, acpi_power_meter_init_id, 0 },
-    { asynchronized, usblp_driver_init_id, 0 },
-    { asynchronized, lz4_mod_init_id, 0 } };
+    { crypto_xcbc_module_init_id, 0 },
+    { init_cifs_id, 0 },
+    { drm_fb_helper_modinit_id, 0 },
+    { acpi_power_meter_init_id, 0 },
+    {  usblp_driver_init_id, 0 },
+    {  lz4_mod_init_id, 0 } };
 
+    FillTasks2(list1,list1+9);
+    Prepare2(deferred);
+    struct task_t* t;
+
+    do
+    {
+        t = PeekTask();
+        if (t != NULL)
+        {
+            std::cout << "id" << t->id << std::endl;
+            TaskDone2(t);
+        }
+    }
+    while ( t != NULL);
 
     FillTasks(list1,list1+9);
     Prepare(asynchronized);
