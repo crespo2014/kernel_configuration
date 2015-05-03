@@ -122,22 +122,27 @@ struct task_t
 {
     task_type_t type;        //
     modules_e id;           // idx in string table
-    initcall_t fnc;             // ptr to init function
-    unsigned waiting_count; // how many task does it depend on
+    initcall_t fnc;         // ptr to init function
+    atomic_t waiting_count; // how many task does it depend on
     unsigned child_count;   // how many task it triggers
+    struct task_t*  first_cild; // first child to be release
 };
 
 // TODO join together all task with taskid table to allow dynamic allocation
 struct task_list_t
 {
-    task_type_t type_;          // current type in processing
-    unsigned idx_list[MAX_TASKS];
+    task_type_t type_;              // current type in processing
+    unsigned idx_list[MAX_TASKS];   // list of task to be execute
     unsigned *waiting_last;  // last task waiting to be release
     unsigned *ready_last;    // last task to be execute
     unsigned *running_last;  // the last task running
     unsigned *idx_end;      // number of idx on list
-    struct task_t all[MAX_TASKS];
+    struct task_t all[MAX_TASKS];       // full list of task
     struct task_t* task_end;
+    struct task_t* current_tasks[MAX_TASKS];        // list of actived task
+    struct task_t* task_last_done;      // first task to be done
+    struct task_t* task_last;           // one pass last task to be done
+    struct task_t* childs[sizeof(module_depends)/sizeof(*module_depends)];  //  list of child to be relase ordered by parent
 };
 
 static struct task_list_t tasks;
@@ -179,7 +184,9 @@ unsigned doesDepends(modules_e child, modules_e parent)
     }
     return 0;
 }
-
+/*
+ * Read all information from static mmeory an expand it to dynamic memory
+ */
 void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 {
     const struct dependency_t *it_dependency;
@@ -192,7 +199,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
         tasks.task_end->id = it_init_fnc->id;
         tasks.task_end->type = module_info[it_init_fnc->id].type_;
         tasks.task_end->fnc = it_init_fnc->fnc;
-        tasks.task_end->waiting_count = 0;
+        atomic_set(&tasks.task_end->waiting_count,0);
     }
     // resolve dependencies
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
@@ -212,7 +219,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 else
                 {
                     // register dependency
-                    ++it_task->waiting_count;
+                    atomic_inc(&it_task->waiting_count);
                 }
             }
             if (it_dependency->parent_id == it_task->id)
@@ -224,6 +231,14 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
         //msleep(500);
     }
 }
+/*
+ * Prepare task to be done using task pointer list
+ */
+void PrepareTasks(task_type_t type)
+{
+
+}
+
 /**
  * Prepare dependencies structure to process an specific type of task
  */
@@ -251,12 +266,12 @@ void Prepare(task_type_t type)
     tasks.running_last = tasks.idx_end;
     // jump waiting task
     it_idx1 = tasks.idx_list;
-    while (it_idx1 != tasks.idx_end && tasks.all[*it_idx1].waiting_count != 0)
+    while (it_idx1 != tasks.idx_end && atomic_read(&tasks.all[*it_idx1].waiting_count) != 0)
         ++it_idx1;
     for (it_idx2 = it_idx1 + 1; it_idx2 < tasks.idx_end; ++it_idx2)
     {
         //move waiting task to front
-        if (tasks.all[*it_idx2].waiting_count != 0)
+        if (atomic_read(&tasks.all[*it_idx2].waiting_count) != 0)
         {
             id = *it_idx2;
             *it_idx2 = *it_idx1;
@@ -322,7 +337,7 @@ struct task_t* TaskDone(struct task_t* ptask)
                     child_task = getTask(it_dependency->task_id);
                     if (child_task != 0)
                     {
-                    --child_task->waiting_count;
+                    atomic_dec(&child_task->waiting_count);
                     --ptask->child_count;
                     }
                     else
@@ -340,7 +355,7 @@ struct task_t* TaskDone(struct task_t* ptask)
             for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;)
             {
                 // move to running list if not waiting
-                if (tasks.all[*it_idx].waiting_count == 0)
+                if (atomic_read(&tasks.all[*it_idx].waiting_count) == 0)
                 {
                     --tasks.waiting_last;
                     idx = *tasks.waiting_last;
@@ -361,7 +376,7 @@ struct task_t* TaskDone(struct task_t* ptask)
             printk(KERN_EMERG "async Failed some tasks was not released\n");
             for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
             {
-                printk(KERN_EMERG "async Failed id %d task %pF waiting for %d tasks\n",*it_idx,tasks.all[*it_idx].fnc,tasks.all[*it_idx].waiting_count);
+                printk(KERN_EMERG "async Failed id %d task %pF waiting for %d tasks\n",*it_idx,tasks.all[*it_idx].fnc,atomic_read(&tasks.all[*it_idx].waiting_count));
             }
         }
         tasks.waiting_last = tasks.idx_list;
@@ -516,6 +531,8 @@ static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
    if (!(*ppos)) {
        tmp[0] = '0';
        deferred_initialization();
+       // wait for completion, any process that depends on driver can wait for this to complete
+       wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
    }
    len = min(nbytes, (size_t)3);
    ret = copy_to_user(buf, tmp, len);

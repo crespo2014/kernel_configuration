@@ -20,6 +20,14 @@
     \
     fnc(ahci_driver_init,asynchronized,ahci_pci_driver_init) /**/ \
     \
+    fnc(fbmem_init,asynchronized)   /* drivers/video/fbdev/core/fbmem.c */ \
+    \
+    fnc(mda_console_init,asynchronized,fbmem_init)   /* drivers/video/console/mdacon.c */ \
+    \
+    fnc(newport_console_init,asynchronized,fbmem_init)   /* drivers/video/console/newport_con.c  */ \
+    \
+    fnc(sticonsole_init,asynchronized,fbmem_init)   /* drivers/video/console/sticon.c  */ \
+    \
     fnc(acpi_ac_init,asynchronized) /**/ \
     \
     fnc(serial8250_init,deferred) /* */ \
@@ -236,15 +244,15 @@
     \
     fnc(intel_rng_mod_init,deferred,hwrng_modinit)  /* intel-rng.ko */ \
     \
-    fnc(agp_init,deferred)  /* agpgart.ko */ \
+    fnc(agp_init,asynchronized,ioat_init_module,acpi_video_init)  /* agpgart.ko */ \
     \
-    fnc(drm_core_init,deferred,agp_init)  /* drm.ko */ \
+    fnc(drm_core_init,asynchronized,agp_init)  /* drm.ko */ \
     \
-    fnc(uvm_init,deferred,nvidia_frontend_init_module)  /* nvidia-uvm.ko */ \
+    fnc(uvm_init,asynchronized,nvidia_frontend_init_module)  /* nvidia-uvm.ko */ \
     \
-    fnc(ioat_init_module,deferred)  /* ioatdma.ko */ \
+    fnc(ioat_init_module,asynchronized)  /* ioatdma.ko */ \
     \
-    fnc(acpi_video_init,deferred)  /* video.ko */ \
+    fnc(acpi_video_init,asynchronized)  /* drivers/acpi/video.ko */ \
     \
     fnc(af_alg_init,deferred)  /* af_alg.ko */ \
     \
@@ -512,13 +520,13 @@
 	\
 	fnc(cn_proc_init,asynchronized)  /* connector/cn_proc.c */ \
 	\
-	fnc(nvram_init,asynchronized)  /* drivers/char/nvram.c */ \
+	fnc(nvram_init,asynchronized,pty_init)  /* drivers/char/nvram.c */ \
 	\
-	fnc(mod_init,asynchronized)  /* /drivers/char/hw_random/intel-rng.c */ \
+	fnc(mod_init,asynchronized,pty_init)  /* /drivers/char/hw_random/intel-rng.c */ \
 	\
-	fnc(coretemp_init,asynchronized)  /* /hwmon/coretemp.c  */ \
+	fnc(coretemp_init,asynchronized)  /* drivers/hwmon/coretemp.c  */ \
 	\
-	fnc(gpio_fan_driver_init,asynchronized)  /*  /hwmon/gpio-fan.c  */ \
+	fnc(gpio_fan_driver_init,asynchronized)  /*  drivers/hwmon/gpio-fan.c  */ \
 	\
 	fnc(i2c_dev_init,asynchronized)  /* /drivers/i2c/i2c-dev.c */ \
 	\
@@ -658,8 +666,8 @@ fnc(,asynchronized)  /**/ \
 
 
         /* ARCH  SUBSYS POSTCORE */
-        fnc(dca),  /* dca.ko */  \
-        fnc(backlight),  /* backlight.ko */ \
+        fnc(dca),  /* drivers/dca/dca.ko */  \
+        fnc(backlight),  /* drivers/video/backlight/backlight.ko */ \
         fnc(cast_common),  /* cast_common.ko */ \
         fnc(zlib_deflate),  /* zlib_deflate.ko */ \
         fnc(zlib_inflate),  /* zlib_inflate.ko */ \
