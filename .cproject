@@ -325,35 +325,5 @@
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890;cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890.;cdt.managedbuild.tool.gnu.c.compiler.base.1176442569;cdt.managedbuild.tool.gnu.c.compiler.input.1468823246">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890.1285279002;cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890.1285279002.;cdt.managedbuild.tool.gnu.c.compiler.base.1028259225;cdt.managedbuild.tool.gnu.c.compiler.input.1874085781">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1285861472;cdt.managedbuild.tool.gnu.cpp.compiler.input.899170444">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.;cdt.managedbuild.tool.gnu.c.compiler.base.744902218;cdt.managedbuild.tool.gnu.c.compiler.input.1114785184">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890.1285279002;cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890.1285279002.;cdt.managedbuild.tool.gnu.cpp.compiler.base.298557158;cdt.managedbuild.tool.gnu.cpp.compiler.input.1271021167">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.1167149739;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.1167149739.;cdt.managedbuild.tool.gnu.c.compiler.base.1959745657;cdt.managedbuild.tool.gnu.c.compiler.input.2081085833">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206;cdt.managedbuild.toolchain.gnu.base.2130150206.480213078;cdt.managedbuild.tool.gnu.cpp.compiler.base.1324850812;cdt.managedbuild.tool.gnu.cpp.compiler.input.1315093986">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.1167149739;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.1167149739.;cdt.managedbuild.tool.gnu.cpp.compiler.base.837724455;cdt.managedbuild.tool.gnu.cpp.compiler.input.1300032425">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206;cdt.managedbuild.toolchain.gnu.base.2130150206.480213078;cdt.managedbuild.tool.gnu.c.compiler.base.1722421272;cdt.managedbuild.tool.gnu.c.compiler.input.1909168301">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890;cdt.managedbuild.toolchain.gnu.base.2130150206.2025079890.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1518353117;cdt.managedbuild.tool.gnu.cpp.compiler.input.397798209">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>
