@@ -434,7 +434,6 @@ int WorkingThread(void *data)
                 printk("async init wake up returned %d\n", ret);
                 break;
             }
-            //wait for (depends.unlocked !=0 or depends.waiting_last == 0)
         }
         // loop again if a task was done or something can be done
     } while (ptask != 0 || tasks.ready_last != tasks.idx_list);
@@ -482,9 +481,6 @@ int doit_type(task_type_t type)
             WorkingThread(NULL);
         }
     }
-    // do not return untill everything is done
-//    if (type == asynchronized)
-//        WorkingThread((void*)max_cpus);
     return 0;
 }
 
