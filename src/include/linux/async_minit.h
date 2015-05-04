@@ -30,6 +30,28 @@
     \
     fnc(acpi_ac_init,asynchronized) /**/ \
     \
+    fnc(agp_nvidia_init,asynchronized,agp_init)  /* nvidia-agp.ko */ \
+    \
+    fnc(nvidia_frontend_init_module,asynchronized,drm_core_init)  /* nvidia.ko */ \
+    \
+    fnc(uvm_init,asynchronized,nvidia_frontend_init_module)  /* nvidia-uvm.ko */ \
+    \
+    fnc(ioat_init_module,asynchronized)  /* drivers/dma/ioat/pci.c ioatdma.ko */ \
+    \
+    fnc(acpi_video_init,asynchronized)  /* drivers/acpi/video.ko */ \
+    \
+    fnc(agp_init,asynchronized,ioat_init_module,acpi_video_init)  /* agpgart.ko */ \
+    \
+    fnc(drm_core_init,asynchronized,agp_init)  /* drm.ko */ \
+    \
+    fnc(pch_dma_driver_init,asynchronized)  /* drivers/dma/pch_dma.c */ \
+    \
+    fnc(ismt_driver_init,asynchronized)  /* drivers/i2c/busses/i2c-ismt.c */  \
+    \
+    fnc(lpc_sch_driver_init,asynchronized)  /* /drivers/mfd/lpc_sch.c */\
+    \
+    fnc(lpc_ich_driver_init,asynchronized)  /* drivers/mfd/lpc_ich.c  chipset */\
+    \
     fnc(serial8250_init,deferred) /* */ \
     \
     fnc(nforce2_driver_init,deferred) /* */ \
@@ -242,17 +264,7 @@
     \
     fnc(b43legacy,deferred,hwrng_modinit)  /* b43legacy.ko */ \
     \
-    fnc(ioat_init_module,asynchronized)  /* ioatdma.ko */ \
-    \
     fnc(intel_rng_mod_init,deferred,hwrng_modinit)  /* intel-rng.ko */ \
-    \
-    fnc(acpi_video_init,asynchronized)  /* drivers/acpi/video.ko */ \
-    \
-    fnc(agp_init,asynchronized,ioat_init_module,acpi_video_init)  /* agpgart.ko */ \
-    \
-    fnc(drm_core_init,asynchronized,agp_init)  /* drm.ko */ \
-    \
-    fnc(uvm_init,asynchronized,nvidia_frontend_init_module)  /* nvidia-uvm.ko */ \
     \
     fnc(af_alg_init,deferred)  /* af_alg.ko */ \
     \
@@ -329,10 +341,6 @@
     fnc(ohci_hcd_mod_init,deferred,ehci_platform_init)  /* ohci-hcd.ko */ \
     \
     fnc(ehci_platform_init,deferred,ehci_hcd_init)  /* ehci-platform.ko */ \
-    \
-    fnc(agp_nvidia_init,deferred,agp_init)  /* nvidia-agp.ko */ \
-    \
-    fnc(nvidia_frontend_init_module,deferred,drm_core_init)  /* nvidia.ko */ \
     \
     fnc(tcrypt_mod_init,deferred) /**/ \
     \
@@ -490,15 +498,6 @@
     \
     fnc(i8042_init,deferred) /**/ \
     \
-    /* ALL pci devices to be analize and add */ \
-    fnc(pch_dma_driver_init,asynchronized)  /* drivers/dma/pch_dma.c */ \
-    \
-    fnc(ismt_driver_init,asynchronized)  /* drivers/i2c/busses/i2c-ismt.c */  \
-    \
-    fnc(lpc_sch_driver_init,asynchronized)  /* /drivers/mfd/lpc_sch.c */\
-    \
-    fnc(lpc_ich_driver_init,asynchronized)  /* drivers/mfd/lpc_ich.c  chipset */\
-    \
     fnc(serial_pci_driver_init,deferred)  /* drivers/tty/serial/8250/8250_pci.c  chipset */ \
     \
     fnc(spi_gpio_driver_init,deferred) \
@@ -542,7 +541,7 @@
 	\
 	fnc(evdev_init,asynchronized)  /*  drivers/input/evdev.c  */ \
 	\
-	fnc(gspca_init,asynchronized)  /*  /drivers/media/usb/gspca/gspca.c */ \
+	fnc(gspca_init,deferred)  /*  /drivers/media/usb/gspca/gspca.c */ \
 	\
 	fnc(uvc_init,deferred)  /*  drivers/media/usb/uvc/uvc_driver.c   */ \
 	\
