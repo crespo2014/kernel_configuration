@@ -26,11 +26,19 @@
 #define atomic_inc(a)    ++(*a)
 #define atomic_dec(a)    --(*a)
 #define clear_bit(b,v)   (*v) &= ~(1 << b)
+#define set_bit(b,v)     (*v) |= (1 << b)
 
 unsigned test_and_set_bit(unsigned b,  volatile unsigned long * v)
 {
     unsigned r = (*v) & (1 <<b) != 0;
-    (*v) |= (1 << b);
+    set_bit(b,v);
+    return r;
+}
+
+unsigned test_and_clear_bit(unsigned b,  volatile unsigned long * v)
+{
+    unsigned r = (*v) & (1 <<b) != 0;
+    clear_bit(b,v);
     return r;
 }
 
@@ -119,8 +127,43 @@ struct file_operations
 
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
 
+void doit_all(init_fn_t* begin, init_fn_t* end)
+{
+    FillTasks2(begin, end);
+    Prepare2(asynchronized);
+    struct task_t* t;
+
+    do
+    {
+        t = PeekTask();
+        if (t != NULL)
+        {
+            std::cout << "id " << t->id << " " << getName(t->id) << std::endl;
+            TaskDone2(t);
+        }
+    } while (t != NULL);
+
+    Prepare2(deferred);
+    do
+    {
+        t = PeekTask();
+        if (t != NULL)
+        {
+            std::cout << "id " << t->id << " " << getName(t->id) << std::endl;
+            TaskDone2(t);
+        }
+    } while (t != NULL);
+}
+
+#define INI_FNC(id,...) {id ## _id, 0 },
+
 int main(void)
 {
+    struct init_fn_t list_full[] =
+    {
+            INIT_CALLS(INI_FNC) {module_last}
+    };
+
     // single
     struct init_fn_t list1[] =
     {
@@ -147,29 +190,18 @@ int main(void)
     {  usblp_driver_init_id, 0 },
     {  lz4_mod_init_id, 0 } };
 
-    FillTasks2(list1,list1+13);
-    Prepare2(deferred);
-    struct task_t* t;
+    doit_all(list_full,list_full + sizeof(list_full)/sizeof(*list_full)-1);
+    doit_all(list1,list1 + sizeof(list1)/sizeof(*list1));
+    doit_all(list2,list2 + sizeof(list2)/sizeof(*list2));
 
-    do
-    {
-        t = PeekTask();
-        if (t != NULL)
-        {
-            std::cout << "id" << t->id << std::endl;
-            TaskDone2(t);
-        }
-    }
-    while ( t != NULL);
+
+    // Full task test
+
 
     FillTasks(list1,list1+9);
     Prepare(asynchronized);
     WorkingThread(0);
 
-//    std::cout << "idx" << tasks.idx_list << std::endl;
-//    std::cout << "waiting" << tasks.waiting_last << std::endl;
-//    std::cout << "ready" << tasks.ready_last << std::endl;
-//    std::cout << "running" << tasks.running_last << std::endl;
 
 //    doit_type(asynchronized);
 //    doit_type(deferred);

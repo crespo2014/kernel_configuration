@@ -98,10 +98,18 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 
 #define DEPENDS_BUILD(id,type,...) CALL_FNC(DEPENDS_,id,##__VA_ARGS__)
 
-//#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
-//static const char* const module_name[] =
-//{   "",INIT_CALLS(TASK_NAME)};
-//#endif
+const char* getName(modules_e id)
+{
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+    static const char* const module_name[] =
+    {   "",INIT_CALLS(TASK_NAME)};
+    if (id > module_last)
+        return "";
+    return module_name[id];
+#endif
+    return "";
+}
+
 
 static const struct async_module_info_t module_info[] =
 {   {disable}, INIT_CALLS(ASYNC_MODULE_INFO) {disable}};
@@ -216,9 +224,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
                 ptask = getTask(it_dependency->parent_id);
                 if (ptask == NULL)
                 {
-                    printk(KERN_ERR "async Dependency id %d not found for id %d\n",it_dependency->parent_id,it_dependency->task_id);
-                    //printk_debug("async %s MISSIG -- %s is BROKEN\n",module_name[it_dependency->parent_id],module_name[it_dependency->task_id]);
-//                    msleep(2000);
+                    printk(KERN_ERR "async Dependency id %d %s not found for id %d %s\n",it_dependency->parent_id,getName(it_dependency->parent_id),it_dependency->task_id,getName(it_dependency->task_id));
                 }
                 else
                 {
@@ -232,7 +238,6 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
             }
         }
         printk_debug("async registered '%pF' depends on %d tasks\n", it_task->fnc,atomic_read(&it_task->waiting_count));
-        //msleep(500);
     }
 }
 /*
@@ -280,17 +285,17 @@ void FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
                     ++release_end;
                     if (it_task->type == deferred && ptask->type == asynchronized)
                     {
-                        printk(KERN_ERR "async Child id %d will not released by parent id %d\n",it_dependency->task_id,it_dependency->parent_id);
+                        printk(KERN_ERR "async Child id %d %s will not released by parent id %d %s\n",it_dependency->task_id,getName(it_dependency->task_id),it_dependency->parent_id,getName(it_dependency->parent_id));
                     }
                     if (it_task > ptask)
                     {
-                        printk(KERN_ERR "async child id %d was registered before parent id %d\n",it_dependency->task_id,it_dependency->parent_id);
+                        printk(KERN_ERR "async child id %d %s was registered before parent id %d %s\n",it_dependency->task_id,getName(it_dependency->task_id),it_dependency->parent_id,getName(it_dependency->parent_id));
                     }
                     atomic_inc(&ptask->waiting_count);
                 }
             }
         }
-        printk_debug("async registered '%pF' release %d tasks\n", it_task->fnc,it_task->child_count);
+        printk_debug("async registered '%pF' %s release %d tasks\n", it_task->fnc,getName(it_task->id),it_task->child_count);
     }
 }
 /*
@@ -355,11 +360,40 @@ struct task_t* PeekTask(void)
     {
         if (atomic_read(&(*it_task)->waiting_count) == 0)
         {
-            if (test_and_set_bit(0,&(*it_task)->status) == 0) return *it_task;
+            if (test_and_clear_bit(0,&(*it_task)->status) == 1) return *it_task;
         }
     }
     return NULL;
 }
+
+/**
+ * Thread for version 2
+ */
+
+int ProcessThread2(void *data)
+{
+    int ret;
+    struct task_t* ptask = NULL;
+    printk_debug("async %d starts\n", (unsigned )data);
+    do
+    {
+        ret = wait_event_interruptible(list_wait, (ptask = PeekTask()) != NULL || tasks.task_last_done == tasks.task_last);
+        if (ret != 0)
+        {
+            printk("async init wake up returned %d\n", ret);
+            break;
+        }
+        if (ptask != NULL)
+        {
+            printk_debug("async %d %pF %s\n", (unsigned)data, ptask->fnc,getName(ptask->id));
+            do_one_initcall(ptask->fnc);
+            TaskDone2(ptask);
+        }
+    } while (ptask != 0);
+    printk_debug("async %d ends\n", (unsigned)data);
+    return 0;
+}
+
 
 /**
  * Prepare dependencies structure to process an specific type of task
@@ -452,8 +486,7 @@ struct task_t* TaskDone(struct task_t* ptask)
                     }
                     else
                     {
-                        printk("async Failed %pF does not release task %d\n",ptask->fnc,it_dependency->task_id);
-                        //printk_debug("async %s not release \n",module_name[it_dependency->task_id]);
+                        printk("async Failed %pF does not release task %d %s\n",ptask->fnc,it_dependency->task_id,getName(it_dependency->task_id));
                     }
                 }
             }

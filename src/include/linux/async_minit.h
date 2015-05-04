@@ -170,19 +170,19 @@
     \
     fnc(led_driver_init,deferred)     /* usbled.ko */ \
     \
+    fnc(uhid_init,deferred,ohci_platform_init)       /* uhid.ko */ \
+    \
+    fnc(hid_init,deferred,ohci_platform_init)       /**/ \
+    \
     fnc(hid_generic_init,deferred,hid_init,uhid_init) /**/ \
     \
     fnc(hid_generic,deferred,hid_init,uhid_init) /**/ \
-    \
-    fnc(hid_init,deferred,ohci_platform_init)       /**/ \
     \
     fnc(cherry_driver_init,deferred,hid_init,uhid_init)  /**/ \
     \
     fnc(chicony_driver_init,deferred,hid_init,uhid_init) /**/ \
     \
     fnc(usb_hid_init,deferred)  /* usbhid.ko */ \
-	\
-	fnc(uhid_init,deferred,ohci_platform_init)		 /* uhid.ko */ \
 	\
 	fnc(apple_driver_init,deferred,hid_init,uhid_init) /**/ \
 	\
@@ -242,17 +242,17 @@
     \
     fnc(b43legacy,deferred,hwrng_modinit)  /* b43legacy.ko */ \
     \
+    fnc(ioat_init_module,asynchronized)  /* ioatdma.ko */ \
+    \
     fnc(intel_rng_mod_init,deferred,hwrng_modinit)  /* intel-rng.ko */ \
+    \
+    fnc(acpi_video_init,asynchronized)  /* drivers/acpi/video.ko */ \
     \
     fnc(agp_init,asynchronized,ioat_init_module,acpi_video_init)  /* agpgart.ko */ \
     \
     fnc(drm_core_init,asynchronized,agp_init)  /* drm.ko */ \
     \
     fnc(uvm_init,asynchronized,nvidia_frontend_init_module)  /* nvidia-uvm.ko */ \
-    \
-    fnc(ioat_init_module,asynchronized)  /* ioatdma.ko */ \
-    \
-    fnc(acpi_video_init,asynchronized)  /* drivers/acpi/video.ko */ \
     \
     fnc(af_alg_init,deferred)  /* af_alg.ko */ \
     \
@@ -709,7 +709,7 @@ fnc(,asynchronized)  /**/ \
 #define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
 
 #define TASK_STRING(id)                   #id
-#define TASK_NAME(id,...)                 TASK_STRING(id)
+#define TASK_NAME(id,...)                 TASK_STRING(id),
 #define TASK_ID(id,...)                   id ## _id,
 #define TASK_TYPE(id,type,...)            type
 #define TASK_DEPENDS(id,type,...)         id,##__VA_ARGS__
