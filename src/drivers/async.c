@@ -102,7 +102,7 @@
     \
     fnc(lpc_ich_driver_init,asynchronized)  /* drivers/mfd/lpc_ich.c  chipset */\
     \
-    fnc(serial8250_init,asynchronized) /* drivers/tty/serial/8250/8250_core.c */ \
+    fnc(serial8250_init,deferred) /* drivers/tty/serial/8250/8250_core.c */ \
     \
     fnc(nforce2_driver_init,deferred) /* */ \
     \
@@ -548,7 +548,7 @@
     \
     fnc(i8042_init,deferred) /**/ \
     \
-    fnc(serial_pci_driver_init,asynchronized)  /* drivers/tty/serial/8250/8250_pci.c  chipset */ \
+    fnc(serial_pci_driver_init,deferred)  /* drivers/tty/serial/8250/8250_pci.c  chipset */ \
     \
     fnc(spi_gpio_driver_init,deferred) \
     \
@@ -791,13 +791,13 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 
 const char* getName(modules_e id)
 {
-#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+//#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
     static const char* const module_name[] =
     {   "",INIT_CALLS(TASK_NAME)};
     if (id > module_last)
         return "";
     return module_name[id];
-#endif
+//#endif
     return "";
 }
 
@@ -1088,7 +1088,7 @@ int  ProcessThread2(void *data)
  * Execute all initialization for an specific type
  * We need wait for everything done as a barrier to avoid problems
  */
-int  start_threads(task_type_t type,int(* thread_fnc) (void*) )
+int  start_threads(int(* thread_fnc) (void*) )
 {
     unsigned max_cpus = num_online_cpus();
     unsigned it;
@@ -1141,7 +1141,7 @@ static int  deferred_initialization(void)
         wait_event_interruptible(list_wait, (tasks.type_ == disable));
         tasks.type_ = deferred;
         Prepare2();
-        start_threads(deferred,ProcessThread2);
+        start_threads(ProcessThread2);
     }
     return 0;
 }
@@ -1178,9 +1178,8 @@ static const struct file_operations deferred_initcalls_fops = {
  */
 int async_module(void)
 {
-    FillTasks2(__async_initcall_start, __async_initcall_end);
     Prepare2();
-    start_threads(asynchronized, ProcessThread2);
+    start_threads(ProcessThread2);
     wait_event_interruptible(list_wait, (tasks.type_ == disable));
     return 0;
 }
@@ -1192,7 +1191,7 @@ int async_module(void)
 
 int async_init_thread(void* d)
 {
-    //return do_one_initcall(async_module);
+    return do_one_initcall(async_module);
     return 0;
 }
 
@@ -1203,10 +1202,11 @@ static int  async_initialization(void)
 {
     struct task_struct *thr;
     printk_debug("async started asynchronized\n");
+    FillTasks2(__async_initcall_start, __async_initcall_end);
     tasks.type_ = asynchronized;
-    //thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
-    //wake_up_process(thr);
-    async_module();
+    thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
+    wake_up_process(thr);
+    //async_module();
 
     return 0;
 }
