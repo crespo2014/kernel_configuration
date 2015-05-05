@@ -1147,7 +1147,7 @@ static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
        tmp[0] = '0';
        deferred_initialization();
        // wait for completion, any process that depends on driver can wait for this to complete
-       //wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
+       wait_event_interruptible(list_wait, (tasks.task_last_done == tasks.task_last));
    }
    len = min(nbytes, (size_t)3);
    ret = copy_to_user(buf, tmp, len);
@@ -1162,21 +1162,47 @@ static const struct file_operations deferred_initcalls_fops = {
 };
 
 /**
+ * Module initialization is taking a long time, more than any other.
+ * Module initialization and fist execution is going to be do from thread
+ */
+
+int async_init_thread(void* d)
+{
+    FillTasks2(__async_initcall_start, __async_initcall_end);
+    Prepare2(asynchronized);
+    start_threads(asynchronized,ProcessThread2);
+    return 0;
+}
+
+/**
  * First initialization of module. Disk diver and AGP  
  */
 static int  async_initialization(void)
 {
+    struct task_struct *thr;
     printk_debug("async started asynchronized\n");
-    proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
+    thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
+    wake_up_process(thr);
 
-    FillTasks2(__async_initcall_start, __async_initcall_end);
-    Prepare2(asynchronized);
-    start_threads(asynchronized,ProcessThread2);
+//    FillTasks2(__async_initcall_start, __async_initcall_end);
+//    Prepare2(asynchronized);
+//    start_threads(asynchronized,ProcessThread2);
 
     return 0;
 }
 
+/**
+ * Register proc entry to allow deferred initialization
+ */
+static int async_late_init(void)
+{
+    proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
+    // do we need to wait until async finish before allow user space start
+    //deferred_initialization();
+    return 0;
+}
+
 __initcall(async_initialization);
-//late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
+late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
 
 
