@@ -634,13 +634,15 @@
     fnc(libcrc32c_mod_init)  /* lib/libcrc32c.c  */ \
     \
     fnc(percpu_counter_startup)  /*  lib/percpu_counter.c  */ \
+    \
+    fnc(alsa_sound_last_init)
 
 
 #define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
 
 #define TASK_STRING(id)                   #id
 #define TASK_NAME(id,...)                 TASK_STRING(id),
-#define TASK_ID(id)                       id ## _id,
+#define TASK_ID(id,...)                   id ## _id,
 #define TASK_TYPE(id,type,...)            type
 #define TASK_DEPENDS(id,type,...)         id,##__VA_ARGS__
 #define ASYNC_MODULE_INFO(id,type,...)    {type},

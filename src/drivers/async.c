@@ -103,7 +103,7 @@
     \
     fnc(lpc_ich_driver_init,asynchronized)  /* drivers/mfd/lpc_ich.c  chipset */\
     \
-    fnc(serial8250_init,deferred) /* */ \
+    fnc(serial8250_init,deferred) /* drivers/tty/serial/8250/8250_core.c */ \
     \
     fnc(nforce2_driver_init,deferred) /* */ \
     \
@@ -685,6 +685,8 @@
     fnc(libcrc32c_mod_init,asynchronized)  /* lib/libcrc32c.c  */ \
     \
     fnc(percpu_counter_startup,asynchronized)  /*  lib/percpu_counter.c  */ \
+    \
+    fnc(alsa_sound_last_init,disable) /* sound/core/last.c */
 
 
 
