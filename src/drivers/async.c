@@ -62,6 +62,7 @@
 #include <linux/delay.h>
 #include <linux/kthread.h>  // for threads
 
+#define ALGORITM_2
 /**
  * Full list of module init functions call
  */
@@ -689,12 +690,8 @@
 
 #if 0
 
-
 fnc(,deferred),  /**/ \
 fnc(,deferred),  /**/ \
-
-
-
 
 
 fnc(,asynchronized)  /**/ \
@@ -998,12 +995,13 @@ void Prepare2(task_type_t type)
 {
     // Pick only task of type from all task
     struct task_t* it_task;
+    //
+    printk_debug("async Preparing ... \n");
 
     tasks.task_last = tasks.current_tasks;
     tasks.task_last_done = tasks.current_tasks;
     tasks.type_ = type;
-    //
-    printk_debug("async Preparing ... \n");
+
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
         if (it_task->type == type)
@@ -1012,6 +1010,7 @@ void Prepare2(task_type_t type)
             ++tasks.task_last;
         }
     }
+    printk_debug("async %d tasks \n",tasks.task_last - tasks.current_tasks);
 }
 /**
  * Mark task as done
@@ -1086,7 +1085,6 @@ int ProcessThread2(void *data)
     printk_debug("async %d ends\n", (unsigned)data);
     return 0;
 }
-
 
 /**
  * Prepare dependencies structure to process an specific type of task
@@ -1273,7 +1271,11 @@ int WorkingThread(void *data)
         if (ptask != NULL)
         {
             printk_debug("async %d %pF\n", (unsigned)data, ptask->fnc);
-            //msleep(2000);
+//            //msleep(2000);
+//            if (ptask->fnc() !=0 )
+//            {
+//                //disable all childs
+//            }
             do_one_initcall(ptask->fnc);
         }
         else
@@ -1296,7 +1298,7 @@ int WorkingThread(void *data)
  * Execute all initialization for an specific type
  * We need wait for everything done as a barrier to avoid problems
  */
-int doit_type(task_type_t type)
+int start_threads(task_type_t type,int(* thread_fnc) (void*) )
 {
     unsigned max_cpus = num_online_cpus();
     unsigned it;
@@ -1308,7 +1310,7 @@ int doit_type(task_type_t type)
     // validated cpu count
     if (max_cpus == 0)
         max_cpus = 1;
-    Prepare(type);
+
     if (tasks.idx_end == tasks.idx_list)
         return 0;
     // leave one thread free
@@ -1320,7 +1322,7 @@ int doit_type(task_type_t type)
     for (it=0; it < max_cpus;  ++it)
     {
         //start working threads
-        thr = kthread_create(WorkingThread, (void* )(it), "async thread");
+        thr = kthread_create(thread_fnc, (void* )(it), "async%d",it);
         if (thr != ERR_PTR(-ENOMEM))
         {
             kthread_bind(thr, it);
@@ -1329,7 +1331,7 @@ int doit_type(task_type_t type)
         else
         {
             printk("Async module initialization thread failed .. fall back to normal mode");
-            WorkingThread(NULL);
+            thread_fnc(NULL);
         }
     }
     return 0;
@@ -1347,10 +1349,17 @@ static int deferred_initialization(void)
     int old = atomic_xchg(&deferred_initcalls_done,1);
     if (old == 0)
     {
+        printk_debug("async started deferred\n");
+#ifndef ALGORITM_2
         // wait for async completion
         wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
-        printk_debug("async started deferred\n");
-        doit_type(deferred);
+        Prepare(deferred);
+        start_threads(deferred,WorkingThread);
+#else
+        wait_event_interruptible(list_wait, (tasks.task_last_done == tasks.task_last));
+        Prepare2(deferred);
+        start_threads(deferred,ProcessThread2);
+#endif
     }
     return 0;
 }
@@ -1368,7 +1377,7 @@ static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
        tmp[0] = '0';
        deferred_initialization();
        // wait for completion, any process that depends on driver can wait for this to complete
-       wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
+       //wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
    }
    len = min(nbytes, (size_t)3);
    ret = copy_to_user(buf, tmp, len);
@@ -1388,15 +1397,21 @@ static const struct file_operations deferred_initcalls_fops = {
 static int async_initialization(void)
 {
     printk_debug("async started asynchronized\n");
-    FillTasks(__async_initcall_start, __async_initcall_end);
-    // register in proc filesystem
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
-    doit_type(asynchronized);
+
+#ifndef ALGORITM_2
+    FillTasks(__async_initcall_start, __async_initcall_end);
+    Prepare(asynchronized);
+    start_threads(asynchronized,WorkingThread);
+#else
+    FillTasks2(__async_initcall_start, __async_initcall_end);
+    Prepare2(asynchronized);
+    start_threads(asynchronized,ProcessThread2);
+#endif
     return 0;
 }
 
-
 __initcall(async_initialization);
-late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
+//late_initcall_sync(deferred_initialization);		// Second stage, last to do before jump to high level initialization
 
 
