@@ -947,7 +947,7 @@ void  FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
                 ptask = getTask(it_dependency->task_id);
                 if (ptask == NULL)
                 {
-                    printk(KERN_ERR "async Child id %d not found for parent id %d\n",it_dependency->task_id,it_dependency->parent_id);
+                    printk(KERN_ERR "async Child id %d %s not found for parent id %d %s\n",it_dependency->task_id,getName(it_dependency->task_id),it_dependency->parent_id,getName(it_dependency->parent_id));
                 }
                 else
                 {
