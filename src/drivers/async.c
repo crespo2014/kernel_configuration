@@ -819,7 +819,7 @@ static const struct dependency_t /*__initconst*/ module_depends[] =
  */
 struct task_t
 {
-    task_type_t type;        //
+    task_type_t type;        // type that we are processing when disable means nothing
     modules_e id;           // idx in string table
     initcall_t fnc;         // ptr to init function
     atomic_t waiting_count; // how many task does it depend on
@@ -973,7 +973,7 @@ void  FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
 /*
  * Prepare pointers to task do not use index
  */
-void  Prepare2(task_type_t type)
+void  Prepare2(void)
 {
     // Pick only task of type from all task
     struct task_t* it_task;
@@ -982,11 +982,10 @@ void  Prepare2(task_type_t type)
 
     tasks.task_last = tasks.current_tasks;
     tasks.task_last_done = tasks.current_tasks;
-    tasks.type_ = type;
 
     for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
     {
-        if (it_task->type == type)
+        if (it_task->type == tasks.type_)
         {
             *tasks.task_last  = it_task;
             ++tasks.task_last;
@@ -1026,7 +1025,10 @@ void  TaskDone2(struct task_t* ptask)
 
     // Check for end condition
     if (tasks.task_last_done == tasks.task_last)
+    {
+        tasks.type_ = disable;
         wake_up_interruptible_all(&list_wait);
+    }
 }
 
 /*
@@ -1056,7 +1058,7 @@ int  ProcessThread2(void *data)
     printk_debug("async %d starts\n", (unsigned )data);
     do
     {
-        ret = wait_event_interruptible(list_wait, (ptask = PeekTask()) != NULL || tasks.task_last_done == tasks.task_last);
+        ret = wait_event_interruptible(list_wait, (ptask = PeekTask()) != NULL || tasks.type_ != disable);
         if (ret != 0)
         {
             printk("async init wake up returned %d\n", ret);
@@ -1065,7 +1067,8 @@ int  ProcessThread2(void *data)
         if (ptask != NULL)
         {
             printk_debug("async %d %pF %s\n", (unsigned)data, ptask->fnc,getName(ptask->id));
-            do_one_initcall(ptask->fnc);
+            ret = do_one_initcall(ptask->fnc);
+            //TODO check return code and invalidate all task that depends on this one
             TaskDone2(ptask);
         }
     } while (ptask != 0);
@@ -1127,8 +1130,9 @@ static int  deferred_initialization(void)
     if (old == 0)
     {
         printk_debug("async started deferred\n");
-        wait_event_interruptible(list_wait, (tasks.task_last_done == tasks.task_last));
-        Prepare2(deferred);
+        wait_event_interruptible(list_wait, (tasks.type_ == disable));
+        tasks.type_ = deferred;
+        Prepare2();
         start_threads(deferred,ProcessThread2);
     }
     return 0;
@@ -1147,7 +1151,7 @@ static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
        tmp[0] = '0';
        deferred_initialization();
        // wait for completion, any process that depends on driver can wait for this to complete
-       wait_event_interruptible(list_wait, (tasks.task_last_done == tasks.task_last));
+       wait_event_interruptible(list_wait, (tasks.type_ == disable));
    }
    len = min(nbytes, (size_t)3);
    ret = copy_to_user(buf, tmp, len);
@@ -1162,16 +1166,24 @@ static const struct file_operations deferred_initcalls_fops = {
 };
 
 /**
+ * Keeping registration of this initcall
+ */
+int async_module(void)
+{
+    FillTasks2(__async_initcall_start, __async_initcall_end);
+    Prepare2();
+    start_threads(asynchronized, ProcessThread2);
+    return 0;
+}
+
+/**
  * Module initialization is taking a long time, more than any other.
  * Module initialization and fist execution is going to be do from thread
  */
 
 int async_init_thread(void* d)
 {
-    FillTasks2(__async_initcall_start, __async_initcall_end);
-    Prepare2(asynchronized);
-    start_threads(asynchronized,ProcessThread2);
-    return 0;
+    return do_one_initcall(async_module);
 }
 
 /**
@@ -1181,6 +1193,7 @@ static int  async_initialization(void)
 {
     struct task_struct *thr;
     printk_debug("async started asynchronized\n");
+    tasks.type_ = asynchronized;
     thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
     wake_up_process(thr);
 
@@ -1196,8 +1209,9 @@ static int  async_initialization(void)
  */
 static int async_late_init(void)
 {
+    // wait for async initialization to allow disk driver be ready
+    wait_event_interruptible(list_wait, (tasks.type_ == disable));
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
-    // do we need to wait until async finish before allow user space start
     //deferred_initialization();
     return 0;
 }
