@@ -803,13 +803,13 @@ const char* getName(modules_e id)
 }
 
 
-static const struct async_module_info_t module_info[] =
+static const struct async_module_info_t /*__initconst*/ module_info[] =
 {   {disable}, INIT_CALLS(ASYNC_MODULE_INFO) {disable}};
 
 /**
  * Dependencies list is declared next
  */
-static const struct dependency_t module_depends[] =
+static const struct dependency_t /*__initconst*/ module_depends[] =
 { INIT_CALLS(DEPENDS_BUILD) };
 
 
@@ -878,7 +878,7 @@ inline struct task_t* getWaitingTask(modules_e id)
  * 0 - false
  * 1 - true
  */
-unsigned doesDepends(modules_e child, modules_e parent)
+unsigned  doesDepends(modules_e child, modules_e parent)
 {
     const struct dependency_t * it_dependency;
     for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
@@ -891,7 +891,7 @@ unsigned doesDepends(modules_e child, modules_e parent)
 /*
  * Read all information from static mmeory an expand it to dynamic memory
  */
-void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
+void  FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 {
     const struct dependency_t *it_dependency;
     struct init_fn_t* it_init_fnc;
@@ -935,7 +935,7 @@ void FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
 /*
  * Prepare task to be done using task pointer list
  */
-void FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
+void  FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
 {
     const struct dependency_t *it_dependency;
     struct init_fn_t* it_init_fnc;
@@ -993,7 +993,7 @@ void FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
 /*
  * Prepare pointers to task do not use index
  */
-void Prepare2(task_type_t type)
+void  Prepare2(task_type_t type)
 {
     // Pick only task of type from all task
     struct task_t* it_task;
@@ -1011,13 +1011,18 @@ void Prepare2(task_type_t type)
             *tasks.task_last  = it_task;
             ++tasks.task_last;
         }
+        else
+            if (it_task->type == disable)
+            {
+                printk(KERN_ERR "async task id %d %s is disable \n",it_task->id,getName(it_task->id));
+            }
     }
     printk_debug("async %d tasks \n",tasks.task_last - tasks.current_tasks);
 }
 /**
  * Mark task as done
  */
-void TaskDone2(struct task_t* ptask)
+void  TaskDone2(struct task_t* ptask)
 {
     struct task_t** it_task;
     unsigned i;
@@ -1047,7 +1052,7 @@ void TaskDone2(struct task_t* ptask)
 /*
  * Try to get a task ready to run
  */
-struct task_t* PeekTask(void)
+struct task_t*  PeekTask(void)
 {
     struct task_t** it_task;
     for (it_task = tasks.task_last_done;it_task != tasks.task_last;++it_task)
@@ -1064,7 +1069,7 @@ struct task_t* PeekTask(void)
  * Thread for version 2
  */
 
-int ProcessThread2(void *data)
+int  ProcessThread2(void *data)
 {
     int ret;
     struct task_t* ptask = NULL;
@@ -1091,7 +1096,7 @@ int ProcessThread2(void *data)
 /**
  * Prepare dependencies structure to process an specific type of task
  */
-void Prepare(task_type_t type)
+void  Prepare(task_type_t type)
 {
     // Pick only task of type from all task
     struct task_t* it_task;
@@ -1137,7 +1142,7 @@ void Prepare(task_type_t type)
  * Get a task from the list for execution
  * nullptr - no more task available
  */
-struct task_t* TaskDone(struct task_t* ptask)
+struct task_t*  TaskDone(struct task_t* ptask)
 {
     const struct dependency_t * it_dependency;
     struct task_t* child_task;
@@ -1262,7 +1267,7 @@ struct task_t* TaskDone(struct task_t* ptask)
     return ptask;
 }
 
-int WorkingThread(void *data)
+int  WorkingThread(void *data)
 {
     int ret;
     struct task_t* ptask = NULL;
@@ -1300,7 +1305,7 @@ int WorkingThread(void *data)
  * Execute all initialization for an specific type
  * We need wait for everything done as a barrier to avoid problems
  */
-int start_threads(task_type_t type,int(* thread_fnc) (void*) )
+int  start_threads(task_type_t type,int(* thread_fnc) (void*) )
 {
     unsigned max_cpus = num_online_cpus();
     unsigned it;
@@ -1346,7 +1351,7 @@ int start_threads(task_type_t type,int(* thread_fnc) (void*) )
  *
  */
 static atomic_t deferred_initcalls_done = ATOMIC_INIT(0);
-static int deferred_initialization(void)
+static int  deferred_initialization(void)
 {
     int old = atomic_xchg(&deferred_initcalls_done,1);
     if (old == 0)
@@ -1396,7 +1401,7 @@ static const struct file_operations deferred_initcalls_fops = {
 /**
  * First initialization of module. Disk diver and AGP  
  */
-static int async_initialization(void)
+static int  async_initialization(void)
 {
     printk_debug("async started asynchronized\n");
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);

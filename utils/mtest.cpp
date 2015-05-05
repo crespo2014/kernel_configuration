@@ -112,6 +112,8 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 
 #define min(a,b)    (a <b) ? a :b
 
+#define __init
+
 struct file
 {
 
