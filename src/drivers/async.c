@@ -62,7 +62,6 @@
 #include <linux/delay.h>
 #include <linux/kthread.h>  // for threads
 
-#define ALGORITM_2
 /**
  * Full list of module init functions call
  */
@@ -832,12 +831,6 @@ struct task_t
 // TODO join together all task with taskid table to allow dynamic allocation
 struct task_list_t
 {
-    task_type_t type_;              // current type in processing
-    unsigned idx_list[MAX_TASKS];   // list of task to be execute
-    unsigned *waiting_last;  // last task waiting to be release
-    unsigned *ready_last;    // last task to be execute
-    unsigned *running_last;  // the last task running
-    unsigned *idx_end;      // number of idx on list
     struct task_t all[MAX_TASKS];       // full list of task
     struct task_t* task_end;
     struct task_t* current_tasks[MAX_TASKS];        // list of actived task
@@ -858,20 +851,6 @@ struct task_t* getTask(modules_e id)
 
 static DEFINE_SPINLOCK(list_lock);
 static DECLARE_WAIT_QUEUE_HEAD( list_wait);
-
-/**
- * Find the waiting task on the list
- */
-inline struct task_t* getWaitingTask(modules_e id)
-{
-    unsigned *it_idx;
-    for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
-    {
-        if (tasks.all[*it_idx].id == id)
-            return tasks.all + *it_idx;
-    }
-    return NULL;
-}
 
 /**
  * Check if one task depends on another
@@ -1094,214 +1073,6 @@ int  ProcessThread2(void *data)
 }
 
 /**
- * Prepare dependencies structure to process an specific type of task
- */
-void  Prepare(task_type_t type)
-{
-    // Pick only task of type from all task
-    struct task_t* it_task;
-	unsigned *it_idx1;
-	unsigned *it_idx2;
-	unsigned id;
-	tasks.idx_end = tasks.idx_list;
-	tasks.type_ = type;
-    //
-	printk_debug("async Preparing ... \n");
-    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
-    {
-        if (it_task->type == type)
-        {
-			*tasks.idx_end  = it_task - tasks.all;
-            ++tasks.idx_end;
-        }
-    }
-    tasks.ready_last = tasks.idx_end;
-    tasks.waiting_last = tasks.idx_end;
-    tasks.running_last = tasks.idx_end;
-    // jump waiting task
-    it_idx1 = tasks.idx_list;
-    while (it_idx1 != tasks.idx_end && atomic_read(&tasks.all[*it_idx1].waiting_count) != 0)
-        ++it_idx1;
-    for (it_idx2 = it_idx1 + 1; it_idx2 < tasks.idx_end; ++it_idx2)
-    {
-        //move waiting task to front
-        if (atomic_read(&tasks.all[*it_idx2].waiting_count) != 0)
-        {
-            id = *it_idx2;
-            *it_idx2 = *it_idx1;
-            *it_idx1 = id;
-            ++it_idx1;
-        }
-    }
-    tasks.waiting_last = it_idx1;
-    printk_debug("async %d tasks \n",tasks.idx_end - tasks.idx_list);
-}
-
-/**
- * Mark task as done and get
- * Get a task from the list for execution
- * nullptr - no more task available
- */
-struct task_t*  TaskDone(struct task_t* ptask)
-{
-    const struct dependency_t * it_dependency;
-    struct task_t* child_task;
-    unsigned* it_idx;
-    unsigned* it_idx2;
-    unsigned idx;
-     unsigned wake_count = 0;     // how many task has been wake up bool indicated a wake up is necessary
-    // nothing in the list
-    if (tasks.running_last == tasks.idx_list)
-        return 0;
-    //lock
-    spin_lock(&list_lock);
-    if (ptask != 0)
-    {
-        // move to done list
-        for (it_idx = tasks.ready_last; it_idx < tasks.running_last; ++it_idx)
-        {
-            if (tasks.all + *it_idx == ptask)
-            {
-                // bring down a task to do
-                --tasks.running_last;
-                *it_idx = *tasks.running_last;
-                break;
-            }
-        }
-        // release child tasks
-        if (ptask->child_count)
-        {
-            // find parent task on dependency list
-            for (it_dependency = module_depends;ptask->child_count != 0 &&  it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
-            {
-                if (it_dependency->parent_id == ptask->id)
-                {
-                    child_task = getTask(it_dependency->task_id);
-                    if (child_task != 0)
-                    {
-                    atomic_dec(&child_task->waiting_count);
-                    --ptask->child_count;
-                    }
-                    else
-                    {
-                        printk("async Failed %pF does not release task %d %s\n",ptask->fnc,it_dependency->task_id,getName(it_dependency->task_id));
-                    }
-                }
-            }
-            //check for missing child
-            if (ptask->child_count != 0)
-                printk("async Failed to release all childs\n");
-
-            // move waiting task to ready list if necessary
-            for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;)
-            {
-                // move to running list if not waiting
-                if (atomic_read(&tasks.all[*it_idx].waiting_count) == 0)
-                {
-                    --tasks.waiting_last;
-                    idx = *tasks.waiting_last;
-                    *tasks.waiting_last = *it_idx;
-                    *it_idx = idx;
-                    ++wake_count;
-                }
-                else
-                    ++it_idx;
-            }
-        }
-    }
-    // check if not running task and not pending one
-    if (tasks.running_last == tasks.waiting_last)
-    {
-        if (tasks.waiting_last != tasks.idx_list)
-        {
-            printk(KERN_EMERG "async Failed some tasks was not released\n");
-            for (it_idx = tasks.idx_list;it_idx != tasks.waiting_last;++it_idx)
-            {
-                printk(KERN_EMERG "async Failed id %d task %pF waiting for %d tasks\n",*it_idx,tasks.all[*it_idx].fnc,atomic_read(&tasks.all[*it_idx].waiting_count));
-            }
-        }
-        tasks.waiting_last = tasks.idx_list;
-    }
-    // pick a new task
-    ptask = 0;
-    if (tasks.waiting_last != tasks.ready_last)
-    {
-        // find the lower id task available
-        it_idx2 = tasks.waiting_last;
-        // check ready list
-        for (it_idx = tasks.waiting_last+1;it_idx != tasks.ready_last;++it_idx)
-        {
-            // pick the lower index to task table
-            if (*it_idx < *it_idx2)
-            {
-                it_idx2 = it_idx;
-            }
-        }
-        --tasks.ready_last;
-        idx = *it_idx2;
-        *it_idx2 = *tasks.ready_last;
-        *tasks.ready_last = idx;
-        ptask = tasks.all + *tasks.ready_last;
-    }
-    // check for waked up tasks, more than one will trigger
-    if (wake_count  < 2)
-    {
-        wake_count = 0;
-    }
-    // all tasks done
-    if (tasks.running_last == tasks.idx_list)
-    {
-        printk_debug("async all done\n");
-        wake_count = 1;
-    }
-    // spin unlock
-    spin_unlock(&list_lock);
-    // all task done at last stage release all data
-    if (tasks.running_last == tasks.idx_list && tasks.type_ == deferred)
-    {
-        // free task structure not sure threads use it
-        //free_initmem(); //do not doit until deferred
-    }
-    if (wake_count != 0)
-        wake_up_interruptible_all(&list_wait);
-    return ptask;
-}
-
-int  WorkingThread(void *data)
-{
-    int ret;
-    struct task_t* ptask = NULL;
-    printk_debug("async %d starts\n", (unsigned)data);
-    do
-    {
-        ptask = TaskDone(ptask);
-        if (ptask != NULL)
-        {
-            printk_debug("async %d %pF\n", (unsigned)data, ptask->fnc);
-//            //msleep(2000);
-//            if (ptask->fnc() !=0 )
-//            {
-//                //disable all childs
-//            }
-            do_one_initcall(ptask->fnc);
-        }
-        else
-        {
-            printk_debug("async %d waiting ...\n", (unsigned)data);
-            ret = wait_event_interruptible(list_wait, (tasks.ready_last != tasks.waiting_last || tasks.ready_last == tasks.idx_list));
-            if (ret != 0)
-            {
-                printk("async init wake up returned %d\n", ret);
-                break;
-            }
-        }
-        // loop again if a task was done or something can be done
-    } while (ptask != 0 || tasks.ready_last != tasks.idx_list);
-    printk_debug("async %d ends\n", (unsigned)data);
-    return 0;
-}
-
-/**
  * Execute all initialization for an specific type
  * We need wait for everything done as a barrier to avoid problems
  */
@@ -1318,8 +1089,6 @@ int  start_threads(task_type_t type,int(* thread_fnc) (void*) )
     if (max_cpus == 0)
         max_cpus = 1;
 
-    if (tasks.idx_end == tasks.idx_list)
-        return 0;
     // leave one thread free
     if (type == deferred &&  max_cpus > 1)
     {
@@ -1357,16 +1126,9 @@ static int  deferred_initialization(void)
     if (old == 0)
     {
         printk_debug("async started deferred\n");
-#ifndef ALGORITM_2
-        // wait for async completion
-        wait_event_interruptible(list_wait, (tasks.running_last == tasks.idx_list));
-        Prepare(deferred);
-        start_threads(deferred,WorkingThread);
-#else
         wait_event_interruptible(list_wait, (tasks.task_last_done == tasks.task_last));
         Prepare2(deferred);
         start_threads(deferred,ProcessThread2);
-#endif
     }
     return 0;
 }
@@ -1406,15 +1168,10 @@ static int  async_initialization(void)
     printk_debug("async started asynchronized\n");
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
 
-#ifndef ALGORITM_2
-    FillTasks(__async_initcall_start, __async_initcall_end);
-    Prepare(asynchronized);
-    start_threads(asynchronized,WorkingThread);
-#else
     FillTasks2(__async_initcall_start, __async_initcall_end);
     Prepare2(asynchronized);
     start_threads(asynchronized,ProcessThread2);
-#endif
+
     return 0;
 }
 
