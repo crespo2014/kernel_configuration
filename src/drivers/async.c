@@ -1173,6 +1173,7 @@ int async_module(void)
     FillTasks2(__async_initcall_start, __async_initcall_end);
     Prepare2();
     start_threads(asynchronized, ProcessThread2);
+    wait_event_interruptible(list_wait, (tasks.type_ == disable));
     return 0;
 }
 
