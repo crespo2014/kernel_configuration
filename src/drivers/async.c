@@ -833,10 +833,11 @@ struct task_list_t
 {
     struct task_t all[MAX_TASKS];       // full list of task
     struct task_t* task_end;
-    struct task_t* current_tasks[MAX_TASKS];        // list of actived task
+    task_type_t     type_;
+    struct task_t*  current_tasks[MAX_TASKS];        // list of actived task
     struct task_t** task_last_done;      // first task to be done
     struct task_t** task_last;           // one pass last task to be done
-    struct task_t* childs[sizeof(module_depends)/sizeof(*module_depends)];  //  list of child to be relase ordered by parent
+    struct task_t*  childs[sizeof(module_depends)/sizeof(*module_depends)];  //  list of child to be relase ordered by parent
 };
 
 static struct task_list_t tasks;
