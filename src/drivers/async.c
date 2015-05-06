@@ -1191,7 +1191,22 @@ int async_module(void)
 
 int async_init_thread(void* d)
 {
-    return do_one_initcall(async_module);
+    return async_module();
+//    return do_one_initcall(async_module);
+//    return 0;
+}
+
+/**
+ * Do an normal initialization
+ */
+int async_default_initialization(void* d)
+{
+    int ret;
+    struct init_fn_t* it_init_fnc;
+    for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
+    {
+        ret = do_one_initcall(it_init_fnc->fnc);
+    }
     return 0;
 }
 
@@ -1202,6 +1217,10 @@ static int  async_initialization(void)
 {
     struct task_struct *thr;
     printk_debug("async started asynchronized\n");
+    //thr = kthread_create(async_default_initialization, (void* )(0), "async_init_thread");
+    //wake_up_process(thr);
+    //async_default_initialization(0);
+
     FillTasks2(__async_initcall_start, __async_initcall_end);
     tasks.type_ = asynchronized;
     thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
@@ -1218,12 +1237,12 @@ static int async_late_init(void)
 {
     // wait for async initialization to allow disk driver be ready
     wait_event_interruptible(list_wait, (tasks.type_ == disable));
-    proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
+    //proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     //deferred_initialization();
     return 0;
 }
 
 __initcall(async_initialization);
-late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
+//late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
 
 
