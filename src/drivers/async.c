@@ -1125,53 +1125,7 @@ int  start_threads(int(* thread_fnc) (void*) )
     return 0;
 }
 
-/**
- * Second initialization USB devices, some PCI
- *
- *     int test_and_clear_bit(int nr, void *addr)
- *
- */
-static atomic_t deferred_initcalls_done = ATOMIC_INIT(0);
-static int  deferred_initialization(void)
-{
-    int old = atomic_xchg(&deferred_initcalls_done,1);
-    if (old == 0)
-    {
-        printk_debug("async started deferred\n");
-        wait_event_interruptible(list_wait, (tasks.type_ == disable));
-        tasks.type_ = deferred;
-        Prepare2();
-        start_threads(ProcessThread2);
-    }
-    return 0;
-}
 
-static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
-{
-   int len, ret;
-   char tmp[3] = "1\n";
-
-   if (*ppos >= 3)
-       return 0;
-
-   // if offset != 0
-   if (!(*ppos)) {
-       tmp[0] = '0';
-       deferred_initialization();
-       // wait for completion, any process that depends on driver can wait for this to complete
-       wait_event_interruptible(list_wait, (tasks.type_ == disable));
-   }
-   len = min(nbytes, (size_t)3);
-   ret = copy_to_user(buf, tmp, len);
-   if (ret)
-       return -EFAULT;
-   *ppos += len;
-   return len;
-}
-
-static const struct file_operations deferred_initcalls_fops = {
-   .read           = deferred_initcalls_read_proc,
-};
 
 /**
  * Keeping registration of this initcall
@@ -1205,8 +1159,10 @@ int async_default_initialization(void* d)
     struct init_fn_t* it_init_fnc;
     for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
     {
-        ret = do_one_initcall(it_init_fnc->fnc);
+        if (module_info[it_init_fnc->id].type_ == tasks.type_)
+            ret = do_one_initcall(it_init_fnc->fnc);
     }
+    tasks.type_ = disable;
     return 0;
 }
 
@@ -1217,18 +1173,68 @@ static int  async_initialization(void)
 {
     struct task_struct *thr;
     printk_debug("async started asynchronized\n");
-    //thr = kthread_create(async_default_initialization, (void* )(0), "async_init_thread");
-    //wake_up_process(thr);
+    tasks.type_ = asynchronized;
+    thr = kthread_create(async_default_initialization, (void* )(0), "async_init_thread");
+    wake_up_process(thr);
     //async_default_initialization(0);
 
-    FillTasks2(__async_initcall_start, __async_initcall_end);
-    tasks.type_ = asynchronized;
-    thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
-    wake_up_process(thr);
+//    FillTasks2(__async_initcall_start, __async_initcall_end);
+//
+//    thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
+//    wake_up_process(thr);
     //async_module();
 
     return 0;
 }
+
+/**
+ * Second initialization USB devices, some PCI
+ *
+ *     int test_and_clear_bit(int nr, void *addr)
+ *
+ */
+static atomic_t deferred_initcalls_done = ATOMIC_INIT(0);
+static int  deferred_initialization(void)
+{
+    int old = atomic_xchg(&deferred_initcalls_done,1);
+    if (old == 0)
+    {
+        printk_debug("async started deferred\n");
+        wait_event_interruptible(list_wait, (tasks.type_ == disable));
+        tasks.type_ = deferred;
+        async_default_initialization(0);
+        //Prepare2();
+        //start_threads(ProcessThread2);
+    }
+    return 0;
+}
+
+static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
+{
+   int len, ret;
+   char tmp[3] = "1\n";
+
+   if (*ppos >= 3)
+       return 0;
+
+   // if offset != 0
+   if (!(*ppos)) {
+       tmp[0] = '0';
+       deferred_initialization();
+       // wait for completion, any process that depends on driver can wait for this to complete
+       wait_event_interruptible(list_wait, (tasks.type_ == disable));
+   }
+   len = min(nbytes, (size_t)3);
+   ret = copy_to_user(buf, tmp, len);
+   if (ret)
+       return -EFAULT;
+   *ppos += len;
+   return len;
+}
+
+static const struct file_operations deferred_initcalls_fops = {
+   .read           = deferred_initcalls_read_proc,
+};
 
 /**
  * Register proc entry to allow deferred initialization
@@ -1236,13 +1242,14 @@ static int  async_initialization(void)
 static int async_late_init(void)
 {
     // wait for async initialization to allow disk driver be ready
-    wait_event_interruptible(list_wait, (tasks.type_ == disable));
-    //proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
+    //wait_event_interruptible(list_wait, (tasks.type_ == disable));
+    proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     //deferred_initialization();
     return 0;
 }
 
 __initcall(async_initialization);
-//late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
+//late_initcall_sync(async_initialization);
+late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
 
 
