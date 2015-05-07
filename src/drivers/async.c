@@ -1200,7 +1200,9 @@ static int  deferred_initialization(void)
     if (old == 0)
     {
         printk_debug("async started deferred\n");
-        wait_event_interruptible(list_wait, (tasks.type_ == disable));
+        //wait_event_interruptible(list_wait, (tasks.type_ == disable));
+        tasks.type_ = asynchronized;
+        async_default_initialization(0);
         tasks.type_ = deferred;
         async_default_initialization(0);
         //Prepare2();
@@ -1248,7 +1250,7 @@ static int async_late_init(void)
     return 0;
 }
 
-__initcall(async_initialization);
+//__initcall(async_initialization);
 //late_initcall_sync(async_initialization);
 late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
 
