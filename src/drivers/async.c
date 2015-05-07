@@ -685,7 +685,12 @@
     \
     fnc(percpu_counter_startup,asynchronized)  /*  lib/percpu_counter.c  */ \
     \
-    fnc(alsa_sound_last_init,disable) /* sound/core/last.c */
+    fnc(alsa_sound_last_init,disable) /* sound/core/last.c */ \
+    \
+    fnc(pcips2_driver_init,asynchronized) /* drivers/input/serio/pcips2.c */ \
+    \
+    fnc(sermouse_drv_init,asynchronized)  /* drivers/input/mouse/sermouse.c */ \
+
 
 
 
@@ -1166,6 +1171,11 @@ int async_default_initialization(void* d)
     return 0;
 }
 
+inline void wait_(void)
+{
+    wait_event_interruptible(list_wait, (tasks.type_ == disable));
+}
+
 /**
  * First initialization of module. Disk diver and AGP  
  */
@@ -1200,9 +1210,7 @@ static int  deferred_initialization(void)
     if (old == 0)
     {
         printk_debug("async started deferred\n");
-        //wait_event_interruptible(list_wait, (tasks.type_ == disable));
-        tasks.type_ = asynchronized;
-        async_default_initialization(0);
+        wait_();
         tasks.type_ = deferred;
         async_default_initialization(0);
         //Prepare2();
@@ -1223,8 +1231,7 @@ static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,
    if (!(*ppos)) {
        tmp[0] = '0';
        deferred_initialization();
-       // wait for completion, any process that depends on driver can wait for this to complete
-       wait_event_interruptible(list_wait, (tasks.type_ == disable));
+       wait_();
    }
    len = min(nbytes, (size_t)3);
    ret = copy_to_user(buf, tmp, len);
@@ -1243,14 +1250,12 @@ static const struct file_operations deferred_initcalls_fops = {
  */
 static int async_late_init(void)
 {
-    // wait for async initialization to allow disk driver be ready
-    //wait_event_interruptible(list_wait, (tasks.type_ == disable));
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     //deferred_initialization();
     return 0;
 }
 
-//__initcall(async_initialization);
+__initcall(async_initialization);
 //late_initcall_sync(async_initialization);
 late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
 

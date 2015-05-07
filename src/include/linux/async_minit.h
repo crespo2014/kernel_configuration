@@ -635,7 +635,11 @@
     \
     fnc(percpu_counter_startup)  /*  lib/percpu_counter.c  */ \
     \
-    fnc(alsa_sound_last_init)
+    fnc(alsa_sound_last_init) \
+    \
+    fnc(pcips2_driver_init) /* drivers/input/serio/pcips2.c */ \
+    \
+    fnc(sermouse_drv_init)
 
 
 #define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
