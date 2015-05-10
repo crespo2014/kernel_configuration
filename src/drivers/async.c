@@ -690,6 +690,8 @@
     fnc(pcips2_driver_init,asynchronized) /* drivers/input/serio/pcips2.c */ \
     \
     fnc(sermouse_drv_init,asynchronized)  /* drivers/input/mouse/sermouse.c */ \
+    \
+    fnc(serio_raw_drv_init,asynchronized) /* drivers/input/serio/serio_raw.c*/ \
 
 
 

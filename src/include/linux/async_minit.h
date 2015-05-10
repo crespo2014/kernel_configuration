@@ -639,7 +639,10 @@
     \
     fnc(pcips2_driver_init) /* drivers/input/serio/pcips2.c */ \
     \
-    fnc(sermouse_drv_init)
+    fnc(sermouse_drv_init) \
+    \
+    fnc(serio_raw_drv_init) \
+
 
 
 #define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
