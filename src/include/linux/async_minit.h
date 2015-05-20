@@ -642,6 +642,12 @@
     fnc(sermouse_drv_init) \
     \
     fnc(serio_raw_drv_init) \
+    \
+    fnc(oprofile_init) \
+    \
+    fnc(add_pcspkr) \
+    \
+    fnc(acpi_smb_hc_driver_init)
 
 
 

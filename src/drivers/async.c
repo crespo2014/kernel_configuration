@@ -692,6 +692,12 @@
     fnc(sermouse_drv_init,asynchronized)  /* drivers/input/mouse/sermouse.c */ \
     \
     fnc(serio_raw_drv_init,asynchronized) /* drivers/input/serio/serio_raw.c*/ \
+    \
+    fnc(oprofile_init,asynchronized)    /* oprofile/oprof.c */ \
+    \
+    fnc(add_pcspkr,deferred)    /* arch/x86/kernel/pcspeaker.c */ \
+    \
+    fnc(acpi_smb_hc_driver_init,deferred)
 
 
 
@@ -1183,11 +1189,11 @@ inline void wait_(void)
  */
 static int  async_initialization(void)
 {
-    struct task_struct *thr;
-    printk_debug("async started asynchronized\n");
-    tasks.type_ = asynchronized;
-    thr = kthread_create(async_default_initialization, (void* )(0), "async_init_thread");
-    wake_up_process(thr);
+//    struct task_struct *thr;
+//    printk_debug("async started asynchronized\n");
+//    tasks.type_ = asynchronized;
+//    thr = kthread_create(async_default_initialization, (void* )(0), "async_init_thread");
+//    wake_up_process(thr);
     //async_default_initialization(0);
 
 //    FillTasks2(__async_initcall_start, __async_initcall_end);
@@ -1212,39 +1218,34 @@ static int  deferred_initialization(void)
     if (old == 0)
     {
         printk_debug("async started deferred\n");
+        tasks.type_ = asynchronized;
+        async_default_initialization(0);
         wait_();
         tasks.type_ = deferred;
         async_default_initialization(0);
+        wait_();
         //Prepare2();
         //start_threads(ProcessThread2);
     }
     return 0;
 }
 
+int device_open(struct inode * i, struct file * f)
+{
+    deferred_initialization();
+    return 0;
+}
+
 static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
-   int len, ret;
-   char tmp[3] = "1\n";
-
-   if (*ppos >= 3)
-       return 0;
-
-   // if offset != 0
-   if (!(*ppos)) {
-       tmp[0] = '0';
-       deferred_initialization();
-       wait_();
-   }
-   len = min(nbytes, (size_t)3);
-   ret = copy_to_user(buf, tmp, len);
-   if (ret)
-       return -EFAULT;
-   *ppos += len;
-   return len;
+    // nothing to read
+   deferred_initialization();
+   return 0;
 }
 
 static const struct file_operations deferred_initcalls_fops = {
-   .read           = deferred_initcalls_read_proc,
+   .open = device_open, //
+   .read = deferred_initcalls_read_proc,
 };
 
 /**
@@ -1253,7 +1254,6 @@ static const struct file_operations deferred_initcalls_fops = {
 static int async_late_init(void)
 {
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
-    //deferred_initialization();
     return 0;
 }
 
