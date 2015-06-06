@@ -1138,7 +1138,38 @@ int  start_threads(int(* thread_fnc) (void*) )
     return 0;
 }
 
+static atomic_t init_done = ATOMIC_INIT(0);
 
+extern atomic_t  free_init_ref;
+
+/*
+ * Do all initialization by default way
+ */
+int doall_default(void* d)
+{
+    int old = atomic_xchg(&init_done, 1);
+    if (old == 0)
+    {
+        int ret;
+        struct init_fn_t* it_init_fnc;
+        for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
+        {
+            ret = do_one_initcall(it_init_fnc->fnc);
+        }
+        tasks.type_ = disable;
+    }
+    if (atomic_dec_and_test(&free_init_ref) )
+          free_initmem();
+    return 0;
+}
+
+/*
+ * wait for all task to be done
+ */
+inline void wait_(void)
+{
+    wait_event_interruptible(list_wait, (tasks.type_ == disable));
+}
 
 /**
  * Keeping registration of this initcall
@@ -1156,17 +1187,11 @@ int async_module(void)
  * Module initialization and fist execution is going to be do from thread
  */
 
-int async_init_thread(void* d)
-{
-    return async_module();
-//    return do_one_initcall(async_module);
-//    return 0;
-}
 
 /**
- * Do an normal initialization
+ * Do an normal initialization for an specific type
  */
-int async_default_initialization(void* d)
+int do_type(void* d)
 {
     int ret;
     struct init_fn_t* it_init_fnc;
@@ -1179,67 +1204,45 @@ int async_default_initialization(void* d)
     return 0;
 }
 
-inline void wait_(void)
+
+int do_deferred(void)
 {
-    wait_event_interruptible(list_wait, (tasks.type_ == disable));
-}
-
-/**
- * First initialization of module. Disk diver and AGP  
- */
-static int  async_initialization(void)
-{
-//    struct task_struct *thr;
-//    printk_debug("async started asynchronized\n");
-//    tasks.type_ = asynchronized;
-//    thr = kthread_create(async_default_initialization, (void* )(0), "async_init_thread");
-//    wake_up_process(thr);
-    //async_default_initialization(0);
-
-//    FillTasks2(__async_initcall_start, __async_initcall_end);
-//
-//    thr = kthread_create(async_init_thread, (void* )(0), "async_init_thread");
-//    wake_up_process(thr);
-    //async_module();
-
+    int old = atomic_xchg(&init_done, 1);
+    if (old == 0)
+    {
+        wait_();
+        tasks.type_ = deferred;
+        do_type(0);
+        if (atomic_dec_and_test(&free_init_ref) )
+          free_initmem();
+    }
     return 0;
 }
 
+
 /**
- * Second initialization USB devices, some PCI
- *
- *     int test_and_clear_bit(int nr, void *addr)
- *
+ * Module entry point
  */
-static atomic_t deferred_initcalls_done = ATOMIC_INIT(0);
-static int  deferred_initialization(void)
+static int  async_initialization(void)
 {
-    int old = atomic_xchg(&deferred_initcalls_done,1);
-    if (old == 0)
-    {
-        printk_debug("async started deferred\n");
-        tasks.type_ = asynchronized;
-        async_default_initialization(0);
-        wait_();
-        tasks.type_ = deferred;
-        async_default_initialization(0);
-        wait_();
-        //Prepare2();
-        //start_threads(ProcessThread2);
-    }
+    struct task_struct *thr;
+    tasks.type_ = asynchronized;
+    thr = kthread_create(do_type, (void* )(0), "do_type");
+    kthread_bind(thr, num_online_cpus() - 1);
+    atomic_inc(&free_init_ref);
+    wake_up_process(thr);
     return 0;
 }
 
 int device_open(struct inode * i, struct file * f)
 {
-    deferred_initialization();
+    do_deferred();
     return 0;
 }
 
 static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
-    // nothing to read
-   deferred_initialization();
+    do_deferred();
    return 0;
 }
 
