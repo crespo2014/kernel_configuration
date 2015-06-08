@@ -842,29 +842,14 @@ struct task_info_t_v3
    struct init_fn_t*   init_fnc_parent2;
 };
 
-// task data to be part of initcall data
-struct task_data_v3
-{
-    modules_e              id;          // idx in string table
-    task_type_t            type_;        // type that we are processing when disable means nothing
-    struct task_data_v3*   parent_it;   //highest parent that the task depends on
-    volatile unsigned long status;      // bit 0 1 free to get, bit 1 1 doing
-    unsigned depends_on;                // 1 if the module depends on another one
-    struct init_fn_t*      init_fnc_it;
-};
-
 struct task_list_t_v3
 {
-
-    task_type_t             type_;              // current type
-    struct task_data_v3*    tasks[MAX_TASKS];   // full list of task
-    struct task_data_v3**    last_task;
-    struct task_data_v3**    runnig_task;        // task currently running
+    task_type_t          type_;              // current type
+    struct init_fn_t*    tasks[MAX_TASKS];   // full list of task
+    struct init_fn_t**   last_task;          // task counter
+    struct init_fn_t**   runnig_task;        // task currently running
 };
 
-struct task_data_v3   all_tasks[MAX_TASKS];     // full list of task
-struct task_data_v3*  last_task;
-struct task_list_t_v3 tasks_v3;
 
 /**
  * all initcall will be enums. a tbl will store all names
@@ -919,6 +904,7 @@ struct task_list_t
 };
 
 static struct task_list_t tasks;
+static struct task_list_t_v3 tasks_v3;
 
 static DEFINE_SPINLOCK(list_lock);
 static DECLARE_WAIT_QUEUE_HEAD( list_wait);
@@ -937,62 +923,133 @@ const char* getName(modules_e id)
 const char* getName(modules_e id) { return ""; }
 #endif
 
-/**
- * Prepare a specify type of task to execute
+/*
+ * Initialize modules dynamic data
  */
 void Init_Tasks_3(struct init_fn_t* begin, struct init_fn_t* end)
 {
     struct init_fn_t* it_init_fnc;
-    struct task_data_v3*    task_it;
-    last_task = all_tasks;
-    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++last_task)
+    struct init_fn_t*    fnc_it;
+    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc)
     {
-        last_task->id = it_init_fnc->id;
-        last_task->init_fnc_it = it_init_fnc;
-        last_task->status = 0;
-        last_task->type_ = task_info_[it_init_fnc->id].type ;
+        it_init_fnc->type_ = task_info_[it_init_fnc->id].type ;
         // find higest parent
         if ( task_info_[it_init_fnc->id].depends_on != 0 )
         {
-            task_it = last_task;
-            while (task_it != all_tasks)
+            fnc_it = it_init_fnc;
+            while (fnc_it > begin)
             {
-                if ((task_it->id == task_info_[it_init_fnc->id].parent1) || (task_it->id == task_info_[it_init_fnc->id].parent2))
+                if ((fnc_it->id == task_info_[it_init_fnc->id].parent1) || (fnc_it->id == task_info_[it_init_fnc->id].parent2))
                 {
                     break;
                 }
-                --task_it;
+                --fnc_it;
             }
-            last_task->parent_it = task_it;
-            if (task_it == all_tasks)
+            it_init_fnc->parent_it = fnc_it;
+            if (fnc_it < begin)
             {
                 printk(KERN_ERR "Dependencies (%d,%d) (%s,%s) not found for %d - %s\n",
                         task_info_[it_init_fnc->id].parent1,task_info_[it_init_fnc->id].parent2,
                         getName(task_info_[it_init_fnc->id].parent1),getName(task_info_[it_init_fnc->id].parent2),
-                        last_task->id,getName(last_task->id));
+                        it_init_fnc->id,getName(it_init_fnc->id));
             }
         }
         else
-            last_task->parent_it = NULL;
+            it_init_fnc->parent_it = NULL;
     }
-}
-
-void Prepare_Task_v3( task_type_t type)
-{
-    struct task_data_v3*    task_it;
-    struct task_data_v3**   dest_task_it;
-
+    tasks_v3.type_ = waiting;
     tasks_v3.last_task = tasks_v3.tasks;
     tasks_v3.runnig_task = tasks_v3.tasks;
-    for (task_it = all_tasks; task_it < last_task; ++task_it)
+}
+
+/**
+ * Prepare a specify type of task to execute
+ */
+void Prepare_Task_v3( task_type_t type)
+{
+    struct init_fn_t*       init_fnc_it;
+    spin_lock(&list_lock);
+    tasks_v3.last_task = tasks_v3.tasks;
+    tasks_v3.runnig_task = tasks_v3.tasks;
+    for (init_fnc_it = __async_initcall_start; init_fnc_it < __async_initcall_end; ++init_fnc_it)
     {
-        if (task_it->type_ == type)
+        if (init_fnc_it->type_ == type)
         {
-            *tasks_v3.last_task = task_it;
+            *tasks_v3.last_task = init_fnc_it;
             ++tasks_v3.last_task;
         }
     }
+    tasks_v3.type_ = type;
+    spin_unlock(&list_lock);
+    wake_up_interruptible(&list_wait);
+ }
 
+/**
+ * Peek a task from list or wait
+ * return null if no more task available or end of process
+ */
+
+struct init_fn_t* peek_func_v3(struct init_fn_t* prev)
+{
+    int r;
+    struct init_fn_t** init_fnc_it;
+    if (prev != NULL)
+    {
+        prev->status = 0;
+        prev = NULL;
+    }
+    do
+    {
+        spin_lock(&list_lock);
+
+        for (init_fnc_it = tasks_v3.runnig_task; init_fnc_it != tasks_v3.last_task; ++init_fnc_it)
+        {
+            if ((*init_fnc_it)->status == 3)
+            {
+                if ((*init_fnc_it)->parent_it == NULL || (*init_fnc_it)->parent_it->status == 0)
+                {
+                    (*init_fnc_it)->status = 1;
+                    prev = *init_fnc_it;
+                    break;
+                }
+            }
+            else if (tasks_v3.runnig_task == init_fnc_it && (*init_fnc_it)->status == 0)
+            {
+                ++tasks_v3.runnig_task;
+                if (tasks_v3.runnig_task == tasks_v3.last_task)
+                {
+                    tasks_v3.type_ = waiting;
+                }
+            }
+        }
+        if (prev == NULL) init_fnc_it = tasks_v3.runnig_task;     // all task blocked
+        spin_unlock(&list_lock);
+        wake_up_interruptible(&list_wait);
+        if (prev == NULL)
+        {
+            // wait fro any movement or end
+            r = wait_event_interruptible(list_wait, init_fnc_it != tasks_v3.runnig_task || tasks_v3.type_ == end);
+            if (r != 0)
+                break;
+        }
+    } while (prev == NULL && tasks_v3.type_ != end);
+    return prev;
+}
+
+
+
+/*
+ * Processing by stages
+ */
+void Thread_v3(void* d)
+{
+    int r;
+    struct init_fn_t* fnc;
+    fnc = NULL;
+    while ((fnc = peek_func_v3(fnc)) != NULL)
+    {
+        r = do_one_initcall(fnc->fnc);
+    }
 }
 
 struct task_t* getTask(modules_e id)
