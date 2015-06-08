@@ -133,7 +133,8 @@ struct file_operations
 void doit_all(init_fn_t* begin, init_fn_t* end)
 {
     FillTasks2(begin, end);
-    Prepare2(asynchronized);
+    tasks.type_ = asynchronized;
+    Prepare2();
     struct task_t* t;
     do
     {
@@ -144,8 +145,8 @@ void doit_all(init_fn_t* begin, init_fn_t* end)
             TaskDone2(t);
         }
     } while (t != NULL);
-
-    Prepare2(deferred);
+    tasks.type_ = deferred;
+    Prepare2();
     do
     {
         t = PeekTask();
@@ -201,16 +202,8 @@ int main(void)
 
 
     FillTasks(list1,list1+9);
-    Prepare(asynchronized);
-    WorkingThread(0);
-
-
-//    doit_type(asynchronized);
-//    doit_type(deferred);
-
-
-    FillTasks(list2,list2+6);
-
+    tasks.type_ = asynchronized;
+    async_default_initialization(0);
 
     return 0;
 }

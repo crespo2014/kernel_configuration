@@ -863,12 +863,32 @@ struct task_list_t
     struct task_t** task_last_done;      // first task to be done
     struct task_t** task_last;           // one pass last task to be done
     struct task_t*  childs[sizeof(module_depends)/sizeof(*module_depends)];  //  list of child to be relase ordered by parent
+
+    //new for version 3
+    modules_e   working_task[MAX_TASKS];
+    modules_e*  active_module_idx;      // running this module at the moment when reach the last means end
+    modules_e*  last_module_idx;        // last module in the list to do
 };
 
 static struct task_list_t tasks;
 
 static DEFINE_SPINLOCK(list_lock);
 static DECLARE_WAIT_QUEUE_HEAD( list_wait);
+
+/**
+ * update all dynamic task information
+ */
+void InitTasks(struct init_fn_t* begin, struct init_fn_t* end)
+{
+    struct init_fn_t* it_init_fnc;
+    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
+    {
+        tasks.task_end->id = it_init_fnc->id;
+        tasks.task_end->type = module_info[it_init_fnc->id].type_;
+        tasks.task_end->fnc = it_init_fnc->fnc;
+        atomic_set(&tasks.task_end->waiting_count,0);
+    }
+}
 
 struct task_t* getTask(modules_e id)
 {
