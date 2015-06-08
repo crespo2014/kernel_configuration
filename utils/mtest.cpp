@@ -135,7 +135,6 @@ void doit_all(init_fn_t* begin, init_fn_t* end)
     FillTasks2(begin, end);
     Prepare2(asynchronized);
     struct task_t* t;
-
     do
     {
         t = PeekTask();

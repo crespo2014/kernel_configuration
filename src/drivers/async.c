@@ -815,9 +815,12 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 // Fill a table with all modules information
 #define TASK_INFO(id,type,...)  CALL_FNC(TASK_INFO_,id,type,##__VA_ARGS__)
 
+#define MAX_TASKS (unsigned)module_last+2
+
 /**
  * all initcall will be enums. a tbl will store all names
  */
+
 struct task_t
 {
     modules_e id;           // idx in string table
@@ -832,29 +835,14 @@ struct task_t
     struct task_t**  first_cild; // first child to be release
 };
 
-static struct task_t /*__initconst*/ task_info_[] =
-{   {none,disable,none,none}, INIT_CALLS(TASK_INFO) };
-
-#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
-const char* getName(modules_e id)
-{
-    static const char* const module_name[] =
-    {   "",INIT_CALLS(TASK_NAME)};
-    if (id > module_last)
-        return "";
-    return module_name[id];
-}
-#else
-const char* getName(modules_e id) { return ""; }
-#endif
-
-
 /**
  * A entry per task is create in a global table to all all data including task pointer
  * No more than 2 dependencies are supported
+ * This table contains all information about task
+ * there are static and dynamic section
  */
-
-
+static struct task_t /*__initconst*/ task_info_[] =
+{   {none,disable,none,none}, INIT_CALLS(TASK_INFO) };
 
 static const struct async_module_info_t /*__initconst*/ module_info[] =
 {   {disable}, INIT_CALLS(ASYNC_MODULE_INFO) {disable}};
@@ -864,11 +852,6 @@ static const struct async_module_info_t /*__initconst*/ module_info[] =
  */
 static const struct dependency_t /*__initconst*/ module_depends[] =
 { INIT_CALLS(DEPENDS_BUILD) };
-
-
-#define MAX_TASKS (unsigned)module_last+2
-
-
 
 // TODO join together all task with taskid table to allow dynamic allocation
 struct task_list_t
@@ -884,6 +867,9 @@ struct task_list_t
 
 static struct task_list_t tasks;
 
+static DEFINE_SPINLOCK(list_lock);
+static DECLARE_WAIT_QUEUE_HEAD( list_wait);
+
 struct task_t* getTask(modules_e id)
 {
     struct task_t* t = tasks.all;
@@ -892,8 +878,18 @@ struct task_t* getTask(modules_e id)
     return (t == tasks.task_end) ? NULL : t;
 }
 
-static DEFINE_SPINLOCK(list_lock);
-static DECLARE_WAIT_QUEUE_HEAD( list_wait);
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+const char* getName(modules_e id)
+{
+    static const char* const module_name[] =
+    {   "",INIT_CALLS(TASK_NAME)};
+    if (id > module_last)
+        return "";
+    return module_name[id];
+}
+#else
+const char* getName(modules_e id) { return ""; }
+#endif
 
 /**
  * Check if one task depends on another
