@@ -42,6 +42,11 @@
  *  1 . task data
  *  2 . task index -
  *
+ *  V3.0
+ *  init function call are ordered base on dependency
+ *  If a module has dependencies then it can not be initilizate until all modules below has finish.
+ *  A pointer indicating the module currently running will avoid executing any task above this with dependencies
+ *
  *  Created on: 16 Apr 2015
  *      Author: lester.crespo
  */
@@ -808,14 +813,58 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 #define GET_DEPENDS_0()  none,none
 #define GET_DEPENDS_1()  none,none
 
-#define TASK_INFO_2(id,type)                 { id ## _id , type, none, none } ,
-#define TASK_INFO_3(id,type,parent1)         { id ## _id ,type, parent1 ## _id , none } ,
-#define TASK_INFO_4(id,type,parent1,parent2) { id ## _id ,type, parent1 ## _id , parent2 ## _id } ,
+#define TASK_INFO_2(id,type)                 { type, 0, none, none } ,
+#define TASK_INFO_3(id,type,parent1)         { type, 1, parent1 ## _id, none } ,
+#define TASK_INFO_4(id,type,parent1,parent2) { type, 1, parent1 ## _id, parent2 ## _id} ,
 
 // Fill a table with all modules information
 #define TASK_INFO(id,type,...)  CALL_FNC(TASK_INFO_,id,type,##__VA_ARGS__)
 
 #define MAX_TASKS (unsigned)module_last+2
+
+/*
+ * V3 initfunction is going to be extended and fill up with data at initialization stage
+ * data is pick up from static definition
+ */
+
+/*
+ * task info v3
+ */
+struct task_info_t_v3
+{
+   task_type_t type;       // type that we are processing when disable means nothing
+   unsigned depends_on;    // 1 if the module depends on another one
+   modules_e parent1;
+   modules_e parent2;
+   // dynamic
+   struct init_fn_t*   init_fnc_it;
+   struct init_fn_t*   init_fnc_parent1;
+   struct init_fn_t*   init_fnc_parent2;
+};
+
+// task data to be part of initcall data
+struct task_data_v3
+{
+    modules_e              id;          // idx in string table
+    task_type_t            type_;        // type that we are processing when disable means nothing
+    struct task_data_v3*   parent_it;   //highest parent that the task depends on
+    volatile unsigned long status;      // bit 0 1 free to get, bit 1 1 doing
+    unsigned depends_on;                // 1 if the module depends on another one
+    struct init_fn_t*      init_fnc_it;
+};
+
+struct task_list_t_v3
+{
+
+    task_type_t             type_;              // current type
+    struct task_data_v3*    tasks[MAX_TASKS];   // full list of task
+    struct task_data_v3**    last_task;
+    struct task_data_v3**    runnig_task;        // task currently running
+};
+
+struct task_data_v3   all_tasks[MAX_TASKS];     // full list of task
+struct task_data_v3*  last_task;
+struct task_list_t_v3 tasks_v3;
 
 /**
  * all initcall will be enums. a tbl will store all names
@@ -824,9 +873,8 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 struct task_t
 {
     modules_e id;           // idx in string table
-    task_type_t type;        // type that we are processing when disable means nothing
-    modules_e parent1;
-    modules_e parent2;
+    task_type_t type;       // type that we are processing when disable means nothing
+    unsigned depends_on;    // 1 if the module depends on another one
 // to be fill at initialization stage
     initcall_t fnc;         // ptr to init function
     atomic_t waiting_count; // how many task does it depend on
@@ -841,8 +889,8 @@ struct task_t
  * This table contains all information about task
  * there are static and dynamic section
  */
-static struct task_t /*__initconst*/ task_info_[] =
-{   {none,disable,none,none}, INIT_CALLS(TASK_INFO) };
+static struct task_info_t_v3 /*__initconst*/ task_info_[] =
+{   {disable,0,none, none}, INIT_CALLS(TASK_INFO) };
 
 static const struct async_module_info_t /*__initconst*/ module_info[] =
 {   {disable}, INIT_CALLS(ASYNC_MODULE_INFO) {disable}};
@@ -865,9 +913,9 @@ struct task_list_t
     struct task_t*  childs[sizeof(module_depends)/sizeof(*module_depends)];  //  list of child to be relase ordered by parent
 
     //new for version 3
-    modules_e   working_task[MAX_TASKS];
-    modules_e*  active_module_idx;      // running this module at the moment when reach the last means end
-    modules_e*  last_module_idx;        // last module in the list to do
+    struct init_fn_t   actived_modules[MAX_TASKS];
+    struct init_fn_t*  running_module_idx;      // running this module at the moment when reach the last means end
+    struct init_fn_t*  last_module_idx;
 };
 
 static struct task_list_t tasks;
@@ -875,28 +923,6 @@ static struct task_list_t tasks;
 static DEFINE_SPINLOCK(list_lock);
 static DECLARE_WAIT_QUEUE_HEAD( list_wait);
 
-/**
- * update all dynamic task information
- */
-void InitTasks(struct init_fn_t* begin, struct init_fn_t* end)
-{
-    struct init_fn_t* it_init_fnc;
-    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
-    {
-        tasks.task_end->id = it_init_fnc->id;
-        tasks.task_end->type = module_info[it_init_fnc->id].type_;
-        tasks.task_end->fnc = it_init_fnc->fnc;
-        atomic_set(&tasks.task_end->waiting_count,0);
-    }
-}
-
-struct task_t* getTask(modules_e id)
-{
-    struct task_t* t = tasks.all;
-    while(t != tasks.task_end && t->id != id)
-        ++t;
-    return (t == tasks.task_end) ? NULL : t;
-}
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 const char* getName(modules_e id)
@@ -910,6 +936,74 @@ const char* getName(modules_e id)
 #else
 const char* getName(modules_e id) { return ""; }
 #endif
+
+/**
+ * Prepare a specify type of task to execute
+ */
+void Init_Tasks_3(struct init_fn_t* begin, struct init_fn_t* end)
+{
+    struct init_fn_t* it_init_fnc;
+    struct task_data_v3*    task_it;
+    last_task = all_tasks;
+    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++last_task)
+    {
+        last_task->id = it_init_fnc->id;
+        last_task->init_fnc_it = it_init_fnc;
+        last_task->status = 0;
+        last_task->type_ = task_info_[it_init_fnc->id].type ;
+        // find higest parent
+        if ( task_info_[it_init_fnc->id].depends_on != 0 )
+        {
+            task_it = last_task;
+            while (task_it != all_tasks)
+            {
+                if ((task_it->id == task_info_[it_init_fnc->id].parent1) || (task_it->id == task_info_[it_init_fnc->id].parent2))
+                {
+                    break;
+                }
+                --task_it;
+            }
+            last_task->parent_it = task_it;
+            if (task_it == all_tasks)
+            {
+                printk(KERN_ERR "Dependencies (%d,%d) (%s,%s) not found for %d - %s\n",
+                        task_info_[it_init_fnc->id].parent1,task_info_[it_init_fnc->id].parent2,
+                        getName(task_info_[it_init_fnc->id].parent1),getName(task_info_[it_init_fnc->id].parent2),
+                        last_task->id,getName(last_task->id));
+            }
+        }
+        else
+            last_task->parent_it = NULL;
+    }
+}
+
+void Prepare_Task_v3( task_type_t type)
+{
+    struct task_data_v3*    task_it;
+    struct task_data_v3**   dest_task_it;
+
+    tasks_v3.last_task = tasks_v3.tasks;
+    tasks_v3.runnig_task = tasks_v3.tasks;
+    for (task_it = all_tasks; task_it < last_task; ++task_it)
+    {
+        if (task_it->type_ == type)
+        {
+            *tasks_v3.last_task = task_it;
+            ++tasks_v3.last_task;
+        }
+    }
+
+}
+
+struct task_t* getTask(modules_e id)
+{
+    struct task_t* t = tasks.all;
+    while(t != tasks.task_end && t->id != id)
+        ++t;
+    return (t == tasks.task_end) ? NULL : t;
+}
+
+
 
 /**
  * Check if one task depends on another

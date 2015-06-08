@@ -97,7 +97,11 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 #define module_init(...)    ;
 #define __initcall(...)   ;
 #define late_initcall_sync(...)   ;
+
+#ifndef __used
 #define __used
+#endif
+
 #define __u64   uint64_t
 
 #define KERN_ERR ""
