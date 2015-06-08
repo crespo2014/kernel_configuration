@@ -50,7 +50,7 @@ int atomic_xchg(atomic_t* v,int n)
 }
 
 #define __wake_up(...)
-#define do_one_initcall(...)
+#define do_one_initcall(...)    0
 #define schedule(...)
 #define prepare_to_wait_for(...)
 #define finish_wait(...)
@@ -97,7 +97,11 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 #define module_init(...)    ;
 #define __initcall(...)   ;
 #define late_initcall_sync(...)   ;
+
+#ifndef __used
 #define __used
+#endif
+
 #define __u64   uint64_t
 
 #define KERN_ERR ""
@@ -121,6 +125,7 @@ struct file
 
 struct file_operations
 {
+    int (*open)(struct inode *, struct file * );
     unsigned int (*read)(struct file*,char*,size_t,unsigned int*);
 };
 
@@ -132,9 +137,9 @@ struct file_operations
 void doit_all(init_fn_t* begin, init_fn_t* end)
 {
     FillTasks2(begin, end);
-    Prepare2(asynchronized);
+    tasks.type_ = asynchronized;
+    Prepare2();
     struct task_t* t;
-
     do
     {
         t = PeekTask();
@@ -144,8 +149,8 @@ void doit_all(init_fn_t* begin, init_fn_t* end)
             TaskDone2(t);
         }
     } while (t != NULL);
-
-    Prepare2(deferred);
+    tasks.type_ = deferred;
+    Prepare2();
     do
     {
         t = PeekTask();
@@ -201,16 +206,8 @@ int main(void)
 
 
     FillTasks(list1,list1+9);
-    Prepare(asynchronized);
-    WorkingThread(0);
-
-
-//    doit_type(asynchronized);
-//    doit_type(deferred);
-
-
-    FillTasks(list2,list2+6);
-
+    tasks.type_ = asynchronized;
+    async_default_initialization(0);
 
     return 0;
 }
