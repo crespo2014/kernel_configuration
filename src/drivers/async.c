@@ -1242,7 +1242,6 @@ int device_open(struct inode * i, struct file * f)
 
 static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
-    do_deferred();
    return 0;
 }
 
