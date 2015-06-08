@@ -700,8 +700,6 @@
     fnc(acpi_smb_hc_driver_init,deferred)
 
 
-
-
 #if 0
 
 fnc(,deferred),  /**/ \
@@ -709,10 +707,8 @@ fnc(,deferred),  /**/ \
 
 
 fnc(,asynchronized)  /**/ \
-
 fnc(,asynchronized)  /**/ \
 fnc(,asynchronized)  /**/ \
-
 fnc(,asynchronized)  /**/ \
 fnc(,asynchronized)  /**/ \
 fnc(,asynchronized)  /**/ \
@@ -766,6 +762,13 @@ fnc(,asynchronized)  /**/ \
 
 #endif
 
+/*
+ * TODO - to keep init data,
+ * create a thread at driver initialization that  do everything in stages.
+ * when a stage finish wait for the next one
+ * this way allow to file operations trigger initialization.
+ */
+
 /**
  * Static struct holding all data
  */
@@ -802,17 +805,55 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 
 #define DEPENDS_BUILD(id,type,...) CALL_FNC(DEPENDS_,id,##__VA_ARGS__)
 
+#define GET_DEPENDS_0()  none,none
+#define GET_DEPENDS_1()  none,none
+
+#define TASK_INFO_2(id,type)                 { id ## _id , type, none, none } ,
+#define TASK_INFO_3(id,type,parent1)         { id ## _id ,type, parent1 ## _id , none } ,
+#define TASK_INFO_4(id,type,parent1,parent2) { id ## _id ,type, parent1 ## _id , parent2 ## _id } ,
+
+// Fill a table with all modules information
+#define TASK_INFO(id,type,...)  CALL_FNC(TASK_INFO_,id,type,##__VA_ARGS__)
+
+/**
+ * all initcall will be enums. a tbl will store all names
+ */
+struct task_t
+{
+    modules_e id;           // idx in string table
+    task_type_t type;        // type that we are processing when disable means nothing
+    modules_e parent1;
+    modules_e parent2;
+// to be fill at initialization stage
+    initcall_t fnc;         // ptr to init function
+    atomic_t waiting_count; // how many task does it depend on
+    volatile unsigned long status;        // bit 0 1 free to get, bit 1 1 doing
+    unsigned child_count;   // how many task it triggers
+    struct task_t**  first_cild; // first child to be release
+};
+
+static struct task_t /*__initconst*/ task_info_[] =
+{   {none,disable,none,none}, INIT_CALLS(TASK_INFO) };
+
+#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 const char* getName(modules_e id)
 {
-//#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
     static const char* const module_name[] =
     {   "",INIT_CALLS(TASK_NAME)};
     if (id > module_last)
         return "";
     return module_name[id];
-//#endif
-    return "";
 }
+#else
+const char* getName(modules_e id) { return ""; }
+#endif
+
+
+/**
+ * A entry per task is create in a global table to all all data including task pointer
+ * No more than 2 dependencies are supported
+ */
+
 
 
 static const struct async_module_info_t /*__initconst*/ module_info[] =
@@ -827,19 +868,7 @@ static const struct dependency_t /*__initconst*/ module_depends[] =
 
 #define MAX_TASKS (unsigned)module_last+2
 
-/**
- * all initcall will be enums. a tbl will store all names
- */
-struct task_t
-{
-    task_type_t type;        // type that we are processing when disable means nothing
-    modules_e id;           // idx in string table
-    initcall_t fnc;         // ptr to init function
-    atomic_t waiting_count; // how many task does it depend on
-    volatile unsigned long status;        // bit 0 1 free to get, bit 1 1 doing
-    unsigned child_count;   // how many task it triggers
-    struct task_t**  first_cild; // first child to be release
-};
+
 
 // TODO join together all task with taskid table to allow dynamic allocation
 struct task_list_t

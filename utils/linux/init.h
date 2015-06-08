@@ -12,4 +12,7 @@
 typedef int (*initcall_t)(void);
 
 
+
+
+
 #endif /* UTILS_INIT_H_ */

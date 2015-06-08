@@ -50,7 +50,7 @@ int atomic_xchg(atomic_t* v,int n)
 }
 
 #define __wake_up(...)
-#define do_one_initcall(...)
+#define do_one_initcall(...)    0
 #define schedule(...)
 #define prepare_to_wait_for(...)
 #define finish_wait(...)
@@ -121,6 +121,7 @@ struct file
 
 struct file_operations
 {
+    int (*open)(struct inode *, struct file * );
     unsigned int (*read)(struct file*,char*,size_t,unsigned int*);
 };
 
