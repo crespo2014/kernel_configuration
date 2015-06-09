@@ -27,6 +27,7 @@
 #define atomic_dec(a)    --(*a)
 #define clear_bit(b,v)   (*v) &= ~(1 << b)
 #define set_bit(b,v)     (*v) |= (1 << b)
+#define atomic_dec_and_test(a)  (--(*a))
 
 unsigned test_and_set_bit(unsigned b,  volatile unsigned long * v)
 {
@@ -49,8 +50,12 @@ int atomic_xchg(atomic_t* v,int n)
     return a;
 }
 
+int do_one_initcall(initcall_t fnc)
+{
+    printf("doing initcall %p\n",fnc);
+}
+
 #define __wake_up(...)
-#define do_one_initcall(...)    0
 #define schedule(...)
 #define prepare_to_wait_for(...)
 #define finish_wait(...)
@@ -129,6 +134,8 @@ struct file_operations
     unsigned int (*read)(struct file*,char*,size_t,unsigned int*);
 };
 
+unsigned free_init_ref = 0;
+
 #include "../src/drivers/async.c"
 
 
@@ -164,6 +171,13 @@ void doit_all(init_fn_t* begin, init_fn_t* end)
 
 #define INI_FNC(id,...) {id ## _id, 0 },
 
+void doit_v3(init_fn_t* begin, init_fn_t* end)
+{
+    Init_v3(begin,end);
+    Start_Type_v3(asynchronized);
+    Thread_v3(0);
+}
+
 int main(void)
 {
     struct init_fn_t list_full[] =
@@ -174,32 +188,33 @@ int main(void)
     // single
     struct init_fn_t list1[] =
     {
-    { rfcomm_init_id, 0 },
-    { snd_hrtimer_init_id , 0},
-    { alsa_pcm_oss_init_id ,0 },
-    { alsa_seq_oss_init_id, 0},
-    { alsa_timer_init_id, 0 },
-    { alsa_pcm_init_id, 0 },
-    { alsa_mixer_oss_init_id, 0 },
-    { alsa_hwdep_init_id, 0 },
-    { alsa_seq_device_init_id, 0 },
-    { alsa_seq_init_id, 0 },
-    { alsa_seq_midi_event_init_id, 0 },
-    { alsa_seq_dummy_init_id, 0 },
-    { alsa_seq_oss_init_id, 0 } };
+    { rfcomm_init_id, (initcall_t)1 },
+    { snd_hrtimer_init_id , (initcall_t)2},
+    { alsa_pcm_oss_init_id , (initcall_t)3 },
+    { alsa_seq_oss_init_id, (initcall_t)4},
+    { alsa_timer_init_id, (initcall_t)5 },
+    { alsa_pcm_init_id, (initcall_t)6 },
+    { alsa_mixer_oss_init_id, (initcall_t)7 },
+    { alsa_hwdep_init_id, (initcall_t)8 },
+    { alsa_seq_device_init_id, (initcall_t)9 },
+    { alsa_seq_init_id, (initcall_t)10 },
+    { alsa_seq_midi_event_init_id, (initcall_t)11 },
+    { alsa_seq_dummy_init_id, (initcall_t)12 },
+    { alsa_seq_oss_init_id, (initcall_t)13 } };
     // multiple dependnecies
     struct init_fn_t list2[] =
     {
-    { crypto_xcbc_module_init_id, 0 },
-    { init_cifs_id, 0 },
-    { drm_fb_helper_modinit_id, 0 },
-    { acpi_power_meter_init_id, 0 },
-    {  usblp_driver_init_id, 0 },
-    {  lz4_mod_init_id, 0 } };
+    { crypto_xcbc_module_init_id, (initcall_t)1 },
+    { init_cifs_id, (initcall_t)2 },
+    { drm_fb_helper_modinit_id, (initcall_t)3 },
+    { acpi_power_meter_init_id, (initcall_t)4 },
+    {  usblp_driver_init_id, (initcall_t)5 },
+    {  lz4_mod_init_id, (initcall_t)6 } };
 
-    doit_all(list_full,list_full + sizeof(list_full)/sizeof(*list_full)-1);
-    doit_all(list1,list1 + sizeof(list1)/sizeof(*list1));
-    doit_all(list2,list2 + sizeof(list2)/sizeof(*list2));
+    doit_v3(list_full,list_full + sizeof(list_full)/sizeof(*list_full)-1);
+    doit_v3(list1,list1 + sizeof(list1)/sizeof(*list1));
+    doit_v3(list2,list2 + sizeof(list2)/sizeof(*list2));
+    doit_v3(list1,list1+9);
 
 
     // Full task test
@@ -207,7 +222,7 @@ int main(void)
 
     FillTasks(list1,list1+9);
     tasks.type_ = asynchronized;
-    async_default_initialization(0);
+    //async_default_initialization(0);
 
     return 0;
 }

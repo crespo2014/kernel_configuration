@@ -681,11 +681,11 @@ struct dependency_t
  * deferred - it can be execute at user initialization time
  */
 typedef enum { //
-    disable, //
     asynchronized, //
     deferred, //
-    waiting, //    in transition to new stage
-    end         // no task, end of processing
+    disable,
+    end,         // no task, end of processing
+    waiting, //
     } task_type_t;
 
 /**
@@ -703,6 +703,7 @@ struct init_fn_t
   initcall_t fnc;
   // dynamic data
   task_type_t type_;
+  struct init_fn_t*    next_of;    // next function of the same type.
   struct init_fn_t*   parent_it;   // highest parent that the task depends on
   volatile unsigned long status;   // bit 0 1 free to get, bit 1 1 doing
 };
