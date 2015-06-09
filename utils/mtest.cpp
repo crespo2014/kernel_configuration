@@ -173,9 +173,13 @@ void doit_all(init_fn_t* begin, init_fn_t* end)
 
 void doit_v3(init_fn_t* begin, init_fn_t* end)
 {
-    Init_v3(begin,end);
+    Init_v3(begin, end);
     Start_Type_v3(asynchronized);
-    Thread_v3(0);
+    if (tasks_v3.runnig_task != NULL)
+        Thread_v3(0);
+    Start_Type_v3(deferred);
+    if (tasks_v3.runnig_task != NULL)
+        Thread_v3(0);
 }
 
 int main(void)
@@ -211,10 +215,13 @@ int main(void)
     {  usblp_driver_init_id, (initcall_t)5 },
     {  lz4_mod_init_id, (initcall_t)6 } };
 
-    doit_v3(list_full,list_full + sizeof(list_full)/sizeof(*list_full)-1);
+    doit_v3(list1,list1+3);
+    doit_v3(list1,list1+6);
+    doit_v3(list1,list1+9);
+
     doit_v3(list1,list1 + sizeof(list1)/sizeof(*list1));
     doit_v3(list2,list2 + sizeof(list2)/sizeof(*list2));
-    doit_v3(list1,list1+9);
+    doit_v3(list_full,list_full + sizeof(list_full)/sizeof(*list_full)-1);
 
 
     // Full task test

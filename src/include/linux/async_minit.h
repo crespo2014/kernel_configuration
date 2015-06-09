@@ -702,7 +702,6 @@ struct init_fn_t
   modules_e  id;
   initcall_t fnc;
   // dynamic data
-  task_type_t type_;
   struct init_fn_t*    next_of;    // next function of the same type.
   struct init_fn_t*   parent_it;   // highest parent that the task depends on
   volatile unsigned long status;   // bit 0 1 free to get, bit 1 1 doing

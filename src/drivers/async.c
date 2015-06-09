@@ -983,6 +983,8 @@ void Start_Type_v3(task_type_t type)
     int r;
     r = wait_event_interruptible(list_wait,tasks_v3.type_ == waiting && tasks_v3.runnig_task == NULL);
     tasks_v3.runnig_task = tasks_v3.first_of[type];
+    if (tasks_v3.runnig_task == NULL)
+        tasks_v3.type_ = waiting;       // no task to do for this type
     wake_up_interruptible(&list_wait);
 }
 
@@ -1004,7 +1006,7 @@ struct init_fn_t* peek_func_v3(struct init_fn_t* prev)
     {
         spin_lock(&list_lock);
 
-        for (init_fnc_it = tasks_v3.runnig_task; init_fnc_it != NULL; ++init_fnc_it)
+        for (init_fnc_it = tasks_v3.runnig_task; init_fnc_it != NULL; init_fnc_it = init_fnc_it->next_of)
         {
             if (init_fnc_it->status == 3)
             {
