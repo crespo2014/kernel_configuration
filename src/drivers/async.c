@@ -703,7 +703,9 @@
     \
     fnc(add_pcspkr,deferred)    /* arch/x86/kernel/pcspeaker.c */ \
     \
-    fnc(acpi_smb_hc_driver_init,deferred)
+    fnc(acpi_smb_hc_driver_init,deferred) \
+    \
+    fnc(nforce2_init,deferred) /* drivers/cpufreq/cpufreq-nforce2.c */
 
 
 #if 0

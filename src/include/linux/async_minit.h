@@ -647,7 +647,9 @@
     \
     fnc(add_pcspkr) \
     \
-    fnc(acpi_smb_hc_driver_init)
+    fnc(acpi_smb_hc_driver_init) \
+    \
+    fnc(nforce2_init)
 
 
 
