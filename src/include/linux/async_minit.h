@@ -680,13 +680,13 @@ struct dependency_t
  * async - needs to be execute in an asynchronized way
  * deferred - it can be execute at user initialization time
  */
-typedef enum { //
+ enum task_type_t { //
     asynchronized, //
     deferred, //
     disable,
     end,         // no task, end of processing
     waiting, //
-    } task_type_t;
+    } ;
 
 /**
  * Module static information.
@@ -694,7 +694,7 @@ typedef enum { //
  */
 struct async_module_info_t
 {
-    task_type_t type_;
+    enum task_type_t type_;
 };
 
 struct init_fn_t

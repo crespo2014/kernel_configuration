@@ -833,7 +833,7 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
  */
 struct task_info_t_v3
 {
-   task_type_t type;       // type that we are processing when disable means nothing
+   enum task_type_t type;       // type that we are processing when disable means nothing
    unsigned depends_on;    // 1 if the module depends on another one
    modules_e parent1;
    modules_e parent2;
@@ -846,8 +846,8 @@ struct task_info_t_v3
 struct task_list_t_v3
 {
     // pointer to first function of each type
-    struct init_fn_t*   first_of[task_type_t::end];
-    task_type_t          type_;              // current type
+    struct init_fn_t*   first_of[end];
+    enum task_type_t          type_;              // current type
     struct init_fn_t*   runnig_task;        // task currently running
 };
 
@@ -859,7 +859,7 @@ struct task_list_t_v3
 struct task_t
 {
     modules_e id;           // idx in string table
-    task_type_t type;       // type that we are processing when disable means nothing
+    enum task_type_t type;       // type that we are processing when disable means nothing
     unsigned depends_on;    // 1 if the module depends on another one
 // to be fill at initialization stage
     initcall_t fnc;         // ptr to init function
@@ -892,7 +892,7 @@ struct task_list_t
 {
     struct task_t all[MAX_TASKS];       // full list of task
     struct task_t* task_end;
-    task_type_t     type_;
+    enum task_type_t     type_;
     struct task_t*  current_tasks[MAX_TASKS];        // list of actived task
     struct task_t** task_last_done;      // first task to be done
     struct task_t** task_last;           // one pass last task to be done
@@ -927,9 +927,10 @@ const char* getName(modules_e id) { return ""; }
 /*
  * Initialize modules dynamic data
  */
+/*
 void Init_v3(struct init_fn_t* begin, struct init_fn_t* end)
 {
-    struct init_fn_t*   last_of[task_type_t::end];
+    struct init_fn_t*   last_of[end];
     struct init_fn_t* it_init_fnc;
     struct init_fn_t*    fnc_it;
     struct task_info_t_v3*  info;
@@ -977,8 +978,8 @@ void Init_v3(struct init_fn_t* begin, struct init_fn_t* end)
     tasks_v3.runnig_task = NULL;
     tasks_v3.type_ = waiting;
 }
-
-void Start_Type_v3(task_type_t type)
+*/
+void Start_Type_v3(enum task_type_t type)
 {
     int r;
     r = wait_event_interruptible(list_wait,tasks_v3.type_ == waiting && tasks_v3.runnig_task == NULL);
@@ -1427,6 +1428,7 @@ static int  async_initialization(void)
     struct task_struct *thr;
     tasks.type_ = asynchronized;
     thr = kthread_create(do_type, (void* )(0), "do_type");
+    //thr = kthread_create(doall_default, (void* )(0), "do_type");
     kthread_bind(thr, num_online_cpus() - 1);
     atomic_inc(&free_init_ref);
     wake_up_process(thr);
