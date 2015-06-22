@@ -1357,6 +1357,7 @@ int doall_default(void* d)
         for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
         {
             ret = do_one_initcall(it_init_fnc->fnc);
+            scheduler();        // give time to system to do other things
         }
         tasks.type_ = waiting;
     }
@@ -1400,7 +1401,10 @@ int do_type(void* d)
     for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
     {
         if (module_info[it_init_fnc->id].type_ == tasks.type_)
+        {
             ret = do_one_initcall(it_init_fnc->fnc);
+            scheduler();        // give time to system to do other things
+        }
     }
     tasks.type_ = waiting;
     return 0;
