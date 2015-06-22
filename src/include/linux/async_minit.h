@@ -649,7 +649,9 @@
     \
     fnc(acpi_smb_hc_driver_init) \
     \
-    fnc(nforce2_init)
+    fnc(nforce2_init) \
+    \
+    fnc(snd_compress_init)
 
 
 

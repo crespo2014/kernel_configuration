@@ -47,6 +47,29 @@
  *  If a module has dependencies then it can not be initilizate until all modules below has finish.
  *  A pointer indicating the module currently running will avoid executing any task above this with dependencies
  *
+ * V4
+ * A group base dependency can be implemented,
+ * Module info will be fnc, type, id, group id, dependencies
+ * type could be early init, deferred or independent
+ * a group id is another id than is done when running counter reach 0, each started module will increment this
+ * beceause fnc are stored in execution order, always the module that bring a specific group will start execution before other depending on this
+ *
+ * kernel spend time monting /dev
+ * and waiting for all async modules to be initialize. (
+ *  arch/sh/drivers/pci/pcie-sh7786.c, line 572
+    drivers/s390/kvm/virtio_ccw.c, line 1066
+    drivers/s390/block/dasd.c, line 3233
+    drivers/acpi/battery.c, line 1310
+    drivers/base/power/main.c:
+    drivers/block/floppy.c, line 4392
+    drivers/gpu/drm/i915/i915_dma.c, line 446
+    drivers/ata/libata-core.c, line 6161      ***** async_schedule(async_port_probe, ap);
+    drivers/scsi/ufs/ufshcd.c, line 5540
+    drivers/scsi/scsi_scan.c, line 1901
+
+    http://superuser.com/questions/599333/how-to-disable-kernel-probing-for-drive
+    libata.force=2.00:disable
+ *
  *  Created on: 16 Apr 2015
  *      Author: lester.crespo
  */
@@ -705,7 +728,10 @@
     \
     fnc(acpi_smb_hc_driver_init,deferred) \
     \
-    fnc(nforce2_init,deferred) /* drivers/cpufreq/cpufreq-nforce2.c */
+    fnc(nforce2_init,deferred) /* drivers/cpufreq/cpufreq-nforce2.c */ \
+    \
+    fnc(snd_compress_init,deferred) /* sound/core/compress_offload.c */ \
+
 
 
 #if 0
@@ -789,6 +815,9 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 #define printk_debug(...) do {} while(0)
 #endif
 
+#ifndef CONFIG_ASYNCHRO_MODULE_INIT_THREADS
+#define CONFIG_ASYNCHRO_MODULE_INIT_THREADS 1
+#endif
 /**
  * Macros to build static data about modules from arguments.
  * until 10 dependencies available
