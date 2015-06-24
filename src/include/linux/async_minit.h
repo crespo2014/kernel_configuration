@@ -711,6 +711,15 @@ struct init_fn_t
   volatile unsigned long status;   // bit 0 1 free to get, bit 1 1 doing
 };
 
+struct init_fn_t_4
+{
+  modules_e  id;
+  initcall_t fnc;
+  modules_e  grp_id;
+  modules_e  parent1_id;
+  modules_e  parent2_id;
+};
+
 /*
  * TODO Disable when module build as module
  * add support for bus devices like acpi, pci, etc

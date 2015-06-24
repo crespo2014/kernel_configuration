@@ -125,7 +125,7 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 
 struct file
 {
-
+    void* private_data;
 };
 
 struct file_operations
@@ -173,7 +173,7 @@ void doit_all(init_fn_t* begin, init_fn_t* end)
 
 void doit_v3(init_fn_t* begin, init_fn_t* end)
 {
-    Init_v3(begin, end);
+    //Init_v3(begin, end);
     Start_Type_v3(asynchronized);
     if (tasks_v3.runnig_task != NULL)
         Thread_v3(0);
@@ -214,6 +214,13 @@ int main(void)
     { acpi_power_meter_init_id, (initcall_t)4 },
     {  usblp_driver_init_id, (initcall_t)5 },
     {  lz4_mod_init_id, (initcall_t)6 } };
+    struct file f;
+    char name[30];
+    device_open(nullptr,&f);
+    do
+    {
+
+    } while (device_read(&f,name,sizeof(name),nullptr) != 0);
 
     doit_v3(list1,list1+3);
     doit_v3(list1,list1+6);

@@ -855,6 +855,24 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 #define MAX_TASKS (unsigned)module_last+2
 
 /*
+ * Modules v4. Optimization using more static data fromo modules
+ */
+enum task_status_t_4
+{
+  st_disable = 0,    //
+  st_waiting,    //
+  st_running,    //
+  st_done,
+};
+
+struct task_info_t_4
+{
+    unsigned ref;       // how many modules we need to release this task
+    unsigned st;        // task status (disable, waiting, running, done)
+    unsigned childs;    // count of child task waiting for this one
+};
+
+/*
  * V3 initfunction is going to be extended and fill up with data at initialization stage
  * data is pick up from static definition
  */
@@ -878,7 +896,7 @@ struct task_list_t_v3
 {
     // pointer to first function of each type
     struct init_fn_t*   first_of[end];
-    enum task_type_t          type_;              // current type
+    enum task_type_t    type_;              // current type
     struct init_fn_t*   runnig_task;        // task currently running
 };
 
@@ -906,8 +924,8 @@ struct task_t
  * This table contains all information about task
  * there are static and dynamic section
  */
-static struct task_info_t_v3 /*__initconst*/ task_info_[] =
-{   {waiting,0,none, none}, INIT_CALLS(TASK_INFO) };
+//static struct task_info_t_v3 /*__initconst*/ task_info_[] =
+//{   {waiting,0,none, none}, INIT_CALLS(TASK_INFO) };
 
 static const struct async_module_info_t /*__initconst*/ module_info[] =
 {   {waiting}, INIT_CALLS(ASYNC_MODULE_INFO) {waiting}};
@@ -1452,17 +1470,6 @@ int do_deferred(void)
           free_initmem();
     }
     return 0;
-}
-
-/*
- * Initilizate a defered execution
- */
-int deferred_init(void)
-{
-    int old = atomic_xchg(&init_done, 1);
-    if (old == 1)
-        return -1;      // already done
-
 }
 
 
