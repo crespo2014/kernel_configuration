@@ -1370,8 +1370,8 @@ int  start_threads(int(* thread_fnc) (void*) )
 }
 
 static atomic_t init_done = ATOMIC_INIT(0);
+extern atomic_t  free_init_ref;         // become zero when all drivers are initialize.
 
-extern atomic_t  free_init_ref;
 
 /*
  * Do all initialization by default way
@@ -1454,6 +1454,17 @@ int do_deferred(void)
     return 0;
 }
 
+/*
+ * Initilizate a defered execution
+ */
+int deferred_init(void)
+{
+    int old = atomic_xchg(&init_done, 1);
+    if (old == 1)
+        return -1;      // already done
+
+}
+
 
 /**
  * Module entry point
@@ -1470,20 +1481,63 @@ static int  async_initialization(void)
     return 0;
 }
 
+/*
+ * Structure holding all device file data
+ */
+struct device_t
+{
+    struct init_fn_t* it_init_fnc;      // current init function to execute
+};
+
 int device_open(struct inode * i, struct file * f)
 {
-    do_deferred();
+    int old = atomic_xchg(&init_done, 1);
+    if (old == 1)
+    {
+        printk(KERN_ERR "deferred init already done");
+        return -EINVAL;      // already done
+    }
+    f->private_data = __async_initcall_start;
     return 0;
 }
 
-static ssize_t deferred_initcalls_read_proc(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
+static ssize_t device_read(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
-   return 0;
+    struct init_fn_t* it_init_fnc;
+    const char* initcall_name;
+    size_t count;
+    count = 0;
+    it_init_fnc = (struct init_fn_t*)file->private_data;
+
+    while (it_init_fnc < __async_initcall_end && module_info[it_init_fnc->id].type_ != deferred)
+        ++it_init_fnc;
+    if (it_init_fnc != __async_initcall_end)
+    {
+        do_one_initcall(it_init_fnc->fnc);
+        initcall_name = getName(it_init_fnc->id);
+        ++it_init_fnc;
+        file->private_data = it_init_fnc;
+        if (initcall_name == 0 || *initcall_name == 0)
+        {
+            initcall_name = ".";
+        }
+        if (nbytes != 0)
+        {
+           count = strlen(initcall_name) + 1;  // including zero to swap with a \n char
+           if (count > nbytes)
+               count = nbytes;
+           copy_to_user(buf,initcall_name,count);
+           if (count > 1)
+               buf[count-1] = '\n';     // if there is only space for one char we do not set \n
+        }
+    }
+    return count;
 }
 
 static const struct file_operations deferred_initcalls_fops = {
    .open = device_open, //
-   .read = deferred_initcalls_read_proc,
+   .read = device_read,
+   //TODO .write = device_write, // write ascii 1 to do all calls in one go
 };
 
 /**
