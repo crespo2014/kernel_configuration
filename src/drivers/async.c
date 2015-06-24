@@ -806,7 +806,9 @@ fnc(,asynchronized)  /**/ \
 /**
  * Static struct holding all data
  */
+#ifndef TEST
 extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
+#endif
 //extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
@@ -1133,10 +1135,10 @@ unsigned  doesDepends(modules_e child, modules_e parent)
 /*
  * Read all information from static mmeory an expand it to dynamic memory
  */
-void  FillTasks(struct init_fn_t* begin, struct init_fn_t* end)
+void  FillTasks(const struct init_fn_t* begin,const  struct init_fn_t* end)
 {
     const struct dependency_t *it_dependency;
-    struct init_fn_t* it_init_fnc;
+    const struct init_fn_t* it_init_fnc;
     struct task_t* it_task;
     struct task_t* ptask;
     tasks.task_end = tasks.all;
@@ -1400,7 +1402,7 @@ int doall_default(void* d)
     if (old == 0)
     {
         int ret;
-        struct init_fn_t* it_init_fnc;
+        const struct init_fn_t* it_init_fnc;
         for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
         {
             ret = do_one_initcall(it_init_fnc->fnc);
@@ -1444,7 +1446,7 @@ int async_module(void)
 int do_type(void* d)
 {
     int ret;
-    struct init_fn_t* it_init_fnc;
+    const struct init_fn_t* it_init_fnc;
     for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
     {
         if (module_info[it_init_fnc->id].type_ == tasks.type_)

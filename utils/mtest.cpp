@@ -75,7 +75,8 @@ int do_one_initcall(initcall_t fnc)
 #define wake_up_process(...)
 #define printk(...) printf( __VA_ARGS__ )
 #define _raw_spin_lock(...)
-struct init_fn_t __async_initcall_start[1], __async_initcall_end[1];
+const struct init_fn_t *__async_initcall_start;
+const struct init_fn_t *__async_initcall_end;
 struct dependency_t __async_modules_depends_start[]  = {
         MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),
         MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),       //snd-mixer-oss
@@ -125,7 +126,7 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 
 struct file
 {
-    void* private_data;
+    const void* private_data;
 };
 
 struct file_operations
@@ -171,7 +172,7 @@ void doit_all(init_fn_t* begin, init_fn_t* end)
 
 #define INI_FNC(id,...) {id ## _id, 0 },
 
-void doit_v3(init_fn_t* begin, init_fn_t* end)
+void doit_v3(const init_fn_t* begin,const  init_fn_t* end)
 {
     //Init_v3(begin, end);
     Start_Type_v3(asynchronized);
@@ -184,13 +185,13 @@ void doit_v3(init_fn_t* begin, init_fn_t* end)
 
 int main(void)
 {
-    struct init_fn_t list_full[] =
+    const static struct init_fn_t list_full[] =
     {
             INIT_CALLS(INI_FNC) {module_last}
     };
 
     // single
-    struct init_fn_t list1[] =
+    const static struct init_fn_t list1[] =
     {
     { rfcomm_init_id, (initcall_t)1 },
     { snd_hrtimer_init_id , (initcall_t)2},
@@ -206,7 +207,7 @@ int main(void)
     { alsa_seq_dummy_init_id, (initcall_t)12 },
     { alsa_seq_oss_init_id, (initcall_t)13 } };
     // multiple dependnecies
-    struct init_fn_t list2[] =
+    const static struct init_fn_t list2[] =
     {
     { crypto_xcbc_module_init_id, (initcall_t)1 },
     { init_cifs_id, (initcall_t)2 },
@@ -216,6 +217,8 @@ int main(void)
     {  lz4_mod_init_id, (initcall_t)6 } };
     struct file f;
     char name[30];
+    __async_initcall_start = list1;
+    __async_initcall_end = list1 + sizeof(list1)/sizeof(*list1);
     device_open(nullptr,&f);
     do
     {
