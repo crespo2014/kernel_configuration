@@ -117,7 +117,7 @@ struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_
 # define __user
 #define loff_t  unsigned
 #define ssize_t unsigned
-#define copy_to_user(...)   0
+#define copy_to_user   memcpy
 #define proc_create(...)   0
 
 #define min(a,b)    (a <b) ? a :b
@@ -220,10 +220,14 @@ int main(void)
     __async_initcall_start = list1;
     __async_initcall_end = list1 + sizeof(list1)/sizeof(*list1);
     device_open(nullptr,&f);
+    size_t ret = 0;
+    *name = 0;
     do
     {
-
-    } while (device_read(&f,name,sizeof(name),nullptr) != 0);
+        ret = device_read(&f,name,sizeof(name),nullptr);
+        name[ret] = 0;
+        printf(name);
+    } while (ret != 0);
 
     doit_v3(list1,list1+3);
     doit_v3(list1,list1+6);
