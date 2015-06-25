@@ -712,8 +712,8 @@ struct init_fn_t
 };
 
 #define GET_10(fnc,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,...) fnc##n10
-#define COUNT(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)
-#define CALL_FNC(fnc,...) COUNT(fnc,__VA_ARGS__)(__VA_ARGS__)
+#define COUNT_ARG(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)
+#define CALL_FNC(fnc,...) COUNT_ARG(fnc,__VA_ARGS__)(__VA_ARGS__)
 
 struct init_fn_t_4
 {
@@ -777,9 +777,9 @@ module_exit(__driver##_exit);
 
 #endif
 
-#define deferred_module_init(fnc) async_module_init(fnc)
+#define deferred_module_init(fnc)       async_module_init(fnc)
 #define deferred_module_pci_driver(fnc) async_module_pci_driver(fnc)
-#define deferred_module_driver(fnc)     async_module_driver(fnc)
+#define deferred_module_driver(fnc,reg,unreg)     async_module_driver(fnc,reg,unreg)
 
 
 #endif /* ASYNC_MINIT_H_ */
