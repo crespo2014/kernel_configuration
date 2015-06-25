@@ -711,15 +711,30 @@ struct init_fn_t
   volatile unsigned long status;   // bit 0 1 free to get, bit 1 1 doing
 };
 
+#define GET_10(fnc,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,...) fnc##n10
+#define COUNT(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)
+#define CALL_FNC(fnc,...) COUNT(fnc,__VA_ARGS__)(__VA_ARGS__)
+
 struct init_fn_t_4
 {
   modules_e  id;
   initcall_t fnc;
+  enum task_type_t type_;
   modules_e  grp_id;
   modules_e  parent1_id;
   modules_e  parent2_id;
 };
 
+#define async_module_init_4(fnc,type,grp,parent1,parent2) \
+    static const struct init_fn_t init_fn_##fnc __used \
+     __attribute__((__section__(".async_initcall.init"))) = {fnc ## _id,fnc,type,grp ## _id,parent1 ## _id,parent2 ## _id};
+
+#define ASYNC_TASK_v4_2(fnc,type)            async_module_init_4(fnc,type,grp_none, none,none)
+#define ASYNC_TASK_v4_3(id,type,grp)         async_module_init_4(fnc,type,grp, none,none)
+#define ASYNC_TASK_v4_4(id,type,grp,p1)      async_module_init_4(fnc,type,grp, p1,none)
+#define ASYNC_TASK_v4_5(id,type,grp,p1,p2)   async_module_init_4(fnc,type,grp, p1,p2)
+
+#define ASYNC_TASK_v4(fnc,type,...)  CALL_FNC(ASYNC_TASK_v4_,fnc,type,##__VA_ARGS__)
 /*
  * TODO Disable when module build as module
  * add support for bus devices like acpi, pci, etc
@@ -761,6 +776,8 @@ module_exit(__driver##_exit);
 
 
 #endif
+
+#define deferred_module_init(fnc) async_module_init(fnc)
 
 
 #endif /* ASYNC_MINIT_H_ */

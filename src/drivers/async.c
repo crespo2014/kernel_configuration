@@ -962,7 +962,7 @@ static DEFINE_SPINLOCK(list_lock);
 static DECLARE_WAIT_QUEUE_HEAD( list_wait);
 
 
-#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
+//#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 const char* getName(modules_e id)
 {
     static const char* const module_name[] =
@@ -971,9 +971,9 @@ const char* getName(modules_e id)
         return "";
     return module_name[id];
 }
-#else
-const char* getName(modules_e id) { return ""; }
-#endif
+//#else
+//const char* getName(modules_e id) { return ""; }
+//#endif
 
 /*
  * Initialize modules dynamic data
