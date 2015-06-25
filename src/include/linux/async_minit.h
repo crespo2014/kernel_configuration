@@ -779,6 +779,7 @@ module_exit(__driver##_exit);
 
 #define deferred_module_init(fnc) async_module_init(fnc)
 #define deferred_module_pci_driver(fnc) async_module_pci_driver(fnc)
+#define deferred_module_driver(fnc)     async_module_driver(fnc)
 
 
 #endif /* ASYNC_MINIT_H_ */
