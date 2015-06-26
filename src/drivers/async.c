@@ -1,52 +1,6 @@
 /*
  * dependency.c
  *
- * It implements a task scheduler with dependencies.
- * Every task can depends only from another one, not multiple dependencies is allowed
- *
- * A task has this members.
- * status - block by dependency, waiting to run
- * depends - the task that depends on
- *
- * When a task is complete all dependencies are unblocked, one of them is execute in the same thread
- * if there is no more dependencies to unblock then a waiting one is pick from the list.
- *
- * every running task is move to the end of the list
- * when list size reach zero then the running thread finish.
- *
- * if there is no any task to do then the thread must wait in a waiting queue until waiting task !=0
- * ones all task are done ( list size ==0) then waiting task get the value -1 to wakeup all waiting threads
- * and release all thread because list is empty.
- * spin lock have to be use to access the list
- *
- * any module which its dependency is not found on the list will take the highest
- *
- * Picking a new task.
- * Wake up all waiting task.
- * If number of waked up task != 1 the decrement and waiting += waked up
- * if (waiting) wake_up queue
- * if list empty return null
- * if waiting == 0 then pick one, waiting = len, signal queue
- *
- *	Main thread will start others threads and pick task from the list.
- *	if all task are waiting for end_idx then wait for all threads
- *
- *	List holding task
- *
- *  |----------|---------|----------|------------|
- *    waiting     ready    running      done     |end
- *
- *  if waiting == running then all task became ready
- *
- *  two tables are in use
- *  1 . task data
- *  2 . task index -
- *
- *  V3.0
- *  init function call are ordered base on dependency
- *  If a module has dependencies then it can not be initilizate until all modules below has finish.
- *  A pointer indicating the module currently running will avoid executing any task above this with dependencies
- *
  * V4
  * A group base dependency can be implemented,
  * Module info will be fnc, type, id, group id, dependencies
@@ -870,40 +824,11 @@ enum task_status_t_4
 struct task_info_t_4
 {
     unsigned ref;       // how many modules we need to release this task
-    unsigned st;        // task status (disable, waiting, running, done)
-    unsigned childs;    // count of child task waiting for this one
+    unsigned status;        // task status (disable, waiting, running, done)
+    unsigned child_count;    // count of child task waiting for this one
 };
 
 struct task_info_t_4  info_4[max_id]; // all task info
-
-/*
- * V3 initfunction is going to be extended and fill up with data at initialization stage
- * data is pick up from static definition
- */
-
-/*
- * task info v3
- */
-//struct task_info_t_v3
-//{
-//   enum task_type_t type;       // type that we are processing when disable means nothing
-//   unsigned depends_on;    // 1 if the module depends on another one
-//   modules_e parent1;
-//   modules_e parent2;
-//   // dynamic
-//   struct init_fn_t*   init_fnc_it;
-//   struct init_fn_t*   init_fnc_parent1;
-//   struct init_fn_t*   init_fnc_parent2;
-//};
-
-//struct task_list_t_v3
-//{
-//    // pointer to first function of each type
-//    struct init_fn_t*   first_of[end];
-//    enum task_type_t    type_;              // current type
-//    struct init_fn_t*   runnig_task;        // task currently running
-//};
-
 
 /**
  * all initcall will be enums. a tbl will store all names
@@ -943,49 +868,89 @@ const char* getName(modules_e id)
  * Initialize modules dynamic data
  */
 /*
- * Read all information from static mmeory an expand it to dynamic memory
+ * Read all information from static memory an expand it to dynamic memory
  */
-void  FillTasks(const struct init_fn_t_4* begin,const  struct init_fn_t_4* end)
+void FillTasks(const struct init_fn_t_4* begin, const struct init_fn_t_4* end)
 {
-//    const struct dependency_t *it_dependency;
-//    const struct init_fn_t* it_init_fnc;
-//    struct task_t* it_task;
-//    struct task_t* ptask;
-//    tasks.task_end = tasks.all;
-//    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
-//    {
-//        tasks.task_end->id = it_init_fnc->id;
-//        tasks.task_end->type = module_info[it_init_fnc->id].type_;
-//        tasks.task_end->fnc = it_init_fnc->fnc;
-//        atomic_set(&tasks.task_end->waiting_count,0);
-//    }
-//    // resolve dependencies
-//    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
-//    {
-//        for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
-//        {
-//            if (it_dependency->task_id == it_task->id)
-//            {
-//                // Do not register a dependency that does not exist
-//                ptask = getTask(it_dependency->parent_id);
-//                if (ptask == NULL)
-//                {
-//                    printk(KERN_ERR "async Dependency id %d %s not found for id %d %s\n",it_dependency->parent_id,getName(it_dependency->parent_id),it_dependency->task_id,getName(it_dependency->task_id));
-//                }
-//                else
-//                {
-//                    // register dependency
-//                    atomic_inc(&it_task->waiting_count);
-//                }
-//            }
-//            if (it_dependency->parent_id == it_task->id)
-//            {
-//                ++it_task->child_count;
-//            }
-//        }
-//        printk_debug("async registered '%pF' depends on %d tasks\n", it_task->fnc,atomic_read(&it_task->waiting_count));
-//    }
+  const struct init_fn_t_4* it;
+  memset(info_4, 0, sizeof(info_4));      //clear all status information
+  // update child and group reference counter
+  for (it = begin; it != end; ++it)
+  {
+    info_4[it->id].status = st_waiting;
+    if (it->parent1_id != none_id)
+    {
+      ++info_4[it->parent1_id].child_count;
+    }
+    if (it->parent2_id != none_id)
+      ++info_4[it->parent2_id].child_count;
+
+    if (it->grp_id != grp_none_id)
+    {
+      info_4[it->grp_id].ref++;     // also use as group counter
+      info_4[it->grp_id].status = st_waiting;
+    }
+  }
+  info_4[none_id].status = st_done;
+  info_4[grp_none_id].status = st_done;
 }
+
+//const task_info_t* peekTask(const task_info_t* it)
+//  {
+//    bool towait;    // if true means wait for completion, false return current task or null
+//    unsigned child_count = 0; // how many child to wakeup
+//    std::unique_lock < std::mutex > lock(mtx);
+//    if (it != nullptr)
+//    {
+//      status[it->id].status = done;
+//      child_count += status[it->id].child_count;
+//      if (it->grp_id != ID::grp_none_id)
+//      {
+//        --status[it->grp_id].grp_ref;
+//        if (status[it->grp_id].grp_ref == 0)
+//        {
+//          child_count += status[it->grp_id].child_count;
+//          status[it->grp_id].status = done;
+//        }
+//      }
+//      // put back all done task
+//      if (it == begin)
+//      {
+//        while (begin != end && status[begin->id].status == done)
+//          ++begin;
+//      }
+//    }
+//    for (;;)
+//    {
+//      towait = false;    // no task to waiting for
+//      for (it = begin; it != end; ++it)
+//      {
+//        // find any ready task
+//        if (status[it->id].status == waiting)
+//        {
+//          if (status[it->parent_id].status == done && status[it->parent_id2].status == done)
+//          {
+//            status[it->id].status = running;
+//            break;
+//          }
+//          towait = true;
+//        }
+//      }
+//      if (it != end)
+//        break;     // get out for ;;
+//      // we got nothing
+//      if (towait)    // wait and try again
+//      {
+//        std::cout << 'W' << std::endl;
+//        cond_var.wait(lock);
+//      }
+//      else
+//      {
+//        it = nullptr;    // we done here
+//        child_count = 3;  // wake_up all task because we done
+//        break;    // get out for ;;
+//      }
+//    }
 
 
 /**
@@ -1091,17 +1056,6 @@ inline void wait_(void)
 {
  //   wait_event_interruptible(list_wait, (tasks.type_ == waiting));
 }
-
-/**
- * Keeping registration of this initcall
- */
-//int async_module(void)
-//{
-//    Prepare2();
-//    start_threads(ProcessThread2);
-//    wait_event_interruptible(list_wait, (tasks.type_ == waiting));
-//    return 0;
-//}
 
 /**
  * Module initialization is taking a long time, more than any other.
