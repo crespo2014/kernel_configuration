@@ -840,7 +840,7 @@ extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
 
 #define GET_10(fnc,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,...) fnc##n10
 #define COUNT(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)
-#define CALL_FNC(fnc,...) COUNT(fnc,__VA_ARGS__)(__VA_ARGS__)
+//#define CALL_FNC(fnc,...) COUNT(fnc,__VA_ARGS__)(__VA_ARGS__)
 
 #define DEPENDS_BUILD(id,type,...) CALL_FNC(DEPENDS_,id,##__VA_ARGS__)
 
@@ -1556,6 +1556,11 @@ static int async_late_init(void)
 {
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     return 0;
+}
+
+void nforce2_init(void)
+{
+
 }
 
 __initcall(async_initialization);
