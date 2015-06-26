@@ -657,18 +657,20 @@
     \
     fnc(nforce2_init) \
     \
-    fnc(snd_compress_init)
+    fnc(snd_compress_init) \
+    \
+    fnc(max)
 
 
 
-#define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
+//#define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
 
 #define TASK_STRING(id)                   #id
 #define TASK_NAME(id,...)                 TASK_STRING(id),
 #define TASK_ID(id,...)                   id ## _id,
-#define TASK_TYPE(id,type,...)            type
-#define TASK_DEPENDS(id,type,...)         id,##__VA_ARGS__
-#define ASYNC_MODULE_INFO(id,type,...)    {type},
+//#define TASK_TYPE(id,type,...)            type
+//#define TASK_DEPENDS(id,type,...)         id,##__VA_ARGS__
+//#define ASYNC_MODULE_INFO(id,type,...)    {type},
 
 /**
  * Implement static enum to string map
@@ -679,11 +681,11 @@ typedef enum   {
     module_last
 } modules_e;
 
-struct dependency_t
-{
-    modules_e task_id;
-    modules_e parent_id;
-};
+//struct dependency_t
+//{
+//    modules_e task_id;
+//    modules_e parent_id;
+//};
 
 /**
  * Task type or execution priority
@@ -707,15 +709,15 @@ struct async_module_info_t
     enum task_type_t type_;
 };
 
-struct init_fn_t
-{
-  modules_e  id;
-  initcall_t fnc;
-  // dynamic data
-  struct init_fn_t*    next_of;    // next function of the same type.
-  struct init_fn_t*   parent_it;   // highest parent that the task depends on
-  volatile unsigned long status;   // bit 0 1 free to get, bit 1 1 doing
-};
+//struct init_fn_t
+//{
+//  modules_e  id;
+//  initcall_t fnc;
+//  // dynamic data
+//  struct init_fn_t*    next_of;    // next function of the same type.
+//  struct init_fn_t*   parent_it;   // highest parent that the task depends on
+//  volatile unsigned long status;   // bit 0 1 free to get, bit 1 1 doing
+//};
 
 #define GET_10(fnc,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,...) fnc##n10
 #define COUNT_ARG(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)

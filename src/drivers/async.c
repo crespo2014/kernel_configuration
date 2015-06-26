@@ -807,7 +807,7 @@ fnc(,asynchronized)  /**/ \
  * Static struct holding all data
  */
 #ifndef TEST
-extern struct init_fn_t __async_initcall_start[], __async_initcall_end[];
+extern struct init_fn_t_4 __async_initcall_start[], __async_initcall_end[];
 #endif
 //extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
 
@@ -874,6 +874,8 @@ struct task_info_t_4
     unsigned childs;    // count of child task waiting for this one
 };
 
+struct task_info_t_4  info_4[max_id]; // all task info
+
 /*
  * V3 initfunction is going to be extended and fill up with data at initialization stage
  * data is pick up from static definition
@@ -882,25 +884,25 @@ struct task_info_t_4
 /*
  * task info v3
  */
-struct task_info_t_v3
-{
-   enum task_type_t type;       // type that we are processing when disable means nothing
-   unsigned depends_on;    // 1 if the module depends on another one
-   modules_e parent1;
-   modules_e parent2;
-   // dynamic
-   struct init_fn_t*   init_fnc_it;
-   struct init_fn_t*   init_fnc_parent1;
-   struct init_fn_t*   init_fnc_parent2;
-};
+//struct task_info_t_v3
+//{
+//   enum task_type_t type;       // type that we are processing when disable means nothing
+//   unsigned depends_on;    // 1 if the module depends on another one
+//   modules_e parent1;
+//   modules_e parent2;
+//   // dynamic
+//   struct init_fn_t*   init_fnc_it;
+//   struct init_fn_t*   init_fnc_parent1;
+//   struct init_fn_t*   init_fnc_parent2;
+//};
 
-struct task_list_t_v3
-{
-    // pointer to first function of each type
-    struct init_fn_t*   first_of[end];
-    enum task_type_t    type_;              // current type
-    struct init_fn_t*   runnig_task;        // task currently running
-};
+//struct task_list_t_v3
+//{
+//    // pointer to first function of each type
+//    struct init_fn_t*   first_of[end];
+//    enum task_type_t    type_;              // current type
+//    struct init_fn_t*   runnig_task;        // task currently running
+//};
 
 
 /**
@@ -919,44 +921,6 @@ struct task_t
     unsigned child_count;   // how many task it triggers
     struct task_t**  first_cild; // first child to be release
 };
-
-/**
- * A entry per task is create in a global table to all all data including task pointer
- * No more than 2 dependencies are supported
- * This table contains all information about task
- * there are static and dynamic section
- */
-//static struct task_info_t_v3 /*__initconst*/ task_info_[] =
-//{   {waiting,0,none, none}, INIT_CALLS(TASK_INFO) };
-
-static const struct async_module_info_t /*__initconst*/ module_info[] =
-{   {waiting}, INIT_CALLS(ASYNC_MODULE_INFO) {waiting}};
-
-/**
- * Dependencies list is declared next
- */
-static const struct dependency_t /*__initconst*/ module_depends[] =
-{ INIT_CALLS(DEPENDS_BUILD) };
-
-// TODO join together all task with taskid table to allow dynamic allocation
-struct task_list_t
-{
-    struct task_t all[MAX_TASKS];       // full list of task
-    struct task_t* task_end;
-    enum task_type_t     type_;
-    struct task_t*  current_tasks[MAX_TASKS];        // list of actived task
-    struct task_t** task_last_done;      // first task to be done
-    struct task_t** task_last;           // one pass last task to be done
-    struct task_t*  childs[sizeof(module_depends)/sizeof(*module_depends)];  //  list of child to be relase ordered by parent
-
-    //new for version 3
-    struct init_fn_t   actived_modules[MAX_TASKS];
-    struct init_fn_t*  running_module_idx;      // running this module at the moment when reach the last means end
-    struct init_fn_t*  last_module_idx;
-};
-
-static struct task_list_t tasks;
-static struct task_list_t_v3 tasks_v3;
 
 static DEFINE_SPINLOCK(list_lock);
 static DECLARE_WAIT_QUEUE_HEAD( list_wait);
@@ -979,345 +943,50 @@ const char* getName(modules_e id)
  * Initialize modules dynamic data
  */
 /*
-void Init_v3(struct init_fn_t* begin, struct init_fn_t* end)
-{
-    struct init_fn_t*   last_of[end];
-    struct init_fn_t* it_init_fnc;
-    struct init_fn_t*    fnc_it;
-    struct task_info_t_v3*  info;
-    memset(tasks_v3.first_of,0,sizeof(tasks_v3.first_of));
-    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc)
-    {
-        it_init_fnc->next_of = NULL;
-        it_init_fnc->status = 3;
-        // create a single link list with the same task type
-        info = &task_info_[it_init_fnc->id];
-        if (tasks_v3.first_of[info->type] == NULL)
-        {
-            tasks_v3.first_of[info->type] = it_init_fnc;
-            last_of[info->type] = it_init_fnc;
-        }
-        else
-        {
-            last_of[info->type]->next_of = it_init_fnc;
-            last_of[info->type] = it_init_fnc;
-        }
-        // find higest parent
-        if ( info->depends_on != 0 )
-        {
-            fnc_it = it_init_fnc;
-            while (fnc_it > begin)
-            {
-                if ((fnc_it->id == info->parent1) || (fnc_it->id == info->parent2))
-                {
-                    break;
-                }
-                --fnc_it;
-            }
-            it_init_fnc->parent_it = fnc_it;
-            if (fnc_it < begin)
-            {
-                printk(KERN_ERR "Dependencies (%d,%d) (%s,%s) not found for %d - %s\n",
-                        info->parent1,info->parent2,
-                        getName(info->parent1),getName(info->parent2),
-                        it_init_fnc->id,getName(it_init_fnc->id));
-            }
-        }
-        else
-            it_init_fnc->parent_it = NULL;
-    }
-    tasks_v3.runnig_task = NULL;
-    tasks_v3.type_ = waiting;
-}
-*/
-void Start_Type_v3(enum task_type_t type)
-{
-    int r;
-    r = wait_event_interruptible(list_wait,tasks_v3.type_ == waiting && tasks_v3.runnig_task == NULL);
-    tasks_v3.runnig_task = tasks_v3.first_of[type];
-    if (tasks_v3.runnig_task == NULL)
-        tasks_v3.type_ = waiting;       // no task to do for this type
-    wake_up_interruptible(&list_wait);
-}
-
-/**
- * Peek a task from list or wait
- * return null if no more task available or end of process
- */
-
-struct init_fn_t* peek_func_v3(struct init_fn_t* prev)
-{
-    int r;
-    struct init_fn_t* init_fnc_it;
-    if (prev != NULL)
-    {
-        prev->status = 0;
-        prev = NULL;
-    }
-    do
-    {
-        spin_lock(&list_lock);
-
-        for (init_fnc_it = tasks_v3.runnig_task; init_fnc_it != NULL; init_fnc_it = init_fnc_it->next_of)
-        {
-            if (init_fnc_it->status == 3)
-            {
-                if (init_fnc_it->parent_it == NULL || init_fnc_it->parent_it->status == 0)
-                {
-                    init_fnc_it->status = 1;
-                    prev = init_fnc_it;
-                    break;
-                }
-            }
-            else if (tasks_v3.runnig_task == init_fnc_it && init_fnc_it->status == 0)
-            {
-                tasks_v3.runnig_task = init_fnc_it->next_of;
-                if ( tasks_v3.runnig_task == NULL )
-                    tasks_v3.type_ = waiting;
-//                    wake_up_interruptible(&list_wait);
-            }
-        }
-        init_fnc_it = tasks_v3.runnig_task;     // all task blocked
-        spin_unlock(&list_lock);
-        wake_up_interruptible(&list_wait);      // signal
-        if (prev == NULL)
-        {
-            // wait for any change or end
-            r = wait_event_interruptible(list_wait, init_fnc_it != tasks_v3.runnig_task || tasks_v3.type_ == end);
-            if (r != 0)
-                break;
-        }
-    } while (prev == NULL && tasks_v3.type_ != end);
-    return prev;
-}
-
-
-
-/*
- * Processing by stages
- */
-void Thread_v3(void* d)
-{
-    int r;
-    struct init_fn_t* fnc;
-    fnc = NULL;
-    while ((fnc = peek_func_v3(fnc)) != NULL)
-    {
-        r = do_one_initcall(fnc->fnc);
-    }
-}
-
-struct task_t* getTask(modules_e id)
-{
-    struct task_t* t = tasks.all;
-    while(t != tasks.task_end && t->id != id)
-        ++t;
-    return (t == tasks.task_end) ? NULL : t;
-}
-
-
-
-/**
- * Check if one task depends on another
- * 0 - false
- * 1 - true
- */
-unsigned  doesDepends(modules_e child, modules_e parent)
-{
-    const struct dependency_t * it_dependency;
-    for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
-    {
-        if (it_dependency->parent_id == parent && it_dependency->task_id == child)
-            return 1;
-    }
-    return 0;
-}
-/*
  * Read all information from static mmeory an expand it to dynamic memory
  */
-void  FillTasks(const struct init_fn_t* begin,const  struct init_fn_t* end)
+void  FillTasks(const struct init_fn_t_4* begin,const  struct init_fn_t_4* end)
 {
-    const struct dependency_t *it_dependency;
-    const struct init_fn_t* it_init_fnc;
-    struct task_t* it_task;
-    struct task_t* ptask;
-    tasks.task_end = tasks.all;
-    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
-    {
-        tasks.task_end->id = it_init_fnc->id;
-        tasks.task_end->type = module_info[it_init_fnc->id].type_;
-        tasks.task_end->fnc = it_init_fnc->fnc;
-        atomic_set(&tasks.task_end->waiting_count,0);
-    }
-    // resolve dependencies
-    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
-    {
-        for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
-        {
-            if (it_dependency->task_id == it_task->id)
-            {
-                // Do not register a dependency that does not exist
-                ptask = getTask(it_dependency->parent_id);
-                if (ptask == NULL)
-                {
-                    printk(KERN_ERR "async Dependency id %d %s not found for id %d %s\n",it_dependency->parent_id,getName(it_dependency->parent_id),it_dependency->task_id,getName(it_dependency->task_id));
-                }
-                else
-                {
-                    // register dependency
-                    atomic_inc(&it_task->waiting_count);
-                }
-            }
-            if (it_dependency->parent_id == it_task->id)
-            {
-                ++it_task->child_count;
-            }
-        }
-        printk_debug("async registered '%pF' depends on %d tasks\n", it_task->fnc,atomic_read(&it_task->waiting_count));
-    }
-}
-/*
- * Prepare task to be done using task pointer list
- */
-void  FillTasks2(struct init_fn_t* begin, struct init_fn_t* end)
-{
-    const struct dependency_t *it_dependency;
-    struct init_fn_t* it_init_fnc;
-    struct task_t* it_task;
-    struct task_t* ptask;
-    struct task_t** release_end;            // pointer to list of childs
-    tasks.task_end = tasks.all;
-    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
-    {
-        tasks.task_end->id = it_init_fnc->id;
-        tasks.task_end->type = module_info[it_init_fnc->id].type_;
-        tasks.task_end->fnc = it_init_fnc->fnc;
-        atomic_set(&tasks.task_end->waiting_count,0);
-        tasks.task_end->first_cild = NULL;
-        tasks.task_end->child_count = 0;
-        tasks.task_end->status = 3;
-    }
-    // for every task find all child to be release and store.
-    release_end = tasks.childs;
-    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
-    {
-        it_task->first_cild = release_end;
-        for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
-        {
-            // get all childs
-            if (it_dependency->parent_id == it_task->id)
-            {
-                // Do not register a dependency that does not exist
-                ptask = getTask(it_dependency->task_id);
-                if (ptask == NULL)
-                {
-                    printk(KERN_ERR "async Child id %d %s not found for parent id %d %s\n",it_dependency->task_id,getName(it_dependency->task_id),it_dependency->parent_id,getName(it_dependency->parent_id));
-                }
-                else
-                {
-                    // register dependency
-                    ++it_task->child_count;
-                    *release_end = ptask;
-                    ++release_end;
-                    if (it_task->type == deferred && ptask->type == asynchronized)
-                    {
-                        printk(KERN_ERR "async Child id %d %s will not released by parent id %d %s\n",it_dependency->task_id,getName(it_dependency->task_id),it_dependency->parent_id,getName(it_dependency->parent_id));
-                    }
-                    if (it_task > ptask)
-                    {
-                        printk(KERN_ERR "async child id %d %s was registered before parent id %d %s\n",it_dependency->task_id,getName(it_dependency->task_id),it_dependency->parent_id,getName(it_dependency->parent_id));
-                    }
-                    atomic_inc(&ptask->waiting_count);
-                }
-            }
-        }
-        printk_debug("async registered '%pF' %s release %d tasks\n", it_task->fnc,getName(it_task->id),it_task->child_count);
-    }
-}
-/*
- * Prepare pointers to task do not use index
- */
-void  Prepare2(void)
-{
-    // Pick only task of type from all task
-    struct task_t* it_task;
-    //
-    printk_debug("async Preparing ... \n");
-
-    tasks.task_last = tasks.current_tasks;
-    tasks.task_last_done = tasks.current_tasks;
-
-    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
-    {
-        if (it_task->type == tasks.type_)
-        {
-            *tasks.task_last  = it_task;
-            ++tasks.task_last;
-        }
-        else
-            if (it_task->type == waiting)
-            {
-                printk(KERN_ERR "async task id %d %s is disable \n",it_task->id,getName(it_task->id));
-            }
-    }
-    printk_debug("async %d tasks \n",tasks.task_last - tasks.current_tasks);
-}
-/**
- * Mark task as done
- */
-void  TaskDone2(struct task_t* ptask)
-{
-    struct task_t** it_task;
-    unsigned i;
-    if (ptask != NULL)
-    {
-       clear_bit(1,&ptask->status);      // task done
-       // release all childs
-       it_task = ptask->first_cild;
-       for(i = 0;i<ptask->child_count;++i,++it_task)
-       {
-           atomic_dec(&(*it_task)->waiting_count);
-       }
-       if (ptask->child_count > 1)
-           wake_up_interruptible(&list_wait);
-    }
-    // try to update last done task
-    spin_lock(&list_lock);
-    while (tasks.task_last_done != tasks.task_last && (*tasks.task_last_done)->status == 0)
-        ++tasks.task_last_done;
-    spin_unlock(&list_lock);
-
-    // Check for end condition
-    if (tasks.task_last_done == tasks.task_last)
-    {
-        tasks.type_ = waiting;
-        wake_up_interruptible_all(&list_wait);
-    }
+//    const struct dependency_t *it_dependency;
+//    const struct init_fn_t* it_init_fnc;
+//    struct task_t* it_task;
+//    struct task_t* ptask;
+//    tasks.task_end = tasks.all;
+//    for (it_init_fnc = begin; it_init_fnc < end; ++it_init_fnc, ++tasks.task_end)
+//    {
+//        tasks.task_end->id = it_init_fnc->id;
+//        tasks.task_end->type = module_info[it_init_fnc->id].type_;
+//        tasks.task_end->fnc = it_init_fnc->fnc;
+//        atomic_set(&tasks.task_end->waiting_count,0);
+//    }
+//    // resolve dependencies
+//    for (it_task = tasks.all; it_task != tasks.task_end; ++it_task)
+//    {
+//        for (it_dependency = module_depends; it_dependency != module_depends + sizeof(module_depends)/sizeof(*module_depends); ++it_dependency)
+//        {
+//            if (it_dependency->task_id == it_task->id)
+//            {
+//                // Do not register a dependency that does not exist
+//                ptask = getTask(it_dependency->parent_id);
+//                if (ptask == NULL)
+//                {
+//                    printk(KERN_ERR "async Dependency id %d %s not found for id %d %s\n",it_dependency->parent_id,getName(it_dependency->parent_id),it_dependency->task_id,getName(it_dependency->task_id));
+//                }
+//                else
+//                {
+//                    // register dependency
+//                    atomic_inc(&it_task->waiting_count);
+//                }
+//            }
+//            if (it_dependency->parent_id == it_task->id)
+//            {
+//                ++it_task->child_count;
+//            }
+//        }
+//        printk_debug("async registered '%pF' depends on %d tasks\n", it_task->fnc,atomic_read(&it_task->waiting_count));
+//    }
 }
 
-/*
- * Try to get a task ready to run
- */
-struct task_t*  PeekTask(void)
-{
-    struct task_t** it_task;
-    for (it_task = tasks.task_last_done;it_task != tasks.task_last;++it_task)
-    {
-        if (atomic_read(&(*it_task)->waiting_count) == 0)
-        {
-            if (test_and_clear_bit(0,&(*it_task)->status) == 1) return *it_task;
-        }
-    }
-    return NULL;
-}
-
-/**
- * Disable module execution an its dependencies
- */
-int disable_module(struct task_t* ptask)
-{
-    return 0;
-}
 
 /**
  * Thread for version 2
@@ -1325,26 +994,26 @@ int disable_module(struct task_t* ptask)
 
 int  ProcessThread2(void *data)
 {
-    int ret;
-    struct task_t* ptask = NULL;
-    printk_debug("async %d starts\n", (unsigned )data);
-    do
-    {
-        ret = wait_event_interruptible(list_wait, (ptask = PeekTask()) != NULL || tasks.type_ != waiting);
-        if (ret != 0)
-        {
-            printk("async init wake up returned %d\n", ret);
-            break;
-        }
-        if (ptask != NULL)
-        {
-            printk_debug("async %d %pF %s\n", (unsigned)data, ptask->fnc,getName(ptask->id));
-            ret = do_one_initcall(ptask->fnc);
-            //TODO check return code and invalidate all task that depends on this one
-            TaskDone2(ptask);
-        }
-    } while (ptask != 0);
-    printk_debug("async %d ends\n", (unsigned)data);
+//    int ret;
+//    struct task_t* ptask = NULL;
+//    printk_debug("async %d starts\n", (unsigned )data);
+//    do
+//    {
+//        ret = wait_event_interruptible(list_wait, (ptask = PeekTask()) != NULL || tasks.type_ != waiting);
+//        if (ret != 0)
+//        {
+//            printk("async init wake up returned %d\n", ret);
+//            break;
+//        }
+//        if (ptask != NULL)
+//        {
+//            printk_debug("async %d %pF %s\n", (unsigned)data, ptask->fnc,getName(ptask->id));
+//            ret = do_one_initcall(ptask->fnc);
+//            //TODO check return code and invalidate all task that depends on this one
+//            TaskDone2(ptask);
+//        }
+//    } while (ptask != 0);
+//    printk_debug("async %d ends\n", (unsigned)data);
     return 0;
 }
 
@@ -1402,13 +1071,12 @@ int doall_default(void* d)
     if (old == 0)
     {
         int ret;
-        const struct init_fn_t* it_init_fnc;
+        const struct init_fn_t_4* it_init_fnc;
         for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
         {
             ret = do_one_initcall(it_init_fnc->fnc);
             schedule();        // give time to system to do other things
         }
-        tasks.type_ = waiting;
     }
     if (atomic_dec_and_test(&free_init_ref) )
           free_initmem();
@@ -1417,22 +1085,23 @@ int doall_default(void* d)
 
 /*
  * wait for all task to be done
+ * todo use a global counter equal to 2 to known when all stages are done (asyn,deferred) use a wait queue for notification
  */
 inline void wait_(void)
 {
-    wait_event_interruptible(list_wait, (tasks.type_ == waiting));
+ //   wait_event_interruptible(list_wait, (tasks.type_ == waiting));
 }
 
 /**
  * Keeping registration of this initcall
  */
-int async_module(void)
-{
-    Prepare2();
-    start_threads(ProcessThread2);
-    wait_event_interruptible(list_wait, (tasks.type_ == waiting));
-    return 0;
-}
+//int async_module(void)
+//{
+//    Prepare2();
+//    start_threads(ProcessThread2);
+//    wait_event_interruptible(list_wait, (tasks.type_ == waiting));
+//    return 0;
+//}
 
 /**
  * Module initialization is taking a long time, more than any other.
@@ -1443,52 +1112,22 @@ int async_module(void)
 /**
  * Do an normal initialization for an specific type
  */
-int do_type(void* d)
+int do_asynchronized(void* d)
 {
     int ret;
-    const struct init_fn_t* it_init_fnc;
+    const struct init_fn_t_4* it_init_fnc;
     for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
     {
-        if (module_info[it_init_fnc->id].type_ == tasks.type_)
+        if (it_init_fnc->type_ == asynchronized)
         {
             ret = do_one_initcall(it_init_fnc->fnc);
             schedule();        // give time to system to do other things
         }
     }
-    tasks.type_ = waiting;
     return 0;
 }
 
 
-int do_deferred(void)
-{
-    int old = atomic_xchg(&init_done, 1);
-    if (old == 0)
-    {
-        wait_();
-        tasks.type_ = deferred;
-        do_type(0);
-        if (atomic_dec_and_test(&free_init_ref) )
-          free_initmem();
-    }
-    return 0;
-}
-
-
-/**
- * Module entry point
- */
-static int  async_initialization(void)
-{
-    struct task_struct *thr;
-    tasks.type_ = asynchronized;
-    thr = kthread_create(do_type, (void* )(0), "do_type");
-    //thr = kthread_create(doall_default, (void* )(0), "do_type");
-    kthread_bind(thr, num_online_cpus() - 1);
-    atomic_inc(&free_init_ref);
-    wake_up_process(thr);
-    return 0;
-}
 
 /*
  * Structure holding all device file data
@@ -1512,13 +1151,13 @@ int device_open(struct inode * i, struct file * f)
 
 static ssize_t device_read(struct file *file, char __user *buf,size_t nbytes, loff_t *ppos)
 {
-    struct init_fn_t* it_init_fnc;
+    struct init_fn_t_4* it_init_fnc;
     const char* initcall_name;
     size_t count;
     count = 0;
-    it_init_fnc = (struct init_fn_t*)file->private_data;
+    it_init_fnc = (struct init_fn_t_4*)file->private_data;
 
-    while (it_init_fnc < __async_initcall_end && module_info[it_init_fnc->id].type_ != deferred)
+    while (it_init_fnc < __async_initcall_end && it_init_fnc->type_ != deferred)
         ++it_init_fnc;
     if (it_init_fnc != __async_initcall_end)
     {
@@ -1550,6 +1189,20 @@ static const struct file_operations deferred_initcalls_fops = {
 };
 
 /**
+ * Module entry point
+ */
+static int  _init(void)
+{
+    struct task_struct *thr;
+    atomic_inc(&free_init_ref);
+    thr = kthread_create(do_asynchronized, (void* )(0), "do_type");
+    //thr = kthread_create(doall_default, (void* )(0), "do_type");
+    kthread_bind(thr, num_online_cpus() - 1);
+    wake_up_process(thr);
+    return 0;
+}
+
+/**
  * Register proc entry to allow deferred initialization
  */
 static int async_late_init(void)
@@ -1558,12 +1211,7 @@ static int async_late_init(void)
     return 0;
 }
 
-void nforce2_init(void)
-{
-
-}
-
-__initcall(async_initialization);
+__initcall(_init);
 //late_initcall_sync(async_initialization);
 late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
 
