@@ -737,10 +737,10 @@ struct init_fn_t_4
     static const struct init_fn_t_4 init_fn_##fnc __used \
      __attribute__((__section__(".async_initcall.init"))) = {fnc ## _id,fnc,type,grp ## _id,parent1 ## _id,parent2 ## _id};
 
-#define ASYNC_TASK_v4_2(fnc,type)            async_module_init_4(fnc,type,grp_none, none,none)
-#define ASYNC_TASK_v4_3(id,type,grp)         async_module_init_4(fnc,type,grp, none,none)
-#define ASYNC_TASK_v4_4(id,type,grp,p1)      async_module_init_4(fnc,type,grp, p1,none)
-#define ASYNC_TASK_v4_5(id,type,grp,p1,p2)   async_module_init_4(fnc,type,grp, p1,p2)
+#define ASYNC_TASK_v4_2(fnc,type)             async_module_init_4(fnc,type,grp_none, none,none)
+#define ASYNC_TASK_v4_3(fnc,type,grp)         async_module_init_4(fnc,type,grp, none,none)
+#define ASYNC_TASK_v4_4(fnc,type,grp,p1)      async_module_init_4(fnc,type,grp, p1,none)
+#define ASYNC_TASK_v4_5(fnc,type,grp,p1,p2)   async_module_init_4(fnc,type,grp, p1,p2)
 
 #define ASYNC_TASK_v4(fnc,type,...)  CALL_FNC(ASYNC_TASK_v4_,fnc,type,##__VA_ARGS__)
 
@@ -763,25 +763,26 @@ static void __exit __driver##_exit(void) \
 module_exit(__driver##_exit);
 
 // **********************************************
-#define ASYNC_MODULE_PCI_DRIVER(__pci_driver,type,...) ASYNC_MODULE_DRIVER(__pci_driver, pci_register_driver,pci_unregister_driver,type,##__VA_ARGS__);
+//#define ASYNC_MODULE_PCI_DRIVER(__pci_driver,type,...) ASYNC_MODULE_DRIVER(__pci_driver, pci_register_driver,pci_unregister_driver,type,##__VA_ARGS__);
 
 // **********************************************
-#define ASYNC_MODULE_PLATFORM_DRIVER(__platform_driver,type,...) \
-    async_module_driver(__platform_driver, platform_driver_register,platform_driver_unregister,type,##__VA_ARGS__);
+//#define ASYNC_MODULE_PLATFORM_DRIVER(__platform_driver,type,...)
+//    ASYNC_MODULE_DRIVER(__platform_driver, platform_driver_register,platform_driver_unregister,type,##__VA_ARGS__);
 
+/*********************************************************************/
 #if defined(CONFIG_ASYNCHRO_MODULE_INIT) && !defined(MODULE)
 
 #define _async_module_init(fnc,type,...)  \
-  ASYNC_MODULE_INIT(fnc,type,##__VA_ARGS__)
+  ASYNC_MODULE_INIT(fnc,type,##__VA_ARGS__);
 
 #define _async_module_driver(__driver, __register, __unregister,type,...)  \
-  ASYNC_MODULE_DRIVER(__driver, __register, __unregister,type,##__VA_ARGS__)
+  ASYNC_MODULE_DRIVER(__driver, __register, __unregister,type,##__VA_ARGS__);
 
-#define _async_module_pci_driver(__pci_driver,type,...)                    \
-  ASYNC_MODULE_PCI_DRIVER(__pci_driver, pci_register_driver,pci_unregister_driver,type,##__VA_ARGS__);
+#define _async_module_pci_driver(__pci_driver,type,...)  \
+    ASYNC_MODULE_DRIVER(__pci_driver, pci_register_driver,pci_unregister_driver,type,##__VA_ARGS__);
 
-#define _async_module_platform_driver(__platform_driver,type,...)          \
-    ASYNC_MODULE_PLATFORM_DRIVER(__platform_driver, platform_driver_register,platform_driver_unregister,type,##__VA_ARGS__);
+#define _async_module_platform_driver(__platform_driver,type,...)    \
+    ASYNC_MODULE_DRIVER(__platform_driver, platform_driver_register,platform_driver_unregister,type,##__VA_ARGS__);
 
 #else
 
@@ -798,25 +799,25 @@ module_exit(__driver##_exit);
     _async_module_init(fnc,asynchronized,##__VA_ARGS__);
 
 #define async_module_driver(__driver, __register, __unregister,...)  \
-    _async_module_driver(__driver, __register, __unregister,asynchronized,##__VA_ARGS__)
+    _async_module_driver(__driver, __register, __unregister,asynchronized,##__VA_ARGS__);
 
 #define async_module_pci_driver(__pci_driver,...)                    \
-    _async_module_pci_driver(__pci_driver, pci_register_driver,pci_unregister_driver,asynchronized,##__VA_ARGS__);
+    _async_module_pci_driver(__pci_driver, asynchronized,##__VA_ARGS__);
 
 #define async_module_platform_driver(__platform_driver,...)          \
-    _async_module_platform_driver(__platform_driver, platform_driver_register,platform_driver_unregister,asynchronized,##__VA_ARGS__);
+    _async_module_platform_driver(__platform_driver,asynchronized,##__VA_ARGS__);
 
 // ************* Deferred initialization **** after kernel boot **********
 #define deferred_module_init(fnc,...)   \
     _async_module_init(fnc,deferred,##__VA_ARGS__);
 
 #define deferred_module_driver(__driver, __register, __unregister,...)  \
-    _async_module_driver(__driver, __register, __unregister,deferred,##__VA_ARGS__)
+    _async_module_driver(__driver, __register, __unregister,deferred,##__VA_ARGS__);
 
 #define deferred_module_pci_driver(__pci_driver,...)                    \
-    _async_module_pci_driver(__pci_driver, pci_register_driver,pci_unregister_driver,deferred,##__VA_ARGS__);
+    _async_module_pci_driver(__pci_driver,deferred,##__VA_ARGS__);
 
 #define deferred_module_platform_driver(__platform_driver,...)          \
-    _async_module_platform_driver(__platform_driver, platform_driver_register,platform_driver_unregister,deferred,##__VA_ARGS__);
+    _async_module_platform_driver(__platform_driver,deferred,##__VA_ARGS__);
 
 #endif /* ASYNC_MINIT_H_ */

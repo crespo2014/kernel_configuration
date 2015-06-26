@@ -1078,6 +1078,8 @@ int do_asynchronized(void* d)
             schedule();        // give time to system to do other things
         }
     }
+    if (atomic_dec_and_test(&free_init_ref) )
+             free_initmem();
     return 0;
 }
 
@@ -1133,6 +1135,11 @@ static ssize_t device_read(struct file *file, char __user *buf,size_t nbytes, lo
                buf[count-1] = '\n';     // if there is only space for one char we do not set \n
         }
     }
+    else
+    {
+      if (atomic_dec_and_test(&free_init_ref) )
+               free_initmem();
+    }
     return count;
 }
 
@@ -1145,13 +1152,13 @@ static const struct file_operations deferred_initcalls_fops = {
 /**
  * Module entry point
  */
-static int  _init(void)
+static int  async_init(void)
 {
     struct task_struct *thr;
     atomic_inc(&free_init_ref);
     thr = kthread_create(do_asynchronized, (void* )(0), "do_type");
     //thr = kthread_create(doall_default, (void* )(0), "do_type");
-    kthread_bind(thr, num_online_cpus() - 1);
+    //kthread_bind(thr, num_online_cpus() - 1);
     wake_up_process(thr);
     return 0;
 }
@@ -1161,12 +1168,12 @@ static int  _init(void)
  */
 static int async_late_init(void)
 {
+    atomic_inc(&free_init_ref);
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     return 0;
 }
 
-__initcall(_init);
+__initcall(async_init);
 //late_initcall_sync(async_initialization);
 late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
-
 
