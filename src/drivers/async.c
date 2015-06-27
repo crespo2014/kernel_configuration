@@ -1026,13 +1026,12 @@ int do_asynchronized(void* d)
     {
         if (it_init_fnc->type_ == asynchronized)
         {
-          msleep(1000);
             ret = do_one_initcall(it_init_fnc->fnc);
-            //schedule();        // give time to system to do other things
+            schedule();        // give time to system to do other things
         }
     }
-    if (atomic_dec_and_test(&free_init_ref) )
-             free_initmem();
+//    if (atomic_dec_and_test(&free_init_ref) )
+//             free_initmem();
     return 0;
 }
 
@@ -1123,7 +1122,7 @@ static int async_late_init(void)
     struct task_struct *thr;
 
     atomic_inc(&free_init_ref);
-    atomic_inc(&free_init_ref);
+    //atomic_inc(&free_init_ref);
 
     current_type = asynchronized;
     atomic_inc(&free_init_ref);
