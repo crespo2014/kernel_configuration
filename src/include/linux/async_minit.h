@@ -24,8 +24,6 @@
     fnc(grp_char) \
     fnc(grp_usb) \
     \
-    fnc(async_initialization)\
-    \
     fnc(ahci_pci_driver_init) \
     \
     fnc(ahci_driver_init) /**/ \
