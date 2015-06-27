@@ -1,0 +1,41 @@
+#
+# Realtek Ethernet controllers
+#
+config RTL8168
+	tristate "RealTek RTL8168B/8111B, RTL8168C/8111C, RTL8168CP/8111CP, RTL8168D/8111D, RTL8168DP/8111DP, and RTL8168E/8111E Gigabit Ethernet controllers with PCI-Express interface"
+	depends on PCI
+	select CRC32
+	select MII
+	---help---
+	r8168 is the Linux device driver released for Realtek Gigabit Ethernet
+	controllers with PCI-Express interface.
+	http://www.realtek.com.tw/products/productsView.aspx?Langid=1&PFid=5&Level=5&Conn=4&ProdID=12
+
+if RTL8168
+
+config ENABLE_REALWOW_SUPPORT
+	bool "ENABLE_REALWOW_SUPPORT"
+	default n
+	
+config ENABLE_DASH_SUPPORT
+	bool "ENABLE_DASH_SUPPORT"
+	default n
+
+config CONFIG_DOWN_SPEED_100
+	bool "CONFIG_DOWN_SPEED_100"
+	default n
+	
+config CONFIG_ASPM
+	bool "CONFIG_ASPM"
+	default y
+	
+config ENABLE_S5WOL
+	bool "ENABLE_S5WOL"
+	default y
+	
+config ENABLE_EEE
+	bool "ENABLE_EEE"
+	default n
+
+
+endif # RTL8111

@@ -16,4 +16,4 @@ ccflags-$(CONFIG_ENABLE_EEE) += -DENABLE_EEE
 ccflags-y += -DCONFIG_R8168_NAPI -DCONFIG_R8168_VLAN
 
 
-#fw-shipped-$(CONFIG_RTL8168) += iwlwifi-3160-9.ucode iwlwifi-3160-10.ucode iwlwifi-3160-8.ucode iwlwifi-3160-7.ucode ibt-hw-37.7.10-fw-1.0.2.3.d.bseq
+fw-shipped-$(CONFIG_RTL8168) += iwlwifi-3160-9.ucode iwlwifi-3160-10.ucode iwlwifi-3160-8.ucode iwlwifi-3160-7.ucode ibt-hw-37.7.10-fw-1.0.2.3.d.bseq
