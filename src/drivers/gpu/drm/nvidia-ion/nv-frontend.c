@@ -411,6 +411,6 @@ static void __exit nvidia_frontend_exit_module(void)
     }
 }
 
-async_module_init(nvidia_frontend_init_module);
+module_init_async(nvidia_frontend_init_module,grp_none,drm_core_init);
 module_exit(nvidia_frontend_exit_module);
 

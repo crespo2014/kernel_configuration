@@ -763,7 +763,6 @@ fnc(,asynchronized)  /**/ \
 #ifndef TEST
 extern struct init_fn_t_4 __async_initcall_start[], __async_initcall_end[];
 #endif
-//extern struct dependency_t __async_modules_depends_start[], __async_modules_depends_end[];
 
 #ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 #define printk_debug(...) printk(KERN_ERR  __VA_ARGS__)
@@ -774,41 +773,6 @@ extern struct init_fn_t_4 __async_initcall_start[], __async_initcall_end[];
 #ifndef CONFIG_ASYNCHRO_MODULE_INIT_THREADS
 #define CONFIG_ASYNCHRO_MODULE_INIT_THREADS 1
 #endif
-/**
- * Macros to build static data about modules from arguments.
- * until 10 dependencies available
- * (module_id,module_type,dependencies ... )
- */
-
-#define DEPENDS_0()
-#define DEPENDS_1(a)
-#define DEPENDS_2(a,b)      MOD_DEPENDENCY_ITEM(a,b),
-#define DEPENDS_3(a,b,...)  DEPENDS_2(a,b) DEPENDS_2(a,__VA_ARGS__)
-#define DEPENDS_4(a,b,...)  DEPENDS_2(a,b) DEPENDS_3(a,__VA_ARGS__)
-#define DEPENDS_5(a,b,...)  DEPENDS_2(a,b) DEPENDS_4(a,__VA_ARGS__)
-#define DEPENDS_6(a,b,...)  DEPENDS_2(a,b) DEPENDS_5(a,__VA_ARGS__)
-#define DEPENDS_7(a,b,...)  DEPENDS_2(a,b) DEPENDS_6(a,__VA_ARGS__)
-#define DEPENDS_8(a,b,...)  DEPENDS_2(a,b) DEPENDS_7(a,__VA_ARGS__)
-#define DEPENDS_9(a,b,...)  DEPENDS_2(a,b) DEPENDS_8(a,__VA_ARGS__)
-#define DEPENDS_10(a,b,...) DEPENDS_2(a,b) DEPENDS_9(a,__VA_ARGS__)
-
-#define GET_10(fnc,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,...) fnc##n10
-#define COUNT(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)
-//#define CALL_FNC(fnc,...) COUNT(fnc,__VA_ARGS__)(__VA_ARGS__)
-
-#define DEPENDS_BUILD(id,type,...) CALL_FNC(DEPENDS_,id,##__VA_ARGS__)
-
-#define GET_DEPENDS_0()  none,none
-#define GET_DEPENDS_1()  none,none
-
-#define TASK_INFO_2(id,type)                 { type, 0, none, none } ,
-#define TASK_INFO_3(id,type,parent1)         { type, 1, parent1 ## _id, none } ,
-#define TASK_INFO_4(id,type,parent1,parent2) { type, 1, parent1 ## _id, parent2 ## _id} ,
-
-// Fill a table with all modules information
-#define TASK_INFO(id,type,...)  CALL_FNC(TASK_INFO_,id,type,##__VA_ARGS__)
-
-#define MAX_TASKS (unsigned)module_last+2
 
 /*
  * Modules v4. Optimization using more static data fromo modules
@@ -828,34 +792,20 @@ struct task_info_t_4
     unsigned child_count;    // count of child task waiting for this one
 };
 
-struct task_info_t_4  info_4[max_id]; // all task info
+struct task_info_t_4  info_4[max_id];    // all task info
+struct init_fn_t* current_init_fnc;      // current init function to execute
+enum task_type_t  current_type;          // current type.
 
-/**
- * all initcall will be enums. a tbl will store all names
- */
 
-struct task_t
-{
-    modules_e id;           // idx in string table
-    enum task_type_t type;       // type that we are processing when disable means nothing
-    unsigned depends_on;    // 1 if the module depends on another one
-// to be fill at initialization stage
-    initcall_t fnc;         // ptr to init function
-    atomic_t waiting_count; // how many task does it depend on
-    volatile unsigned long status;        // bit 0 1 free to get, bit 1 1 doing
-    unsigned child_count;   // how many task it triggers
-    struct task_t**  first_cild; // first child to be release
-};
-
-static DEFINE_SPINLOCK(list_lock);
-static DECLARE_WAIT_QUEUE_HEAD( list_wait);
+//static DEFINE_SPINLOCK(list_lock);
+//static DECLARE_WAIT_QUEUE_HEAD( list_wait);
 
 
 //#ifdef CONFIG_ASYNCHRO_MODULE_INIT_DEBUG
 const char* getName(modules_e id)
 {
     static const char* const module_name[] =
-    {   "",INIT_CALLS(TASK_NAME)};
+    {   "",MODULES_ID(TASK_NAME)};
     if (id > module_last)
         return "";
     return module_name[id];
@@ -1025,6 +975,8 @@ int  start_threads(int(* thread_fnc) (void*) )
 
 static atomic_t init_done = ATOMIC_INIT(0);
 extern atomic_t  free_init_ref;         // become zero when all drivers are initialize.
+// current module
+
 
 
 /*
@@ -1074,16 +1026,15 @@ int do_asynchronized(void* d)
     {
         if (it_init_fnc->type_ == asynchronized)
         {
+          msleep(1000);
             ret = do_one_initcall(it_init_fnc->fnc);
-            schedule();        // give time to system to do other things
+            //schedule();        // give time to system to do other things
         }
     }
     if (atomic_dec_and_test(&free_init_ref) )
              free_initmem();
     return 0;
 }
-
-
 
 /*
  * Structure holding all device file data
@@ -1152,28 +1103,38 @@ static const struct file_operations deferred_initcalls_fops = {
 /**
  * Module entry point
  */
-static int  async_init(void)
-{
-    struct task_struct *thr;
-    atomic_inc(&free_init_ref);
-    thr = kthread_create(do_asynchronized, (void* )(0), "do_type");
-    //thr = kthread_create(doall_default, (void* )(0), "do_type");
-    //kthread_bind(thr, num_online_cpus() - 1);
-    wake_up_process(thr);
-    return 0;
-}
+//static int async_init(void)
+//{
+//  struct task_struct *thr;
+//
+//  current_type = asynchronized;
+//  atomic_inc(&free_init_ref);
+//  thr = kthread_create(do_asynchronized, (void*) (0), "do_type");
+//  kthread_bind(thr, num_online_cpus() - 1);
+//  wake_up_process(thr);
+//  return 0;
+//}
 
 /**
  * Register proc entry to allow deferred initialization
  */
 static int async_late_init(void)
 {
+    struct task_struct *thr;
+
     atomic_inc(&free_init_ref);
+    atomic_inc(&free_init_ref);
+
+    current_type = asynchronized;
+    atomic_inc(&free_init_ref);
+    thr = kthread_create(do_asynchronized, (void*) (0), "do_type");
+    kthread_bind(thr, num_online_cpus() - 1);
+    wake_up_process(thr);
+
     proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
     return 0;
 }
 
-__initcall(async_init);
-//late_initcall_sync(async_initialization);
+//__initcall(async_init);
 late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
 

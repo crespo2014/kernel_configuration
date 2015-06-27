@@ -19,6 +19,10 @@
     fnc(none) \
     \
     fnc(grp_none) \
+    fnc(grp_hid) \
+    fnc(grp_dma) \
+    fnc(grp_char) \
+    fnc(grp_usb) \
     \
     fnc(async_initialization)\
     \
@@ -662,15 +666,9 @@
     fnc(max)
 
 
-
-//#define MOD_DEPENDENCY_ITEM(child,parent)	{ child ## _id, parent ## _id }
-
 #define TASK_STRING(id)                   #id
 #define TASK_NAME(id,...)                 TASK_STRING(id),
 #define TASK_ID(id,...)                   id ## _id,
-//#define TASK_TYPE(id,type,...)            type
-//#define TASK_DEPENDS(id,type,...)         id,##__VA_ARGS__
-//#define ASYNC_MODULE_INFO(id,type,...)    {type},
 
 /**
  * Implement static enum to string map
@@ -680,12 +678,6 @@ typedef enum   {
     MODULES_ID(TASK_ID)
     module_last
 } modules_e;
-
-//struct dependency_t
-//{
-//    modules_e task_id;
-//    modules_e parent_id;
-//};
 
 /**
  * Task type or execution priority
@@ -699,25 +691,6 @@ typedef enum   {
     end,         // no task, end of processing
     waiting, //
     } ;
-
-/**
- * Module static information.
- *
- */
-struct async_module_info_t
-{
-    enum task_type_t type_;
-};
-
-//struct init_fn_t
-//{
-//  modules_e  id;
-//  initcall_t fnc;
-//  // dynamic data
-//  struct init_fn_t*    next_of;    // next function of the same type.
-//  struct init_fn_t*   parent_it;   // highest parent that the task depends on
-//  volatile unsigned long status;   // bit 0 1 free to get, bit 1 1 doing
-//};
 
 #define GET_10(fnc,n0,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,...) fnc##n10
 #define COUNT_ARG(fnc,...) GET_10(fnc,__VA_ARGS__,10,9,8,7,6,5,4,3,2,1)
@@ -788,36 +761,44 @@ module_exit(__driver##_exit);
 
 #define _async_module_init(fnc,...)                                     module_init(fnc);
 #define _async_module_driver(__driver, __register, __unregister,...)    module_driver(__driver, __register, __unregister);
-#define _async_module_pci_driver(__pci_driver,...)                      module_pci_driver(__pci_driver);
+#define _async_module_pci_driver(__pci_driver,...)                      module_driver(__pci_driver,pci_register_driver,pci_unregister_driver);
 #define _async_module_platform_driver(__platform_driver,...)            module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);
 
 #endif
 
-
-// ***** Asynchrony initialization at kernel boot time **** running after dma driver *****
-#define async_module_init(fnc,...)   \
+/*
+ *  Asynchrony initialization at kernel boot time
+ */
+#define module_init_async(fnc,...)   \
     _async_module_init(fnc,asynchronized,##__VA_ARGS__);
 
-#define async_module_driver(__driver, __register, __unregister,...)  \
+#define module_driver_async(__driver, __register, __unregister,...)  \
     _async_module_driver(__driver, __register, __unregister,asynchronized,##__VA_ARGS__);
 
-#define async_module_pci_driver(__pci_driver,...)                    \
+#define module_pci_driver_async(__pci_driver,...)                    \
     _async_module_pci_driver(__pci_driver, asynchronized,##__VA_ARGS__);
 
-#define async_module_platform_driver(__platform_driver,...)          \
+#define module_platform_driver_async(__platform_driver,...)          \
     _async_module_platform_driver(__platform_driver,asynchronized,##__VA_ARGS__);
-
-// ************* Deferred initialization **** after kernel boot **********
-#define deferred_module_init(fnc,...)   \
+/*
+ * Deferred initialization **** after kernel boot *
+ */
+#define module_init_deferred(fnc,...)   \
     _async_module_init(fnc,deferred,##__VA_ARGS__);
 
-#define deferred_module_driver(__driver, __register, __unregister,...)  \
+#define module_driver_deferred(__driver, __register, __unregister,...)  \
     _async_module_driver(__driver, __register, __unregister,deferred,##__VA_ARGS__);
 
-#define deferred_module_pci_driver(__pci_driver,...)                    \
+#define module_pci_driver_deferred(__pci_driver,...)                    \
     _async_module_pci_driver(__pci_driver,deferred,##__VA_ARGS__);
 
-#define deferred_module_platform_driver(__platform_driver,...)          \
+#define module_platform_driver_deferred(__platform_driver,...)          \
     _async_module_platform_driver(__platform_driver,deferred,##__VA_ARGS__);
+
+/*
+ * Default initialization
+ */
+
+#define module_pci_driver_default(__pci_driver,...)  module_driver(__pci_driver,pci_register_driver,pci_unregister_driver);
 
 #endif /* ASYNC_MINIT_H_ */

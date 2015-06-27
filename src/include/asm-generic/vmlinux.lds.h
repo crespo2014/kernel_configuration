@@ -3,11 +3,6 @@
    *(.async_initcall.init)        \
    VMLINUX_SYMBOL(__async_initcall_end) = .;
 
-#define MODULES_DEPENDENCIES           \
-   VMLINUX_SYMBOL(__async_modules_depends_start) = .;    \
-   *(.async_modules_depends.init)        \
-   VMLINUX_SYMBOL(__async_modules_depends_end) = .;
-
 
 #define INIT_DATA_SECTION(initsetup_align)        \
   .init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {   \
