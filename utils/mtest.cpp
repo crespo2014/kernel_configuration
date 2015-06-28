@@ -174,6 +174,7 @@ void doit_all(init_fn_t_4* begin, init_fn_t_4* end)
 
 int main(void)
 {
+  auto t = init_info[ssb_modinit_id];
   for ( auto *x = init_info ; x < init_info + sizeof(init_info)/sizeof(*init_info);++x)
   {
     printf("%s %s \n",getName((modules_e)(x - init_info)),x->type == asynchronized ? "async" : "def");

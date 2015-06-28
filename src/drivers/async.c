@@ -62,6 +62,9 @@
 #define grp_usb_nfo                    disable
 #define grp_ssb_nfo                    disable
 #define grp_snd_hda_nfo                disable
+#define intel_cqm_init_nfo             disable
+#define pmc_atom_init                  disable
+#define amd_ibs_init                  disable
 
 #define ssb_modinit_nfo                deferred,grp_ssb
 #define bcma_modinit_nfo               deferred,grp_ssb,ssb_modinit
@@ -85,8 +88,8 @@
 #define fcntl_init_nfo                 asynchronized
 #define agp_init_nfo                   asynchronized,grp_none,ioat_init_module,acpi_video_init   /* agpgart.ko */
 #define agp_nvidia_init_nfo            asynchronized,grp_none,agp_init   /* nvidia-agp.ko */
-#define cfq_init_nfo                   asynchronized   /* block/cfq-iosched.c  */
-#define cmos_init_nfo                  asynchronized   /* rtc/rtc-cmos.c   */
+#define cfq_init_nfo                   deferred   /* block/cfq-iosched.c  */
+#define cmos_init_nfo                  deferred   /* rtc/rtc-cmos.c   */
 #define cn_proc_init_nfo               asynchronized   /* connector/cn_proc.c */
 #define configfs_init_nfo              asynchronized   /* fs/configfs/mount.c  */
 #define coretemp_init_nfo              asynchronized   /* drivers/hwmon/coretemp.c  */
@@ -550,7 +553,7 @@ void FillTasks(const struct init_fn_t_4* begin, const struct init_fn_t_4* end)
   // update child and group reference counter
   for (it = begin; it != end; ++it)
   {
-    nfo = init_info + it->id;
+    nfo = &init_info[it->id];
     info_4[it->id].status = st_waiting;
     if (nfo->parent1_id != none_id)
     {
@@ -843,7 +846,14 @@ static const struct file_operations deferred_initcalls_fops = {
  */
 static int async_init(void)
 {
-    struct task_struct *thr;
+  // print full list
+  const struct init_fn_t_4* it_init_fnc;
+  struct task_struct *thr;
+
+//    for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
+//    {
+//      printk("%s %d \n",getName(it_init_fnc->id),init_info[it_init_fnc->id].type);
+//    }
 
     atomic_inc(&free_init_ref);
     //atomic_inc(&free_init_ref);
