@@ -24,11 +24,24 @@
     fnc(grp_char) \
     fnc(grp_usb) \
     fnc(grp_ssb)  /*broadcomm bus */ \
+    fnc(grp_snd_hda) \
     fnc(ssb_modinit) /*Broadcom ssb bus, it is need bo b43 and (0x800:0x4243 0x812 0x80D 0x820*/ \
     \
     fnc(ahci_pci_driver_init) \
     \
     fnc(ahci_driver_init) /**/ \
+    fnc(generic_driver_init) \
+    fnc(cmedia_driver_init) \
+    fnc(realtek_driver_init)  \
+    fnc(analog_driver_init)  \
+    fnc(si3054_driver_init) \
+    fnc(cirrus_driver_init) \
+    fnc(sigmatel_driver_init) \
+    fnc(ca0110_driver_init) \
+    fnc(ca0132_driver_init) \
+    fnc(conexant_driver_init) \
+    fnc(via_driver_init) \
+    fnc(hdmi_driver_init)  \
     \
     fnc(fbmem_init) \
     \
@@ -701,10 +714,6 @@ struct init_fn_t_4
 {
   modules_e  id;
   initcall_t fnc;
-//  enum task_type_t type_;
-//  modules_e  grp_id;
-//  modules_e  parent1_id;
-//  modules_e  parent2_id;
 };
 
 #define ASYNC_MODULE_INIT(fnc) \
