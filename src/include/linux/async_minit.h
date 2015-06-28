@@ -15,8 +15,7 @@
 /**
  * Full list of module init functions call
  */
-#define MODULES_ID(fnc) \
-    fnc(none) \
+#define MOD_IDS(fnc) \
     \
     fnc(grp_none) \
     fnc(grp_hid) \
@@ -677,7 +676,11 @@
     fnc(pcspkr_platform_driver_init) \
     fnc(deinterlace_pdrv_init) \
     \
-    fnc(max)
+
+
+#define MODULES_ID(fnc) \
+  fnc(none) \
+  MOD_IDS(fnc)
 
 
 #define TASK_STRING(id)                   #id
@@ -688,9 +691,9 @@
  * Implement static enum to string map
  */
 typedef enum   {
-    none = 0,           // not found or not element
-    MODULES_ID(TASK_ID)
-    module_last
+   none_id = 0,
+   MOD_IDS(TASK_ID)
+   module_last
 } modules_e;
 
 /**

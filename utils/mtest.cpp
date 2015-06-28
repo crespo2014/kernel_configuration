@@ -75,27 +75,27 @@ int do_one_initcall(initcall_t fnc)
 #define wake_up_process(...)
 #define printk(...) printf( __VA_ARGS__ )
 #define _raw_spin_lock(...)
-const struct init_fn_t *__async_initcall_start;
-const struct init_fn_t *__async_initcall_end;
-struct dependency_t __async_modules_depends_start[]  = {
-        MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),
-        MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),       //snd-mixer-oss
-        MOD_DEPENDENCY_ITEM(alsa_pcm_oss_init,alsa_mixer_oss_init),   // snd-pcm-oss
-        MOD_DEPENDENCY_ITEM(alsa_hwdep_init,alsa_pcm_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_device_init,alsa_timer_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_midi_event_init,alsa_seq_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_dummy_init,alsa_seq_init),
-        MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_event_init),
-        // multiple dependencie
-        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,init_cifs),
-        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,drm_fb_helper_modinit),
-        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,acpi_power_meter_init),
-
-        MOD_DEPENDENCY_ITEM(init_cifs,usblp_driver_init),
-        MOD_DEPENDENCY_ITEM(init_cifs,acpi_power_meter_init)
-        };
-struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_start + 14;
+const struct init_fn_t_4 *__async_initcall_start;
+const struct init_fn_t_4 *__async_initcall_end;
+//struct dependency_t __async_modules_depends_start[]  = {
+//        MOD_DEPENDENCY_ITEM(snd_hrtimer_init,alsa_timer_init),
+//        MOD_DEPENDENCY_ITEM(alsa_mixer_oss_init,alsa_pcm_init),       //snd-mixer-oss
+//        MOD_DEPENDENCY_ITEM(alsa_pcm_oss_init,alsa_mixer_oss_init),   // snd-pcm-oss
+//        MOD_DEPENDENCY_ITEM(alsa_hwdep_init,alsa_pcm_init),
+//        MOD_DEPENDENCY_ITEM(alsa_seq_device_init,alsa_timer_init),
+//        MOD_DEPENDENCY_ITEM(alsa_seq_init,alsa_seq_device_init),
+//        MOD_DEPENDENCY_ITEM(alsa_seq_midi_event_init,alsa_seq_init),
+//        MOD_DEPENDENCY_ITEM(alsa_seq_dummy_init,alsa_seq_init),
+//        MOD_DEPENDENCY_ITEM(alsa_seq_oss_init,alsa_seq_midi_event_init),
+//        // multiple dependencie
+//        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,init_cifs),
+//        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,drm_fb_helper_modinit),
+//        MOD_DEPENDENCY_ITEM(crypto_xcbc_module_init,acpi_power_meter_init),
+//
+//        MOD_DEPENDENCY_ITEM(init_cifs,usblp_driver_init),
+//        MOD_DEPENDENCY_ITEM(init_cifs,acpi_power_meter_init)
+//        };
+//struct dependency_t __async_modules_depends_end[0];// = __async_modules_depends_start + 14;
 
 #define DEFINE_SPINLOCK(a) int a
 #define DECLARE_WAIT_QUEUE_HEAD(a) int a
@@ -142,56 +142,49 @@ unsigned free_init_ref = 0;
 
 #define DOIT(x) do { printf("...\n"); Prepare(x,sizeof(x)/sizeof(*x)); WorkingThread(); } while(0)
 
-void doit_all(init_fn_t* begin, init_fn_t* end)
+void doit_all(init_fn_t_4* begin, init_fn_t_4* end)
 {
-    FillTasks2(begin, end);
-    tasks.type_ = asynchronized;
-    Prepare2();
-    struct task_t* t;
-    do
-    {
-        t = PeekTask();
-        if (t != NULL)
-        {
-            std::cout << "id " << t->id << " " << getName(t->id) << std::endl;
-            TaskDone2(t);
-        }
-    } while (t != NULL);
-    tasks.type_ = deferred;
-    Prepare2();
-    do
-    {
-        t = PeekTask();
-        if (t != NULL)
-        {
-            std::cout << "id " << t->id << " " << getName(t->id) << std::endl;
-            TaskDone2(t);
-        }
-    } while (t != NULL);
+//    //FillTasks2(begin, end);
+//    tasks.type_ = asynchronized;
+//    Prepare2();
+//    struct task_t* t;
+//    do
+//    {
+//        t = PeekTask();
+//        if (t != NULL)
+//        {
+//            std::cout << "id " << t->id << " " << getName(t->id) << std::endl;
+//            TaskDone2(t);
+//        }
+//    } while (t != NULL);
+//    tasks.type_ = deferred;
+//    Prepare2();
+//    do
+//    {
+//        t = PeekTask();
+//        if (t != NULL)
+//        {
+//            std::cout << "id " << t->id << " " << getName(t->id) << std::endl;
+//            TaskDone2(t);
+//        }
+//    } while (t != NULL);
 }
 
 #define INI_FNC(id,...) {id ## _id, 0 },
 
-void doit_v3(const init_fn_t* begin,const  init_fn_t* end)
-{
-    //Init_v3(begin, end);
-    Start_Type_v3(asynchronized);
-    if (tasks_v3.runnig_task != NULL)
-        Thread_v3(0);
-    Start_Type_v3(deferred);
-    if (tasks_v3.runnig_task != NULL)
-        Thread_v3(0);
-}
-
 int main(void)
 {
-    const static struct init_fn_t list_full[] =
+  for ( auto *x = init_info ; x < init_info + sizeof(init_info)/sizeof(*init_info);++x)
+  {
+    printf("%s %s \n",getName((modules_e)(x - init_info)),x->type == asynchronized ? "async" : "def");
+  }
+    const static struct init_fn_t_4 list_full[] =
     {
-            INIT_CALLS(INI_FNC) {module_last}
+        MODULES_ID(INI_FNC) {module_last}
     };
 
     // single
-    const static struct init_fn_t list1[] =
+    const static struct init_fn_t_4 list1[] =
     {
     { rfcomm_init_id, (initcall_t)1 },
     { snd_hrtimer_init_id , (initcall_t)2},
@@ -207,7 +200,7 @@ int main(void)
     { alsa_seq_dummy_init_id, (initcall_t)12 },
     { alsa_seq_oss_init_id, (initcall_t)13 } };
     // multiple dependnecies
-    const static struct init_fn_t list2[] =
+    const static struct init_fn_t_4 list2[] =
     {
     { crypto_xcbc_module_init_id, (initcall_t)1 },
     { init_cifs_id, (initcall_t)2 },
@@ -228,22 +221,6 @@ int main(void)
         name[ret] = 0;
         printf(name);
     } while (ret != 0);
-
-    doit_v3(list1,list1+3);
-    doit_v3(list1,list1+6);
-    doit_v3(list1,list1+9);
-
-    doit_v3(list1,list1 + sizeof(list1)/sizeof(*list1));
-    doit_v3(list2,list2 + sizeof(list2)/sizeof(*list2));
-    doit_v3(list_full,list_full + sizeof(list_full)/sizeof(*list_full)-1);
-
-
-    // Full task test
-
-
-    FillTasks(list1,list1+9);
-    tasks.type_ = asynchronized;
-    //async_default_initialization(0);
 
     return 0;
 }

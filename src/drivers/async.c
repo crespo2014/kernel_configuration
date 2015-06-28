@@ -74,7 +74,6 @@
 #define b43_pcmcia_init_nfo            deferred,grp_none,grp_pcmcia
 #define ssb_hcd_init_nfo               deferred,grp_none,grp_ssb
 
-#define ahci_pci_driver_init_nfo       asynchronized
 #define ahci_pci_driver_init_nfo       asynchronized   /* ahci.ko */
 #define ahci_driver_init_nfo           asynchronized,grp_none,ahci_pci_driver_init  /**/
 #define fbmem_init_nfo                 asynchronized    /* drivers/video/fbdev/core/fbmem.c */
@@ -153,7 +152,7 @@
 #define cirrus_driver_init_nfo            deferred,grp_none,grp_snd_hda /*sound/pci/hda/patch_cirrus.c */
 #define cirrus_driver_init_nfo            deferred,grp_none,grp_snd_hda /* sound/pci/hda/patch_cirrus.c */
 #define ca0110_driver_init_nfo            deferred,grp_none,grp_snd_hda /* sound/pci/hda/patch_ca0110.c */
-#define ca0132_driver_init_nfo         deferred,grp_none,grp_snd_hda  /* sound/pci/hda/patch_ca0132.c */
+#define ca0132_driver_init_nfo            deferred,grp_none,grp_snd_hda  /* sound/pci/hda/patch_ca0132.c */
 #define conexant_driver_init_nfo          deferred,grp_none,grp_snd_hda  /* sound/pci/hda/patch_conexant.c */
 #define via_driver_init_nfo               deferred,grp_none,grp_snd_hda  /* sound/pci/hda/patch_via.c  */
 #define hdmi_driver_init_nfo              deferred,grp_none,grp_snd_hda  /* sound/pci/hda/patch_hdmi.c  */
@@ -267,7 +266,7 @@
 #define init_autofs4_fs_nfo               deferred   /*  /fs/autofs4/init.c  */
 #define init_cifs_nfo                     deferred                /* */
 #define init_iso9660_fs_nfo               deferred   /* isofs.ko */
-#define init_dns_resolver_nfo             deferred //asynchronized   /* net/dns_resolver/dns_key.c  */
+#define init_dns_resolver_nfo             deferred  //asynchronized   /* net/dns_resolver/dns_key.c  */
 #define init_ext2_fs_nfo                  deferred   /* fs/ext2/super.c  */
 #define init_ext3_fs_nfo                 deferred,grp_none,journal_init   /* ext3.ko */
 #define init_fat_fs_nfo                  deferred   /* fat.ko */
@@ -515,7 +514,7 @@ const static struct  init_fnc_info_4  /*__initdata*/ init_info[] = {
     MODULES_ID(get_nfo)
     {} };
 
-struct task_info_t_4  /*__initdata*/ info_4[max_id];    // all task info
+struct task_info_t_4  /*__initdata*/ info_4[module_last + 1];    // all task info
 //struct init_fn_t* current_init_fnc;      // current init function to execute
 //enum task_type_t  current_type;          // current type.
 
@@ -528,8 +527,8 @@ struct task_info_t_4  /*__initdata*/ info_4[max_id];    // all task info
 const char* getName(modules_e id)
 {
     static const char* const module_name[] =
-    {   "",MODULES_ID(TASK_NAME)};
-    if (id > module_last)
+    {   MODULES_ID(TASK_NAME)};
+    if (id >= module_last)
         return "";
     return module_name[id];
 }
