@@ -53,334 +53,348 @@
  * moving definition to porper source file descentralize all the configuration
  * it is are look for the specific file to change info and build. i can see a full picture from one place
  */
-#define none_nfo                    disable
-#define grp_none_nfo                disable
-#define grp_hid_nfo                disable
-#define grp_dma_nfo                disable
-#define grp_char_nfo                disable
-#define grp_none_nfo                disable
-#define grp_usb_nfo                disable
-#define ahci_pci_driver_init_nfo    asynchronized
-#define ahci_pci_driver_init_nfo    asynchronized   /* ahci.ko */
-#define ahci_driver_init_nfo        asynchronized,ahci_pci_driver_init  /**/
-#define fbmem_init_nfo              asynchronized    /* drivers/video/fbdev/core/fbmem.c */
-#define mda_console_init_nfo        asynchronized,fbmem_init    /* drivers/video/console/mdacon.c */
-#define newport_console_init_nfo    asynchronized,fbmem_init    /* drivers/video/console/newport_con.c  */
-#define sticonsole_init_nfo         asynchronized,fbmem_init    /* drivers/video/console/sticon.c  */
-#define acpi_ac_init_nfo            asynchronized  /**/
-#define a4_driver_init_nfo          deferred,hid_init,uhid_init  /**/
-#define acpi_battery_init_nfo       deferred /**/
-#define acpi_button_driver_init_nfo deferred  /* */
-#define acpi_fan_driver_init_nfo        asynchronized   /**/
-#define acpi_hed_driver_nfo         deferred                /* */
-#define acpi_ipmi_init_nfo          deferred /**/
-#define acpi_pad_init_nfo           deferred /**/
-#define acpi_pcc_driver_nfo         deferred,acpi_ac_init
-#define acpi_power_meter_init_nfo    deferred  /* */
-#define acpi_processor_driver_init_nfo    deferred   /* acpi-power-meter.ko */
-#define acpi_sbs_init_nfo             deferred /**/
-#define acpi_smb_hc_driver_init_nfo    deferred
-#define acpi_smb_hc_driver_nfo        deferred,acpi_ac_init                /* */
-#define acpi_smbus_cmi_driver_nfo    deferred                /* */
-#define acpi_thermal_init_nfo       deferred /**/
-#define acpi_topstar_driver_nfo    deferred,acpi_ac_init                /* */
-#define acpi_video_init_nfo           asynchronized   /* drivers/acpi/video.ko */
-#define add_pcspkr_nfo            deferred     /* arch/x86/kernel/pcspeaker.c */
-#define aes_init_nfo                deferred  /**/
-#define af_alg_init_nfo         deferred   /* af_alg.ko */
-#define agp_init_nfo            asynchronized,ioat_init_module,acpi_video_init   /* agpgart.ko */
-#define agp_nvidia_init_nfo       asynchronized,agp_init   /* nvidia-agp.ko */
-#define alg_hash_nfo              deferred   /* alg_hash.ko */
-#define algif_hash_init_nfo       deferred,af_alg_init   /* algif_hash.ko */
-#define algif_skcipher_init_nfo    deferred,af_alg_init   /* algif_skicupher.ko */
-#define alsa_hwdep_init_nfo       deferred         /* snd-hwdep.ko */
-#define alsa_mixer_oss_init_nfo    deferred     /* snd-mixer-oss.ko */
-#define alsa_pcm_init_nfo         deferred,alsa_timer_init           /* snd-pcm.ko */
-#define alsa_pcm_oss_init_nfo    deferred,alsa_mixer_oss_init,alsa_pcm_init       /* snd-pcm-oss.ko */
-#define alsa_seq_device_init_nfo    deferred    /* snd-seq-device.ko */
-#define alsa_seq_dummy_init_nfo    deferred,alsa_seq_init     /* snd-seq-dummy.ko */
-#define alsa_seq_init_nfo         deferred,alsa_seq_device_init,alsa_timer_init           /* snd-seq.ko */
-#define alsa_seq_midi_event_init_nfo    deferred,alsa_seq_init      /* snd-seq-midi-event.ko */
-#define alsa_seq_oss_init_nfo    deferred,alsa_seq_midi_event_init       /* snd-seq-oss.ko */
-#define alsa_sound_last_init_nfo      disable  /* sound/core/last.c */
-#define alsa_timer_init_nfo     deferred         /* snd-timer.ko */
-#define anubis_mod_init_nfo     deferred   /**/
-#define apple_driver_init_nfo    deferred,hid_init,uhid_init  /**/
-#define arc4_init_nfo               deferred   /**/
-#define asymmetric_key_init_nfo    deferred  /**/
-#define async_pq_init_nfo         deferred   /**/
-#define atkbd_init_nfo             deferred  /**/
-#define atlas_acpi_driver_nfo    deferred,acpi_ac_init                /* */
-#define azx_driver_init_nfo    deferred  /**/
-#define b43_init_nfo           deferred  /**/
-#define b43_nfo               deferred,hwrng_modinit   /* b43.ko */
-#define b43legacy_init_nfo    deferred  /**/
-#define b43legacy_nfo           deferred,hwrng_modinit   /* b43legacy.ko */
-#define belkin_driver_init_nfo    deferred,hid_init,uhid_init  /**/
-#define blowfish_mod_init_nfo    deferred   /* blowfish_generic.ko */
-#define brd_init_nfo             deferred  /**/
-#define camellia_init_nfo    deferred   /**/
-#define cast5_mod_init_nfo    deferred   /* cat5_generic.ko */
-#define cast6_mod_init_nfo    deferred   /* cast6_generic.ko */
+#define none_nfo                       disable
+#define grp_none_nfo                   disable
+#define grp_hid_nfo                    disable
+#define grp_dma_nfo                    disable
+#define grp_char_nfo                   disable
+#define grp_none_nfo                   disable
+#define grp_usb_nfo                    disable
+#define grp_ssb_nfo                    disable
+#define ssb_modinit_nfo                asynchronized,grp_ssb
+#define bcma_modinit_nfo               asynchronized,grp_ssb,ssb_modinit
+#define b43_init_nfo                   deferred,grp_none,grp_ssb  /**/
+#define b43_nfo                        deferred,grp_none,grp_ssb,hwrng_modinit   /* b43.ko */
+#define b43legacy_init_nfo             deferred,grp_none,grp_ssb,hwrng_modinit  /**/
+//#define b43legacy_nfo                  deferred,grp_none,grp_ssb,hwrng_modinit   /* b43legacy.ko */
+#define b44_init_nfo                   deferred,grp_none,grp_ssb
+#define bgmac_init_nfo                 deferred,grp_none,grp_ssb
+#define tg3_driver_nfo /* pci to check */ deferred,grp_none,grp_ssb
+#define b43_pcmcia_init_nfo            deferred,grp_none,grp_pcmcia
+#define ssb_hcd_init_nfo               deferred,grp_none,grp_ssb
+
+#define ahci_pci_driver_init_nfo       asynchronized
+#define ahci_pci_driver_init_nfo       asynchronized   /* ahci.ko */
+#define ahci_driver_init_nfo           asynchronized,grp_none,ahci_pci_driver_init  /**/
+#define fbmem_init_nfo                 asynchronized    /* drivers/video/fbdev/core/fbmem.c */
+#define mda_console_init_nfo           asynchronized,grp_none,fbmem_init    /* drivers/video/console/mdacon.c */
+#define newport_console_init_nfo       asynchronized,grp_none,fbmem_init    /* drivers/video/console/newport_con.c  */
+#define sticonsole_init_nfo            asynchronized,grp_none,fbmem_init    /* drivers/video/console/sticon.c  */
+#define acpi_ac_init_nfo               asynchronized  /**/
+#define workingset_init_nfo            asynchronized   /* mm/workingset.c  */
+#define fcntl_init_nfo                 asynchronized
+#define agp_init_nfo                   asynchronized,grp_none,ioat_init_module,acpi_video_init   /* agpgart.ko */
+#define agp_nvidia_init_nfo            asynchronized,grp_none,agp_init   /* nvidia-agp.ko */
 #define cfq_init_nfo                   asynchronized   /* block/cfq-iosched.c  */
-#define chainiv_module_init_nfo    deferred   /**/
-#define cherry_driver_init_nfo    deferred,hid_init,uhid_init   /**/
-#define chicony_driver_init_nfo    deferred,hid_init,uhid_init  /**/
-#define cmos_init_nfo               asynchronized   /* rtc/rtc-cmos.c   */
-#define cn_proc_init_nfo           asynchronized   /* connector/cn_proc.c */
-#define configfs_init_nfo       asynchronized   /* fs/configfs/mount.c  */
-#define coretemp_init_nfo        asynchronized   /* drivers/hwmon/coretemp.c  */
-#define coretemp_nfo                deferred   /* coretemp.ko */
-#define cp_driver_init_nfo            deferred,hid_init,uhid_init  /**/
-#define cpufreq_gov_dbs_init_nfo     deferred  /**/
-#define cpufreq_gov_powersave_init_nfo    deferred  /**/
-#define cpufreq_gov_userspace_init_nfo    deferred  /**/
-#define cpufreq_stats_init_nfo        deferred  /**/
-#define crb_acpi_driver_nfo           deferred,acpi_ac_init                /* */
-#define crc_t10dif_mod_init_nfo           asynchronized   /* lib/crc-t10dif.c   */
-#define crc32_mod_init_nfo          deferred  /**/
-#define crc32c_mod_init_nfo         deferred  /**/
-#define crct10dif_mod_init_nfo       deferred  /**/
-#define crypto_algapi_init_nfo          deferred   /**/
-#define crypto_authenc_esn_module_init_nfo    deferred,crypto_authenc_module_init   /* authencesn.ko */
-#define crypto_authenc_module_init_nfo    deferred   /* authenc.ko */
-#define crypto_cbc_module_init_nfo    deferred  /**/
-#define crypto_ccm_module_init_nfo    deferred   /**/
-#define crypto_cmac_module_init_nfo    deferred   /**/
-#define crypto_ctr_module_init_nfo    deferred   /**/
-#define crypto_cts_module_init_nfo    deferred   /**/
-#define crypto_ecb_module_init_nfo    deferred  /**/
-#define crypto_gcm_module_init_nfo    deferred   /**/
-#define crypto_module_init_nfo         deferred  /**/
-#define crypto_null_mod_init_nfo         deferred  /**/
-#define crypto_pcbc_module_init_nfo    deferred   /**/
-#define crypto_user_init_nfo            deferred  /**/
-#define crypto_xcbc_module_init_nfo    deferred  /* */
-#define cubictcp_register_nfo         asynchronized   /* net/ipv4/tcp_cubic.c   */
-#define cuse_init_nfo                deferred,fuse_init   /* cuse.ko */
-#define deadline_init_nfo             asynchronized   /* /block/deadline-iosched.c */
-#define deflate_mod_init_nfo          deferred   /**/
-#define des_generic_mod_init_nfo    deferred   /**/
-#define dio_init_nfo                asynchronized   /*  fs/direct-io.c  */
-#define dnotify_init_nfo              asynchronized   /* /fs/notify/dnotify/dnotify.c  */
-#define drm_core_init_nfo             asynchronized,agp_init   /* drm.ko */
-#define drm_fb_helper_modinit_nfo    deferred    /* */
-#define ehci_hcd_init_nfo         deferred   /* ehci-hcd.ko */
-#define ehci_pci_init_nfo         deferred,ehci_hcd_init   /* ehci-pci.ko */
-#define ehci_platform_init_nfo    deferred,ehci_hcd_init   /* ehci-platform.ko */
-#define elo_driver_init_nfo         deferred   /* usbhid.ko */
-#define ene_ub6250_driver_init_nfo    deferred,usb_storage_driver_init   /* ums-eneub6250.ko */
-#define eseqiv_module_init_nfo        deferred   /**/
+#define cmos_init_nfo                  asynchronized   /* rtc/rtc-cmos.c   */
+#define cn_proc_init_nfo               asynchronized   /* connector/cn_proc.c */
+#define configfs_init_nfo              asynchronized   /* fs/configfs/mount.c  */
+#define coretemp_init_nfo              asynchronized   /* drivers/hwmon/coretemp.c  */
+#define crc_t10dif_mod_init_nfo        asynchronized   /* lib/crc-t10dif.c   */
+#define acpi_video_init_nfo            asynchronized   /* drivers/acpi/video.ko */
+#define cubictcp_register_nfo          asynchronized   /* net/ipv4/tcp_cubic.c   */
+#define dio_init_nfo                   asynchronized   /*  fs/direct-io.c  */
+#define dnotify_init_nfo               asynchronized   /* /fs/notify/dnotify/dnotify.c  */
+#define drm_core_init_nfo              asynchronized,grp_none,agp_init   /* drm.ko */
 #define evdev_init_nfo                asynchronized   /*  drivers/input/evdev.c  */
-#define ext4_init_fs_nfo               asynchronized,init_hugetlbfs_fs   /* fs/ext4/super.c  */
+#define ext4_init_fs_nfo               asynchronized,grp_none,init_hugetlbfs_fs   /* fs/ext4/super.c  */
 #define extfrag_debug_init_nfo        asynchronized   /* mm/vmstat.c  */
-#define ez_driver_init_nfo        deferred,hid_init,uhid_init  /**/
 #define fcntl_init_nfo                asynchronized   /**/
-#define fcrypt_mod_init_nfo         deferred   /**/
-#define forcedeth_pci_driver_init_nfo    deferred  /* */
-#define fuse_init_nfo             deferred   /* fuse.ko */
-#define ghash_mod_init_nfo       deferred   /**/
-#define gpio_fan_driver_init_nfo       asynchronized   /*  drivers/hwmon/gpio-fan.c  */
-#define gpio_fan_nfo               deferred   /* gpio-fan.ko */
-#define gspca_init_nfo         deferred   /*  /drivers/media/usb/gspca/gspca.c */
-#define gspca_main_nfo           deferred   /* gspca_main.ko */
-#define hid_generic_init_nfo    deferred,hid_init,uhid_init  /**/
-#define hid_generic_nfo          deferred,hid_init,uhid_init  /**/
-#define hid_init_nfo             deferred,ohci_platform_init        /**/
-#define hilscher_pci_driver_init_nfo    deferred,uio_init   /* uio_cif.ko */
-#define hmac_module_init_nfo    deferred   /**/
-#define hpet_init_nfo           deferred  /**/
-#define hugetlb_init_nfo              asynchronized   /* mm/hugetlb.c  */
-#define hwrng_modinit_nfo         deferred   /* rng-core.ko */
-#define i2c_dev_init_nfo              asynchronized   /* /drivers/i2c/i2c-dev.c */
-#define i2c_hid_driver_init_nfo    deferred  /**/
+#define i2c_dev_init_nfo               asynchronized   /* /drivers/i2c/i2c-dev.c */
+#define hugetlb_init_nfo               asynchronized   /* mm/hugetlb.c  */
 #define i2c_i801_init_nfo               asynchronized   /* /i2c/busses/i2c-i801.c */
 #define i2c_mux_gpio_driver_init_nfo   asynchronized   /* drivers/i2c/muxes/i2c-mux-gpio.c */
-#define i2c_mux_gpio_driver_nfo    deferred   /* i2c-mux-gpio.ko module_platform_driver */
-#define i8042_init_nfo              deferred  /**/
 #define ikconfig_init_nfo             asynchronized   /* kernel/configs.c */
-#define init_autofs4_fs_nfo    deferred   /*  /fs/autofs4/init.c  */
-#define init_cifs_nfo           deferred                /* */
-#define init_devpts_fs_nfo          asynchronized   /* fs/devpts/inode.c  */
-#define init_dns_resolver_nfo     asynchronized   /* net/dns_resolver/dns_key.c  */
-#define init_ext2_fs_nfo          deferred   /* fs/ext2/super.c  */
-#define init_ext3_fs_nfo         deferred,journal_init   /* ext3.ko */
-#define init_fat_fs_nfo       deferred   /* fat.ko */
+#define init_devpts_fs_nfo            asynchronized   /* fs/devpts/inode.c  */
 #define init_hugetlbfs_fs_nfo        asynchronized   /* /fs/hugetlbfs/inode.c  */
-#define init_iso9660_fs_nfo    deferred   /* isofs.ko */
 #define init_mbcache_nfo            asynchronized   /* /fs/mbcache.c  */
-#define init_msdos_fs_nfo            deferred,init_fat_fs   /* msdos.ko */
-#define init_mtd_nfo            deferred   /* mtd.ko */
-#define init_nls_ascii_nfo        asynchronized   /* fs/nls/nls_ascii.c  */
-#define init_nls_cp437_nfo     asynchronized   /* fs/nls/nls_cp437.c  */
-#define init_nls_cp850_nfo       asynchronized   /* fs/nls/nls_cp850.c */
+#define deadline_init_nfo               asynchronized   /* /block/deadline-iosched.c */
+#define init_nls_ascii_nfo         asynchronized   /* fs/nls/nls_ascii.c  */
+#define init_nls_cp437_nfo         asynchronized   /* fs/nls/nls_cp437.c  */
+#define init_nls_cp850_nfo          asynchronized   /* fs/nls/nls_cp850.c */
 #define init_nls_cp852_nfo          asynchronized   /* fs/nls/nls_cp852.c   */
 #define init_nls_iso8859_1_nfo        asynchronized   /*  fs/nls/nls_iso8859-1.c  */
 #define init_nls_utf8_nfo          asynchronized   /* fs/nls/nls_utf8.c */
-#define init_ntfs_fs_nfo            deferred  /**/
 #define init_per_zone_wmark_min_nfo  asynchronized   /* mm/page_alloc.c */
-#define init_sd_nfo             asynchronized   /* /drivers/scsi/sd.c   */
-#define init_sg_nfo               asynchronized   /* /drivers/scsi/sg.c   */
-#define init_udf_fs_nfo           deferred   /* fs/udf/super.c */
-#define init_vfat_fs_nfo          deferred,init_fat_fs   /* vfat.ko */
-#define init_nfo                  asynchronized   /**/
-#define inotify_user_setup_nfo  asynchronized   /*  fs/notify/inotify/inotify_user.c  */
-#define intel_idle_init_nfo            asynchronized   /* /drivers/idle/intel_idle.c */
-#define intel_rng_mod_init_nfo    deferred,hwrng_modinit   /* intel-rng.ko */
-#define ioat_init_module_nfo       asynchronized   /* drivers/dma/ioat/pci.c ioatdma.ko */
-#define ipw2100_init_nfo          deferred,lib80211_init   /* ipw2100.ko */
-#define ir_kbd_driver_init_nfo    deferred  /**/
-#define ir_kbd_driver_nfo          deferred   /* ir-kbd-i2c.ko module_i2c_driver */
-#define irst_driver_nfo         deferred,acpi_ac_init                /* */
-#define ismt_driver_init_nfo    asynchronized   /* drivers/i2c/busses/i2c-ismt.c */
-#define journal_init_nfo           deferred   /* jbd.ko */
-#define keytouch_driver_init_nfo     deferred,hid_init,uhid_init  /**/
-#define khazad_mod_init_nfo         deferred   /**/
-#define krng_mod_init_nfo       deferred   /**/
-#define ks_driver_init_nfo          deferred,hid_init,uhid_init  /**/
-#define kswapd_init_nfo          asynchronized   /**/
-#define led_class_nfo            deferred   /* led-class.ko */
-#define led_driver_init_nfo          deferred      /* usbled.ko */
-#define leds_pca955x_nfo          deferred   /* leds-pca955x.ko */
-#define lg_driver_init_nfo            deferred,hid_init,uhid_init  /**/
-#define lib80211_crypto_ccmp_init_nfo    deferred,lib80211_init   /* lib80211_crypt_ccmp.ko */
-#define lib80211_crypto_tkip_init_nfo    deferred,lib80211_init   /* lib80211_crypt_tkip.ko */
-#define lib80211_crypto_wep_init_nfo    deferred,lib80211_init   /* lib80211_crypt_wep.ko */
-#define lib80211_init_nfo             deferred   /* lib80211.ko */
-#define libcrc32c_mod_init_nfo  asynchronized   /* lib/libcrc32c.c  */
-#define libipw_init_nfo             deferred,lib80211_init   /* libipw.ko */
-#define libphy_nfo                deferred   /* libphy.ko */
-#define lis3lv02d_driver_nfo        deferred,acpi_ac_init                /* */
-#define loop_init_nfo               deferred  /**/
-#define lpc_ich_driver_init_nfo    asynchronized   /* drivers/mfd/lpc_ich.c  chipset */
-#define lpc_sch_driver_init_nfo    asynchronized   /* /drivers/mfd/lpc_sch.c */
-#define lz4_mod_init_nfo           deferred  /**/
-#define lzo_mod_init_nfo            deferred   /* lzo.ko */
-#define md4_mod_init_nfo          deferred  /**/
-#define md5_mod_init_nfo          deferred  /**/
-#define michael_mic_init_nfo    deferred   /**/
-#define mmc_blk_init_nfo          deferred   /* mmc_block.ko */
-#define mod_init_nfo          asynchronized,pty_init   /* /drivers/char/hw_random/intel-rng.c */
-#define mousedev_init_nfo       deferred  /**/
-#define mr_driver_init_nfo    deferred,hid_init,uhid_init  /**/
-#define ms_driver_init_nfo    deferred,hid_init,uhid_init  /**/
-#define mxm_wmi_init_nfo            deferred   /* mxm-wmi.ko */
-#define nforce2_driver_init_nfo    deferred  /* */
-#define nforce2_init_nfo              deferred  /* drivers/cpufreq/cpufreq-nforce2.c */
-#define noop_init_nfo                asynchronized   /*  /block/noop-iosched.c  */
-#define nvidia_frontend_init_module_nfo    asynchronized,drm_core_init   /* nvidia.ko */
-#define nvram_init_nfo           asynchronized,pty_init   /* drivers/char/nvram.c */
-#define ohci_hcd_mod_init_nfo    deferred,ehci_platform_init   /* ohci-hcd.ko */
-#define ohci_pci_init_nfo          deferred,ohci_hcd_mod_init,ehci_hcd_init   /* ohci-pci.ko */
-#define ohci_platform_init_nfo    deferred,ohci_hcd_mod_init   /* ohci-platform.ko */
-#define oprofile_init_nfo              asynchronized     /* oprofile/oprof.c */
-#define packet_init_nfo             asynchronized   /* net/packet/af_packet.c   */
-#define patch_analog_init_nfo    deferred       /* snd-hda-codec-analog.ko */
-#define patch_ca0110_init_nfo    deferred       /* snd-hda-codec-ca0110.ko */
-#define patch_ca0132_init_nfo    deferred       /* snd-hda-codec-ca0132.ko */
-#define patch_cirrus_init_nfo    deferred       /* snd-hda-codec-cirrus.ko */
-#define patch_cmedia_init_nfo    deferred       /* snd-hda-codec-cmedia.ko */
-#define patch_conexant_init_nfo    deferred     /* snd-hda-codec-conexant.ko */
-#define patch_hdmi_init_nfo         deferred         /* snd-hda-codec-hdmi.ko */
-#define patch_realtek_init_nfo    deferred      /* snd-hda-codec-realtek.ko */
-#define patch_si3054_init_nfo    deferred       /* snd-hda-codec-si3054.ko */
-#define patch_sigmatel_init_nfo    deferred    /* snd-hda-codec-idt.ko */
-#define patch_via_init_nfo         deferred          /* snd-hda-codec-via.ko */
-#define pca9541_driver_init_nfo    deferred  /**/
-#define pca9541_driver_nfo          deferred   /* i2c-mux-pca9541.ko module_i2c_driver */
-#define pca954x_driver_init_nfo    deferred  /**/
-#define pca954x_driver_nfo          deferred   /* i2c-mux-pca954x.ko module_i2c_driver */
-#define pca955x_driver_init_nfo    deferred  /**/
-#define pch_dma_driver_init_nfo    asynchronized   /* drivers/dma/pch_dma.c */
-#define pci_hotplug_init_nfo          deferred,pcie_portdrv_init  /**/
-#define pcie_pme_service_init_nfo    deferred   /**/
-#define pcie_portdrv_init_nfo           deferred  /**/
-#define pcied_init_nfo                  deferred,pci_hotplug_init  /**/
-#define pcips2_driver_init_nfo          asynchronized  /* drivers/input/serio/pcips2.c */
+#define init_sd_nfo                  asynchronized   /* /drivers/scsi/sd.c   */
+#define init_sg_nfo                  asynchronized   /* /drivers/scsi/sg.c   */
+#define init_nfo                     asynchronized   /**/
+#define inotify_user_setup_nfo       asynchronized   /*  fs/notify/inotify/inotify_user.c  */
+#define ioat_init_module_nfo        asynchronized,grp_dma   /* drivers/dma/ioat/pci.c ioatdma.ko */
+#define proc_execdomains_init_nfo     asynchronized   /**/
+#define proc_filesystems_init_nfo     asynchronized   /* fs/filesystems.c */
+#define proc_genhd_init_nfo           asynchronized   /* block/genhd.c   */
+#define proc_locks_init_nfo          asynchronized   /* fs/locks.c  */
+#define proc_modules_init_nfo        asynchronized   /**/
+#define proc_vmalloc_init_nfo        asynchronized   /* /mm/vmalloc.c  */
+#define libcrc32c_mod_init_nfo           asynchronized   /* lib/libcrc32c.c  */
+#define nvidia_frontend_init_module_nfo    asynchronized,grp_none,drm_core_init /* nvidia.ko */
+#define nvram_init_nfo                 asynchronized,pty_init   /* drivers/char/nvram.c */
+#define pmc_atom_init_nfo             asynchronized   /* /arch/x86/kernel/pmc_atom.c  */
 #define percpu_counter_startup_nfo         asynchronized   /*  lib/percpu_counter.c  */
 #define phy_module_init_nfo             asynchronized   /* /include/linux/phy.h   */
-#define pkcs7_key_init_nfo          deferred  /**/
-#define plantronics_driver_init_nfo    deferred,hid_init,uhid_init  /**/
-#define pmc_atom_init_nfo             asynchronized   /* /arch/x86/kernel/pmc_atom.c  */
-#define prgn_mod_init_nfo           deferred  /**/
-#define prng_mod_init_nfo           deferred  /* */
-#define proc_execdomains_init_nfo   asynchronized   /**/
-#define proc_filesystems_init_nfo    asynchronized   /* fs/filesystems.c */
-#define proc_genhd_init_nfo           asynchronized   /* block/genhd.c   */
-#define proc_locks_init_nfo         asynchronized   /* fs/locks.c  */
-#define proc_modules_init_nfo       asynchronized   /**/
-#define proc_vmalloc_init_nfo       asynchronized   /* /mm/vmalloc.c  */
-#define psmouse_init_nfo           deferred  /**/
-#define ptp_pch_init_nfo          asynchronized   /* drivers/ptp/ptp_pch.c  */
+#define ptp_pch_init_nfo             asynchronized   /* drivers/ptp/ptp_pch.c  */
 #define pty_init_nfo                  asynchronized   /*  drivers/tty/pty.c  */
-#define pvpanic_driver_nfo            deferred,acpi_ac_init                /* */
-#define realtek_cr_driver_init_nfo    deferred,usb_storage_driver_init   /* ums-realtek.ko */
-#define rfcomm_init_nfo             deferred             /* rfcomm.ko */
-#define rmd128_mod_init_nfo         deferred  /**/
-#define rmd160_mod_init_nfo       deferred  /**/
+#define intel_idle_init_nfo            asynchronized   /* /drivers/idle/intel_idle.c */
+#define pch_dma_driver_init_nfo        asynchronized   /* drivers/dma/pch_dma.c */
+#define sbf_init_nfo                   asynchronized   /*  arch/x86/kernel/bootflag.c  */
+#define setup_vmstat_nfo               asynchronized   /* /mm/vmstat.c  */
+#define uvm_init_nfo                   asynchronized,grp_none,grp_none,nvidia_frontend_init_module   /* nvidia-uvm.ko */
+
+
+#define a4_driver_init_nfo             deferred,grp_none,hid_init,uhid_init  /**/
+#define acpi_battery_init_nfo          deferred /**/
+#define acpi_button_driver_init_nfo    deferred  /* */
+#define acpi_fan_driver_init_nfo       deferred // asynchronized   /**/
+#define acpi_hed_driver_nfo               deferred                /* */
+#define acpi_ipmi_init_nfo                deferred /**/
+#define acpi_pad_init_nfo                 deferred /**/
+#define acpi_pcc_driver_nfo               deferred,grp_none,acpi_ac_init
+#define acpi_power_meter_init_nfo         deferred  /* */
+#define acpi_processor_driver_init_nfo    deferred   /* acpi-power-meter.ko */
+#define acpi_sbs_init_nfo                 deferred /**/
+#define acpi_smb_hc_driver_init_nfo      deferred
+#define acpi_smb_hc_driver_nfo          deferred,grp_none,acpi_ac_init                /* */
+#define acpi_smbus_cmi_driver_nfo       deferred                /* */
+#define acpi_thermal_init_nfo           deferred /**/
+#define acpi_topstar_driver_nfo        deferred,grp_none,acpi_ac_init                /* */
+#define add_pcspkr_nfo                     deferred     /* arch/x86/kernel/pcspeaker.c */
+#define aes_init_nfo                       deferred  /**/
+#define af_alg_init_nfo                    deferred   /* af_alg.ko */
+#define alg_hash_nfo                       deferred   /* alg_hash.ko */
+#define algif_hash_init_nfo                deferred,grp_none,af_alg_init   /* algif_hash.ko */
+#define algif_skcipher_init_nfo            deferred,grp_none,af_alg_init   /* algif_skicupher.ko */
+#define alsa_hwdep_init_nfo                deferred         /* snd-hwdep.ko */
+#define alsa_mixer_oss_init_nfo            deferred     /* snd-mixer-oss.ko */
+#define alsa_pcm_init_nfo                  deferred,grp_none,alsa_timer_init           /* snd-pcm.ko */
+#define alsa_pcm_oss_init_nfo              deferred,grp_none,alsa_mixer_oss_init,alsa_pcm_init       /* snd-pcm-oss.ko */
+#define alsa_seq_device_init_nfo           deferred    /* snd-seq-device.ko */
+#define alsa_seq_dummy_init_nfo             deferred,grp_none,alsa_seq_init     /* snd-seq-dummy.ko */
+#define alsa_seq_init_nfo                   deferred,grp_none,alsa_seq_device_init,alsa_timer_init           /* snd-seq.ko */
+#define alsa_seq_midi_event_init_nfo          deferred,grp_none,alsa_seq_init      /* snd-seq-midi-event.ko */
+#define alsa_seq_oss_init_nfo               deferred,grp_none,alsa_seq_midi_event_init       /* snd-seq-oss.ko */
+#define alsa_sound_last_init_nfo            disable  /* sound/core/last.c */
+#define alsa_timer_init_nfo                 deferred         /* snd-timer.ko */
+#define anubis_mod_init_nfo                deferred   /**/
+#define apple_driver_init_nfo              deferred,grp_none,hid_init,uhid_init  /**/
+#define arc4_init_nfo                      deferred   /**/
+#define asymmetric_key_init_nfo            deferred  /**/
+#define async_pq_init_nfo                 deferred   /**/
+#define atkbd_init_nfo                    deferred  /**/
+#define atlas_acpi_driver_nfo              deferred,grp_none,acpi_ac_init                /* */
+#define azx_driver_init_nfo                deferred  /**/
+
+#define belkin_driver_init_nfo              deferred,grp_none,hid_init,uhid_init  /**/
+#define blowfish_mod_init_nfo               deferred   /* blowfish_generic.ko */
+#define brd_init_nfo                         deferred  /**/
+#define camellia_init_nfo                   deferred   /**/
+#define cast5_mod_init_nfo                  deferred   /* cat5_generic.ko */
+#define cast6_mod_init_nfo                  deferred   /* cast6_generic.ko */
+#define chainiv_module_init_nfo              deferred   /**/
+#define cherry_driver_init_nfo              deferred,grp_none,hid_init,uhid_init   /**/
+#define chicony_driver_init_nfo              deferred,grp_none,hid_init,uhid_init  /**/
+#define coretemp_nfo                         deferred   /* coretemp.ko */
+#define cp_driver_init_nfo                     deferred,grp_none,hid_init,uhid_init  /**/
+#define cpufreq_gov_dbs_init_nfo               deferred  /**/
+#define cpufreq_gov_powersave_init_nfo          deferred  /**/
+#define cpufreq_gov_userspace_init_nfo          deferred  /**/
+#define cpufreq_stats_init_nfo                  deferred  /**/
+#define crb_acpi_driver_nfo                    deferred,grp_none,acpi_ac_init                /* */
+#define crc32_mod_init_nfo                     deferred  /**/
+#define crc32c_mod_init_nfo                   deferred  /**/
+#define crct10dif_mod_init_nfo                 deferred  /**/
+#define crypto_algapi_init_nfo               deferred   /**/
+#define crypto_authenc_esn_module_init_nfo    deferred,grp_none,crypto_authenc_module_init   /* authencesn.ko */
+#define crypto_authenc_module_init_nfo        deferred   /* authenc.ko */
+#define crypto_cbc_module_init_nfo            deferred  /**/
+#define crypto_ccm_module_init_nfo            deferred   /**/
+#define crypto_cmac_module_init_nfo           deferred   /**/
+#define crypto_ctr_module_init_nfo            deferred   /**/
+#define crypto_cts_module_init_nfo            deferred   /**/
+#define crypto_ecb_module_init_nfo          deferred  /**/
+#define crypto_gcm_module_init_nfo          deferred   /**/
+#define crypto_module_init_nfo              deferred  /**/
+#define crypto_null_mod_init_nfo           deferred  /**/
+#define crypto_pcbc_module_init_nfo        deferred   /**/
+#define crypto_user_init_nfo              deferred  /**/
+#define crypto_xcbc_module_init_nfo       deferred  /* */
+#define cuse_init_nfo                     deferred,grp_none,fuse_init   /* cuse.ko */
+#define deflate_mod_init_nfo             deferred   /**/
+#define des_generic_mod_init_nfo         deferred   /**/
+#define drm_fb_helper_modinit_nfo        deferred    /* */
+#define ehci_hcd_init_nfo                deferred   /* ehci-hcd.ko */
+#define ehci_pci_init_nfo               deferred,grp_none,ehci_hcd_init   /* ehci-pci.ko */
+#define ehci_platform_init_nfo          deferred,grp_none,ehci_hcd_init   /* ehci-platform.ko */
+#define elo_driver_init_nfo              deferred   /* usbhid.ko */
+#define ene_ub6250_driver_init_nfo      deferred,grp_none,usb_storage_driver_init   /* ums-eneub6250.ko */
+#define eseqiv_module_init_nfo          deferred   /**/
+#define ez_driver_init_nfo              deferred,grp_none,hid_init,uhid_init  /**/
+#define fcrypt_mod_init_nfo             deferred   /**/
+#define forcedeth_pci_driver_init_nfo    deferred  /* */
+#define fuse_init_nfo                   deferred   /* fuse.ko */
+#define ghash_mod_init_nfo              deferred   /**/
+#define gpio_fan_driver_init_nfo        deferred//  asynchronized   /*  drivers/hwmon/gpio-fan.c  */
+#define gpio_fan_nfo                    deferred   /* gpio-fan.ko */
+#define gspca_init_nfo                  deferred   /*  /drivers/media/usb/gspca/gspca.c */
+#define gspca_main_nfo                  deferred   /* gspca_main.ko */
+#define hid_generic_init_nfo            deferred,grp_none,hid_init,uhid_init  /**/
+#define hid_generic_nfo                 deferred,grp_none,hid_init,uhid_init  /**/
+#define hid_init_nfo                    deferred,grp_none,ohci_platform_init        /**/
+#define hilscher_pci_driver_init_nfo    deferred,grp_none,uio_init   /* uio_cif.ko */
+#define hmac_module_init_nfo            deferred   /**/
+#define hpet_init_nfo                   deferred  /**/
+#define hwrng_modinit_nfo               deferred   /* rng-core.ko */
+#define i2c_hid_driver_init_nfo         deferred  /**/
+#define i2c_mux_gpio_driver_nfo         deferred   /* i2c-mux-gpio.ko module_platform_driver */
+#define i8042_init_nfo                  deferred  /**/
+#define init_autofs4_fs_nfo             deferred   /*  /fs/autofs4/init.c  */
+#define init_cifs_nfo                   deferred                /* */
+#define init_iso9660_fs_nfo             deferred   /* isofs.ko */
+#define init_dns_resolver_nfo          deferred //asynchronized   /* net/dns_resolver/dns_key.c  */
+#define init_ext2_fs_nfo               deferred   /* fs/ext2/super.c  */
+#define init_ext3_fs_nfo                deferred,grp_none,journal_init   /* ext3.ko */
+#define init_fat_fs_nfo               deferred   /* fat.ko */
+#define init_msdos_fs_nfo             deferred,grp_none,init_fat_fs   /* msdos.ko */
+#define init_mtd_nfo                  deferred   /* mtd.ko */
+#define init_ntfs_fs_nfo              deferred  /**/
+#define init_udf_fs_nfo               deferred   /* fs/udf/super.c */
+#define init_vfat_fs_nfo              deferred,grp_none,init_fat_fs   /* vfat.ko */
+#define intel_rng_mod_init_nfo        deferred,grp_none,hwrng_modinit   /* intel-rng.ko */
+#define ipw2100_init_nfo              deferred,grp_none,lib80211_init   /* ipw2100.ko */
+#define ir_kbd_driver_init_nfo        deferred  /**/
+#define ir_kbd_driver_nfo             deferred   /* ir-kbd-i2c.ko module_i2c_driver */
+#define irst_driver_nfo               deferred,grp_none,acpi_ac_init                /* */
+#define ismt_driver_init_nfo          deferred //asynchronized   /* drivers/i2c/busses/i2c-ismt.c */
+#define journal_init_nfo              deferred   /* jbd.ko */
+#define keytouch_driver_init_nfo      deferred,grp_none,hid_init,uhid_init  /**/
+#define khazad_mod_init_nfo           deferred   /**/
+#define krng_mod_init_nfo             deferred   /**/
+#define ks_driver_init_nfo            deferred,grp_none,hid_init,uhid_init  /**/
+#define kswapd_init_nfo               asynchronized   /**/
+#define led_class_nfo                  deferred   /* led-class.ko */
+#define led_driver_init_nfo            deferred      /* usbled.ko */
+#define leds_pca955x_nfo               deferred   /* leds-pca955x.ko */
+#define lg_driver_init_nfo              deferred,grp_none,hid_init,uhid_init  /**/
+#define lib80211_crypto_ccmp_init_nfo    deferred,grp_none,lib80211_init   /* lib80211_crypt_ccmp.ko */
+#define lib80211_crypto_tkip_init_nfo    deferred,grp_none,lib80211_init   /* lib80211_crypt_tkip.ko */
+#define lib80211_crypto_wep_init_nfo    deferred,grp_none,lib80211_init   /* lib80211_crypt_wep.ko */
+#define lib80211_init_nfo                deferred   /* lib80211.ko */
+#define libipw_init_nfo                 deferred,grp_none,lib80211_init   /* libipw.ko */
+#define libphy_nfo                      deferred   /* libphy.ko */
+#define lis3lv02d_driver_nfo            deferred,grp_none,acpi_ac_init                /* */
+#define loop_init_nfo                   deferred  /**/
+#define lpc_ich_driver_init_nfo        deferred // asynchronized   /* drivers/mfd/lpc_ich.c  chipset */
+#define lpc_sch_driver_init_nfo        deferred // asynchronized   /* /drivers/mfd/lpc_sch.c */
+#define lz4_mod_init_nfo               deferred  /**/
+#define lzo_mod_init_nfo               deferred   /* lzo.ko */
+#define md4_mod_init_nfo               deferred  /**/
+#define md5_mod_init_nfo               deferred  /**/
+#define michael_mic_init_nfo           deferred   /**/
+#define mmc_blk_init_nfo               deferred   /* mmc_block.ko */
+#define mod_init_nfo                   deferred // asynchronized,grp_none,pty_init   /* /drivers/char/hw_random/intel-rng.c */
+#define mousedev_init_nfo              deferred  /**/
+#define mr_driver_init_nfo             deferred,grp_none,hid_init,uhid_init  /**/
+#define ms_driver_init_nfo             deferred,grp_none,hid_init,uhid_init  /**/
+#define mxm_wmi_init_nfo               deferred   /* mxm-wmi.ko */
+#define nforce2_driver_init_nfo        deferred  /* */
+#define nforce2_init_nfo               deferred  /* drivers/cpufreq/cpufreq-nforce2.c */
+#define noop_init_nfo                  deferred// asynchronized   /*  /block/noop-iosched.c  */
+#define ohci_hcd_mod_init_nfo          deferred,ehci_platform_init   /* ohci-hcd.ko */
+#define ohci_pci_init_nfo              deferred,ohci_hcd_mod_init,ehci_hcd_init   /* ohci-pci.ko */
+#define ohci_platform_init_nfo         deferred,ohci_hcd_mod_init   /* ohci-platform.ko */
+#define oprofile_init_nfo              deferred // asynchronized     /* oprofile/oprof.c */
+#define packet_init_nfo                deferred // asynchronized   /* net/packet/af_packet.c   */
+#define patch_analog_init_nfo          deferred       /* snd-hda-codec-analog.ko */
+#define patch_ca0110_init_nfo          deferred       /* snd-hda-codec-ca0110.ko */
+#define patch_ca0132_init_nfo          deferred       /* snd-hda-codec-ca0132.ko */
+#define patch_cirrus_init_nfo          deferred       /* snd-hda-codec-cirrus.ko */
+#define patch_cmedia_init_nfo          deferred       /* snd-hda-codec-cmedia.ko */
+#define patch_conexant_init_nfo        deferred     /* snd-hda-codec-conexant.ko */
+#define patch_hdmi_init_nfo            deferred         /* snd-hda-codec-hdmi.ko */
+#define patch_realtek_init_nfo         deferred      /* snd-hda-codec-realtek.ko */
+#define patch_si3054_init_nfo          deferred       /* snd-hda-codec-si3054.ko */
+#define patch_sigmatel_init_nfo        deferred    /* snd-hda-codec-idt.ko */
+#define patch_via_init_nfo             deferred          /* snd-hda-codec-via.ko */
+#define pca9541_driver_init_nfo        deferred  /**/
+#define pca9541_driver_nfo             deferred   /* i2c-mux-pca9541.ko module_i2c_driver */
+#define pca954x_driver_init_nfo        deferred  /**/
+#define pca954x_driver_nfo             deferred   /* i2c-mux-pca954x.ko module_i2c_driver */
+#define pca955x_driver_init_nfo        deferred  /**/
+#define pci_hotplug_init_nfo           deferred,grp_none,pcie_portdrv_init  /**/
+#define pcie_pme_service_init_nfo      deferred   /**/
+#define pcie_portdrv_init_nfo           deferred  /**/
+#define pcied_init_nfo                  deferred,grp_none,pci_hotplug_init  /**/
+#define pcips2_driver_init_nfo         deferred // asynchronized  /* drivers/input/serio/pcips2.c */
+#define pkcs7_key_init_nfo             deferred  /**/
+#define plantronics_driver_init_nfo    deferred,grp_none,hid_init,uhid_init  /**/
+#define prgn_mod_init_nfo             deferred  /**/
+#define prng_mod_init_nfo             deferred  /* */
+#define psmouse_init_nfo              deferred  /**/
+#define pvpanic_driver_nfo            deferred,grp_none,acpi_ac_init                /* */
+#define realtek_cr_driver_init_nfo    deferred,grp_none,usb_storage_driver_init   /* ums-realtek.ko */
+#define rfcomm_init_nfo               deferred             /* rfcomm.ko */
+#define rmd128_mod_init_nfo           deferred  /**/
+#define rmd160_mod_init_nfo            deferred  /**/
 #define rmd256_mod_init_nfo           deferred  /**/
 #define rmd320_mod_init_nfo           deferred  /**/
 #define salsa20_generic_mod_init_nfo    deferred   /**/
-#define sbf_init_nfo                asynchronized   /*  arch/x86/kernel/bootflag.c  */
-#define seed_init_nfo                    deferred   /**/
+#define seed_init_nfo                     deferred   /**/
 #define seqiv_module_init_nfo          deferred   /**/
-#define serial_pci_driver_init_nfo    deferred   /* drivers/tty/serial/8250/8250_pci.c  chipset */
-#define serial8250_init_nfo           deferred  /* drivers/tty/serial/8250/8250_core.c */
-#define serio_raw_drv_init_nfo       asynchronized  /* drivers/input/serio/serio_raw.c*/
-#define sermouse_drv_init_nfo       asynchronized   /* drivers/input/mouse/sermouse.c */
-#define serpent_mod_init_nfo          deferred   /**/
-#define serport_init_nfo              deferred  /**/
-#define setup_vmstat_nfo            asynchronized   /* /mm/vmstat.c  */
-#define sha1_generic_mod_init_nfo    deferred  /**/
+#define serial_pci_driver_init_nfo     deferred   /* drivers/tty/serial/8250/8250_pci.c  chipset */
+#define serial8250_init_nfo            deferred  /* drivers/tty/serial/8250/8250_core.c */
+#define serio_raw_drv_init_nfo         deferred //asynchronized  /* drivers/input/serio/serio_raw.c*/
+#define sermouse_drv_init_nfo          deferred // asynchronized   /* drivers/input/mouse/sermouse.c */
+#define serpent_mod_init_nfo           deferred   /**/
+#define serport_init_nfo               deferred  /**/
+#define sha1_generic_mod_init_nfo      deferred  /**/
 #define sha256_generic_mod_init_nfo    deferred  /**/
-#define sha512_generic_mod_init_nfo    deferred  /**/
-#define shpcd_init_nfo               deferred,pcied_init  /**/
-#define simtec_i2c_driver_init_nfo  asynchronized   /* drivers/i2c/busses/i2c-simtec.c  */
+#define sha512_generic_mod_init_nfo     deferred  /**/
+#define shpcd_init_nfo                 deferred,grp_none,pcied_init  /**/
+#define simtec_i2c_driver_init_nfo    deferred // asynchronized   /* drivers/i2c/busses/i2c-simtec.c  */
 #define slab_proc_init_nfo              asynchronized   /* /mm/slab_common.c  */
-#define smartconnect_driver_nfo       deferred,acpi_ac_init                /* */
-#define smbalert_driver_init_nfo    deferred  /**/
-#define smbus_sch_driver_init_nfo  asynchronized   /*  drivers/i2c/busses/i2c-isch.c  */
-#define smo8800_driver_nfo            deferred,acpi_ac_init                /* */
-#define smsc_nfo                    deferred,libphy   /* smsc.ko */
-#define snd_compress_init_nfo       deferred  /* sound/core/compress_offload.c */
-#define snd_hda_controller_nfo    deferred      /* snd-hda-controller.ko */
-#define snd_hda_intel_nfo          deferred,snd_hda_controller           /* snd-hda-intel.ko */
-#define snd_hrtimer_init_nfo          deferred,alsa_timer_init    /* snd-hrtimer.ko */
-#define sock_diag_init_nfo         asynchronized   /* /net/core/sock_diag.c  */
-#define speedstep_init_nfo            deferred   /* speedstep-ich.ko */
-#define spi_gpio_driver_init_nfo    deferred
-#define synusb_driver_init_nfo      deferred     /*   */
-#define tcp_congestion_default_nfo    deferred  /**/
-#define tcrypt_mod_init_nfo          deferred  /**/
-#define tea_mod_init_nfo           deferred  /**/
-#define tgr192_mod_init_nfo           deferred  /**/
-#define toshiba_bt_rfkill_driver_nfo    deferred,acpi_ac_init                /* */
-#define toshiba_haps_driver_nfo    deferred,acpi_ac_init                /* */
-#define twofish_generic_nfo          deferred   /* twofish_generic.ko */
-#define twofish_i586_nfo             deferred   /* twofish-i586.ko */
-#define twofish_mod_init_nfo        deferred  /**/
-#define uas_driver_init_nfo        deferred,usb_storage_driver_init   /* uas.ko */
-#define ubi_init_nfo              deferred,init_mtd   /* ubi.ko */
-#define uhci_hcd_init_nfo         deferred,ehci_hcd_init     /* uhci-hcd.ko */
-#define uhid_init_nfo          deferred,ohci_platform_init        /* uhid.ko */
-#define uinput_init_nfo         deferred  /**/
-#define uio_init_nfo             deferred   /* uio.ko */
-#define usb_hid_init_nfo         deferred   /* usbhid.ko */
+#define smartconnect_driver_nfo        deferred,grp_none,acpi_ac_init                /* */
+#define smbalert_driver_init_nfo       deferred  /**/
+#define smbus_sch_driver_init_nfo     deferred //  asynchronized   /*  drivers/i2c/busses/i2c-isch.c  */
+#define smo8800_driver_nfo             deferred,grp_none,acpi_ac_init                /* */
+#define smsc_nfo                       deferred,grp_none,libphy   /* smsc.ko */
+#define snd_compress_init_nfo          deferred  /* sound/core/compress_offload.c */
+#define snd_hda_controller_nfo         deferred      /* snd-hda-controller.ko */
+#define snd_hda_intel_nfo              deferred,grp_none,snd_hda_controller           /* snd-hda-intel.ko */
+#define snd_hrtimer_init_nfo           deferred,grp_none,alsa_timer_init    /* snd-hrtimer.ko */
+#define sock_diag_init_nfo             asynchronized   /* /net/core/sock_diag.c  */
+#define speedstep_init_nfo             deferred   /* speedstep-ich.ko */
+#define spi_gpio_driver_init_nfo       deferred
+#define synusb_driver_init_nfo         deferred     /*   */
+#define tcp_congestion_default_nfo     deferred  /**/
+#define tcrypt_mod_init_nfo            deferred  /**/
+#define tea_mod_init_nfo               deferred  /**/
+#define tgr192_mod_init_nfo            deferred  /**/
+#define toshiba_bt_rfkill_driver_nfo    deferred,grp_none,acpi_ac_init                /* */
+#define toshiba_haps_driver_nfo        deferred,grp_none,acpi_ac_init                /* */
+#define twofish_generic_nfo            deferred   /* twofish_generic.ko */
+#define twofish_i586_nfo               deferred   /* twofish-i586.ko */
+#define twofish_mod_init_nfo           deferred  /**/
+#define uas_driver_init_nfo            deferred,grp_none,usb_storage_driver_init   /* uas.ko */
+#define ubi_init_nfo                   deferred,grp_none,init_mtd   /* ubi.ko */
+#define uhci_hcd_init_nfo              deferred,grp_none,ehci_hcd_init     /* uhci-hcd.ko */
+#define uhid_init_nfo                  deferred,grp_none,ohci_platform_init        /* uhid.ko */
+#define uinput_init_nfo                deferred  /**/
+#define uio_init_nfo                   deferred   /* uio.ko */
+#define usb_hid_init_nfo               deferred   /* usbhid.ko */
 #define usb_storage_driver_init_nfo    deferred      /* usb-storage.ko */
-#define usblp_driver_init_nfo    deferred     /*   */
-#define usbmon_nfo               deferred      /* usbmon.ko */
-#define uvc_init_nfo           deferred   /*  drivers/media/usb/uvc/uvc_driver.c   */
-#define uvcvideo_nfo            deferred   /* uvcvideo.ko */
-#define uvm_init_nfo            asynchronized,nvidia_frontend_init_module   /* nvidia-uvm.ko */
-#define vb2_thread_init_nfo    deferred  /**/
-#define vmac_module_init_nfo    deferred  /**/
-#define workingset_init_nfo         asynchronized   /* mm/workingset.c  */
-#define wp512_mod_init_nfo      deferred  /**/
-#define x509_key_init_nfo       deferred  /**/
-#define xo15_ebook_driver_nfo    deferred,acpi_ac_init                /* */
-#define zlib_mod_init_nfo         deferred   /* zlib.ko */
-#define fcntl_init_nfo          asynchronized
-#define max_nfo          disable
+#define usblp_driver_init_nfo          deferred     /*   */
+#define usbmon_nfo                     deferred      /* usbmon.ko */
+#define uvc_init_nfo                   deferred   /*  drivers/media/usb/uvc/uvc_driver.c   */
+#define uvcvideo_nfo                   deferred   /* uvcvideo.ko */
+#define vb2_thread_init_nfo            deferred  /**/
+#define vmac_module_init_nfo           deferred  /**/
+#define wp512_mod_init_nfo             deferred  /**/
+#define x509_key_init_nfo              deferred  /**/
+#define xo15_ebook_driver_nfo          deferred,grp_none,acpi_ac_init                /* */
+#define zlib_mod_init_nfo              deferred   /* zlib.ko */
+#define max_nfo                        disable
+#define pcspkr_platform_driver_init_nfo     deferred
+#define deinterlace_pdrv_init_nfo           deferred  /* /drivers/media/platform/m2m-deinterlace.c*/
 
 #if 0
 
@@ -494,25 +508,20 @@ struct task_info_t_4
 #define get_nfo(x) CALL_FNC(get_nfo_,x ## _nfo)
 
 // it is better use a unique place for modules info
-const static struct init_fnc_info_4 {
-  enum task_type_t type_;
+struct  init_fnc_info_4 {
+  enum task_type_t type;
   modules_e  grp_id;
   modules_e  parent1_id;
   modules_e  parent2_id;
-} init_info[] = {
+};
+
+const static struct  init_fnc_info_4  /*__initdata*/ init_info[] = {
     MODULES_ID(get_nfo)
     {} };
 
-struct task_info_t_4  info_4[max_id];    // all task info
+struct task_info_t_4  /*__initdata*/ info_4[max_id];    // all task info
 struct init_fn_t* current_init_fnc;      // current init function to execute
 enum task_type_t  current_type;          // current type.
-
-//#define fnc_a   1
-//#define call(x)  fnc_ ## x
-//
-//int a = call(a);
-//
-//enum { b = grp_none_id; }
 
 
 //static DEFINE_SPINLOCK(list_lock);
@@ -541,22 +550,24 @@ const char* getName(modules_e id)
 void FillTasks(const struct init_fn_t_4* begin, const struct init_fn_t_4* end)
 {
   const struct init_fn_t_4* it;
+  const struct init_fnc_info_4* nfo;
   memset(info_4, 0, sizeof(info_4));      //clear all status information
   // update child and group reference counter
   for (it = begin; it != end; ++it)
   {
+    nfo = init_info + it->id;
     info_4[it->id].status = st_waiting;
-    if (it->parent1_id != none_id)
+    if (nfo->parent1_id != none_id)
     {
-      ++info_4[it->parent1_id].child_count;
+      ++info_4[nfo->parent1_id].child_count;
     }
-    if (it->parent2_id != none_id)
-      ++info_4[it->parent2_id].child_count;
+    if (nfo->parent2_id != none_id)
+      ++info_4[nfo->parent2_id].child_count;
 
-    if (it->grp_id != grp_none_id)
+    if (nfo->grp_id != grp_none_id)
     {
-      info_4[it->grp_id].ref++;     // also use as group counter
-      info_4[it->grp_id].status = st_waiting;
+      info_4[nfo->grp_id].ref++;     // also use as group counter
+      info_4[nfo->grp_id].status = st_waiting;
     }
   }
   info_4[none_id].status = st_done;
@@ -742,7 +753,7 @@ int do_asynchronized(void* d)
     const struct init_fn_t_4* it_init_fnc;
     for (it_init_fnc = __async_initcall_start; it_init_fnc < __async_initcall_end; ++it_init_fnc)
     {
-        if (it_init_fnc->type_ == asynchronized)
+        if (init_info[it_init_fnc->id].type == asynchronized)
         {
             ret = do_one_initcall(it_init_fnc->fnc);
             schedule();        // give time to system to do other things
@@ -781,7 +792,7 @@ static ssize_t device_read(struct file *file, char __user *buf,size_t nbytes, lo
     count = 0;
     it_init_fnc = (struct init_fn_t_4*)file->private_data;
 
-    while (it_init_fnc < __async_initcall_end && it_init_fnc->type_ != deferred)
+    while (it_init_fnc < __async_initcall_end && init_info[it_init_fnc->id].type != deferred)
         ++it_init_fnc;
     if (it_init_fnc != __async_initcall_end)
     {
@@ -853,5 +864,5 @@ static int async_late_init(void)
 }
 
 //__initcall(async_init);
-late_initcall_sync(async_late_init);		// Second stage, last to do before jump to high level initialization
+module_init(async_late_init);		// Second stage, last to do before jump to high level initialization
 

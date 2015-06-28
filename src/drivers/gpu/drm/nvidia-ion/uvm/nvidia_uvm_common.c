@@ -353,7 +353,7 @@ RM_STATUS uvm_map_page(struct vm_area_struct *vma, struct page *page,
     return RM_ERR_INVALID_ARGUMENT;
 }
 
-module_init_async(uvm_init,grp_none,nvidia_frontend_init_module);
+_async_module_init(uvm_init);
 module_exit(uvm_exit);
 MODULE_LICENSE("MIT");
 MODULE_INFO(supported, "external");

@@ -1153,7 +1153,7 @@ void __exit nvidia_exit_module(void)
  */
 
 #if defined(NV_VMWARE) || (NV_BUILD_MODULE_INSTANCES != 0)
-module_init_async(nvidia_init_module);
+_async_module_init(nvidia_init_module);
 module_exit(nvidia_exit_module);
 #endif
 
