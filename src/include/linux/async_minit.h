@@ -26,7 +26,6 @@
     fnc(grp_snd_hda) \
     fnc(ssb_modinit) /*Broadcom ssb bus, it is need bo b43 and (0x800:0x4243 0x812 0x80D 0x820*/ \
     fnc(intel_cqm_init) \
-    fnc(pmc_atom_init) \
     fnc(amd_ibs_init) \
     \
     fnc(ahci_pci_driver_init) \

@@ -63,8 +63,8 @@
 #define grp_ssb_nfo                    disable
 #define grp_snd_hda_nfo                disable
 #define intel_cqm_init_nfo             disable
-#define pmc_atom_init                  disable
-#define amd_ibs_init                  disable
+#define pmc_atom_init_nfo              disable   /* /arch/x86/kernel/pmc_atom.c  */
+#define amd_ibs_init_nfo               disable
 
 #define ssb_modinit_nfo                deferred,grp_ssb
 #define bcma_modinit_nfo               deferred,grp_ssb,ssb_modinit
@@ -133,7 +133,6 @@
 #define libcrc32c_mod_init_nfo             asynchronized   /* lib/libcrc32c.c  */
 #define nvidia_frontend_init_module_nfo    asynchronized,grp_none,drm_core_init /* nvidia.ko */
 #define nvram_init_nfo                     asynchronized,grp_none,pty_init   /* drivers/char/nvram.c */
-#define pmc_atom_init_nfo                  asynchronized   /* /arch/x86/kernel/pmc_atom.c  */
 #define percpu_counter_startup_nfo         asynchronized   /*  lib/percpu_counter.c  */
 #define phy_module_init_nfo                asynchronized   /* /include/linux/phy.h   */
 #define ptp_pch_init_nfo                   asynchronized   /* drivers/ptp/ptp_pch.c  */
