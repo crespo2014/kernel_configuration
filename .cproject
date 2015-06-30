@@ -84,7 +84,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1871883102" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1285861472" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.548150686" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/linux-4.0/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/linux-4.1/include}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.245055107" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="CONFIG_ASYNCHRO_MODULE_INIT_DEBUG=1"/>
@@ -93,7 +93,7 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.744902218" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
 								<option id="gnu.c.compiler.option.include.paths.1909652502" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/linux-4.0/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/linux-4.1/include}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1641500694" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="CONFIG_ASYNCHRO_MODULE_INIT_DEBUG=1"/>
@@ -109,7 +109,7 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.base.514813547" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
 								<option id="gnu.both.asm.option.include.paths.748267712" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/linux-4.0/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/linux-4.1/include}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1858620602" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -340,5 +340,11 @@
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1285861472;cdt.managedbuild.tool.gnu.cpp.compiler.input.899170444">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.2130150206.776188399;cdt.managedbuild.toolchain.gnu.base.2130150206.776188399.;cdt.managedbuild.tool.gnu.c.compiler.base.744902218;cdt.managedbuild.tool.gnu.c.compiler.input.1114785184">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>
