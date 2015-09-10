@@ -1,0 +1,232 @@
+--- drivers/Makefile	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/drivers/Makefile	2015-09-10 16:44:25.868251022 +0100
+@@ -33,6 +33,9 @@ obj-y				+= amba/
+ # really early.
+ obj-$(CONFIG_DMADEVICES)	+= dma/
+ 
++#ready for asyncronized initialization
++obj-y += async.o
++obj-$(CONFIG_SSB)		+= ssb/
+ # SOC specific infrastructure drivers.
+ obj-y				+= soc/
+ 
+@@ -133,7 +136,6 @@ obj-$(CONFIG_DCA)		+= dca/
+ obj-$(CONFIG_HID)		+= hid/
+ obj-$(CONFIG_PPC_PS3)		+= ps3/
+ obj-$(CONFIG_OF)		+= of/
+-obj-$(CONFIG_SSB)		+= ssb/
+ obj-$(CONFIG_BCMA)		+= bcma/
+ obj-$(CONFIG_VHOST_RING)	+= vhost/
+ obj-$(CONFIG_VLYNQ)		+= vlynq/
+--- drivers/Kconfig	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/drivers/Kconfig	2015-06-25 22:51:15.373673258 +0100
+@@ -1,5 +1,20 @@
+ menu "Device Drivers"
+ 
++config ASYNCHRO_MODULE_INIT
++	bool "Initialize module in Asynchronize way using single module dependencies"
++	---help---
++	Asynchrone drivers initialization routine 
++	
++if ASYNCHRO_MODULE_INIT
++	config ASYNCHRO_MODULE_INIT_DEBUG
++	bool "Debug mode"
++	
++	config ASYNCHRO_MODULE_INIT_THREADS	
++	int "Maximum number of threads"
++	range 0 4
++	default "2" 
++endif
++	
+ source "drivers/amba/Kconfig"
+ 
+ source "drivers/base/Kconfig"
+--- drivers/gpu/drm/Makefile	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/drivers/gpu/drm/Makefile	2015-06-25 22:51:15.354675479 +0100
+@@ -32,8 +32,10 @@ obj-$(CONFIG_DRM_KMS_HELPER) += drm_kms_
+ 
+ CFLAGS_drm_trace_points.o := -I$(src)
+ 
++obj-$(CONFIG_NVIDIA_ION) += nvidia-ion/
+ obj-$(CONFIG_DRM)	+= drm.o
+ obj-$(CONFIG_DRM_MIPI_DSI) += drm_mipi_dsi.o
++obj-$(CONFIG_NVIDIA_ION)	+= nvidia-ion/
+ obj-$(CONFIG_DRM_TTM)	+= ttm/
+ obj-$(CONFIG_DRM_TDFX)	+= tdfx/
+ obj-$(CONFIG_DRM_R128)	+= r128/
+--- drivers/gpu/drm/Kconfig	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/drivers/gpu/drm/Kconfig	2015-06-25 22:57:56.686800173 +0100
+@@ -81,6 +81,8 @@ source "drivers/gpu/drm/i2c/Kconfig"
+ 
+ source "drivers/gpu/drm/bridge/Kconfig"
+ 
++source "drivers/gpu/drm/nvidia-ion/Kconfig"
++
+ config DRM_TDFX
+ 	tristate "3dfx Banshee/Voodoo3+"
+ 	depends on DRM && PCI
+--- drivers/net/Kconfig	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/drivers/net/Kconfig	2015-09-10 16:22:58.054071899 +0100
+@@ -37,6 +37,8 @@ config NET_CORE
+ 
+ if NET_CORE
+ 
++source "drivers/net/r8168/Kconfig"
++
+ config BONDING
+ 	tristate "Bonding driver support"
+ 	depends on INET
+--- drivers/net/Makefile	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/drivers/net/Makefile	2015-09-10 16:21:33.172883298 +0100
+@@ -66,3 +66,4 @@ obj-$(CONFIG_USB_NET_DRIVERS) += usb/
+ 
+ obj-$(CONFIG_HYPERV_NET) += hyperv/
+ obj-$(CONFIG_NTB_NETDEV) += ntb_netdev.o
++obj-$(CONFIG_RTL8168) += r8168/
+--- include/asm-generic/vmlinux.lds.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/asm-generic/vmlinux.lds.h	2015-06-27 14:50:27.168885091 +0100
+@@ -646,6 +646,12 @@
+ 		*(.initcall##level##.init)				\
+ 		*(.initcall##level##s.init)				\
+ 
++#define ASYNC_INITCALLS           \
++   VMLINUX_SYMBOL(__async_initcall_start) = .;    \
++   *(.async_initcall.init)        \
++   VMLINUX_SYMBOL(__async_initcall_end) = .;
++
++
+ #define INIT_CALLS							\
+ 		VMLINUX_SYMBOL(__initcall_start) = .;			\
+ 		*(.initcallearly.init)					\
+@@ -816,6 +822,7 @@
+ 		INIT_DATA						\
+ 		INIT_SETUP(initsetup_align)				\
+ 		INIT_CALLS						\
++		ASYNC_INITCALLS   \
+ 		CON_INITCALL						\
+ 		SECURITY_INITCALL					\
+ 		INIT_RAM_FS						\
+--- include/acpi/acpi_bus.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/acpi/acpi_bus.h	2015-06-27 22:03:49.333685111 +0100
+@@ -503,8 +503,8 @@ static inline bool acpi_device_enumerate
+  * use this macro once, and calling it replaces module_init() and module_exit()
+  */
+ #define module_acpi_driver(__acpi_driver) \
+-	module_driver(__acpi_driver, acpi_bus_register_driver, \
+-		      acpi_bus_unregister_driver)
++    _async_module_driver(__acpi_driver, acpi_bus_register_driver, \
++		      acpi_bus_unregister_driver)  \
+ 
+ /*
+  * Bind physical devices with ACPI devices
+--- include/linux/device.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/linux/device.h	2015-09-10 16:31:44.738222936 +0100
+@@ -13,6 +13,7 @@
+ #ifndef _DEVICE_H_
+ #define _DEVICE_H_
+ 
++#include <linux/async_minit.h>
+ #include <linux/ioport.h>
+ #include <linux/kobject.h>
+ #include <linux/klist.h>
+--- include/linux/hid.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/linux/hid.h	2015-06-27 22:06:25.451434396 +0100
+@@ -784,8 +784,8 @@ extern void hid_unregister_driver(struct
+  * use this macro once, and calling it replaces module_init() and module_exit()
+  */
+ #define module_hid_driver(__hid_driver) \
+-	module_driver(__hid_driver, hid_register_driver, \
+-		      hid_unregister_driver)
++    _async_module_driver(__hid_driver, hid_register_driver, \
++		      hid_unregister_driver);
+ 
+ extern void hidinput_hid_event(struct hid_device *, struct hid_field *, struct hid_usage *, __s32);
+ extern void hidinput_report_event(struct hid_device *hid, struct hid_report *report);
+--- include/linux/i2c.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/linux/i2c.h	2015-06-27 22:07:38.702863633 +0100
+@@ -626,7 +626,7 @@ static inline int i2c_adapter_id(struct
+  * use this macro once, and calling it replaces module_init() and module_exit()
+  */
+ #define module_i2c_driver(__i2c_driver) \
+-	module_driver(__i2c_driver, i2c_add_driver, \
++    _async_module_driver(__i2c_driver, i2c_add_driver, \
+ 			i2c_del_driver)
+ 
+ #endif /* I2C */
+--- include/linux/module.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/linux/module.h	2015-06-25 22:51:15.401669986 +0100
+@@ -6,6 +6,7 @@
+  * Rewritten by Richard Henderson <rth@tamu.edu> Dec 1996
+  * Rewritten again by Rusty Russell, 2002
+  */
++#include "linux/async_minit.h"
+ #include <linux/list.h>
+ #include <linux/stat.h>
+ #include <linux/compiler.h>
+--- include/linux/pci.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/linux/pci.h	2015-09-10 16:33:53.124383739 +0100
+@@ -17,6 +17,7 @@
+ #define LINUX_PCI_H
+ 
+ 
++#include <linux/async_minit.h>
+ #include <linux/mod_devicetable.h>
+ 
+ #include <linux/types.h>
+@@ -1157,8 +1158,12 @@ void pci_unregister_driver(struct pci_dr
+  * use this macro once, and calling it replaces module_init() and module_exit()
+  */
+ #define module_pci_driver(__pci_driver) \
+-	module_driver(__pci_driver, pci_register_driver, \
+-		       pci_unregister_driver)
++        _async_module_driver(__pci_driver, pci_register_driver, \
++                       pci_unregister_driver)
++
++#define module_pci_driver_dflt(__pci_driver) \
++        module_driver(__pci_driver, pci_register_driver, \
++                       pci_unregister_driver)
+ 
+ struct pci_driver *pci_dev_driver(const struct pci_dev *dev);
+ int pci_add_dynid(struct pci_driver *drv,
+--- include/linux/usb.h	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/include/linux/usb.h	2015-06-27 22:17:51.254178128 +0100
+@@ -1,6 +1,7 @@
+ #ifndef __LINUX_USB_H
+ #define __LINUX_USB_H
+ 
++#include <linux/async_minit.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/usb/ch9.h>
+ 
+@@ -1184,7 +1185,7 @@ extern void usb_deregister(struct usb_dr
+  * use this macro once, and calling it replaces module_init() and module_exit()
+  */
+ #define module_usb_driver(__usb_driver) \
+-	module_driver(__usb_driver, usb_register, \
++    _async_module_driver(__usb_driver, usb_register, \
+ 		       usb_deregister)
+ 
+ extern int usb_register_device_driver(struct usb_device_driver *,
+--- init/main.c	2015-06-22 06:05:43.000000000 +0100
++++ ../linux-4.1/init/main.c	2015-06-25 23:00:55.106002127 +0100
+@@ -924,6 +924,11 @@ static int try_to_run_init_process(const
+ 
+ static noinline void __init kernel_init_freeable(void);
+ 
++// atomic counter for free init memory
++atomic_t  free_init_ref = ATOMIC_INIT(1);
++
++EXPORT_SYMBOL(free_init_ref);
++
+ static int __ref kernel_init(void *unused)
+ {
+ 	int ret;
+@@ -931,7 +936,7 @@ static int __ref kernel_init(void *unuse
+ 	kernel_init_freeable();
+ 	/* need to finish all async __init code before freeing the memory */
+ 	async_synchronize_full();
+-	free_initmem();
++	//free_initmem();
+ 	mark_rodata_ro();
+ 	system_state = SYSTEM_RUNNING;
+ 	numa_default_policy();

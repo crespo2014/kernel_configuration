@@ -755,7 +755,7 @@ module_exit(__driver##_exit);
 
 #else
 
-#define _async_module_init(fnc)                                     module_init(fnc);
+#define _async_module_init(fnc)                                     __initcall(fnc);
 #define _async_module_driver(__driver, __register, __unregister)    module_driver(__driver, __register, __unregister);
 #define _async_module_pci_driver(__pci_driver)                      module_driver(__pci_driver,pci_register_driver,pci_unregister_driver);
 #define _async_module_platform_driver(__platform_driver)            module_driver(__platform_driver, platform_driver_register,platform_driver_unregister);

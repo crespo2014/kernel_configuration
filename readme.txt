@@ -1,7 +1,28 @@
 Tips:
 
-diff -rup -x '*.o' -x 'Documentation' -x 'bzImage' --exclude=.cproject --exclude=build --exclude=nvidia-ion linux-4.1.orig linux-4.1 >> kernel_configuration/linux-4.0-patch.diff
-patch -r out -f -p1 < ../kernel_configuration/linux-4.0-patch.diff 
+cd linux-4.1.orig
+diff -rup -x '*.o' -x 'Documentation' -x 'bzImage' --exclude=.cproject --exclude=build --exclude=fw --exclude=r8168-8.040.00 --exclude=drivers/async.c --exclude=nvidia-ion . ../linux-4.1 >> ../kernel_configuration/linux.diff
+
+
+echo > ../kernel_configuration/linux.diff
+for i in \
+drivers/Makefile drivers/Kconfig \
+drivers/gpu/drm/Makefile \
+drivers/gpu/drm/Kconfig \
+drivers/net/Kconfig \
+drivers/net/Makefile \
+include/asm-generic/vmlinux.lds.h \
+include/linux/device.h  \
+include/linux/module.h \
+include/linux/pci.h \
+include/linux/usb.h \
+init/main.c \
+drivers/char/hw_random/intel-rng.c 
+do
+diff -rup $i ../linux-4.1/$i >> ../kernel_configuration/linux.diff
+done
+
+patch -r out.rej -f -p1 < ../kernel_configuration/linux.diff 
 
 Keep module name at the end
 
