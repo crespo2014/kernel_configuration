@@ -1,0 +1,3778 @@
+;Configuracion del kernel por pantallas completas, seguido de las pantallas internas, se definira la ruta completa de la pantalla al comienzo utilizando .. como si de estrutura de carpeta se tratase
+[General setup]
+	[*]	Prompt for development and/or incomplete code/drivers 
+	()	 Cross-compiler tool prefix   
+	()	 Local version - append to kernel release    					;(LOCALVERSION) adiciona un string a la version del  kernel 
+	[ ]	Automatically append version information to the version string  
+		Kernel compression mode (Gzip]	 --->     
+	[*]	Support for paging of anonymous memory (swap)
+	[*]	System V IPC    
+	[*]	POSIX Message Queues  
+	[*]	BSD Process Accounting   ; bootchar  
+	[*]	  BSD Process Accounting version 3 file format    ; bootchart 
+	[ ]	open by fhandle syscalls
+	[ ]	Export task/process statistics through netlink (EXPERIMENTAL)	  
+	[ ]	Auditing support  							;*AUDIT* Habilitar la infraestrutura de auditoria que puede ser uzada con otro subsistema de kernel 
+	[ ]	  Enable system-call auditing support    
+		IRQ subsystem  --->
+		RCU Subsystem  ---> 
+	< > Kernel .config support 		(IKCONFIG)	Almacenar el fichero .config dentro del kernel 
+	(17)	Kernel log buffer size (16 => 64KB, 17 => 128KB)	 
+	[*]	Control Group support  --->
+	-*- Namespaces support  --->
+	[ ]	Automatic process group scheduling 
+	[ ]	Enable deprecated sysfs features to support old userspace tools 
+	-*- Kernel->user space relay support (formerly relayfs)
+	[*]	Initial RAM filesystem and RAM disk (initramfs/initrd) support  
+	()	   Initramfs source file(s)   
+	[*]	Optimize for size  
+	[ ]	Configure standard kernel features (expert users)  --->  
+	[ ]	Embedded system 
+		Kernel Performance Events And Counters  ---> 
+	[ ]	Disable heap randomization   
+		Choose SLAB allocator (SLUB (Unqueued Allocator))  --->  
+	[*]	Profiling support  
+	<M> OProfile system profiling    
+	[ ]	  OProfile multiplexing support (EXPERIMENTAL)     
+	[*]	Kprobes   
+	[ ]	Optimize trace point call sites    
+		GCOV-based kernel profiling  --->  
+
+[General setup\IRQ subsystem]
+	[ ]	Support sparse irq numbering
+
+[General setup\RCU subsystem]
+	RCU Implementation (Tree-based hierarchical RCU)  ---> 
+		(X) Tree-based hierarchical RCU
+	[ ]	Enable tracing for RCU
+	(32) Tree-based hierarchical RCU fanout value
+	[ ]	Disable tree-based hierarchical RCU auto-balancing 
+	[ ]	Accelerate last non-dyntick-idle CPUs grace periods 
+
+[General setup\Control Group support]
+	[ ]	Example debug cgroup subsystem   
+	[*]	  Namespace cgroup subsystem 
+	[*]	  Freezer cgroup subsystem   
+	[*]	  Device controller for cgroups    
+	[*]	  Cpuset support
+	[*]	    Include legacy /proc/<pid>/cpuset file   
+	[*]	  Simple CPU accounting cgroup subsystem 
+	[ ]	  Resource counters
+	[ ]	  Enable perf_event per-cpu per-container group (cgroup) monitoring   
+	[*]	  Group CPU scheduler  --->
+	< >   Block IO controller 
+
+[General setup\Control Group support\Group CPU scheduler]
+	[*]	  Group scheduling for SCHED_OTHER 
+	[ ]	  Group scheduling for SCHED_RR/FIFO     
+					
+[General setup\Namespaces support]
+	[*]	  UTS namespace 
+	[*]	  IPC namespace 
+	[*]	  User namespace (EXPERIMENTAL)    
+	[*]	  PID Namespaces
+	[*]	  Network namespace    
+
+[General setup\Configure standard kernel features (expert users)]
+	-*-   Load all symbols for debugging/ksymoops
+	[ ]	    Include all symbols in kallsyms
+	[ ]	    Do an extra kallsyms pass  
+
+[General setup\Kernel performance events and counters]
+	[ ]	Kernel performance counters (old config option)    
+	[ ]	Debug: use vmalloc to back perf mmap() buffers
+
+[General setup\GCOV-based kernel profiling]
+	[ ]	Enable gcov-based kernel profiling
+
+[Enable loadable module support]
+	[*]	  Forced module loading 
+	[*]	  Module unloading 
+	[*]	    Forced module unloading  
+	[*]	  Module versioning support  
+	[ ]	  Source checksum for all modules
+
+[Enable the block layer]
+	[*]	  Support for large (2TB+) block devices and files    	;necesario para el ext4
+	-*-   Block layer SG support v4    ; ext4 
+	[*]	  Block layer data integrity support     
+		IO Schedulers  --->
+
+[Enable the block layer\IO Schedulers]
+	<*> Deadline I/O scheduler
+	<*> CFQ I/O scheduler  
+	Default I/O scheduler (CFQ)  ---> 
+
+[Processor type and features]
+	[*]	Tickless System (Dynamic Ticks)    
+	[*]	High Resolution Timer Support
+	[*]	Symmetric multi-processing support  	;311c *SMP* Activarlo para mas de una CPU or Hyperthreaded or Dual Core; 
+	[*]	Enable MPS table
+	[ ]	Support for big SMP systems with more than 8 CPUs  
+	[ ]	Support for extended (non-PC) x86 platforms  
+	< > Eurobraille/Iris poweroff module   
+	[*]	Single-depth WCHAN output    
+	[ ]	Paravirtualized guest support  --->   					;solo si se necesita soporte para maquinas virtuales LVM   
+	[ ]	Memtest   
+		Processor family (Intel Atom)  ---> 					; procesador atom     
+	[*]	Generic x86 support
+	[*]	HPET Timer Support 
+	(8) Maximum number of CPUs
+	[*]	SMT (Hyperthreading) scheduler support   
+	[*]	Multi-core scheduler support 
+	[ ]	Fine granularity task level IRQ time accounting    
+		Preemption Model (No Forced Preemption (Server))  ---> 	;311c Se realiza menos conmutacion de tareas en el kernel y ahorra CPU, responde mas lento la interfaz usuario (sonido, video) 
+	[*]	Reroute for broken boot IRQs 
+	[*]	Machine Check / overheating reporting    
+	[*]	  Intel MCE features  
+	[ ]	  AMD MCE features 
+	[ ]	  Support for old Pentium 5 / WinChip machine checks  
+	<M> Machine check injector support     
+	< > Toshiba Laptop support
+	< > Dell laptop support
+	[*]	Enable X86 board specific fixups for reboot  
+	<M> /dev/cpu/microcode - microcode support   
+	[*]	  Intel microcode patch loading support  
+	[ ]	  AMD microcode patch loading support    
+	<M> /dev/cpu/*/msr - Model-specific register support   
+	<M> /dev/cpu/*/cpuid - CPU information support   
+		High Memory Support (4GB)  --->   	;311c *NOHIGHMEM*HIGHMEM4G*HIGHMEM64G* Uso de memoria alta menos de 1GB off (1-4GB) 4GB 
+		Memory model (Flat Memory)  --->   
+	[ ]	Allow for memory compaction  
+	[*]	Enable KSM for page merging  
+	(65536) Low address space to protect from user allocation 
+	[*]	Enable recovery from hardware memory errors  
+	<M>   HWPoison pages injector
+	[ ]	Transparent Hugepage Support  
+	[ ]	Enable cleancache driver to cache clean pages if tmem is present (NEW) 
+	[*]	Allocate 3rd-level pagetables from highmem   
+	[ ]	Check for low memory corruption    
+	(64) Amount of low memory, in kilobytes, to reserve for the BIOS    
+	[ ]	Math emulation  
+	-*- MTRR (Memory Type Range Register) support
+	[*]	  MTRR cleanup support
+	(0)     MTRR cleanup enable value (0-1)
+	(1)     MTRR cleanup spare reg num (0-7)     
+	[*]	EFI runtime service support  
+	[*]	Enable seccomp to safely compute untrusted bytecode
+	[*]	Enable -fstack-protector buffer overflow detection (EXPERIMENTAL)     
+		Timer frequency (100 HZ)  --->     		;una frecuencia baja permite menos uso intensivo del CPU conmutando tareas 
+	[*]	kexec system call  
+	[ ]	kernel crash dumps 
+	[ ]	kexec jump (EXPERIMENTAL) 
+	[*]	Build a relocatable kernel   
+	(0x1000000) Alignment value to which kernel should be aligned
+	-*- Support for hot-pluggable CPUs     
+	[ ]	Compat VDSO support
+	[ ]	Built-in kernel command line 
+
+[Power management and ACPI options]
+	[*]	Suspend to RAM and standby   
+	[ ]	Hibernation (aka 'suspend to disk')     ;311c Activar la posibilidad de hibernar o suspend to disk 
+	()    Default resume partition   
+	[*]	Run-time PM core functionality     
+	[*]	Power Management Debug Support     
+	[ ]	  Verbose Power Management debugging     
+	[ ]	  Extra PM attributes in sysfs for low-level debugging/testing  
+	[ ]	  Test suspend/resume and wakealarm during bootup  
+	[ ]	Suspend/resume event tracing 
+	[*]	ACPI (Advanced Configuration and Power Interface) Support  ---> 
+	[*]	SFI (Simple Firmware Interface) Support  --->
+	<M> APM (Advanced Power Management) BIOS support  ---> 
+		CPU Frequency scaling  --->													; Posibilidad de variar la frecuencia del procesador y ahorrar energia 
+	-*- CPU idle PM support
+	[ ]	  Cpuidle Driver for Intel Processors    
+
+[Power management and ACPI options\ACPI (Advanced Configuration and Power Interface) Support]
+	[*]	  Deprecated /proc/acpi files
+	[ ]	  Deprecated power /proc/acpi directories
+	<M>   ACPI 4.0 power meter
+	< >   EC read/write access through /sys/kernel/debug/ec
+	[ ]	  Deprecated /proc/acpi/event support    
+	<M>   AC Adapter    
+	<M>   Battery 
+	{M}   Button  
+	-M-   Video   
+	<M>   Fan 
+	[*]	  Dock
+	<M>   Processor     
+	< >   IPMI
+	<M>   Processor Aggregator
+	<M>   Thermal Zone  
+	(0)   Disable ACPI for systems before Jan 1st this year
+	[ ]	  Debug Statements 
+	<M>   PCI slot detection driver  
+	{M}   Container and Module Devices (EXPERIMENTAL)
+	<M>   Smart Battery System
+	< >   Hardware Error Device 
+	[ ]	  ACPI Platform Error Interface (APEI) 
+
+[Power management and ACPI options\APM (Advanced Power Management) BIOS support]
+	[ ]	  Ignore USER SUSPEND 
+	[ ]	  Enable PM at boot time
+	[ ]	  Make CPU Idle calls when idle    
+	[ ]	  Enable console blanking using APM
+	[ ]	  Allow interrupts during APM BIOS calls 
+
+[Power management and ACPI options\CPU Frequency scaling]
+	[*]	CPU Frequency scaling 											;311c Activar variacion de la frecuencia del CPU
+	[ ]	  Enable CPUfreq debugging   
+	<M>   CPU frequency translation statistics   
+	[ ]	    CPU frequency translation statistics details   
+		Default CPUFreq governor (ondemand)  --->  
+	-*-   'performance' governor; Tipos de gestores de frecuencia     
+	<M>   'powersave' governor
+	<M>   'userspace' governor for userspace frequency scaling
+	-*-   'ondemand' cpufreq policy governor     
+	<M>   'conservative' cpufreq governor  
+		
+Power management and ACPI options\CPU Frequency scaling\x86 CPU frequency scaling drivers]
+	< >   Processor Clocking Control interface driver
+	<M>   ACPI Processor P-States driver   
+	<M>   AMD Mobile K6-2/K6-3 PowerNow!   
+	<M>   AMD Mobile Athlon/Duron PowerNow!
+	<M>   AMD Opteron/Athlon64 PowerNow!   
+	<M>   Cyrix MediaGX/NatSemi Geode Suspend Modulation   
+	<M>   Intel Enhanced SpeedStep (deprecated)  
+	-*-     Built-in tables for Banias CPUs
+	<M>   Intel Speedstep on ICH-M chipsets (ioport interface)
+	<M>   Intel SpeedStep on 440BX/ZX/MX chipsets (SMI interface)
+	[*]	CPU Frequency scaling 
+	[ ]	  Enable CPUfreq debugging   
+	<M>   CPU frequency translation statistics   
+	[ ]	    CPU frequency translation statistics details   
+		Default CPUFreq governor (ondemand)  --->  
+	-*-   'performance' governor
+	<M>   'powersave' governor
+	<M>   'userspace' governor for userspace frequency scaling
+	-*-   'ondemand' cpufreq policy governor     
+	<M>   'conservative' cpufreq governor  
+		*** CPUFreq processor drivers ***
+	< >   Processor Clocking Control interface driver
+	<M>   ACPI Processor P-States driver   
+	<M>   AMD Mobile K6-2/K6-3 PowerNow!   
+	<M>   AMD Mobile Athlon/Duron PowerNow!
+	<M>   AMD Opteron/Athlon64 PowerNow!   
+	<M>   Cyrix MediaGX/NatSemi Geode Suspend Modulation   
+	<M>   Intel Enhanced SpeedStep (deprecated)  
+	-*-     Built-in tables for Banias CPUs
+	<M>   Intel Speedstep on ICH-M chipsets (ioport interface)
+	<M>   Intel SpeedStep on 440BX/ZX/MX chipsets (SMI interface)
+
+[Bus options (PCI etc.)]
+	[*]	PCI support     
+	 	PCI access mode (Any)  --->
+	[ ]	Support for DMA Remapping Devices (EXPERIMENTAL)   
+	[*]	PCI Express support
+	< >   PCI Express Hotplug driver     					 
+	[*]	  Root Port Advanced Error Reporting support 
+	[ ]	    PCI Express ECRC settings control    
+	<*>     PCIe AER error injector support
+	-*-   PCI Express ASPM control   
+	[ ]	    Debug PCI Express ASPM   
+	[*]	Message Signaled Interrupts (MSI and MSI-X)  
+	[ ]	PCI Debugging   
+	<M> PCI Stub driver 
+	[*]	Interrupts on hypertransport devices     
+	[*]	PCI IOV support 
+	[ ]	ISA support     
+	[ ]	MCA support     
+	< > NatSemi SCx200 support
+	[ ]	One Laptop Per Child support 
+	< > PCCard (PCMCIA/CardBus) support  --->  ;solo si se dispone de tarjetas pcmcia  
+	<*> Support for PCI Hotplug  ---> 			; es usado con pciexpresscard y docking station pero tiene el driver shpcp o pcieport-driver ; dispositivos usb 
+	[ ]	RapidIO support 
+
+[Bus options (PCI etc.)\PCCard (PCMCIA/CardBus) support]
+	<M>   16-bit PCMCIA support 
+	[*]	    Load CIS updates from userspace (EXPERIMENTAL) 
+	-*-   32-bit CardBus support
+		*** PC-card bridges ***    
+	<M>   CardBus yenta-compatible bridge support
+	<M>   Cirrus PD6729 compatible bridge support
+	<M>   i82092 compatible bridge support
+
+[Bus options (PCI etc.)\Support for PCI Hotplug]
+	<M>   Fake PCI Hotplug driver    
+	< >   Compaq PCI Hotplug driver  
+	< >   IBM PCI Hotplug driver
+	<*>   ACPI PCI Hotplug driver    
+	<*>     ACPI PCI Hotplug driver IBM extensions   
+	[*]	  CompactPCI Hotplug driver  
+	<*>     Ziatech ZT5550 CompactPCI Hotplug driver 
+	<*>     Generic port I/O CompactPCI Hotplug driver     
+	<*>   SHPC PCI Hotplug driver 						;311c es el driver shpcp o pcieport-driver
+
+[Executable file formats / Emulations]
+	[*]	Kernel support for ELF binaries    
+	[*]	Write ELF core dumps with partial segments   
+	<M> Kernel support for a.out and ECOFF binaries  
+	<M> Kernel support for MISC binaries    
+ 
+[Networking support]
+		Networking options  --->   
+	[ ]	  Amateur Radio support  --->
+	< >   CAN bus subsystem support  --->  
+	< >   IrDA (infrared) subsystem support  --->
+	<M>   Bluetooth subsystem support  --->
+	{M}   RxRPC session sockets 
+	[ ]	    RxRPC dynamic debugging  
+	< >     RxRPC Kerberos security  
+	-*-   Wireless  --->
+	< >   WiMAX Wireless Broadband support  ---> 
+	< >   RF switch subsystem support  --->
+	< >   Plan 9 Resource Sharing Support (9P2000) (Experimental)  ---> 
+	< >   CAIF support  --->  
+	< >   Ceph core library (EXPERIMENTAL)
+
+[Networking support\Networking options]
+	<*> Packet socket   
+	<*> Unix domain sockets
+	<M> Transformation user configuration interface  
+	[*]	Transformation sub policy support (EXPERIMENTAL)   
+	-*- Transformation migrate database (EXPERIMENTAL)     
+	[ ]	Transformation statistics (EXPERIMENTAL) 
+	<M> PF_KEY sockets  
+	[*]	  PF_KEY MIGRATE (EXPERIMENTAL)    
+	[*]	TCP/IP networking  
+	[*]	  IP: multicasting 
+	[*]	  IP: advanced router 
+	[ ]	    FIB TRIE statistics 
+	[*]	    IP: policy routing
+	[*]	    IP: equal cost multipath 
+	[*]	    IP: verbose route monitoring   
+	[ ]	  IP: kernel level autoconfiguration     
+	<M>   IP: tunneling 
+	< >   IP: GRE demultiplexer 
+	[*]	  IP: multicast routing 
+	[ ]	    IP: multicast policy routing   
+	[*]	    IP: PIM-SM version 1 support
+	[*]	    IP: PIM-SM version 2 support   
+	[ ]	  IP: ARP daemon support
+	[*]	  IP: TCP syncookie support  
+	<M>   IP: AH transformation 
+	<M>   IP: ESP transformation
+	<M>   IP: IPComp transformation  
+	<M>   IP: IPsec transport mode   
+	<M>   IP: IPsec tunnel mode 
+	<M>   IP: IPsec BEET mode 
+	{M}   Large Receive Offload (ipv4/tcp) 
+	<M>   INET: socket monitoring interface
+	[*]	  TCP: advanced congestion control  ---> 
+	[*]	  TCP: MD5 Signature Option support (RFC2385) (EXPERIMENTAL)    
+	<*>   The IPv6 protocol  --->    
+	[ ]	  NetLabel subsystem support 
+	-*- Security Marking
+	[ ]	Timestamping in PHY devices  
+	[*]	Network packet filtering framework (Netfilter)  --->  
+	<M> The DCCP Protocol (EXPERIMENTAL)  ---> 
+	{M} The SCTP Protocol (EXPERIMENTAL)  --->   
+	<M> The RDS Protocol (EXPERIMENTAL)    
+	<M>   RDS over Infiniband and iWARP    
+	<M>   RDS over TCP  
+	[ ]	  RDS debugging messages
+	<M> The TIPC Protocol (EXPERIMENTAL)  --->   
+	<M> Asynchronous Transfer Mode (ATM)   
+	<M>   Classical IP over ATM 
+	[ ]	    Do NOT send ICMP if no neighbour     
+	<M>   LAN Emulation (LANE) support     
+	<M>     Multi-Protocol Over ATM (MPOA) support   
+	<M>   RFC1483/2684 Bridged protocols   
+	[ ]	    Per-VC IP filter kludge  
+	< > Layer Two Tunneling Protocol (L2TP)  --->
+	<M> 802.1d Ethernet Bridging
+	[*]	  IGMP/MLD snooping
+	[ ]	Distributed Switch Architecture support  --->
+	<M> 802.1Q VLAN Support 
+	[*]	  GVRP (GARP VLAN Registration Protocol) support   
+	<M> DECnet Support  
+	[ ]	  DECnet: router support (EXPERIMENTAL)  
+	<M> ANSI/IEEE 802.2 LLC type 2 Support 
+	<M> The IPX protocol
+	[ ]	  IPX: Full internal IPX network   
+	<M> Appletalk protocol support   
+	<M>   Appletalk interfaces support     
+	<M>     Appletalk-IP driver support    
+	[*]	IP to Appletalk-IP Encapsulation support     
+	[*]	Appletalk-IP to IP Decapsulation support     
+	<M> CCITT X.25 Packet Layer (EXPERIMENTAL)   
+	<M> LAPB Data Link Driver (EXPERIMENTAL)     
+	<M> Acorn Econet/AUN protocols (EXPERIMENTAL)
+	[*]	  AUN over UDP  
+	[*]	  Native Econet 
+	<M> WAN router
+	<M> Phonet protocols family 
+	<M> IEEE Std 802.15.4 Low-Rate Wireless Personal Area Networks support (EXPERIM 
+	[*]	QoS and/or fair queueing  --->     
+	[*]	Data Center Bridging support 
+	-*- DNS Resolver support  
+	< > B.A.T.M.A.N. Advanced Meshing Protocol   
+	Network testing  --->  
+
+[Networking support\Networking options\TCP: advanced congestion control]
+	<M>   Binary Increase Congestion (BIC) control   
+	<*>   CUBIC TCP     
+	<M>   TCP Westwood+ 
+	<M>   H-TCP   
+	<M>   High Speed TCP
+	<M>   TCP-Hybla congestion control algorithm 
+	{M}   TCP Vegas     
+	<M>   Scalable TCP  
+	<M>   TCP Low Priority 
+	<M>   TCP Veno
+	<M>   YeAH TCP
+	<M>   TCP Illinois  
+		Default TCP congestion control (Cubic)  --->     
+
+[Networking support\Networking options\The IPv6 protocol]
+	[*]	  IPv6: Privacy Extensions (RFC 3041) support
+	[*]	  IPv6: Router Preference (RFC 4191) support 
+	[*]	    IPv6: Route Information (RFC 4191) support (EXPERIMENTAL)   
+	[*]	  IPv6: Enable RFC 4429 Optimistic DAD (EXPERIMENTAL) 
+	<M>   IPv6: AH transformation    
+	<M>   IPv6: ESP transformation   
+	<M>   IPv6: IPComp transformation
+	<*>   IPv6: Mobility (EXPERIMENTAL)    
+	<M>   IPv6: IPsec transport mode 
+	<M>   IPv6: IPsec tunnel mode    
+	<M>   IPv6: IPsec BEET mode 
+	<M>   IPv6: MIPv6 route optimization mode (EXPERIMENTAL)  
+	<M>   IPv6: IPv6-in-IPv4 tunnel (SIT driver) 
+	[ ]	    IPv6: IPv6 Rapid Deployment (6RD) (EXPERIMENTAL)  
+	<M>   IPv6: IP-in-IPv6 tunnel (RFC2473)
+	[*]	  IPv6: Multiple Routing Tables    
+	[*]	    IPv6: source address based routing   
+	[*]	  IPv6: multicast routing (EXPERIMENTAL) 
+	[ ]	    IPv6: multicast policy routing 
+	[*]	    IPv6: PIM-SM version 2 support (EXPERIMENTAL)     
+
+[Networking support\Networking options\Network packet filtering framework (Netfilter)]
+	[ ]	  Network packet filtering debugging     
+	[*]	  Advanced netfilter configuration 
+	[*]	    Bridged IP/ARP packets filtering     
+		Core Netfilter Configuration  --->     
+	< >   IP set support  --->
+	<M>   IP virtual server support  --->  
+		IP: Netfilter Configuration  --->
+		IPv6: Netfilter Configuration  --->    
+		DECnet: Netfilter Configuration  --->  
+	<M>   Ethernet Bridge tables (ebtables) support  ---> 
+
+[Networking support\Networking options\Network packet filtering framework (Netfilter)\Core Netfilter Configuration]
+	{M} Netfilter NFQUEUE over NFNETLINK interface   
+	{M} Netfilter LOG over NFNETLINK interface   
+	<M> Netfilter connection tracking support    
+	-*-   Connection mark tracking support 
+	[*]	  Connection tracking security mark support  
+	[*]	  Connection tracking events 
+	[ ]	  Connection tracking timestamping 
+	<M>   DCCP protocol connection tracking support (EXPERIMENTAL) 
+	<M>   SCTP protocol connection tracking support (EXPERIMENTAL) 
+	<M>   UDP-Lite protocol connection tracking support    
+	<M>   Amanda backup protocol support   
+	<M>   FTP protocol support
+	<M>   H.323 protocol support
+	<M>   IRC protocol support
+	<M>   NetBIOS name service protocol support  
+	< >   SNMP service protocol support    
+	<M>   PPtP protocol support 
+	<M>   SANE protocol support (EXPERIMENTAL)   
+	<M>   SIP protocol support
+	<M>   TFTP protocol support 
+	<M>   Connection tracking netlink interface
+	<M> Transparent proxying support (EXPERIMENTAL)  
+	{M} Netfilter Xtables support (required for ip_tables) 
+		*** Xtables combined modules *** 
+	-M-   nfmark target and match support  
+	-M-   ctmark target and match support  
+		*** Xtables targets ***    
+	< >   AUDIT target support
+	< >   CHECKSUM target support    
+	<M>   "CLASSIFY" target support  
+	<M>   "CONNMARK" target support  
+	<M>   "CONNSECMARK" target support     
+	< >   "CT" target support 
+	<M>   "DSCP" and "TOS" target support  
+	-M-   "HL" hoplimit target support     
+	< >   IDLETIMER target support   
+	<M>   "LED" target support
+	<M>   "MARK" target support 
+	<M>   "NFLOG" target support
+	<M>   "NFQUEUE" target Support   
+	<M>   "NOTRACK" target support 
+	-M-   "RATEEST" target support   
+	< >   "TEE" - packet cloning to alternate destination  
+	<M>   "TPROXY" target support (EXPERIMENTAL) 
+	<M>   "TRACE" target support
+	<M>   "SECMARK" target support   
+	<M>   "TCPMSS" target support    
+	<M>   "TCPOPTSTRIP" target support (EXPERIMENTAL)
+		*** Xtables matches ***    
+	< >   "addrtype" address type match support  
+	<M>   "cluster" match support    
+	<M>   "comment" match support    
+	<M>   "connbytes" per-connection counter match support 
+	<M>   "connlimit" match support 
+	<M>   "connmark" connection mark match support   
+	<M>   "conntrack" connection tracking match support    
+	< >   "cpu" match support 
+	<M>   "dccp" protocol match support    
+	< >   "devgroup" match support   
+	<M>   "dscp" and "tos" match support     
+	<M>   "hashlimit" match support  
+	<M>   "helper" match support
+	-M-   "hl" hoplimit/TTL match support  
+	<M>   "iprange" address range match support  
+	< >   "ipvs" match support
+	<M>   "length" match support
+	<M>   "limit" match support 
+	<M>   "mac" address match support
+	<M>   "mark" match support
+	<M>   "multiport" Multiple port match support
+	<M>   "osf" Passive OS fingerprint match     
+	<M>   "owner" match support 
+	<M>   IPsec "policy" match support     
+	<M>   "physdev" match support    
+	<M>   "pkttype" packet type match support    
+	<M>   "quota" match support 
+	<M>   "rateest" match support    
+	<M>   "realm" match support 
+	<M>   "recent" match support
+	<M>   "sctp" protocol match support (EXPERIMENTAL)     
+	<M>   "socket" match support (EXPERIMENTAL)  
+	<M>   "state" match support 
+	<M>   "statistic" match support  
+	<M>   "string" match support
+	<M>   "tcpmss" match support
+	<M>   "time" match support
+	<M>   "u32" match support  
+
+[Networking support\Networking options\Network packet filtering framework (Netfilter)\IP virtual server support]
+		 
+	[*]	  IPv6 support for IPVS 
+	[ ]	  IP virtual server debugging
+	(12)  IPVS connection table size (the Nth power of 2)  
+		*** IPVS transport protocol load balancing support *** 
+	[*]	  TCP load balancing support 
+	[*]	  UDP load balancing support 
+	[*]	  ESP load balancing support 
+	[*]	  AH load balancing support  
+	[ ]	  SCTP load balancing support
+		*** IPVS scheduler ***
+	<M>   round-robin scheduling
+	<M>   weighted round-robin scheduling  
+	<M>   least-connection scheduling
+	<M>   weighted least-connection scheduling   
+	<M>   locality-based least-connection scheduling 
+	<M>   locality-based least-connection with replication scheduling   
+	<M>   destination hashing scheduling   
+	<M>   source hashing scheduling  
+	<M>   shortest expected delay scheduling     
+	<M>   never queue scheduling  
+	<M>   shortest expected delay scheduling     
+	<M>   never queue scheduling
+		*** IPVS application helper ***  
+	<M>   FTP protocol helper 
+	-*-   Netfilter connection tracking    
+	< >   SIP persistence engine   
+
+[Networking support\Networking options\Network packet filtering framework (Netfilter)\IP: Netfilter Configuration]
+	<M> IPv4 connection tracking support (required for NAT)
+	[*]	  proc/sysctl compatibility with old connection tracking 
+	<M> IP Userspace queueing via NETLINK (OBSOLETE) 
+	<M> IP tables support (required for filtering/masq/NAT)
+	<M>   "ah" match support  
+	<M>   "ecn" match support 
+	<M>   "ttl" match support 
+	<M>   Packet filtering 
+	<M>     REJECT target support    
+	<M>   LOG target support  
+	<M>   ULOG target support 
+	<M>   Full NAT
+	<M>     MASQUERADE target support
+	<M>     NETMAP target support    
+	<M>     REDIRECT target support  
+	<M>   Packet mangling  
+	<M>     CLUSTERIP target support (EXPERIMENTAL)  
+	<M>     ECN target support
+	<M>     "TTL" target support
+	<M>   raw table support (required for NOTRACK/TRACE)   
+	<M>   Security table   
+	<M> ARP tables support 
+	<M>   ARP packet filtering
+	<M>   ARP payload mangling 
+
+[Networking support\Networking options\Network packet filtering framework (Netfilter)\IPv6: Netfilter Configuration]
+	<M> IPv6 connection tracking support
+	<M> IP6 Userspace queueing via NETLINK (OBSOLETE)   
+	<M> IP6 tables support (required for filtering)     
+	<M>   "ah" match support 
+	<M>   "eui64" address check   
+	<M>   "frag" Fragmentation header match support     
+	<M>   "hbh" hop-by-hop and "dst" opts header match support
+	<M>   "hl" hoplimit match support   
+	<M>   "ipv6header" IPv6 Extension Headers Match     
+	<M>   "mh" match support 
+	<M>   "rt" Routing header match support   
+	<M>   "HL" hoplimit target support  
+	<M>   LOG target support 
+	<M>   Packet filtering 
+	<M>     REJECT target support 
+	<M>   Packet mangling  
+	<M>   raw table support (required for TRACE)  
+	<M>   Security table
+	  
+[Networking support\Networking options\Network packet filtering framework (Netfilter)\DECnet: Netfilter Configuration]
+	<M> Routing message grabulator (for userland routing daemon) 
+
+[Networking support\Networking options\Network packet filtering framework (Netfilter)\Ethernet Bridge tables (ebtables) support]
+	<M>   ebt: broute table support     
+	<M>   ebt: filter table support     
+	<M>   ebt: nat table support  
+	<M>   ebt: 802.3 filter support     
+	<M>   ebt: among filter support     
+	<M>   ebt: ARP filter support 
+	<M>   ebt: IP filter support  
+	<M>   ebt: IP6 filter support 
+	<M>   ebt: limit match support
+	<M>   ebt: mark filter support
+	<M>   ebt: packet type filter support     
+	<M>   ebt: STP filter support 
+	<M>   ebt: 802.1Q VLAN filter support     
+	<M>   ebt: arp reply target support 
+	<M>   ebt: dnat target support
+	<M>   ebt: mark target support
+	<M>   ebt: redirect target support  
+	<M>   ebt: snat target support
+	<M>   ebt: log support 
+	<M>   ebt: ulog support (OBSOLETE)  
+	<M>   ebt: nflog suppo
+
+[Networking support\Networking options\The DCCP Protocol (EXPERIMENTAL)]
+	DCCP CCIDs Configuration (EXPERIMENTAL)  ---> 
+	DCCP Kernel Hacking  ---> 
+[Networking support\Networking options\The DCCP Protocol (EXPERIMENTAL)\DCCP CCIDs Configuration (EXPERIMENTAL)]
+	[ ]	CCID-2 debugging messages 
+	[*]	CCID-3 (TCP-Friendly) (EXPERIMENTAL)  
+	[ ]	  CCID-3 debugging messages
+
+[Networking support\Networking options\The DCCP Protocol (EXPERIMENTAL)\DCCP Kernel Hacking]
+	[ ]	DCCP debug messages
+	< > DCCP connection probing   
+
+[Networking support\Networking options\The SCTP Protocol (EXPERIMENTAL)]
+	< >   SCTP: Association probing     
+	[ ]	  SCTP: Debug messages    
+	[ ]	  SCTP: Debug object counts     
+		SCTP: Cookie HMAC Algorithm (HMAC-MD5)  --->   
+
+[Networking support\Networking options\The TIPC Protocol (EXPERIMENTAL)]
+	[*]	  Advanced TIPC configuration   
+	(8191)  Maximum number of ports in a node 
+	(0)     Size of log buffer    
+	[ ]	  Enable debugging support 
+
+[Networking support\Networking options\Layer Two Tunneling Protocol (L2TP)]
+ 
+[Networking support\Networking options\Distributed Switch Architecture support]
+
+[Networking support\Networking options\ [*]	QoS and/or fair queueing]
+	   *** Queueing/Scheduling ***   
+	<M>   Class Based Queueing (CBQ)    
+	<M>   Hierarchical Token Bucket (HTB)     
+	<M>   Hierarchical Fair Service Curve (HFSC)  
+	<M>   ATM Virtual Circuits (ATM)    
+	<M>   Multi Band Priority Queueing (PRIO) 
+	<M>   Hardware Multiqueue-aware Multi Band Queuing (MULTIQ) 
+	<M>   Random Early Detection (RED)  
+	< >   Stochastic Fair Blue (SFB)    
+	<M>   Stochastic Fairness Queueing (SFQ)  
+	<M>   True Link Equalizer (TEQL)    
+	<M>   Token Bucket Filter (TBF)     
+	<M>   Generic Random Early Detection (GRED)   
+	<M>   Differentiated Services marker (DSMARK) 
+	<M>   Network emulator (NETEM)
+	<M>   Deficit Round Robin scheduler (DRR) 
+	< >   Multi-queue priority scheduler (MQPRIO) 
+	< >   CHOose and Keep responsive flow scheduler (CHOKE)
+	<M>   Ingress Qdisc 
+	  *** Classification ***  
+	<M>   Elementary classification (BASIC)   
+	<M>   Traffic-Control Index (TCINDEX)     
+	<M>   Routing decision (ROUTE)
+	<M>   Netfilter mark (FW)
+	<M>   Universal 32bit comparisons w/ hashing (U32)  
+	[*]	    Performance counters support
+	[*]	    Netfilter marks support     
+	<M>   IPv4 Resource Reservation Protocol (RSVP) 
+	<M>   IPv6 Resource Reservation Protocol (RSVP6)    
+	<M>   Flow classifier  
+	<*>   Control Group Classifier
+	[*]	  Extended Matches 
+	(32)    Stack size  
+	<M>     Simple packet data comparison     
+	<M>     Multi byte comparison 
+	<M>     U32 key  
+	<M>     Metadata 
+	<M>     Textsearch  
+	[*]	  Actions    
+	<M>     Traffic Policing 
+	<M>     Generic actions
+	[*]	Probability support 
+	<M>     Redirecting and Mirroring   
+	<M>     IPtables targets 
+	<M>     Stateless NAT  
+	<M>     Packet Editing 
+	<M>     Simple Example (Debug)
+	<M>     SKB Editing 
+	< >     Checksum Updating
+	[*]	  Incoming device classification
+  
+[Networking support\Networking options\Network testing]
+	<M> Packet Generator (USE WITH CAUTION)   
+	< > TCP connection probing    
+	[*]	Network packet drop alerting service  
+ 
+[Networking support\Amateur Radio support]
+		*** Packet Radio protocols ***
+	<M>   Amateur Radio AX.25 Level 2 protocol
+	[ ]	    AX.25 DAMA Slave support    
+	<M>     Amateur Radio NET/ROM protocol    
+	<M>     Amateur Radio X.25 PLP (Rose)     
+		AX.25 network device drivers --->
+ 
+[Networking support\Amateur Radio support\AX.25 network device drivers]
+	<M> Serial port KISS driver   
+	<M> Serial port 6PACK driver  
+	<M> BPQ Ethernet driver
+	<M> BAYCOM ser12 fullduplex driver for AX.25  
+	<M> BAYCOM ser12 halfduplex driver for AX.25  
+	<M> YAM driver for AX.25 
+
+[Networking support\CAN bus subsystem support]
+	<M>   Raw CAN Protocol (raw access with CAN-ID filtering) 
+	<M>   Broadcast Manager CAN Protocol (with content filtering)    
+		 CAN Device Drivers  --->
+
+[Networking support\Wireless\Bluetooth subsystem support]
+	[ ]	  L2CAP protocol support (NEW) 
+  	[ ]	  SCO links support (NEW)  
+    Bluetooth device drivers  --->  
+
+[Networking support\Wireless\Bluetooth subsystem support\Bluetooth device drivers]
+	<M> HCI USB driver 
+	<M> HCI SDIO driver
+	<M> HCI UART driver
+	[*]	  UART (H4) protocol support   
+	[*]	  BCSP protocol support  
+	[ ]	  Atheros AR300x serial support (NEW)
+	[*]	  HCILL protocol support 
+	<M> HCI BCM203x USB driver   
+	<M> HCI BPA10x USB driver    
+	<M> HCI BlueFRITZ! USB driver
+	<M> HCI VHCI (Virtual HCI device) driver 
+	<M> Marvell Bluetooth driver support     
+	<M>   Marvell BT-over-SDIO driver  
+	< > Atheros firmware download driver (NEW)     
+
+[Networking support\Wireless]
+	<*>   cfg80211 - wireless configuration API    ;311c     
+	[ ]	    nl80211 testmode command    
+	[ ]	    enable developer warnings   
+	[ ]	    cfg80211 regulatory debugging     
+	[*]	    enable powersave by default    			;311c   
+	[ ]	    cfg80211 DebugFS entries    
+	[*]	    cfg80211 wireless extensions compatibility  
+	[ ]	  Wireless extensions sysfs files     
+	{*}   Common routines for IEEE802.11 drivers  
+	[ ]	  lib80211 debugging messages   
+	<M>   Generic IEEE 802.11 Networking Stack (mac80211)  
+		Default rate control algorithm (Minstrel)  --->  
+	[*]	  Enable mac80211 mesh networking (pre-802.11s) support 
+	-*-   Enable LED triggers
+	[ ]	  Export mac80211 internals in DebugFS
+	[ ]	  Select mac80211 debugging features  --->
+
+[Networking support\WiMAX Wireless Broadband support]
+	(8)   WiMAX debug level 
+
+[Networking support\Plan 9 Resource Sharing Support (9P2000) (Experimental)]
+	<M>   9P RDMA Transport (Experimental)    
+	[ ]	  Debug information 
+
+[Device Drivers]
+	Generic Driver Options  --->    
+	{M} Connector - unified userspace <-> kernelspace linker  --->   
+	<M> Memory Technology Device (MTD) support  --->    
+	< > Parallel port support  --->     
+	-*- Plug and Play support  --->     
+	[*]	Block devices  --->
+	-*- Misc devices  ---> 
+	<M> ATA/ATAPI/MFM/RLL support (DEPRECATED)  --->    
+	   SCSI device support  ---> 
+	<*> Serial ATA and Parallel ATA drivers  --->    	;NVIDIA    
+	[*]	Multiple devices driver support (RAID and LVM)  --->  
+	< > Generic Target Core Mod (TCM) and ConfigFS Infrastructure  --->    
+	[*]	Fusion MPT device support  ---> 
+	   IEEE 1394 (FireWire) support  --->    
+	<M> I2O device support  --->  
+	[ ]	Macintosh device drivers  --->  
+	-*- Network device support  --->;311c 
+	[*]	ISDN support  ---> 
+	<M> Telephony support  --->   
+	   Input device support  --->
+	   Character devices  --->   
+	{*} I2C support  --->   	;*I2C* 311c usado por SMBUS, hardware sensor, video for linux.   
+	[*]	SPI support  --->   	;*SPI* 311c Serial Peripheral Interface used by sensor, EEPROM, flash memory, codecs, MMC and SD access, DataFlash 
+	   PPS support  --->    
+	PTP clock support  --->    
+	-*- GPIO Support  ---> 
+	<M> Dallass 1-wire support  --->   
+	{*} Power supply class support  --->
+	{*} Hardware Monitoring support  --->     
+	{M} Generic Thermal sysfs driver  ---> 
+	[*]	Watchdog Timer Support  --->    
+	   	Sonics Silicon Backplane  --->     
+	   	Broadcom specific AMBA  --->  
+	[*]	Multifunction device drivers  --->    
+	[*]	Voltage and Current Regulator Support  --->     
+	<M> Multimedia support  --->  
+	   Graphics support  --->    
+	<M> Sound card support  --->  
+	[*]	HID Devices  --->  
+	[*]	USB support  --->  
+	{M} Ultra Wideband devices (EXPERIMENTAL)  --->     
+	<M> MMC/SD/SDIO card support  --->  
+	<M> Sony MemoryStick card support (EXPERIMENTAL)  ---> 
+	-*- LED Support  --->  
+	[ ]	Near Field Communication (NFC) devices  --->    
+	[*]	Accessibility support  --->     
+	<M> InfiniBand support  --->  
+	[*]	EDAC (Error Detection And Correction) reporting  ---> 
+	<*> Real Time Clock  ---> ;311c activarlo    
+	[*]	DMA Engine support  --->  
+	[ ]	Auxiliary Display support  ---> 
+	{M} Userspace I/O drivers  --->     
+	[*]	Staging drivers  --->
+	[*]	X86 Platform Specific Device Drivers  --->
+
+[Device Drivers\Generic Driver Options]
+	()  path to uevent helper
+	[*]	Maintain a devtmpfs filesystem to mount at /dev 
+	[ ]	  Automount devtmpfs at /dev, after the kernel mounted the rootfs  
+	[*]	Select only drivers that dont need compile-time external firmware 
+	[*]	Prevent firmware from being built     
+	-*- Userspace firmware loading support    
+	[ ]	  Include in-kernel firmware blobs in kernel binary
+	()    External firmware blobs to build into the kernel binary    
+	[ ]	Driver Core verbose debug messages    
+	[ ]	Managed device resources verbose debug messages 
+
+[Device Drivers\Memory Technology Device (MTD) support]
+	[ ]	  Debugging  
+	< >   MTD tests support
+	-*-   MTD partitioning support
+	<M>     RedBoot partition table parsing   
+	(-1)Location of RedBoot partition table 
+	[ ]	Include unallocated flash regions   
+	[ ]	Force read-only for RedBoot system images 
+	<M>     TI AR7 partitioning support 
+		 *** User Modules And Translation Layers ***   
+	<M>   Direct char device access to MTD devices
+	-M-   Common interface to block layer for MTD 'translation layers'     
+	<M>   Caching block device access to MTD devices    
+	<M>     Readonly block device access to MTD devices 
+	<M>   FTL (Flash Translation Layer) support   
+	<M>   NFTL (NAND Flash Translation Layer) support   
+	[*]	    Write support for NFTL
+	<M>   INFTL (Inverse NAND Flash Translation Layer) support
+	<M>   Resident Flash Disk (Flash Translation Layer) support 
+	<M>   NAND SSFDC (SmartMedia) read only translation layer 
+	< >   SmartMedia/xD new translation layer 
+	<M>   Log panic/oops to an MTD buffer     
+	< >   Swap on MTD device support    
+		 RAM/ROM/Flash chip drivers  --->    
+		 Mapping drivers for chip access  --->   
+		 Self-contained MTD device drivers  ---> 
+	[ ]	  NAND ECC Smart Media byte order     
+	<M>   NAND Device Support  --->     
+	<M>   OneNAND Device Support  --->  
+		LPDDR flash memory drivers  --->   
+	<M>   Enable UBI - Unsorted block images  ---> 
+
+[Device Drivers\Memory Technology Device (MTD) support\RAM/ROM/Flash chip drivers]
+	<M> Detect flash chips by Common Flash Interface (CFI) probe
+	-M- Detect non-CFI AMD/JEDEC-compatible flash chips 
+	[ ]	Flash chip driver advanced configuration options
+	<M> Support for Intel/Sharp flash chips   
+	-M- Support for AMD/Fujitsu/Spansion flash chips    
+	<M> Support for ST (Advanced Architecture) flash chips 
+	-M- Support for RAM chips in bus mapping  
+	<M> Support for ROM chips in bus mapping  
+	<M> Support for absent chips in bus mapping   
+  
+[Device Drivers\Memory Technology Device (MTD) support\Mapping drivers for chip access]
+	[*]	Support non-linear mappings of flash chips
+	<M> Flash device in physical memory map   
+	[ ]	  Physmap compat support  
+	<M> CFI Flash device mapped on AMD SC520 CDP  
+	<M> CFI Flash device mapped on AMD NetSc520   
+	<M> JEDEC Flash device mapped on Technologic Systems TS-5500
+	<M> CFI Flash device mapped on Arcom SBC-GXx boards 
+	< > BIOS flash chip on AMD76x southbridge 
+	< > BIOS flash chip on Intel Controller Hub 2/3/4/5 
+	< > BIOS flash chip on Intel ESB Controller Hub 2   
+	< > BIOS flash chip on Nvidia CK804 
+	< > BIOS flash chip on Intel SCB2 boards  
+	<M> CFI flash device on SnapGear/SecureEdge   
+	< > BIOS flash chip on Intel L440GX boards
+	<M> PCI MTD driver  
+	< > PCMCIA MTD driver  
+	< > GPIO-assisted Flash Chip Support
+	<M> NOR flash on Intel Vermilion Range Expansion Bus CS0  
+	<M> Map driver for platform device RAM (mtd-ram)    
+	< > Latch-assisted Flash Chip Support     
+		  
+[Device Drivers\Memory Technology Device (MTD) support\Self-contained MTD device drivers]
+	<M> Ramix PMC551 PCI Mezzanine RAM card support     
+	[ ]	  PMC551 256M DRAM Bugfix 
+	[ ]	  PMC551 Debugging 
+	<M> Support for AT45xxx DataFlash   
+	[ ]	  Verify DataFlash page writes  
+	[ ]	  DataFlash OTP support (Security Register)     
+	<M> Support most SPI Flash chips (AT26DF, M25P, W25X, ...)
+	[*]	  Use FAST_READ OPCode allowing SPI CLK <= 50MHz
+	<M> Support SST25L (non JEDEC) SPI Flash chips
+	<M> Uncached system RAM
+	<M> Physical system RAM
+	<M> Test driver using RAM
+	(4096) MTDRAM device size in KiB    
+	(128) MTDRAM erase block size in KiB
+	<M> MTD using block device    
+	   *** Disk-On-Chip Device Drivers ***   
+	<M> M-Systems Disk-On-Chip 2000 and Millennium (DEPRECATED) 
+	<M> M-Systems Disk-On-Chip Millennium-only alternative driver (DEPRECATED)   
+	<M> M-Systems Disk-On-Chip Millennium Plus
+	[ ]	Advanced detection options for DiskOnChip   
+
+[Device Drivers\Memory Technology Device (MTD) support\NAND Device Support]
+	[ ]	  Verify NAND page writes 
+	[ ]	  Support software BCH ECC
+	[ ]	  Enable chip ids for obsolete ancient NAND devices
+	< >   Support Denali NAND controller on Intel Moorestown  
+	< >   Ricoh xD card reader    
+	<M>   DiskOnChip 2000, Millennium and Millennium Plus (NAND reimplementation)  
+	[ ]	    Advanced detection options for DiskOnChip   
+	[ ]	    Allow BBT writes on DiskOnChip Millennium and 2000TSOP   
+	<M>   NAND support for OLPC CAFM-C~I chip 
+	<M>   NAND support for CS5535/CS5536 (AMD Geode companion chip)  
+	<M>   Support for NAND Flash Simulator    
+	<M>   Support for generic platform NAND driver
+	<M>   MTD driver for Olympus MAUSB-10 and Fujifilm DPC-R1 
+
+[Device Drivers\Memory Technology Device (MTD) support\OneNAND Device Support]
+	[*]	  Verify OneNAND page writes    
+	<M>   OneNAND Flash device via platform device driver  
+	[ ]	  OneNAND OTP Support
+	[*]	  OneNAND 2X program support    
+	<M>   OneNAND simulator support   
+
+[Device Drivers\Memory Technology Device (MTD) support\LPDDR flash memory drivers]
+	<M> Support for LPDDR flash chips     
+	-M-   Detect flash chips by QINFO probe     
+ 
+[Device Drivers\Memory Technology Device (MTD) support\Enable UBI - Unsorted block images]
+	(4096) UBI wear-leveling threshold    
+	(1)   Percentage of reserved eraseblocks for bad eraseblocks handling    
+	< >   MTD devices emulation driver (gluebi) 
+	[ ]	  UBI debugging   
+   
+[Device Drivers\Plug and Play support]
+	[ ]	  PNP debugging messages    
+		*** Protocols ***  
+
+[Device Drivers\Block devices]
+	<M>   Normal floppy disk support    
+	<M>   XT hard disk support   
+	<M>   Compaq SMART2 support
+	<M>   Compaq Smart Array 5xxx support 
+	[*]	    SCSI tape drive support for Smart Array 5xxx  
+	<M>   Mylex DAC960/DAC1100 PCI RAID Controller support
+	<M>   Micro Memory MM5415 Battery Backed RAM support (EXPERIMENTAL)
+	<M>   Loopback device support   
+	< >     Cryptoloop Support 
+	<M>   DRBD Distributed Replicated Block Device support
+	[ ]	    DRBD fault injection    
+	<M>   Network block device support    
+	<M>   OSD object-as-blkdev support    
+	<M>   Promise SATA SX8 support  
+	< >   Low Performance USB Block driver
+	<M>   RAM block device support  
+	(16)    Default number of RAM disks   
+	(8192)  Default RAM disk size (kbytes)
+	[ ]	    Support XIP filesystems on RAM block device   
+	<M>   Packet writing on CD/DVD media  
+	(8)     Free buffers for data gathering     
+	[ ]	    Enable write caching (EXPERIMENTAL) 
+	<M>   ATA over Ethernet support 
+	[ ]	  Very old hard disk (MFM/RLL/IDE) driver   
+	< >   Rados block device (RBD)  
+
+[Device Drivers\Misc devices]
+	< >   Analog Devices Digital Potentiometers 
+	<M>   Device driver for IBM RSA service processor     
+	<M>   Sensable PHANToM (PCI)    
+	<M>   SGI IOC4 Base IO support  
+	{M}   TI Flash Media interface support (EXPERIMENTAL) 
+	<M>     TI Flash Media PCI74xx/PCI76xx host adapter support (EXPERIMENTAL)     
+	<M>   Integrated Circuits ICS932S401  
+	<M>   Enclosure Services 
+	< >   CS5535/CS5536 Geode Multi-Function General Purpose Timer (MFGPT) suppor  
+	<M>   Channel interface driver for the HP iLO processor  
+	< >   Medfield Avago APDS9802 ALS Sensor module 
+	<M>   Intersil ISL29003 ambient light sensor
+	< >   Intersil ISL29020 ambient light sensor
+	<M>   Taos TSL2550 ambient light sensor     
+	< >   ROHM BH1780GLI ambient light sensor   
+	< >   BH1770GLC / SFH7770 combined ALS - Proximity sensor
+	< >   APDS990X combined als and proximity sensors     
+	< >   Honeywell HMC6352 compass 
+	<M>   Dallas DS1682 Total Elapsed Time Recorder with Alarm  
+	< >   Texas Instruments DAC7512 
+	< >   VMware Balloon Driver
+	< >   BMP085 digital pressure sensor  
+	< >   PCH Packet Hub of Intel Topcliff / OKI SEMICONDUCTOR ML7213  
+	< >   Silicon Labs C2 port support (EXPERIMENTAL)  --->  
+	   EEPROM support  ---> 
+	{M}   ENE CB710/720 Flash memory card reader support  
+	[ ]	    Enable driver debugging 
+	-M-   Intel Wireless MultiCom Top Driver  
+	[ ]	    Enable full debug output of iwmc3200top Driver
+	[ ]	    Enable Debugfs debugging interface for iwmc3200top  
+	   Texas Instruments shared transport line discipline  --->
+	< >   STMicroeletronics LIS3LV02Dx three-axis digital accelerometer (I2C)
+	
+[Device Drivers\Misc devices\EEPROM support]
+	<M> I2C EEPROMs from most vendors     
+	<M> SPI EEPROMs from most vendors     
+	<M> Old I2C EEPROM reader
+	<M> Maxim MAX6874/5 power supply supervisor 
+	{M} EEPROM 93CX6 support 
+
+[Device Drivers\Misc devices\Texas Instruments shared transport line discipline]
+	< > Shared transport core driver
+
+[Device Drivers\SCSI device support]
+	{M} RAID Transport Class 
+	-*- SCSI device support  
+	{M} SCSI target support  
+	[*]	legacy /proc/scsi/ support  
+		*** SCSI support type (disk, tape, CD-ROM) ***    
+	<M> SCSI disk support 
+	<M> SCSI tape support 
+	<M> SCSI OnStream SC-x0 tape support  
+	<M> SCSI CDROM support
+	[*]	  Enable vendor-specific extensions (for SCSI CDROM) 
+	<M> SCSI generic support 
+	<M> SCSI media changer support  
+	<M> SCSI Enclosure Support 
+	[*]	Probe all LUNs on each SCSI device
+	[*]	Verbose SCSI error reporting (kernel size +=12K)  
+	[*]	SCSI logging facility
+	[*]	Asynchronous SCSI scanning  
+		SCSI Transports  --->
+	[*]	SCSI low-level drivers  --->
+	[*]	PCMCIA SCSI adapter support  ---> 
+	<M> SCSI Device Handlers  --->  
+	<M> OSD-Initiator library
+	<M>   OSD Upper Level driver    
+	(1)   (0-2) When sense is returned, DEBUG print all sense descriptors    
+	[ ]	  Compile All OSD modules with lots of DEBUG prints  
+
+[Device Drivers\Serial ATA and Parallel ATA drivers]
+	[*]	  Verbose ATA error reporting   		;311c     
+	[*]	  ATA ACPI Support		;311c  
+	[*]	  SATA Port Multiplier support 
+	   *** Controllers with non-SFF native interface ***     
+	<*>   AHCI SATA support  
+	< >   Platform AHCI SATA support   
+	< >   Initio 162x SATA support 
+	< >   ACard AHCI variant (ATP 8620)
+	< >   Silicon Image 3124/3132 SATA support  
+	[*]	  ATA SFF support    
+		 *** SFF controllers with custom DMA interface ***   
+	< >     Pacific Digital ADMA support     
+	< >     Pacific Digital SATA QStor support  
+	< >     Promise SATA SX4 support (Experimental)
+	[*]	    ATA BMDMA support
+		*** SATA SFF controllers with BMDMA ***
+	< > Intel ESB, ICH, PIIX3, PIIX4 PATA/SATA support    
+	< > Marvell SATA support 
+	<*> NVIDIA SATA support     				;311c 
+	< > Promise SATA TX2/TX4 support   
+	< > Silicon Image SATA support     
+	< > SiS 964/965/966/180 SATA support  
+	< > ServerWorks Frodo / Apple K2 SATA support   
+	< > ULi Electronics SATA support   
+	< > VIA SATA support     
+	< > VITESSE VSC-7174 / INTEL 31244 SATA support 
+		*** PATA SFF controllers with BMDMA ***
+	< > ALi PATA support 
+	< > AMD/NVidia PATA support  
+	< > ARASAN CompactFlash PATA Controller Support 
+	< > ARTOP 6210/6260 PATA support   
+	< > ATI PATA support     
+	< > ARTOP/Acard ATP867X PATA support  
+	< > CMD64x PATA support  
+	< > CS5510/5520 PATA support 
+	< > CS5530 PATA support  
+	< > CS5535 PATA support (Experimental)
+	< > CS5536 PATA support  
+	< > Cypress CY82C693 PATA support (Very Experimental) 
+	< > EFAR SLC90E66 support
+	< > HPT 366/368 PATA support 
+	< > HPT 370/370A/371/372/374/302 PATA support   
+	< > HPT 371N/372N/302N PATA support
+	< > HPT 343/363 PATA support 
+	< > IT8213 PATA support (Experimental)
+	< > IT8211/2 PATA support
+	< > JMicron PATA support 
+	< > Marvell PATA support via legacy mode 
+	< > NETCELL Revolution RAID support
+	< > Ninja32/Delkin Cardbus ATA support
+	< > Nat Semi NS87415 PATA support  
+	< > Intel PATA old PIIX support    
+	< > OPTI FireStar PATA support (Very Experimental)    
+	< > Promise PATA 2027x support  
+	< > Older Promise PATA controller support
+	< > RADISYS 82600 PATA support (Experimental)   
+	< > RDC PATA support     
+	< > SC1200 PATA support  
+	< > Intel SCH PATA support   
+	< > SERVERWORKS OSB4/CSB5/CSB6/HT1000 PATA support    
+	< > CMD / Silicon Image 680 PATA support 
+	< > SiS PATA support     
+	< > Toshiba Piccolo support (Experimental) 
+	< > Compaq Triflex PATA support    
+	< > VIA PATA support     
+	< > Winbond SL82C105 PATA support  
+		*** PIO-only SFF controllers *** 
+	< >     CMD640 PCI PATA support (Experimental) 
+	< >     Intel PATA MPIIX support   
+	< >     Nat Semi NS87410 PATA support    
+	< >     OPTI621/6215 PATA support (Very Experimental) 
+	< >     PCMCIA PATA support    
+	< >     PC Tech RZ1000 PATA support 
+		*** Generic fallback / legacy drivers ***
+	< >     ACPI firmware driver for PATA    
+	< >     Generic ATA support    
+	< >     Legacy ISA PATA support (Experimental)
+
+[Device Drivers\Multiple devices driver support (RAID and LVM)]
+	< >   RAID support 
+	< >     Linear (append) mode   
+	< >     RAID-0 (striping) mode 
+	< >     RAID-1 (mirroring) mode
+	< >     RAID-10 (mirrored striping) mode 
+	< >     RAID-4/RAID-5/RAID-6 mode  
+	[ ]	RAID-4/RAID-5/RAID-6 Multicore processing (EXPERIMENTAL 
+	< >     Multipath I/O support  
+	< >     Faulty test module for MD  
+	< >   Device mapper support    
+	[ ]	    Device mapper debugging support  
+	< >     Crypt target support   
+	< >     Snapshot target  
+	< >     Mirror target    
+	< >     RAID 4/5/6 target (EXPERIMENTAL) 
+	< >   Mirror userspace logging (EXPERIMENTAL)  
+	< >   Zero target  
+	< >   Multipath target   
+	< >     I/O Path Selector based on the number of in-flight I/Os   
+	< >     I/O Path Selector based on the service time   
+	< >   I/O delaying target (EXPERIMENTAL) 
+	[ ]	  DM uevents (EXPERIMENTAL)
+	< >   Flakey target (EXPERIMENTAL) 
+
+[Device Drivers\Fusion MPT device support]
+	< >   Fusion MPT ScsiHost drivers for SPI
+	< >   Fusion MPT ScsiHost drivers for FC 
+	< >   Fusion MPT ScsiHost drivers for SAS
+	(128) Maximum number of scatter gather entries (16 - 128)   
+	< >   Fusion MPT misc device (ioctl) driver 
+	<>   Fusion MPT LAN driver    
+	[ ]	  Fusion MPT logging facility  
+
+[Device Drivers\IEEE 1394 (FireWire) support]
+	< > FireWire driver stack
+	< >   OHCI-1394 controllers    
+	< >   Storage devices (SBP-2 protocol)   
+	< >   IP networking over 1394  
+	< > Nosy - a FireWire traffic sniffer for PCILynx cards 
+
+[Device Drivers\I2O device support]
+	[*]	  Enable LCT notification  
+	[*]	  Enable Adaptec extensions
+	<M>   I2O Configuration support
+	[*]	    Enable ioctls (OBSOLETE)   
+	<M>   I2O Bus Adapter OSM
+	<M>   I2O Block OSM
+	<M>   I2O SCSI OSM 
+	<M>   I2O /proc support 
+
+[Device Drivers\Network device support]
+	<M>   Intermediate Functional Block support 
+	<M>   Dummy net driver support 
+	<M>   Bonding driver support   
+	<M>   MAC-VLAN support (EXPERIMENTAL)    
+	<M>     MAC-VLAN based tap driver (EXPERIMENTAL) 
+	<M>   EQL (serial line load balancing) support 
+	<M>   Universal TUN/TAP device driver support  
+	<M>   Virtual ethernet pair device 
+	<M>   General Instruments Surfboard 1000 
+	<M>   ARCnet support  --->     
+	{M}   Generic Media Independent Interface device support    
+	{M}   PHY Device support and infrastructure  --->
+	[*]	  Ethernet (10 or 100Mbit)  ---> 		;311c 
+	-*-   Ethernet (1000 Mbit)  --->   
+	-*-   Ethernet (10000 Mbit)  --->  
+	<*>   Token Ring driver support  --->    
+	[*]	  Wireless LAN  ---> 
+	   WiMAX Wireless Broadband devices  --->
+	   USB Network Adapters  --->   
+	[*]	  PCMCIA network device support  --->
+	[*]	  Wan interfaces support  ---> 
+	[ ]	  ATM drivers  --->  
+	<M>   IEEE 802.15.4 drivers  --->  
+	   *** CAIF transport drivers ***     
+	< >   FDDI driver support
+	< >     Digital DEFTA/DEFEA/DEFPA adapter support
+	[ ]	Use MMIO instead of PIO  
+	< >     SysKonnect FDDI PCI support  
+	[ ]	  HIPPI driver support (EXPERIMENTAL)
+	< >     Essential RoadRunner HIPPI PCI adapter support (EXPERIMEN 
+	[ ]	Use large TX/RX rings (EXPERIMENTAL) 
+	{ }   PPP (point-to-point protocol) support 
+	[ ]	    PPP multilink support (EXPERIMENTAL)
+	[ ]	    PPP filtering    
+	< >     PPP support for async serial ports  
+	< >     PPP support for sync tty ports   
+	< >     PPP Deflate compression
+	< >     PPP BSD-Compress compression     
+	< >     PPP MPPE compression (encryption) (EXPERIMENTAL)    
+	< >     PPP over Ethernet (EXPERIMENTAL) 
+	< >     PPP over ATM     
+	< >   SLIP (serial line) support   
+	[ ]	    CSLIP compressed headers   
+	[ ]	  Keepalive and linefill   
+	[ ]	  Six bit SLIP encapsulation   
+	[ ]	  Fibre Channel driver support 
+	< >   Network console logging support    
+	[ ]	    Dynamic reconfiguration of logging targets    
+	[ ]	  Netpoll traffic trapping
+	<M>   Virtio network driver (EXPERIMENTAL) 
+	< >   VMware VMXNET3 ethernet driver     
+
+[Device Drivers\Network device support\Ethernet (10 or 100Mbit)]
+	< >   Sun Happy Meal 10/100baseT support 
+	< >   Sun GEM support    
+	< >   Sun Cassini support
+	[ ]	  3COM cards   
+	< >     3c590/3c900 series (592/595/597) "Vortex/Boomerang" suppo 
+	< >     3cr990 series "Typhoon" support  
+	< >   ENC28J60 support   
+	[ ]	    Enable write verify    
+	< >   OpenCores 10/100 Mbps Ethernet MAC support 
+	< >   Dave ethernet support (DNET) 
+	[ ]	  "Tulip" family network device support  --->
+	< >   HP 10/100VG PCLAN (ISA, EISA, PCI) support 
+	[*]	  EISA, VLB, PCI and on board controllers     	;311c
+	< >     AMD PCnet32 PCI support
+	< >     AMD 8111 (new PCI lance) support 
+	< >     Adaptec Starfire/DuraLAN support 
+	< >     Micrel KSZ8841/2 PCI   
+	< >   Broadcom 440x/47xx ethernet support
+	<*>   nForce Ethernet support 				;311c     
+	< >   Intel(R) PRO/100+ support
+	< >   Myson MTD-8xx PCI Ethernet support 
+	< >   National Semiconductor DP8381x series PCI Ethernet support  
+	< >   PCI NE2000 and clones support (see help) 
+	< >   RealTek RTL-8139 C+ PCI Fast Ethernet Adapter support (EXPE 
+	< >   RealTek RTL-8129/8130/8139 PCI Fast Ethernet Adapter suppor 
+	[ ]	    Use PIO instead of MMIO
+	[ ]	    Support for uncommon RTL-8139 rev. K (automatic channel equalization) 
+	[ ]	    Support for older RTL-8129/8130 boards  
+	[ ]	    Use older RX-reset method  
+	< >   RDC R6040 Fast Ethernet Adapter support  
+	< >   SiS 900/7016 PCI Fast Ethernet Adapter support  
+	< >   SMC EtherPower II  
+	< >   SMSC LAN9420 PCI ethernet adapter support
+	< >   Sundance Alta support    
+	[ ]	    Use MMIO instead of PIO
+	< >   TI ThunderLAN support    
+	< >   Micrel KSZ8841/42 with generic bus interface    
+	< >   Micrel KS8851 SPI  
+	< >   Micrel KS8851 MLL  
+	< >   VIA Rhine support  
+	[ ]	    Use MMIO instead of PIO
+	< >   Silan SC92031 PCI Fast Ethernet Adapter driver (EXPERIMENTA 
+	< >   Atheros L2 Fast Ethernet support  
+
+[Device Drivers\Network device support\Ethernet (1000 Mbit)]
+	< >   Alteon AceNIC/3Com 3C985/NetGear GA620 Gigabit support
+	[ ]	    Omit support for old Tigon I based AceNICs    
+	< >   DL2000/TC902x-based Gigabit Ethernet support    
+	< >   Intel(R) PRO/1000 Gigabit Ethernet support 
+	< >   Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support
+	< >   IP1000 Gigabit Ethernet support    
+	< >   Intel(R) 82575/82576 PCI-Express Gigabit Ethernet support   
+	[ ]	    Direct Cache Access (DCA) Support
+	< >   Intel(R) 82576 Virtual Function Ethernet support
+	< >   National Semiconductor DP83820 support
+	< >   Packet Engines Hamachi GNIC-II support
+	< >   Packet Engines Yellowfin Gigabit-NIC support (EXPERIMENTAL) 
+	< >   Realtek 8169 gigabit ethernet support 
+	< >   SiS190/SiS191 gigabit ethernet support
+	< >   New SysKonnect GigaEthernet support
+	[ ]	    Debugging interface    
+	< >   SysKonnect Yukon2 support
+	[ ]	    Debugging interface    
+	< >   VIA Velocity support     
+	< >   Broadcom Tigon3 support  
+	{ }   Broadcom NetXtremeII support 
+	{ }   Broadcom CNIC support    
+	< >   QLogic QLA3XXX Network Driver Support 
+	< >   Atheros/Attansic L1 Gigabit Ethernet support    
+	< >   Atheros L1E Gigabit Ethernet support (EXPERIMENTAL)   
+	< >   Atheros L1C Gigabit Ethernet support (EXPERIMENTAL)   
+	< >   JMicron(R) PCI-Express Gigabit Ethernet support 
+	< >   STMicroelectronics 10/100/1000 Ethernet driver
+	< >   Intel EG20T PCH / OKI SEMICONDUCTOR ML7223 IOH GbE 
+
+[Device Drivers\Network device support\Ethernet (10000 Mbit)]
+	< >   Chelsio 10Gb Ethernet support
+	[ ]	    Chelsio gigabit Ethernet support 
+	{ }   Chelsio Communications T3 10Gb Ethernet support 
+	< >   Chelsio Communications T4 Ethernet support 
+	< >   Chelsio Communications T4 Virtual Function Ethernet support 
+	< >   Cisco VIC Ethernet NIC Support     
+	< >   Intel(R) 10GbE PCI Express adapters support
+	[ ]	    Direct Cache Access (DCA) Support
+	[ ]	    Data Center Bridging (DCB) Support  
+	< >   Intel(R) 82599 Virtual Function Ethernet support
+	< >   Intel(R) PRO/10GbE support   
+	< >   Exar Xframe 10Gb Ethernet Adapter  
+	< >   Exar X3100 Series 10GbE PCIe Server Adapter
+
+	[ ]	    Enabling All Debug trace statments in driver  
+	< >   Myricom Myri-10G Ethernet support  
+	[ ]	    Direct Cache Access (DCA) Support
+	< >   NetXen Multi port (1/10) Gigabit Ethernet NIC   
+	< >   Sun Neptune 10Gbit Ethernet support
+	< >   Mellanox Technologies 10Gbit Ethernet support   
+	< >   Tehuti Networks 10G Ethernet 
+	< >   Broadcom NetXtremeII 10Gb support  
+	< >   QLOGIC QLCNIC 1/10Gb Converged Ethernet NIC Support   
+	< >   QLogic QLGE 10Gb Ethernet Driver Support 
+	< >   Brocade 1010/1020 10Gb Ethernet Driver support  
+	< >   Solarflare Solarstorm SFC4000/SFC9000-family support  
+	[ ]	    Solarflare Solarstorm SFC4000/SFC9000-family MTD support  
+	< >   ServerEngines 10Gbps NIC - BladeEngine  
+
+[Device Drivers\Network device support\Wireless LAN]
+	< >   Aviator/Raytheon 2.4GHz wireless support 
+	< >   Marvell 8xxx Libertas WLAN driver support with thin firmwar 
+	[ ]	    Enable full debugging output in the Libertas thin firmwar 
+	< >     Marvell Libertas 8388 USB 802.11b/g cards with thin firmw 
+	< >   Cisco/Aironet 34X/35X/4500/4800 ISA and PCI cards     
+	< >   Atmel at76c50x chipset  802.11b support  
+	< >     Atmel at76c506 PCI cards   
+	< >     Atmel at76c502/at76c504 PCMCIA cards
+	< >   Atmel at76c503/at76c505/at76c505a USB cards
+	< >   Cisco/Aironet 34X/35X/4500/4800 PCMCIA cards    
+	< >   Planet WL3501 PCMCIA cards   
+	< >   Intersil Prism GT/Duette/Indigo PCI/Cardbus (DEPRECATED)    
+	< >   USB ZD1201 based Wireless device support 
+	< >   Wireless RNDIS USB support   
+	< >   Realtek 8180/8185 PCI support
+	<*>   Realtek 8187 and 8187B USB support     		;USB Realtel aircrack  
+	< >   ADMtek ADM8211 support   
+	< >   Simulated radio testing tool for mac80211
+	< >   Marvell 88W8xxx PCI/PCIe Wireless support
+	< >   Atheros Wireless Cards  ---> 
+	<M>   Broadcom 43xx wireless support (mac80211 stack)   ;311c broadcom wireless    
+	[ ]	    Broadcom 43xx PCMCIA device support 
+	[ ]	    Broadcom 43xx SDIO device support (EXPERIMENTAL)    
+	[ ]	    Support for 802.11n (N-PHY) devices (EXPERIMENTAL)  
+	[ ]	    Support for low-power (LP-PHY) devices (EXPERIMENTAL)     
+	[ ]	    Broadcom 43xx debugging
+	<M>   Broadcom 43xx-legacy wireless support (mac80211 stack);311c
+	[*]	    Broadcom 43xx-legacy debugging     
+		Broadcom 43xx-legacy data transfer mode (DMA + PIO)  ---> 
+	< >   IEEE 802.11 for Host AP (Prism2/2.5/3 and WEP/TKIP/CCMP)    
+	[*]	    Support downloading firmware images with Host AP driver   
+	[ ]	Support for non-volatile firmware download  
+	< >     Host AP driver for Prism2/2.5/3 in PLX9052 PCI adaptors   
+	< >     Host AP driver for Prism2.5 PCI adaptors 
+	< >     Host AP driver for Prism2/2.5/3 PC Cards 
+	<M>   Intel PRO/Wireless 2100 Network Connection    		;311c   CONFIG_WIRELESS_EXT=Y  for    broadcom  
+	[*]	    Enable promiscuous mode
+	[ ]	    Enable full debugging output in IPW2100 module.     
+	< >   Intel PRO/Wireless 2200BG and 2915ABG Network Connection    
+	[*]	    Enable promiscuous mode
+	-*- Enable radiotap format 802.11 raw packet support  
+	[*]	Enable creation of a RF radiotap promiscuous interface  
+	[*]	    Enable QoS support     
+	[ ]	    Enable full debugging output in IPW2200 module.     
+	[ ]	  Full debugging output for the LIBIPW component  
+	< >   Intel Wireless WiFi Next Gen AGN - Wireless-N/Advanced-N/Ul 
+		Debugging Options  --->
+	[ ]	    iwlwifi experimental P2P support 
+	   Debugging Options  --->  
+	< >   Intel Wireless WiFi 4965AGN (iwl4965) 
+	< >   Intel PRO/Wireless 3945ABG/BG Network Connection (iwl3945)  
+	< >   Intel Wireless Multicomm 3200 WiFi driver
+	[ ]	    Enable full debugging output in iwmc3200wifi 
+	[ ]	    Enable event tracing for iwmc3200wifi  
+	< >   Marvell 8xxx Libertas WLAN driver support
+	< >     Marvell Libertas 8388 USB 802.11b/g cards
+	< >     Marvell Libertas 8385 CompactFlash 802.11b/g cards  
+	< >     Marvell Libertas 8385/8686/8688 SDIO 802.11b/g cards
+	< >     Marvell Libertas 8686 SPI 802.11b/g cards
+	[ ]	    Enable full debugging output in the Libertas module.
+	[ ]	    Enable mesh support    
+	< >   Hermes chipset 802.11b support (Orinoco/Prism2/Symbol)
+	[ ]	    Support Prism 2/2.5 chipset
+	[*]	    Cache Hermes firmware on driver initialisation
+	< >     Hermes in PLX9052 based PCI adaptor support (Netgear MA30 
+	< >     Hermes in TMD7160 based PCI adaptor support   
+	< >     Nortel emobility PCI adaptor support
+	< >     Hermes PCMCIA card support 
+	< >     Symbol Spectrum24 Trilogy PCMCIA card support 
+	< >     Agere Orinoco USB support  
+	< >   Softmac Prism54 support  
+	< >     Prism54 USB support    
+	< >     Prism54 PCI support    
+	< >     Prism54 SPI (stlc45xx) support   
+	[ ]	Include fallback EEPROM blob   
+	< >   Ralink driver support  --->  
+	< >   Realtek RTL8192CE/RTL8188CE Wireless Network Adapter  
+	< >   Realtek RTL8192CU/RTL8188CU USB Wireless Network Adapter    
+	< >   TI wl1251 driver support  --->     
+	< >   TI wl12xx driver support  --->    
+	< >   ZyDAS ZD1211/ZD1211B USB-wireless support
+	[ ]	    ZyDAS ZD1211 debugging
+
+[Device Drivers\Network device support\Wireless LAN\Atheros Wireless Cards]
+	[ ]	  Atheros wireless debugging   
+	< >   Atheros 5xxx wireless cards support
+	[ ]	    Atheros 5xxx debugging 
+	[ ]	    Atheros 5xxx tracer    
+	-*-   Atheros 5xxx PCI bus support 
+	< >   Atheros 802.11n wireless cards support
+	[ ]	    Atheros ath9k debugging
+	[*]	    Atheros ath9k rate control 
+	< >   Atheros HTC based wireless cards support 
+	< >   Atheros AR9170 802.11n USB support (OBSOLETE)   
+	< >   Linux Community AR9170 802.11n USB support 
+		  
+[Device Drivers\Network device support\Wireless LAN\Ralink driver support]
+	< >   Ralink rt2400 (PCI/PCMCIA) support 
+	< >   Ralink rt2500 (PCI/PCMCIA) support 
+	< >   Ralink rt2501/rt61 (PCI/PCMCIA) support  
+	< >   Ralink rt27xx/rt28xx/rt30xx (PCI/PCIe/PCMCIA) support 
+	< >   Ralink rt2500 (USB) support  
+	< >   Ralink rt2501/rt73 (USB) support   
+	< >   Ralink rt27xx/rt28xx/rt30xx (USB) support
+	[ ]	    rt2800usb - Include support for rt33xx devices (EXPERIMEN 
+	[ ]	    rt2800usb - Include support for rt35xx devices (EXPERIMEN 
+	[ ]	    rt2800usb - Include support for unknown (USB) devices     
+	[ ]	  Ralink debug output 
+
+[Device Drivers\Network device support\WiMAX Wireless Broadband devices]
+	< > Intel Wireless WiMAX Connection 2400 over USB (including 5x50 
+	< > Intel Wireless WiMAX Connection 2400 over SDIO    
+	[ ]	  Intel Wireless Multicom WiMAX Connection 3200 over SDIO     
+	(8) WiMAX i2400m debug level
+
+[Device Drivers\Network device support\USB Network Adapters]
+	< > USB CATC NetMate-based Ethernet device support (EXPERIMENTAL) 
+	< > USB KLSI KL5USB101-based ethernet device support 
+	< > USB Pegasus/Pegasus-II based ethernet device support    
+	< > USB RTL8150 based ethernet device support (EXPERIMENTAL)
+	-M- Multi-purpose USB Networking Framework     
+	< >   ASIX AX88xxx Based USB 2.0 Ethernet Adapters
+	-M-   CDC Ethernet support (smart devices such as cable modems)   
+	< >   CDC EEM support    
+	< >   CDC NCM support    
+	< >   Davicom DM9601 based USB 1.1 10/100 ethernet devices  
+	< >   SMSC LAN75XX based USB 2.0 gigabit ethernet devices   
+	< >   SMSC LAN95XX based USB 2.0 10/100 ethernet devices    
+	< >   GeneSys GL620USB-A based cables
+	< >   NetChip 1080 based cables (Laplink, ...) 
+	< >   Prolific PL-2301/2302 based cables 
+	< >   MosChip MCS7830 based Ethernet adapters  
+	-M-   Host for RNDIS and ActiveSync devices (EXPERIMENTAL)  
+	< >   Simple USB Network Links (CDC Ethernet subset) 
+	[ ]	    ALi M5632 based 'USB 2.0 Data Link' cables
+	[ ]	    AnchorChips 2720 based cables (Xircom PGUNET, ...)  
+	[ ]	    eTEK based host-to-host cables (Advance, Belkin, ...)     
+	[ ]	    Embedded ARM Linux links (iPaq, ...)   
+	[ ]	    Epson 2888 based firmware (DEVELOPMENT)
+	[ ]	    KT Technology KC2190 based cables (InstaNet) 
+	< >   Sharp Zaurus (stock ROMs) and compatible 
+	< >   Conexant CX82310 USB ethernet port 
+	< > Option USB High Speed Mobile Devices 
+	< > Intellon PLC based usb adapter   
+	< > CDC Phonet support 
+	< > Apple iPhone USB Ethernet driver 
+	< > USB-to-WWAN Driver for Sierra Wireless modems 
+	< > LG VL600 modem dongle
+    
+[Device Drivers\Input device support]
+	-*- Generic input layer (needed for keyboard, mouse, ...)   
+	{M}   Support for memoryless force-feedback devices  
+	{M}   Polled input device skeleton   
+	{M}   Sparse keymap support library  
+	   *** Userland interfaces ***    
+	-*-   Mouse interface    
+	[*]	    Provide legacy /dev/psaux device 
+	(1024)  Horizontal screen resolution 
+	(768)   Vertical screen resolution   
+	< >   Joystick interface 
+	<M>   Event interface    
+	< >   Event debugging    
+	   *** Input Device Drivers ***   
+	-*-   Keyboards  --->    
+	[*]	  Mice  --->  
+	[ ]	  Joysticks/Gamepads  ---> 
+	[ ]	  Tablets  ---> 
+	[ ]	  Touchscreens  ---> 
+	[*]	  Miscellaneous devices  --->    
+		Hardware I/O ports  --->   
+
+[Device Drivers\Input device support\Keyboards]
+	< >   ADP5588/87 I2C QWERTY Keypad and IO Expander
+	< >   Atmel AT42QT1070 Touch Sensor Chip 
+	< >   Atmel AT42QT2160 Touch Sensor Chip 
+	< >   DECstation/VAXstation LK201/LK401 keyboard  
+	< >   GPIO Buttons
+	< >   Polled GPIO buttons
+	< >   TCA6416/TCA6408A Keypad Support
+	< >   GPIO driven matrix keypad support  
+	< >   LM8323 keypad chip 
+	< >   Maxim MAX7359 Key Switch Controller
+	< >   MELFAS MCS Touchkey
+	< >   Newton keyboard    
+	< >   OpenCores Keyboard Controller  
+	< >   Stowaway keyboard  
+	< >   Sun Type 4 and Type 5 keyboard 
+	<*>   XT keyboard 
+
+[Device Drivers\Input device support\Mice]
+	<*>   PS/2 mouse  
+	[*]	    Elantech PS/2 protocol extension 
+	[*]	    Sentelic Finger Sensing Pad PS/2 protocol extension 
+	[ ]	    eGalax TouchKit PS/2 protocol extension
+	< >   Serial mouse
+	< >   Apple USB Touchpad support     
+	< >   Apple USB BCM5974 Multitouch trackpad support  
+	< >   DEC VSXXX-AA/GA mouse and VSXXX-AB tablet
+	< >   GPIO mouse  
+	< >   Synaptics I2C Touchpad support 
+
+[Device Drivers\Input device support\Joysticks/Gamepads]
+	< >   Classic PC analog joysticks and gamepads 
+	< >   Assassin 3D and MadCatz Panther devices  
+	< >   Logitech ADI digital joysticks and gamepads 
+	< >   Creative Labs Blaster Cobra gamepad
+	< >   Genius Flight2000 Digital joysticks and gamepads 
+	< >   Gravis GrIP joysticks and gamepads 
+	< >   Gravis GrIP MultiPort    
+	< >   Guillemot joysticks and gamepads   
+	< >   InterAct digital joysticks and gamepads  
+	< >   Microsoft SideWinder digital joysticks and gamepads   
+	< >   ThrustMaster DirectConnect joysticks and gamepads
+	< >   I-Force devices    
+	[ ]	    I-Force USB joysticks and wheels 
+	[ ]	    I-Force Serial joysticks and wheels    
+	< >   Logitech WingMan Warrior joystick  
+	< >   LogiCad3d Magellan/SpaceMouse 6dof controllers 
+	< >   SpaceTec SpaceOrb/Avenger 6dof controllers  
+	< >   SpaceTec SpaceBall 6dof controllers
+	< >   Gravis Stinger gamepad   
+	< >   Twiddler as a joystick   
+	< >   5-byte Zhenhua RC transmitter  
+	< >   Austria Microsystem AS5011 joystick
+	< >   Gameport data dumper     
+	< >   X-Box gamepad support    
+	[ ]	    X-Box gamepad rumble support 
+	[ ]	    LED Support for Xbox360 controller 'BigX' LED
+
+[Device Drivers\Input device support\Tablets]
+	< >   Acecad Flair tablet support (USB)  
+	< >   Aiptek 6000U/8000U and Genius G_PEN tablet support (USB)    
+	< >   GTCO CalComp/InterWrite USB Support
+	< >   Hanwang Art Master III tablet support (USB) 
+	< >   KB Gear JamStudio tablet support (USB)   
+	< >   Wacom Intuos/Graphire tablet support (USB)  
+
+[Device Drivers\Input device support\Touchscreens]
+	< >   ADS7846/TSC2046/AD7873 and AD(S)7843 based touchscreens     
+	< >   AD7877 based touchscreens
+	< >   Analog Devices AD7879-1/AD7889-1 touchscreen interface
+	< >     support I2C bus connection   
+	< >     support SPI bus connection   
+	< >   Atmel mXT I2C Touchscreen
+	< >   BU21013 based touch panel controllers    
+	< >   cy8ctmg110 touchscreen   
+	< >   Dynapro serial touchscreen     
+	< >   Hampshire serial touchscreen   
+	< >   EETI touchscreen panel support 
+	< >   Fujitsu serial touchscreen     
+	< >   Gunze AHL-51S touchscreen
+	< >   Elo serial touchscreens  
+	< >   Wacom W8001 penabled serial touchscreen  
+	< >   MELFAS MCS-5000 touchscreen    
+	< >   MicroTouch serial touchscreens 
+	< >   iNexio serial touchscreens     
+	< >   ICS MicroClock MK712 touchscreen   
+	< >   Penmount serial touchscreen    
+	< >   Touchright serial touchscreen  
+	< >   Touchwin serial touchscreen    
+	< >   Support for WM97xx AC97 touchscreen controllers
+	[ ]	    WM9705 Touchscreen interface support   
+	[ ]	    WM9712 Touchscreen interface support   
+	[ ]	    WM9713 Touchscreen interface support   
+	< >   USB Touchscreen Driver   
+	[ ]	  e2i Touchscreen controller (e.g. from Mimo 740)
+	< >   Sahara TouchIT-213 touchscreen 
+	< >   TSC2005 based touchscreens     
+	< >   TSC2007 based touchscreens     
+	< >   Sitronix ST1232 touchscreen controllers  
+	< >   TPS6507x based touchscreens  
+
+[Device Drivers\Input device support\Miscellaneous devices]
+	< >   Analog Devices AD714x Capacitance Touch Sensor 
+	<M>   PC Speaker support 
+	< >   Fujitsu Lifebook Application Panel buttons  
+	< >   x86 Wistron laptop button interface
+	< >   x86 Atlas button interface     
+	< >   ATI / X10 USB RF remote control
+	< >   ATI / Philips USB RF remote control
+	< >   Keyspan DMR USB remote control (EXPERIMENTAL)  
+	< >   Griffin PowerMate and Contour Jog support
+	< >   Yealink usb-p1k voip phone     
+	< >   C-Media CM109 USB I/O Controller   
+	< >   User level driver support
+	< >   PCF50633 PMU events
+	< >   PCF8574 Keypad input device    
+	< >   Rotary encoders connected to GPIO pins   
+	< >   Analog Devices ADXL34x Three-Axis Digital Accelerometer     
+	< >   VTI CMA3000 Tri-axis accelerometer 
+
+[Device Drivers\Input device support\Hardware I/O ports]
+	-*- Serial I/O support   
+	{M}   Serial port line discipline    
+	<M>   ct82c710 Aux port controller   
+	<M>   PCI PS/2 keyboard and PS/2 mouse controller 
+	<M>   Raw access to serio ports
+	< >   Altera UP PS/2 controller
+	< >   TQC PS/2 multiplexer     
+	{M} Gameport support
+	<M>   Classic ISA and PnP gameport support     
+	<M>   PDPI Lightning 4 gamecard support  
+	<M>   SB Live and Audigy gameport support
+	<M>   ForteMedia FM801 gameport support
+ 
+[Device Drivers\Character devices]
+	-*- Virtual terminal
+	[*]	  Support for binding and unbinding console drivers
+	-*- Unix98 PTY support   
+	[*]	  Support multiple instances of devpts     
+	[ ]	Legacy (BSD) PTY support   
+	[*]	Non-standard serial port support 
+	<M>   Comtrol RocketPort support     
+	<M>   Cyclades async mux support     
+	[ ]	    Cyclades-Z interrupt mode operation (EXPERIMENTAL)  
+	< >   Moxa Intellio support    
+	<M>   Moxa SmartIO support v. 2.0    
+	<M>   Microgate SyncLink card support
+	<M>   SyncLink Multiport support     
+	<M>   SyncLink GT/AC support   
+	<M> HSDPA Broadband Wireless Data Card - Globe Trotter 
+	< > Multi-Tech multiport card support (EXPERIMENTAL) 
+	<M> HDLC line discipline support     
+	< > GSM MUX line discipline support (EXPERIMENTAL)
+	[ ]	/dev/kmem virtual device support 
+	[*]	Stallion multiport serial support
+	 Serial drivers  ---> 
+	<M> IPMI top-level message handler  ---> 
+	{M} Hardware Random Number Generator Core support 
+	<M>   Timer IOMEM HW Random Number Generator support 
+	<M>   Intel HW Random Number Generator support 
+	<M>   AMD HW Random Number Generator support   
+	<M>   AMD Geode HW Random Number Generator support
+	<M>   VIA HW Random Number Generator support   
+	{M} /dev/nvram support  
+	<M> Siemens R3964 line discipline    
+	<M> Applicom intelligent fieldbus card support 
+	<M> Sony Vaio Programmable I/O Control Device support (EXPERIMENTAL)    
+	 PCMCIA character devices  --->   
+	<M> ACP Modem (Mwave) support  
+	<M> NatSemi PC8736x GPIO Support     
+	{M} NatSemi Base GPIO Support  
+	<M> RAW driver (/dev/raw/rawN) 
+	(256) Maximum number of RAW devices to support (1-8192)
+	[*]	HPET - High Precision Event Timer
+	[*]	  Allow mmap of HPET 
+	<M> Hangcheck timer 
+	<M> TPM Hardware Support  ---> 
+	<M> Telecom clock driver for ATCA SBC
+	< > Log panic/oops to a RAM buffer
+
+[Device Drivers\Character devices\Serial drivers]
+	{*} 8250/16550 and compatible serial support   
+	[*]	  Console on 8250/16550 and compatible serial port 
+	<M> 8250/16550 PCMCIA device support 
+	(32) Maximum number of 8250/16550 serial ports 
+	(4) Number of 8250/16550 serial ports to register at runtime
+	[*]	Extended 8250/16550 serial driver options  
+	[*]	  Support more than 4 legacy serial ports  
+	[*]	  Support for sharing serial interrupts    
+	[ ]	  Autodetect IRQ on standard ports (unsafe)
+	[*]	  Support RSA serial ports 
+	 *** Non-8250 serial port support *** 
+	<M> MAX3100 support 
+	< > MAX3107 support 
+	< > Medfield High Speed UART support 
+	<M> Digi International NEO PCI Support   
+	< > Support for timberdale UART
+	< > Altera JTAG UART support   
+	< > Altera UART support  
+	< > SPI protocol driver for Infineon 6x60 modem (EXPERIMENTAL)    
+	< > Intel EG20T PCH UART/OKI SEMICONDUCTOR ML7213 IOH
+ 
+[Device Drivers\Character devices\IPMI top-level message handler]
+	[ ]	  Generate a panic event to all BMCs on a panic  
+	<M>   Device interface for IPMI
+	-M-   IPMI System Interface handler  
+	<M>   IPMI Watchdog Timer
+	<M>   IPMI Poweroff 
+
+[Device Drivers\Character devices\PCMCIA character devices]
+	<M> SyncLink PC Card support   
+	<M> Omnikey Cardman 4000 support     
+	<M> Omnikey CardMan 4040 support     
+	<M> IPWireless 3G UMTS PCMCIA card support     
+ 
+[Device Drivers\Character devices\TPM Hardware Support]
+	<M>   TPM Interface Specification 1.2 Interface
+	<M>   National Semiconductor TPM Interface     
+	<M>   Atmel TPM Interface
+	<M>   Infineon Technologies TPM Interface
+   
+[Device Drivers\I2C support]
+	[*]	  Enable compatibility bits for old user-space
+	<M>   I2C device interface     
+	< >   I2C bus multiplexing support   
+	[*]	  Autoselect pertinent helper modules
+	   I2C Hardware Bus support  ---> 
+	[ ]	  I2C Core debugging messages    
+	[ ]	  I2C Algorithm debugging messages   
+	[ ]	  I2C Bus debugging messages     
+     
+[Device Drivers\I2C support\[Device Drivers\I2C support]
+	*** PC SMBus host controller drivers ***   
+	<M> ALI 1535
+	<M> ALI 1563
+	<M> ALI 15x3
+	<M> AMD 756/766/768/8111 and nVidia nForce     
+	<M>   SMBus multiplexing on the Tyan S4882     
+	<M> AMD 8111
+	<M> Intel 82801 (ICH/PCH)
+	<M> Intel SCH SMBus 1.0  
+	<M> Intel PIIX4 and compatible (ATI/AMD/Serverworks/Broadcom/SMSC)
+	<M> Nvidia nForce2, nForce3 and nForce4  
+	<M>   SMBus multiplexing on the Tyan S4985     
+	<M> SiS 5595
+	<M> SiS 630/730
+	<M> SiS 96x 
+	<M> VIA VT82C586B 
+	<M> VIA VT82C596/82C686/82xx and CX700/VX8xx   
+	 *** ACPI drivers *** 
+	<M> SMBus Control Method Interface   
+	 *** I2C system bus drivers (mostly embedded / system-on-chip) ***   
+	< > GPIO-based bitbanging I2C  
+	< > Intel Moorestown/Medfield Platform I2C controller
+	<M> OpenCores I2C Controller   
+	<M> PCA9564/PCA9665 as platform device   
+	<M> Simtec Generic I2C interface     
+	< > Xilinx I2C Controller
+	< > Intel EG20T PCH/OKI SEMICONDUCTOR ML7213 IOH  
+	 *** External I2C/SMBus adapter drivers *** 
+	< > Diolan U2C-12 USB adapter   
+	<M> Parallel port adapter (light)    
+	<M> TAOS evaluation module     
+	<M> Tiny-USB adapter
+	 *** Other I2C/SMBus bus drivers ***  
+	<M> I2C/SMBus Test Stub  
+	<M> Geode ACCESS.bus support
+
+[Device Drivers\SPI support]
+	[ ]	  Debug support for SPI drivers  
+	   *** SPI Master Controller Drivers ***    
+	< >   Altera SPI Controller    
+	<M>   Utilities for Bitbanging SPI masters     
+	< >   GPIO-based bitbanging SPI Master   
+	< >   OpenCores tiny SPI 
+	< >   PXA2xx SSP SPI master    
+	< >   Topcliff PCH SPI Controller    
+	< >   Xilinx SPI controller common module
+	< >   DesignWare SPI controller core support   
+	   *** SPI Protocol Masters ***   
+	< >   User mode SPI device driver support
+	<M>   Infineon TLE62X0 (for power switching)   
+
+[Device Drivers\PPS support]
+	<M> PPS support
+	[ ]	  PPS debugging messages   
+	   *** PPS clients support ***    
+	< >   Kernel timer client (Testing client, use for debug)   
+	< >   PPS line discipline
+		*** PPS generators support ***
+
+[Device Drivers\GPIO Support]
+	[ ]	  Debug GPIO calls   
+	[ ]	  /sys/class/gpio/... (sysfs interface)    
+	   *** Memory mapped GPIO expanders: ***    
+	< >   Basic memory-mapped GPIO controllers support
+	< >   IT8761E GPIO support     
+	< >   Intel SCH/TunnelCreek GPIO     
+	< >   VIA VX855/VX875 GPIO     
+	   *** I2C GPIO expanders: ***    
+	< >   Maxim MAX7300 GPIO expander    
+	< >   MAX7319, MAX7320-7327 I2C Port Expanders 
+	< >   PCA953x, PCA955x, TCA64xx, and MAX7310 I/O ports 
+	< >   PCF857x, PCA{85,96}7x, and MAX732[89]	I2C GPIO expanders    
+	< >   ADP5588 I2C GPIO expander
+	   *** PCI GPIO expanders: ***    
+	< >   AMD CS5535/CS5536 GPIO support 
+	[ ]	  Intel Langwell/Penwell GPIO support
+	< >   PCH GPIO of Intel Topcliff     
+	< >   OKI SEMICONDUCTOR ML7213 IOH GPIO support
+	< >   RDC R-321x GPIO support  
+	   *** SPI GPIO expanders: ***    
+	< >   Maxim MAX7301 GPIO expander    
+	< >   Microchip MCP23Sxx I/O expander
+	< >   Freescale MC33880 high-side/low-side switch 
+	< >   74x164 serial-in/parallel-out 8-bits shift register   
+	   *** AC97 GPIO expanders: ***   
+	   *** MODULbus GPIO expanders: ***    
+
+[Device Drivers\Power supply class support]
+	--- Power supply class support 
+	[ ]	  Power supply debug 
+	<M>   Generic PDA/phone power driver 
+	< >   Test power driver  
+	<M>   DS2782/DS2786 standalone gas-gauge 
+	< >   TI BQ20z75 gas gauge     
+	<M>   BQ27x00 battery driver   
+	[*]	    BQ27200/BQ27500 support
+	[*]	    BQ27000 support  
+	<M>   Maxim MAX17040 Fuel Gauge
+	< >   Maxim MAX17042/8997/8966 Fuel Gauge
+	<M>   NXP PCF50633 MBC   
+	< >   ISP1704 USB Charger Detection  
+	< >   GPIO charger 
+
+[Device Drivers\Hardware Monitoring support]
+	[ ]	  Hardware Monitoring Chip debugging messages 
+	   *** Native drivers ***   
+	<M>   Abit uGuru (rev 1 & 2)   
+	<M>   Abit uGuru (rev 3) 
+	<M>   Analog Devices AD7414    
+	<M>   Analog Devices AD7416, AD7417 and AD7418 
+	<M>   National Semiconductor ADCxxxSxxx  
+	<M>   Analog Devices ADM1021 and compatibles   
+	<M>   Analog Devices ADM1025 and compatibles   
+	<M>   Analog Devices ADM1026 and compatibles   
+	<M>   Analog Devices ADM1029   
+	<M>   Analog Devices ADM1031 and compatibles   
+	<M>   Analog Devices ADM9240 and compatibles   
+	< >   Analog Devices ADT7411   
+	<M>   Analog Devices ADT7462   
+	<M>   Analog Devices ADT7470   
+	<M>   Analog Devices ADT7473, ADT7475, ADT7476 and ADT7490  
+	< >   Andigilog aSC7621  
+	<M>   AMD Athlon64/FX or Opteron temperature sensor  
+	<M>   AMD Family 10h/11h/12h/14h temperature sensor  
+	<M>   Asus ASB100 Bach   
+	<M>   Attansic ATXP1 VID controller  
+	< >   Dallas Semiconductor DS620     
+	<M>   Dallas Semiconductor DS1621 and DS1625   
+	<M>   FB-DIMM AMB temperature sensor on Intel 5000 series chipsets
+	<M>   Fintek F71805F/FG, F71806F/FG and F71872F/FG
+	<M>   Fintek F71882FG and compatibles
+	<M>   Fintek F75375S/SP and F75373     
+	<M>   Fujitsu Siemens Computers sensor chips   
+	<M>   GMT G760A
+	<M>   Genesys Logic GL518SM    
+	<M>   Genesys Logic GL520SM    
+	< >   GPIO fan 
+	<*>   Intel Core/Core2/Atom temperature sensor 
+	< >   Intel processor package temperature sensor  
+	<M>   IBM Active Energy Manager temperature/power sensors and control   
+	<M>   IBM PowerExecutive temperature/power sensors
+	<M>   ITE IT87xx and compatibles     
+	< >   JEDEC JC42.4 compliant memory module temperature sensors    
+	< >   Lineage Compact Power Line Power Entry Module  
+	<M>   National Semiconductor LM63 and LM64     
+	<M>   National Semiconductor LM70 / Texas Instruments TMP121
+	< >   National Semiconductor LM73    
+	<M>   National Semiconductor LM75 and compatibles 
+	<M>   National Semiconductor LM77    
+	<M>   National Semiconductor LM78 and compatibles 
+	<M>   National Semiconductor LM80    
+	<M>   National Semiconductor LM83 and compatibles 
+	<M>   National Semiconductor LM85 and compatibles 
+	<M>   National Semiconductor LM87 and compatibles 
+	<M>   National Semiconductor LM90 and compatibles 
+	<M>   National Semiconductor LM92 and compatibles 
+	<M>   National Semiconductor LM93 and compatibles 
+	< >   Linear Technology LTC4151
+	<M>   Linear Technology LTC4215    
+	<M>   Linear Technology LTC4245
+	< >   Linear Technology LTC4261
+	<M>   National Semiconductor LM95241 sensor chip  
+	<M>   Maxim MAX1111 Multichannel, Serial 8-bit ADC chip
+	<M>   Maxim MAX1619 sensor chip
+	< >   Maxim MAX6639 sensor chip
+	<M>   Maxim MAX6650 sensor chip
+	<M>   National Semiconductor PC87360 family    
+	<M>   National Semiconductor PC87427 
+	<M>   Philips PCF8591 ADC/DAC  
+	< >   PMBus support 
+	< >   Sensiron humidity and temperature sensors. SHT15 and compat.
+	< >   Sensiron humidity and temperature sensors. SHT21 and compat.
+	<M>   Silicon Integrated Systems Corp. SiS5595 
+	< >   Summit Microelectronics SMM665 
+	<M>   SMSC DME1737, SCH311x and compatibles    
+	< >   SMSC EMC1403/23 thermal sensor 
+	< >   SMSC EMC2103
+	<M>   SMSC LPC47M10x and compatibles 
+	<M>   SMSC LPC47M192 and compatibles 
+	<M>   SMSC LPC47B397-NC  
+	< >   SMSC SCH5627
+	< >   Texas Instruments ADS1015
+	<M>   Texas Instruments ADS7828
+	< >   Texas Instruments ADS7871 A/D converter  
+	< >   Texas Instruments AMC6821  
+	<M>   Texas Instruments THMC50 / Analog Devices ADM1022
+	< >   Texas Instruments TMP102 
+	<M>   Texas Instruments TMP401 and compatibles 
+	<M>   Texas Instruments TMP421 and compatible  
+	<M>   VIA CPU temperature sensor     
+	<M>   VIA686A  
+	<M>   VIA VT1211  
+	<M>   VIA VT8231  
+	<M>   Winbond W83781D, W83782D, W83783S, Asus AS99127F 
+	<M>   Winbond W83791D    
+	<M>   Winbond W83792D    
+	<M>   Winbond W83793
+	< >   Winbond/Nuvoton W83795G/ADG    
+	<M>   Winbond W83L785TS-S
+	<M>   Winbond W83L786NG, W83L786NR   
+	<M>   Winbond W83627HF, W83627THF, W83637HF, W83687THF, W83697HF  
+	<M>   Winbond W83627EHF/EHG/DHG, W83667HG, NCT6775F, NCT6776F     
+	<M>   Apple SMC (Motion sensor, light sensor, keyboard backlight) 
+	   *** ACPI drivers ***     
+	<M>   ASUS ATK0110    
+
+[Device Drivers\Generic Thermal sysfs driver]
+	--- Generic Thermal sysfs driver     
+	 [*]	  Hardware monitoring support 
+
+[Device Drivers\Watchdog Timer Support]
+	--- Watchdog Timer Support     
+	[ ]	  Disable watchdog shutdown on close 
+	*** Watchdog Device Drivers ***
+	<M>   Software watchdog  
+	<M>   Acquire SBC Watchdog Timer     
+	<M>   Advantech SBC Watchdog Timer   
+	<M>   ALi M1535 PMU Watchdog Timer   
+	<M>   ALi M7101 PMU Computer Watchdog
+	<M>   Fintek F71808E, F71862FG, F71869, F71882FG and F71889FG Watchdog  
+	< >   AMD/ATI SP5100 TCO Timer/Watchdog  
+	<M>   AMD Elan SC520 processor Watchdog  
+	<M>   Compulab SBC-FITPC2 watchdog   
+	<M>   Eurotech CPU-1220/1410 Watchdog Timer    
+	<M>   IB700 SBC Watchdog Timer 
+	<M>   IBM Automatic Server Restart   
+	<M>   ICP Single Board Computer Watchdog Timer 
+	<M>   Intel 6300ESB Timer/Watchdog   
+	<M>   Intel TCO Timer/Watchdog 
+	[*]	    Intel TCO Timer/Watchdog Specific Vendor Support    
+	<M>   IT8712F (Smart Guardian) Watchdog Timer  
+	<M>   IT87 Watchdog Timer
+	<M>   HP ProLiant iLO2+ Hardware Watchdog Timer
+	[*]	    NMI decoding support for the HP ProLiant iLO2+ Hardware Watchdo 
+	<M>   National Semiconductor PC87307/PC97307 (ala SC1200) Watchdog
+	<M>   NS PC87413 watchdog
+	< >   nVidia TCO Timer/Watchdog
+	<M>   SBC-60XX Watchdog Timer  
+	<M>   SBC8360 Watchdog Timer   
+	<M>   SBC Nano 7240 Watchdog Timer   
+	<M>   SMA CPU5 Watchdog  
+	<M>   SMSC SCH311X Watchdog Timer    
+	<M>   Winbond SMsC37B787 Watchdog Timer  
+	<M>   W83627HF/W83627DHG Watchdog Timer  
+	<M>   W83697HF/W83697HG Watchdog Timer   
+	<M>   W83697UG/W83697UF Watchdog Timer   
+	<M>   W83877F (EMACS) Watchdog Timer 
+	<M>   W83977F (PCM-5335) Watchdog Timer  
+	<M>   ZF MachZ Watchdog  
+	<M>   Winsystems SBC EPX-C3 watchdog 
+	*** PCI-based Watchdog Cards ***   
+	<M>   Berkshire Products PCI-PC Watchdog 
+	<M>   PCI-WDT500/501 Watchdog timer  
+	*** USB-based Watchdog Cards ***   
+	<M>   Berkshire Products USB-PC Watchdog 
+
+[Device Drivers\Sonics Silicon Backplane]
+	{M} Sonics Silicon Backplane support 
+	-*- Support for SSB on PCI-bus host  
+	-*- Support for SSB on PCMCIA-bus host   
+	-*- Support for SSB on SDIO-bus host 
+	[ ]	SSB debugging 
+	-*- SSB PCI core driver
+
+[Device Drivers\Multifunction device drivers]
+	--- Multifunction device drivers     
+	< >   Support for Silicon Motion SM501   
+	[ ]	    Export GPIO via GPIO layer   
+	< >   HTC PASIC3 LED/DS1WM chip support  
+	< >   Philips UCB1400 Core driver    
+	< >   TPS61050/61052 Boost Converters
+	< >   TPS6501x Power Management chips
+	< >   TPS6507x Power Management / Touch Screen chips 
+	< >   Support Wolfson Microelectronics WM8400  
+	[ ]	  Support Wolfson Microelectronics WM831x/2x PMICs with SPI   
+	< >   Support for NXP PCF50633 
+	< >   Support Freescale MC13783 and MC13892    
+	< >   Support for NXP PCF50633 ADC   
+	< >   Support for NXP PCF50633 GPIO  
+	[ ]	  ST-Ericsson ABX500 Mixed Signal Circuit register functions  
+	[ ]	  PCAP Support
+	< >   Support for CS5535 and CS5536 southbridge core functions    
+	< >   Support for the Timberdale FPGA
+	{ }   Intel SCH LPC 
+	< >   Support for RDC-R321x southbridge  
+	< >   Support for Janz CMOD-IO PCI MODULbus Carrier Board   
+	< >   Support for VIA VX855/VX875 integrated south bridge   
+	< >   
+
+[Device Drivers\Voltage and Current Regulator Support]
+	--- Voltage and Current Regulator Support
+	[ ]	  Regulator debug support  
+	[ ]	  Provide a dummy regulator if regulator lookups fail   
+	<M>   Fixed voltage regulator support
+	< >   Virtual regulator consumer support 
+	<M>   Userspace regulator consumer support     
+	<M>   TI bq24022 Dual Input 1-Cell Li-Ion Charger IC 
+	<M>   Maxim 1586/1587 voltage regulator  
+	< >   Maxim 8649 voltage regulator   
+	< >   Maxim 8660/8661 voltage regulator  
+	< >   Maxim MAX8952 Power Management IC  
+	<M>   Wolfson Microelectronics WM8400 AudioPlus PMIC 
+	<M>   PCF50633 regulator driver
+	<M>   National Semiconductors LP3971 PMIC regulator driver  
+	< >   National Semiconductors LP3972 PMIC regulator driver  
+	<M>   TI TPS65023 Power regulators   
+	<M>   TI TPS6507X Power regulators   
+	< >   Intersil ISL6271A Power regulator  
+	< >   Analog Devices AD5398/AD5821 regulators  
+	< >   TI TPS6524X Power regulators   
+
+
+[Device Drivers\Multimedia support]
+	--- Multimedia support   
+	   *** Multimedia core support ***
+	[ ]	  Media Controller API (EXPERIMENTAL)
+	<*>   Video For Linux    
+	<*>   DVB for Linux 
+	   *** Multimedia drivers ***     
+	<*>   Remote Controller adapters  --->   
+	[*]	  Load and attach frontend and tuner driver modules as needed 
+	[ ]	  Customize analog and hybrid tuner modules to build    
+	[*]	  Video capture adapters  --->   
+	[ ]	  Memory-to-memory multimedia devices  --->
+	[*]	  Radio Adapters  --->     
+	(8)   maximum number of DVB/ATSC adapters
+	[*]	  Dynamic DVB minor allocation   
+	[*]	  DVB/ATSC adapters  ---> 
+
+[Device Drivers\Multimedia support\Remote Controller adapters]
+	--- Remote Controller adapters 
+	< >   Compile Remote Controller keymap modules 
+	< >   Enable IR raw decoder for the NEC protocol  
+	< >   Enable IR raw decoder for the RC-5 protocol 
+	< >   Enable IR raw decoder for the RC6 protocol  
+	< >   Enable IR raw decoder for the JVC protocol  
+	< >   Enable IR raw decoder for the Sony protocol 
+	< >   Enable IR raw decoder for the RC-5 (streamzap) protocol     
+	< >   Enable IR to LIRC bridge 
+	< >   ENE eHome Receiver/Transceiver (pnp id: ENE0100/ENE02xxx)   
+	< >   SoundGraph iMON Receiver and Display     
+	< >   Windows Media Center Ed. eHome Infrared Transceiver   
+	< >   ITE Tech Inc. IT8712/IT8512 Consumer Infrared Transceiver   
+	< >   Nuvoton w836x7hg Consumer Infrared Transceiver 
+	< >   Streamzap PC Remote IR Receiver
+	< >   Winbond IR remote control
+	< >   Remote Control Loopback Driver 
+
+[Device Drivers\Multimedia support\Video capture adapters]
+	--- Video capture adapters     
+	[ ]	  Enable advanced debug functionality
+	[ ]	  Enable old-style fixed minor ranges for video devices 
+	[*]	  Autoselect pertinent encoders/decoders and other helper chips     
+	< >   Virtual Video Driver     
+	< >   BT848 Video For Linux    
+	[ ]	    DVB/ATSC Support for bt878 based TV cards 
+	< >   CPiA2 Video For Linux    
+	< >   Zoran ZR36057/36067 Video For Linux
+	< >     Pinnacle/Miro DC30(+) support
+	< >     Zoran ZR36060    
+	< > Iomega Buz support   
+	< > Pinnacle/Miro DC10(+) support  
+	< > Linux Media Labs LML33 support 
+	< > Linux Media Labs LML33R10 support    
+	< > AverMedia 6 Eyes support (EXPERIMENTAL) 
+	< >   Sony Vaio Picturebook Motion Eye Video For Linux 
+	< >   Philips SAA7134 support  
+	< >     Philips SAA7134 DMA audio support
+	[ ]	    Philips SAA7134 Remote Controller support 
+	< >     DVB/ATSC Support for saa7134 based TV cards  
+	< >   Siemens-Nixdorf 'Multimedia eXtension Board'
+	< >   Hexium HV-PCI6 and Orion frame grabber   
+	< >   Hexium Gemini frame grabber    
+	< >   Support for timberdale Video In/LogiWIN  
+	< >   Conexant 2388x (bt878 successor) support 
+	< >     Conexant 2388x DMA audio support 
+	< >     Blackbird MPEG encoder support (cx2388x + cx23416)  
+	< >     DVB/ATSC Support for cx2388x based TV cards   
+	< >   VP-3054 Secondary I2C Bus Support  
+	< >   Conexant cx23885 (2388x successor) support  
+	< >     Altera FPGA based CI module  
+	< >   Auvitek AU0828 support   
+	< >   Conexant cx23416/cx23415 MPEG encoder/decoder support 
+	< >     Conexant cx23415 framebuffer support   
+	< >   Conexant cx23418 MPEG encoder support    
+	< >     Conexant 23418 DMA audio support 
+	< >   NXP SAA7164 support
+	< >   Marvell 88ALP01 (Cafe) CMOS Camera Controller support 
+	< >   SR030PC30 VGA camera sensor support
+	< >   VIAFB camera controller support
+	< >   NOON010PC30 CIF camera sensor support    
+	< >   SoC camera support 
+	< >     imx074 support   
+	< >     mt9m001 support  
+	< >     mt9m111, mt9m112 and mt9m131 support   
+	< >     mt9t031 support  
+	< >     mt9t112 support  
+	< >     mt9v022 support  
+	< >     rj54n1cb0c support     
+	< >     tw9910 support   
+	< >     platform camera support
+	< >     ov2640 camera support  
+	< >     ov6650 sensor support  
+	< >     ov772x camera support  
+	< >     ov9640 camera support  
+	< >     ov9740 camera support  
+	[*]	  V4L USB devices  --->  
+
+
+[Device Drivers\Multimedia support\Video capture adapters\V4L USB devices]
+	--- V4L USB devices 
+	<M>   USB Video Class (UVC)  					;311c webcam  
+	[*]	    UVC input events device support     	;311c    
+	< >   GSPCA based webcams  --->
+	< >   Hauppauge WinTV-PVR USB2 support   
+	[ ]	    pvrusb2 sysfs support (EXPERIMENTAL)   
+	[ ]	    pvrusb2 ATSC/DVB support (EXPERIMENTAL)
+	[ ]	  pvrusb2 debug interface  
+	< >   Hauppauge HD PVR support 
+	< >   Empia EM28xx USB video capture support   
+	< >     Empia EM28xx ALSA audio module   
+	< >     DVB/ATSC Support for em28xx based TV cards
+	< >   Telegent TLG2300 USB video capture support  
+	< >   Conexant cx231xx USB video capture support  
+	[ ]	    Conexant cx231xx Remote Controller additional support     
+	< >     Conexant Cx231xx ALSA audio module     
+	< >     DVB/ATSC Support for Cx231xx based TV cards  
+	< >   USB video devices based on Nogatech NT1003/1004/1005  
+	< >   USB ET61X[12]51 PC Camera Controller support (DEPRECATED)   
+	< >   USB SN9C1xx PC Camera Controller support (DEPRECATED) 
+	< >   USB Philips Cameras
+	[ ]	    USB Philips Cameras verbose debug
+	[ ]	    USB Philips Cameras input events device support
+	< >   USB ZR364XX Camera support     
+	< >   USB Syntek DC1125 Camera support   
+	< >   USB Sensoray 2255 video capture device     
+
+[Device Drivers\Multimedia support\Video capture adapters\V4L USB devices\GSPCA based webcams]
+	--- GSPCA based webcams  
+	< >   ALi USB m5602 Camera Driver    
+	< >   STV06XX USB Camera Driver
+	< >   GL860 USB Camera Driver  
+	< >   Benq USB Camera Driver   
+	< >   Conexant Camera Driver   
+	< >   cpia CPiA (version 1) Camera Driver
+	< >   Etoms USB Camera Driver  
+	< >   Fujifilm FinePix USB V4L2 driver   
+	< >   Jeilin JPEG USB V4L2 driver    
+	< >   Konica USB Camera V4L2 driver  
+	< >   Mars USB Camera Driver   
+	< >   Mars-Semi MR97310A USB Camera Driver     
+	< >   Divio based (NW80x) USB Camera Driver    
+	< >   OV51x / OVFX2 / W996xCF USB Camera Driver
+	< >   OV534 OV772x USB Camera Driver 
+	< >   OV534 OV965x USB Camera Driver 
+	< >   Pixart PAC207 USB Camera Driver
+	< >   Pixart PAC7302 USB Camera Driver   
+	< >   Pixart PAC7311 USB Camera Driver   
+	< >   SONIX Dual-Mode USB Camera Driver  
+	< >   SN9C20X USB Camera Driver
+	< >   SONIX Bayer USB Camera Driver  
+	< >   SONIX JPEG USB Camera Driver   
+	< >   SPCA500 USB Camera Driver
+	< >   SPCA501 USB Camera Driver
+	< >   SPCA505 USB Camera Driver
+	< >   SPCA506 USB Camera Driver
+	< >   SPCA508 USB Camera Driver 
+	< >   SPCA561 USB Camera Driver
+	< >   SPCA1528 USB Camera Driver     
+	< >   SQ Technologies SQ905 based USB Camera Driver  
+	< >   SQ Technologies SQ905C based USB Camera Driver 
+	< >   SQ Technologies SQ930X based USB Camera Driver 
+	< >   Syntek DV4000 (STK014) USB Camera Driver 
+	< >   STV0680 USB Camera Driver
+	< >   SUNPLUS USB Camera Driver
+	< >   T613 (JPEG Compliance) USB Camera Driver 
+	< >   TV8532 USB Camera Driver 
+	< >   VC032X USB Camera Driver 
+	< >   ViCam USB Camera Driver  
+	< >   Xirlink C-It USB Camera Driver 
+	< >   ZC3XX USB Camera Driver  
+
+[Device Drivers\Multimedia support\Radio Adapters]
+	--- Radio Adapters
+	< >   Guillemot MAXI Radio FM 2000 radio 
+	< >   Maestro on board radio   
+	- -   I2C driver for Silicon Labs Si4713 device
+	< >   Silicon Labs Si4713 FM Radio Transmitter support 
+	< >   D-Link/GemTek USB FM radio support 
+	[ ]	  Silicon Labs Si470x FM Radio Receiver support  
+	< >     Silicon Labs Si470x FM Radio Receiver support with USB    
+	< >     Silicon Labs Si470x FM Radio Receiver support with I2C    
+	< >   AverMedia MR 800 USB FM radio support    
+	< >   TEA5764 I2C FM radio support   
+	< >   SAA7706H Car Radio DSP   
+	< >   TEF6862 Car Radio Enhanced Selectivity Tuner
+	< >   Texas Instruments WL1273 I2C FM Radio    
+	   Texas Instruments WL128x FM driver (ST based)  --->   
+     
+
+[Device Drivers\Multimedia support\DVB/ATSC adapters]
+	--- DVB/ATSC adapters    
+	   *** Supported SAA7146 based PCI Adapters ***
+	< >   AV7110 cards
+	[ ]	    AV7110 OSD support     
+	< >   SAA7146 DVB cards (aka Budget, Nova-PCI) 
+	< >     Budget cards
+	< >     Budget cards with onboard CI connector 
+	< >     Budget cards with analog video inputs  
+	< >     AV7110 cards with Budget Patch   
+	   *** Supported USB Adapters *** 
+	< >   Support for various USB DVB devices
+	[ ]	    Enable extended debug support for all DVB-USB devices     
+	< >     AVerMedia AverTV DVB-T USB 2.0 (A800)  
+	< >     DiBcom USB DVB-T devices (based on the DiB3000M-B) (see help fo 
+	[ ]	Support faulty USB IDs     
+	< >     DiBcom USB DVB-T devices (based on the DiB3000M-C/P) (see help  
+	< >     DiBcom DiB0700 USB DVB devices (see help for supported devices) 
+	< >     HanfTek UMT-010 DVB-T USB2.0 support   
+	< >     Conexant USB2.0 hybrid reference design support
+	< >     Uli m920x DVB-T USB2.0 support   
+	< >     Genesys Logic GL861 USB2.0 support     
+	< >     Alcor Micro AU6610 USB2.0 support
+	< >     Nebula Electronics uDigiTV DVB-T USB2.0 support
+	< >     TwinhanDTV Alpha/MagicBoxII, DNTV tinyUSB2, Beetle USB2.0 suppo 
+	< >     TwinhanDTV StarBox and clones DVB-S USB2.0 support  
+	< >     GENPIX 8PSK->USB module support  
+	< >     Hauppauge WinTV-NOVA-T usb2 DVB-T USB2.0 support    
+	< >     Pinnacle 400e DVB-S USB2.0 support     
+	< >     WideView WT-200U and WT-220U (pen) DVB-T USB2.0 support (Yakumo
+	< >     Opera1 DVB-S USB2.0 receiver 
+	< >     Afatech AF9005 DVB-T USB1.1 support    
+	< > Afatech AF9005 default remote control support
+	< >     DvbWorld & TeVii DVB-S/S2 USB2.0 support  
+	< >     Terratec CinergyT2/qanu USB 2.0 DVB-T receiver 
+	< >     Anysee DVB-T/C USB2.0 support
+	< >     AME DTV-5100 USB2.0 DVB-T support
+	< >     Afatech AF9015 DVB-T USB2.0 support    
+	< >     Intel CE6230 DVB-T USB2.0 support
+	< >     Friio ISDB-T USB2.0 Receiver support   
+	< >     E3C EC168 DVB-T USB2.0 support   
+	< >     Azurewave DVB-S/S2 USB2.0 AZ6027 support  
+	< >     LME DM04/QQBOX DVB-S USB2.0 support    
+	< >     Technisat DVB-S/S2 USB2.0 support
+	< >   Technotrend/Hauppauge Nova-USB devices   
+	< >   Technotrend/Hauppauge USB DEC devices    
+	< >   Siano SMS1xxx based MDTV receiver  
+		  Siano module components  --->
+		*** Supported FlexCopII (B2C2) Adapters *** 
+	< >   Technisat/B2C2 FlexCopII(b) and FlexCopIII adapters   
+	< >     Technisat/B2C2 Air/Sky/Cable2PC PCI    
+	< >     Technisat/B2C2 Air/Sky/Cable2PC USB    
+	[ ]	    Enable debug for the B2C2 FlexCop drivers 
+	   *** Supported BT878 Adapters ***   
+	-M-   BT8xx based PCI cards    
+	   *** Supported Pluto2 Adapters ***
+	< >   Pluto2 cards
+	   *** Supported SDMC DM1105 Adapters ***   
+	< >   SDMC DM1105 based PCI cards    
+	   *** Supported FireWire (IEEE 1394) Adapters ***
+	< >   FireDTV and FloppyDTV    
+	   *** Supported Earthsoft PT1 Adapters *** 
+	< >   PT1 cards
+	   *** Supported Mantis Adapters ***  
+	< >   Mantis/Hopper PCI bridge based devices   
+	< >     MANTIS based cards     
+	< >     HOPPER based cards     
+	   *** Supported nGene Adapters ***   
+	< >   Micronas nGene support   
+	   *** Supported DVB Frontends ***
+	[ ]	  Customise the frontend modules to build
+
+[Device Drivers\Graphics support]
+	<*> /dev/agpgart (AGP Support)  --->     
+	-*- VGA Arbitration
+	(16)  Maximum number of GPUs 
+	[ ]	Laptop Hybrid Graphics - GPU switching support 
+	<M> Direct Rendering Manager (XFree86 4.1.0 and higher DRI support)  --->   
+	< > Intel GMA500 Stub Driver 
+	{M} Lowlevel video output switch controls
+	{*} Support for frame buffer devices  --->  		;activar el modo grafica en los tty 
+	-*- Backlight & LCD device support  ---> 
+	 Display device support  --->   
+	 Console display driver support  ---> 
+	[ ]	Bootup logo  --->   
+
+[Device Drivers\Graphics support\/dev/agpgart (AGP Support)]
+	--- /dev/agpgart (AGP Support)     
+	< >   ALI chipset support    
+	< >   ATI chipset support    
+	< >   AMD Irongate, 761, and 762 chipset support   
+	< >   AMD Opteron/Athlon64 on-CPU GART support     
+	< >   Intel 440LX/BX/GX, I8xx and E7x05 chipset support  
+	< >   NVIDIA nForce/nForce2 chipset support  
+	< >   SiS chipset support    
+	< >   Serverworks LE/HE chipset support  
+	< >   VIA chipset support    
+	< >   Transmeta Efficeon support 
+
+[Device Drivers\Graphics support\Direct Rendering Manager (XFree86 4.1.0 and higher DRI support)]
+	--- Direct Rendering Manager (XFree86 4.1.0 and higher DRI support)   
+	< >   3dfx Banshee/Voodoo3+  
+	< >   ATI Rage 128 
+	< >   ATI Radeon
+	[ ]	    Enable modesetting on radeon by default - NEW DRIVER    
+	< >   Intel I810
+	< >   Intel 8xx/9xx/G3x/G4x/HD Graphics  
+	[ ]	    Enable modesetting on intel by default     
+	< >   Matrox g200/g400
+	< >   SiS video cards 
+	< >   Via unichrome video cards    
+	< >   Savage video cards
+    
+[Device Drivers\Graphics support\Support for frame buffer devices]
+	--- Support for frame buffer devices     
+	[*]	  Enable firmware EDID   
+	[*]	  Framebuffer foreign endianness support  ---> ;modo grafico en tty
+	-*-   Enable Video Mode Handling Helpers 
+	-*-   Enable Tile Blitting Support 
+	   *** Frame buffer hardware drivers ***  
+	< >   Cirrus Logic support   
+	< >   Permedia2 support 
+	[ ]	    enable FIFO disconnect feature   
+	< >   CyberPro 2000/2010/5000 support    
+	[ ]	    DDC for CyberPro support   
+	< >   Arc Monochrome LCD board support   
+	[ ]	  Asiliant (Chips) 69000 display support 
+	[ ]	  IMS Twin Turbo display support     
+	< >   VGA 16-color graphics support
+	< >   Userspace VESA VGA graphics support
+	[ ]	  VESA VGA graphics support   					;vesafb modo grafico en las consolas opcion a nvidiafb 
+	[ ]	  EFI-based Framebuffer Support
+	< >   N411 Apollo/Hecuba devkit support  
+	< >   Hercules mono graphics support     
+	< >   Epson S1D13XXX framebuffer support 
+	< >   nVidia Framebuffer Support   
+	[ ]	    Enable DDC Support   
+	[ ]	    Lots of debug output 
+	[ ]	    Support for backlight control    
+	< >   nVidia Riva support    
+	< >   Intel 810/815 support (EXPERIMENTAL)   
+	[ ]	    use VESA Generalized Timing Formula     
+	< >   Intel LE80578 (Vermilion) support  
+	< >     Intel Carillo Ranch support
+	< >   Matrox acceleration    
+	[ ]	    Millennium I/II support    
+	[ ]	    Mystique support
+	[ ]	    G100/G200/G400/G450/G550 support 
+	< >     Matrox I2C support   
+	< > G400 second head support 
+	< >   ATI Radeon display support   
+	[ ]	    DDC/I2C for ATI Radeon support   
+	[ ]	    Support for backlight control    
+	[ ]	    Lots of debug output from Radeon driver    
+	< >   ATI Rage128 display support  
+	[ ]	    Support for backlight control    
+	< >   ATI Mach64 display support   
+	[ ]	    Mach64 CT/VT/GT/LT (incl. 3D RAGE) support 
+	[ ]	Mach64 generic LCD support (EXPERIMENTAL)
+	[ ]	    Mach64 GX support    
+	[ ]	    Support for backlight control    
+	< >   S3 Trio/Virge support  
+	< >   S3 Savage support 
+	[ ]	    Enable DDC2 Support  
+	[ ]	    Enable Console Acceleration
+	< >   SiS/XGI display support
+	[ ]	    SiS 300 series support     
+	[ ]	    SiS 315/330/340 series and XGI support     
+	< >   VIA UniChrome (Pro) and Chrome9 display support 
+	[ ]	    direct hardware access via procfs (DEPRECATED)(DANGEROUS)     
+	< >   NeoMagic display support     
+	< >   IMG Kyro support
+	< >   3Dfx Banshee/Voodoo3/Voodoo5 display support 
+	[ ]	    3Dfx Acceleration functions (EXPERIMENTAL) 
+	[ ]	    Enable DDC/I2C support     
+	< >   3Dfx Voodoo Graphics (sst1) support
+	< >   VIA VT8623 support
+	< >   Trident/CyberXXX/CyberBlade support
+	< >   ARK 2000PV support
+	< >   Permedia3 support (EXPERIMENTAL)   
+	< >   Fujitsu carmine frame buffer support   
+	[ ]	  AMD Geode family framebuffer support (EXPERIMENTAL)
+	< >     AMD Geode LX framebuffer support (EXPERIMENTAL)  
+	< >     AMD Geode GX framebuffer support (EXPERIMENTAL)  
+	< >     AMD Geode GX1 framebuffer support (EXPERIMENTAL) 
+	< >   Toshiba Mobile IO FrameBuffer support  
+	< >   Silicon Motion SM501 framebuffer support     
+	< >   Displaylink USB Framebuffer support
+	< >   Virtual Frame Buffer support (ONLY FOR TESTING!)
+	< >   E-Ink Metronome/8track controller support    
+	< >   Fujitsu MB862xx GDC support  
+	[ ]	    Carmine/Coral-P(A) GDC     
+	< >   E-Ink Broadsheet/Epson S1D13521 controller support
+
+[Device Drivers\Graphics support\Backlight & LCD device support]
+	--- Backlight & LCD device support 
+	< >   Lowlevel LCD controls  
+	-*-   Lowlevel Backlight controls  
+	< >     Generic (aka Sharp Corgi) Backlight Driver 
+	< >     Frontpath ProGear Backlight Driver   
+	< >     Apple Backlight Driver     
+	< >     Tabletkiosk Sahara Touch-iT Backlight Driver  
+	< >     Backlight Driver for ADP8860/ADP8861/ADP8863 using WLED 
+	< >     Backlight driver for NXP PCF50633 MFD  
+
+[Device Drivers\Graphics support\Display device support]
+	< > Display panel/monitor support  
+	   *** Display hardware drivers ***  
+
+[Device Drivers\Graphics support\Console display driver support]
+	-*- VGA text console  
+	[ ]	  Enable Scrollback Buffer in System RAM 
+	{*} Framebuffer Console support    
+	-*-   Map the console to the primary display device
+	[*]	  Framebuffer Console Rotation 
+	[ ]	Select compiled-in fonts   
+
+[Device Drivers\Sound card support]
+	--- Sound card support
+	[ ]	  Preclaim OSS device numbers  
+	<*>   Advanced Linux Sound Architecture  --->
+	< >   Open Sound System (DEPRECATED)  --->  
+
+[Device Drivers\Sound card supportAdvanced Linux Sound Architecture]
+	<*>   Sequencer support 
+	<*>     Sequencer dummy client     
+	<M>   OSS Mixer API
+	<M>   OSS PCM (digital audio) API  
+	[*]	    OSS PCM (digital audio) API - Include plugin system
+	[ ]	  OSS Sequencer API 
+	<M>   HR-timer backend support     
+	[*]	    Use HR-timer as default sequencer timer    
+	-*-   Dynamic device file minor numbers  
+	[*]	  Support old ALSA API   
+	[*]	  Verbose procfs contents
+	[ ]	  Verbose printk  
+	[ ]	  Debug     
+	[*]	  Generic sound devices  --->  
+	[*]	  PCI sound devices  --->
+	[ ]	  SPI sound devices  --->
+	[ ]	  USB sound devices  --->
+	[ ]	  FireWire sound devices  ---> 
+	[ ]	  PCMCIA sound devices  --->   
+	< >   ALSA for SoC audio support  --->   
+
+[Device Drivers\Sound card supportAdvanced Linux Sound Architecture\Generic sound devices]
+	--- Generic sound devices    
+	<*>   PC-Speaker support (READ HELP!)    
+	<*>   Dummy (/dev/null) soundcard  
+	< >   Generic loopback driver (PCM)
+	< >   Virtual MIDI soundcard 
+	< >   MOTU MidiTimePiece AV multiport MIDI   
+	< >   UART16550 serial MIDI driver 
+	< >   Generic MPU-401 UART driver  
+	[ ]	  AC97 Power-Saving Mode 
+	(0)     Default time-out for AC97 power-save mode   
+
+[Device Drivers\Sound card supportAdvanced Linux Sound Architecture\PCI sound devices]
+	--- PCI sound devices 
+	< >   Analog Devices AD1889  
+	< >   Avance Logic ALS300/ALS300+  
+	< >   Avance Logic ALS4000   
+	< >   ALi M5451 PCI Audio Controller     
+	< >   AudioScience ASIxxxx   
+	< >   ATI IXP AC97 Controller
+	< >   ATI IXP Modem
+	< >   Aureal Advantage
+	< >   Aureal Vortex
+	< >   Aureal Vortex 2 
+	< >   Emagic Audiowerk 2
+	< >   Aztech AZF3328 / PCI168
+	< >   Bt87x Audio Capture    
+	[ ]	    Bt87x Audio overclocking   
+	< >   SB Audigy LS / Live 24bit    
+	< >   C-Media 8338, 8738, 8768, 8770     
+	< >   C-Media 8786, 8787, 8788 (Oxygen)  
+	< >   Cirrus Logic (Sound Fusion) CS4281 
+	< >   Cirrus Logic (Sound Fusion) CS4280/CS461x/CS462x/CS463x   
+	[ ]	    Cirrus Logic (Sound Fusion) New DSP support
+	< >   CS5530 Audio 
+	< >   CS5535/CS5536 Audio    
+	< >   Creative Sound Blaster X-Fi  
+	< >   (Echoaudio) Darla20    
+	< >   (Echoaudio) Gina20
+	< >   (Echoaudio) Layla20    
+	< >   (Echoaudio) Darla24  
+	< >   (Echoaudio) Gina24
+	< >   (Echoaudio) Layla24    
+	< >   (Echoaudio) Mona
+	< >   (Echoaudio) Mia 
+	< >   (Echoaudio) 3G cards   
+	< >   (Echoaudio) Indigo
+	< >   (Echoaudio) Indigo IO  
+	< >   (Echoaudio) Indigo DJ  
+	< >   (Echoaudio) Indigo IOx 
+	< >   (Echoaudio) Indigo DJx 
+	< >   Emu10k1 (SB Live!, Audigy, E-mu APS)   
+	< >   Emu10k1X (Dell OEM Version)  
+	< >   (Creative) Ensoniq AudioPCI 1370   
+	< >   (Creative) Ensoniq AudioPCI 1371/1373  
+	< >   ESS ES1938/1946/1969 (Solo-1)
+	< >   ESS ES1968/1978 (Maestro-1/2/2E)   
+	[ ]	    Enable input device for es1968 volume buttons 
+	< >   ForteMedia FM801
+	[ ]	    ForteMedia FM801 + TEA5757 tuner 
+	<*>   Intel HD Audio  --->   
+	< >   RME Hammerfall DSP Audio     
+	< >   RME Hammerfall DSP MADI/RayDAT/AIO 
+	< >   ICEnsemble ICE1712 (Envy24)  
+	< >   ICE/VT1724/1720 (Envy24HT/PT)
+	< >   Intel/SiS/nVidia/AMD/ALi AC97 Controller     
+	< >   Intel/SiS/nVidia/AMD MC97 Modem
+	< >   Korg 1212 IO 
+	< >   Digigram LX6464ES 
+	< >   ESS Allegro/Maestro3   
+	[ ]	    Enable input device for maestro3 volume buttons  
+	< >   Digigram miXart 
+	< >   NeoMagic NM256AV/ZX    
+	< >   Digigram PCXHR  
+	< >   Conexant Riptide
+	< >   RME Digi32, 32/8, 32 PRO     
+	< >   RME Digi96, 96/8, 96/8 PRO   
+	< >   RME Digi9652 (Hammerfall)    
+	< >   SiS 7019 Audio Accelerator   
+	< >   S3 SonicVibes
+	< >   Trident 4D-Wave DX/NX; SiS 7018    
+	< >   VIA 82C686A/B, 8233/8235 AC97 Controller     
+	< >   VIA 82C686A/B, 8233 based Modems   
+	< >   Asus Virtuoso 66/100/200 (Xonar)   
+	< >   Digigram VX222  
+	< >   Yamaha YMF724/740/744/754   
+
+[Device Drivers\Sound card supportAdvanced Linux Sound Architecture\PCI sound devices\Intel HD Audio]
+	--- Intel HD Audio  
+	-*-   Build hwdep interface for HD-audio driver    
+	-*-     Allow dynamic codec reconfiguration (EXPERIMENTAL) 
+	[*]	  Support digital beep via input layer   
+	(1)     Digital beep registration mode (0=off, 1=on, 2=mute sw on/off)
+	[*]	  Support jack plugging notification via input layer 
+	[*]	  Support initialization patch loading for HD-audio  
+	[*]	  Build Realtek HD-audio codec support   
+	[*]	  Build Analog Device HD-audio codec support   
+	[*]	  Build IDT/Sigmatel HD-audio codec support    
+	[*]	  Build VIA HD-audio codec support   
+	[*]	  Build HDMI/DisplayPort HD-audio codec support
+	[*]	  Build Cirrus Logic codec support   
+	[*]	  Build Conexant HD-audio codec support  
+	[*]	  Build Creative CA0110-IBG codec support
+	[*]	  Build C-Media HD-audio codec support   
+	[*]	  Build Silicon Labs 3054 HD-modem codec support  
+	[*]	  Enable generic HD-audio codec parser   
+	[*]	  Aggressive power-saving on HD-audio
+	(0)     Default time-out for HD-audio power-save mode 
+
+[Device Drivers\Sound card supportAdvanced Linux Sound Architecture\USB sound devices]
+	--- USB sound devices 
+	< >   USB Audio/MIDI driver  
+	< >   Edirol UA-101/UA-1000 driver 
+	< >   Tascam US-122, US-224 and US-428 USB driver  
+	< >   Native Instruments USB audio devices   
+	[ ]	    enable input device for controllers  
+	< >   Tascam US-122L USB driver    
+	< >   TerraTec DMX 6Fire USB  
+
+[Device Drivers\Sound card supportAdvanced Linux Sound Architecture\FireWire sound devices]
+	--- FireWire sound devices   
+	< >   FireWire speakers 
+
+[Device Drivers\Sound card supportAdvanced Linux Sound Architecture\PCMCIA sound devices]
+	--- PCMCIA sound devices
+	< >   Digigram VXpocket 
+	<>   Sound Core PDAudioCF 
+
+[Device Drivers\HID Devices]
+	--- HID Devices 
+	{M}   Generic HID support    
+	[*]	    /dev/hidraw raw HID device support   
+	   *** USB Input Devices ***    
+	<M>   USB Human Interface Device (full HID) support
+	[*]	  PID device support
+	[*]	  /dev/hiddev raw HID device support 
+	   Special HID drivers  ---> 
+
+[Device Drivers\HID Devices\Special HID drivers]
+	< > 3M PCT touchscreen
+	< > ACRUX game controller support  
+	< > Cando dual touch panel   
+	< > Prodikeys PC-MIDI Keyboard support   
+	<M> DragonRise Inc. game controller
+	[*]	  DragonRise Inc. force feedback     
+	< > EMS Production Inc. force feedback support     
+	< > Keytouch HID devices
+	< > UC-Logic    
+	< > Waltop
+	<M> Gyration remote control  
+	<M> Twinhan IR remote control
+	< > LC-Power    
+	-M- Logitech devices  
+	[*]	  Logitech force feedback support    
+	[*]	  Logitech RumblePad/Rumblepad 2 force feedback support
+	[ ]	  Logitech Flight System G940 force feedback support 
+	[ ]	  Logitech Speed Force Wireless force feedback support 
+	< > MosArt dual-touch panels 
+	< > HID Multitouch panels    
+	<M> N-Trig touch screen 
+	< > Ortek PKB-1700/WKB-2000/Skycable wireless keyboard and mouse trackpad   
+	<M> Pantherlord/GreenAsia game controller
+	[*]	  Pantherlord force feedback support 
+	<M> Petalynx Maxter remote control 
+	< > PicoLCD (graphic version)
+	< > Quanta Optical Touch panels    
+	< > Roccat special event support   
+	< > Roccat Arvo keyboard support   
+	< > Roccat Kone Mouse support
+	< > Roccat Kone[+]	mouse support   
+	< > Roccat Kova[+]	mouse support   
+	< > Roccat Pyra mouse support
+	<M> Samsung InfraRed remote control or keyboards   
+	<M> Sony PS3 controller 
+	< > Stantum multitouch panel 
+	<M> Sunplus wireless desktop 
+	<M> GreenAsia (Product ID 0x12) game controller support  
+	[*]	  GreenAsia (Product ID 0x12) force feedback support 
+	<M> SmartJoy PLUS PS2/USB adapter support
+	[*]	  SmartJoy PLUS PS2/USB adapter force feedback support 
+	<M> TopSeed Cyberlink, BTC Emprex, Conceptronic remote control support
+	<M> ThrustMaster devices support   
+	[*]	  ThrustMaster devices force feedback support  
+	<M> Zeroplus based game controller support   
+	[*]	  Zeroplus based game controller force feedback support
+	< > Zydacron remote control support
+
+[Device Drivers\USB support]
+	--- USB support 
+	{M}   Support for Host-side USB    
+	[ ]	    USB verbose debug messages 
+	[*]	    USB announce new devices   
+		 *** Miscellaneous USB options ***
+	[*]	    USB device filesystem (DEPRECATED)   
+	[ ]	    USB device class-devices (DEPRECATED)
+	[*]	    Dynamic USB minor allocation     
+	[*]	    USB runtime power management (autosuspend) and wakeup   
+	[ ]	OTG support 
+	< >   USB Monitor  
+	-M-   Enable Wireless USB extensions (EXPERIMENTAL)
+	< >   Support WUSB Cable Based Association (CBA)   
+	[ ]	    Enable CBA debug messages  
+	   *** USB Host Controller Drivers ***
+	< >   Cypress C67x00 HCD support   
+	< >   xHCI HCD (USB 3.0) support (EXPERIMENTAL)    
+	[ ]	    Debugging for the xHCI host controller     
+	<*>   EHCI HCD (USB 2.0) support  ;*USB_EHCI_HCD* 311c si disponemos de USB 2.0 ,
+	[*]	    Root Hub Transaction Translators 
+	[*]	    Improved Transaction Translator scheduling 
+	< >   OXU210HP HCD support   
+	< >   ISP116X HCD support    
+	< >   ISP 1760 HCD support   
+	< >   ISP1362 HCD support    
+	< >   OHCI HCD support
+	[ ]	    OHCI support for Broadcom SSB OHCI core    
+	<M>   UHCI HCD (most Intel and VIA) support    
+	< >   Elan U132 Adapter Host Controller  
+	< >   SL811HS HCD support    
+	< >     CF/PCMCIA support for SL811HS HCD
+	< >   R8A66597 HCD support   
+	< >   Wireless USB Host Controller Interface (WHCI) driver (EXPERIMENTAL)   
+	< >   Host Wire Adapter (HWA) driver (EXPERIMENTAL)
+	   *** Enable Host or Gadget support to see Inventra options ***   
+	   *** USB Device Class drivers ***   
+	< >   USB Modem (CDC ACM) support  
+	<*>   USB Printer support    
+	<*>   USB Wireless Device Management support 
+	<*>   USB Test and Measurement Class support 
+	   *** NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may ***    
+	   *** also be needed; see USB_STORAGE Help for more info ***
+	<*>   USB Mass Storage support     
+	[ ]	    USB Mass Storage verbose debug   
+	< >     Realtek Card Reader support
+	< >     Datafab Compact Flash Reader support 
+	< >     Freecom USB/ATAPI Bridge support 
+	< >     ISD-200 USB/ATA Bridge support   
+	< >     USBAT/USBAT02-based storage support  
+	< >     SanDisk SDDR-09 (and other SmartMedia, including DPCM) support
+	< >     SanDisk SDDR-55 SmartMedia support   
+	< >     Lexar Jumpshot Compact Flash Reader  
+	< >     Olympus MAUSB-10/Fuji DPC-R1 support    
+	< >     Support OneTouch Button on Maxtor Hard Drives 
+	< >     Support for Rio Karma music player   
+	< >     SAT emulation on Cypress USB/ATA Bridge with ATACB 
+	< >     USB ENE card reader support
+	< >   USB Attached SCSI 
+	[ ]	  The shared table of common (or usual) storage devices
+	   *** USB Imaging devices ***  
+	< >   USB Mustek MDC800 Digital Camera support     
+	< >   Microtek X6USB scanner support     
+	   *** USB port drivers ***     
+	< >   USB Serial Converter support  ---> 
+	   *** USB Miscellaneous drivers ***  
+	< >   EMI 6|2m USB Audio interface support   
+	< >   EMI 2|6 USB Audio interface support
+	< >   ADU devices from Ontrak Control Systems
+	< >   USB 7-Segment LED Display    
+	< >   USB Diamond Rio500 support   
+	< >   USB Lego Infrared Tower support    
+	< >   USB LCD driver support 
+	< >   USB LED driver support 
+	< >   Cypress CY7C63xxx USB driver support   
+	< >   Cypress USB thermometer driver support 
+	< >   Siemens ID USB Mouse Fingerprint sensor support 
+	< >   Elan PCMCIA CardBus Adapter USB Client 
+	< >   Apple Cinema Display support
+	< >   USB 2.0 SVGA dongle support (Net2280/SiS315) 
+	[ ]	    Text console and mode switching support    
+	< >   USB LD driver
+	< >   PlayStation 2 Trance Vibrator driver support 
+	< >   IO Warrior driver support    
+	< >   USB testing driver
+	< >   iSight firmware loading support    
+	< >   USB YUREX driver support     
+	< >   USB DSL modem support  --->  
+	< >   USB Gadget Support  --->     
+	   *** OTG and related infrastructure *** 
+	< >   GPIO based peripheral-only VBUS sensing 'transceiver'
+	< >   NOP USB Transceiver Driver 
+
+[Device Drivers\USB support\USB Serial Converter support]
+	--- USB Serial Converter support   
+	-*-   Functions for loading firmware on EZUSB chips
+	[ ]	  USB Generic Serial Driver    
+	< >   USB AIRcable Bluetooth Dongle Driver   
+	< >   USB ARK Micro 3116 USB Serial Driver   
+	< >   USB Belkin and Peracom Single Port Serial Driver
+	< >   USB Winchiphead CH341 Single Port Serial Driver 
+	< >   USB ConnectTech WhiteHEAT Serial Driver
+	< >   USB Digi International AccelePort USB Serial Driver
+	< >   USB CP210x family of UART Bridge Controllers 
+	< >   USB Cypress M8 USB Serial Driver   
+	< >   USB Empeg empeg-car Mark I/II Driver   
+	< >   USB FTDI Single Port Serial Driver 
+	< >   USB Fundamental Software Dongle Driver 
+	< >   USB Handspring Visor / Palm m50x / Sony Clie Driver
+	< >   USB PocketPC PDA Driver
+	< >   USB IR Dongle Serial Driver  
+	< >   USB Inside Out Edgeport Serial Driver  
+	< >   USB Inside Out Edgeport Serial Driver (TI devices) 
+	< >   USB Garmin GPS driver  
+	< >   USB IPWireless (3G UMTS TDD) Driver
+	< >   USB Infinity USB Unlimited Phoenix Driver    
+	< >   USB Keyspan PDA Single Port Serial Driver    
+	< >   USB Keyspan USA-xxx Serial Driver  
+	< >   USB KL5KUSB105 (Palmconnect) Driver
+	< >   USB KOBIL chipcard reader    
+	< >   USB MCT Single Port Serial Driver  
+	< >   USB Moschip 7720 Serial Driver   
+	< >   USB Moschip 7840/7820 USB Serial Driver
+	< >   USB Motorola Phone modem driver    
+	< >   USB Navman GPS device  
+	< >   USB Prolific 2303 Single Port Serial Driver  
+	< >   USB Ours Technology Inc. OTi-6858 USB To RS232 Bridge Controller
+	< >   USB Qualcomm Auxiliary Serial Port Driver    
+	< >   USB Qualcomm Serial modem    
+	< >   USB SPCP8x5 USB To Serial Driver   
+	< >   USB HP4x Calculators support 
+	< >   USB Safe Serial (Encapsulated) Driver  
+	[ ]	    USB Secure Encapsulated Driver - Padded    
+	< >   USB Atmel SAM Boot Assistant (SAM-BA) driver 
+	< >   USB Siemens MPI driver 
+	< >   USB Sierra Wireless Driver   
+	< >   USB Symbol Barcode driver (serial mode)
+	< >   USB TI 3410/5052 Serial Driver     
+	< >   USB REINER SCT cyberJack pinpad/e-com chipcard reader
+	< >   USB Xircom / Entregra Single Port Serial Driver 
+	< >   USB driver for GSM and CDMA modems 
+	< >   USB ZyXEL omni.net LCD Plus Driver 
+	< >   USB Opticon Barcode driver (serial mode)     
+	< >   USB ViVOpay serial interface driver     
+	< >   ZIO Motherboard USB serial interface driver  
+	< >   USB Quatech SSU-100 Single Port Serial Driver
+	< >   USB Debugging Device  
+
+[Device Drivers\USB support\USB DSL modem support]
+	--- USB DSL modem support    
+	< >   Speedtouch USB support 
+	< >   Conexant AccessRunner USB support  
+	< >   ADI 930 and eagle USB DSL modem    
+	< >   Other USB DSL modem support   
+
+[Device Drivers\Ultra Wideband devices (EXPERIMENTAL)]
+	--- Ultra Wideband devices (EXPERIMENTAL)
+	-M-   UWB Radio Control driver for WUSB-compliant USB dongles (HWA)   
+	-M-   UWB Radio Control driver for WHCI-compliant cards  
+	< >   Support for Intel Wireless UWB Link 1480 HWA 
+
+[Device Drivers\MMC/SD/SDIO card support]
+	--- MMC/SD/SDIO card support 
+	[ ]	  MMC debugging
+	[ ]	  Assume MMC/SD cards are non-removable (DANGEROUS)  
+	[ ]	  MMC host clock gating (EXPERIMENTAL)   
+	   *** MMC/SD/SDIO Card Drivers ***   
+	<*>   MMC block device driver
+	(8)     Number of minors per block device
+	[*]	    Use bounce buffer for simple hosts   
+	<M>   SDIO UART/GPS class support  
+	< >   MMC host test driver   
+	   *** MMC/SD/SDIO Host Controller Drivers ***  
+	< >   Secure Digital Host Controller Interface support
+	< >   SDHCI support on PCI bus     
+	[ ]	    Ricoh MMC Controller Disabler  (EXPERIMENTAL) 
+	< >   SDHCI support on the platform specific bus   
+	< >   Winbond W83L51xD SD/MMC Card Interface support  
+	< >   TI Flash Media MMC/SD Interface support  (EXPERIMENTAL)   
+	< >   MMC/SD driver for Ricoh Bay1Controllers (EXPERIMENTAL)    
+	< >   ENE CB710 MMC/SD Interface support 
+	< >   VIA SD/MMC Card Reader Driver
+	< >   USB SD Host Controller (USHC) support  
+
+[Device Drivers\Sony MemoryStick card support (EXPERIMENTAL)]
+	--- Sony MemoryStick card support (EXPERIMENTAL)   
+	[ ]	  MemoryStick debugging  
+	   *** MemoryStick drivers ***  
+	[ ]	  Allow unsafe resume (DANGEROUS)    
+	< >   MemoryStick Pro block device driver
+	   *** MemoryStick Host Controller Drivers ***  
+	< >   TI Flash Media MemoryStick Interface support  (EXPERIMENTAL)    
+	< >   JMicron JMB38X MemoryStick interface support (EXPERIMENTAL)     
+	< >   Ricoh R5C592 MemoryStick interface support (EXPERIMENTAL) 
+
+[Device Drivers\LED Support]
+	--- LED Support 
+	-*-   LED Class Support 
+	   *** LED drivers ***    
+	< >   LCD Backlight driver for LM3530    
+	<M>   LED Support for ALIX.2 and ALIX.3 series     
+	<M>   LED driver for PCA9532 dimmer
+	< >   LED Support for GPIO connected LEDs
+	<M>   LED Support for N.S. LP3944 (Fun Light) I2C chip
+	< >   LED Support for N.S. LP5521 LED driver chip  
+	< >   LED Support for N.S. LP5523 LED driver chip  
+	<M>   Mail LED on Clevo notebook   
+	<M>   LED Support for PCA955x I2C chips  
+	<M>   LED Support for DAC124S085 SPI DAC 
+	< >   REGULATOR driven LED support 
+	<M>   LED driver for BD2802 RGB LED
+	< >   LED driver for Intel NAS SS4200 series 
+	< >   LED driver for LT3593 controllers  
+	< >   External LED on Dell Business Netbooks 
+	-*-   LED Trigger support    
+	   *** LED Triggers ***   
+	<M>   LED Timer Trigger 
+	<M>   LED Heartbeat Trigger  
+	<M>   LED backlight Trigger  
+	< >   LED GPIO Trigger
+	<M>   LED Default ON Trigger 
+	   *** iptables trigger is under Netfilter config (LED target) ***
+
+[Device Drivers\Accessibility support]
+	--- Accessibility support    
+	[*]	  Console on braille device 
+
+[Device Drivers\InfiniBand support]
+	--- InfiniBand support
+	<M>   InfiniBand userspace MAD support   
+	<M>   InfiniBand userspace access (verbs and CM)   
+	<M>   Mellanox HCA support   
+	<M>   Ammasso 1100 HCA support     
+	[ ]	    Verbose debugging output   
+	<M>   Chelsio RDMA Driver    
+	[ ]	    Verbose debugging output   
+	<M>   Mellanox ConnectX HCA support
+	<M>   NetEffect RNIC Driver  
+	[ ]	    Verbose debugging output   
+	<M>   IP-over-InfiniBand
+	[*]	    IP-over-InfiniBand Connected Mode support  
+	-*-     IP-over-InfiniBand debugging     
+	[ ]	IP-over-InfiniBand data path debugging   
+	<M>   InfiniBand SCSI RDMA Protocol
+	<M>   iSCSI Extensions for RDMA (iSER)   
+		  
+[Device Drivers\EDAC (Error Detection And Correction) reporting]
+	--- EDAC (Error Detection And Correction) reporting
+	   *** Reporting subsystems *** 
+	[ ]	  Debugging 
+	<M>   Decode MCEs in human-readable form (only on AMD for now)  
+	< >     Simple MCE injection interface over /sysfs 
+	<M>   Main Memory EDAC (Error Detection And Correction) reporting     
+	<M>   AMD 76x (760, 762, 768)
+	<M>   Intel e7xxx (e7205, e7500, e7501, e7505)     
+	<M>   Intel e752x (e7520, e7525, e7320) and 3100   
+	<M>   Intel 82875p (D82875P, E7210)
+	<M>   Intel 82975x (D82975x) 
+	<M>   Intel 3000/3010 
+	<M>   Intel 3200
+	<M>   Intel X38 
+	<M>   Intel 5400 (Seaburg) chipsets
+	< >   Intel i7 Core (Nehalem) processors 
+	<M>   Intel 82860  
+	<M>   Radisys 82600 embedded chipset     
+	<M>   Intel Greencreek/Blackford chipset 
+	<M>   Intel San Clemente MCH 
+	< >   Intel Clarksboro MCH 
+
+[Device Drivers\Real Time Clock]
+	--- Real Time Clock
+	[*]	  Set system time from RTC on startup and resume  
+	(rtc0)  RTC used to set the system time  
+	[ ]	  RTC debug support 
+	   *** RTC interfaces *** 
+	[*]	  /sys/class/rtc/rtcN (sysfs)  
+	[*]	  /proc/driver/rtc (procfs for rtc0) 
+	[*]	  /dev/rtcN (character devices)
+	[ ]	    RTC UIE emulation on dev interface   
+	< >   Test driver/device
+	   *** I2C RTC drivers ***
+	< >   Dallas/Maxim DS1307/37/38/39/40, ST M41T00, EPSON RX-8025 
+	< >   Dallas/Maxim DS1374    
+	< >   Dallas/Maxim DS1672    
+	< >   Dallas/Maxim DS3232    
+	< >   Maxim MAX6900
+	< >   Ricoh R2025S/D, RS5C372A/B, RV5C386, RV5C387A
+	< >   Intersil ISL1208
+	< >   Intersil ISL12022 
+	< >   Xicor/Intersil X1205   
+	< >   Philips PCF8563/Epson RTC8564
+	< >   Philips PCF8583 
+	< >   ST M41T62/65/M41T80/81/82/83/84/85/87  
+	< >   TI BQ32000
+	< >   Seiko Instruments S-35390A   
+	< >   Ramtron FM3130  
+	< >   Epson RX-8581
+	< >   Epson RX-8025SA/NB
+	 *** SPI RTC drivers ***
+	< >   ST M41T94 
+	< >   Dallas/Maxim DS1305/DS1306   
+	< >   Dallas/Maxim DS1390/93/94    
+	< >   Maxim MAX6902
+	< >   Epson RTC-9701JE
+	< >   Ricoh RS5C348A/B
+	< >   Maxim/Dallas DS3234    
+	< >   NXP PCF2123  
+	   *** Platform RTC drivers *** 
+	<*>   PC-style 'CMOS' 
+	< >   Dallas DS1286
+	< >   Dallas DS1511
+	< >   Maxim/Dallas DS1553    
+	< >   Maxim/Dallas DS1742/1743     
+	< >   Simtek STK17TA8 
+	< >   ST M48T86/Dallas DS12887     
+	< >   ST M48T35 
+	< >   ST M48T59/M48T08/M48T02
+	< >   Oki MSM6242  
+	< >   TI BQ4802 
+	< >   Ricoh RP5C01 
+	< >   EM Microelectronic V3020     
+	< >   NXP PCF50633 RTC
+	   *** on-CPU RTC drivers ***   
+
+
+[Device Drivers\DMA Engine support]
+	--- DMA Engine support
+	[ ]	  DMA Engine debugging   
+	   *** DMA Devices ***    
+	< >   Intel MID DMA support for Peripheral DMA controllers 
+	<M>   Intel I/OAT DMA support
+	< >   Timberdale FPGA DMA support  
+	< >   Intel EG20T PCH / OKI SEMICONDUCTOR ML7213 IOH DMA support
+	   *** DMA Clients ***    
+	[*]	  Network: TCP receive copy offload  
+	[*]	  Async_tx: Offload support for the async_tx api  
+	< >   DMA Test client 
+
+
+[Device Drivers\Userspace I/O drivers]
+	--- Userspace I/O drivers    
+	<M>   generic Hilscher CIF Card driver   
+	<M>   Userspace I/O platform driver
+	<M>   Userspace I/O platform driver with generic IRQ handling   
+	<M>   AEC video timestamp device   
+	<M>   Automata Sercos III PCI card driver
+	<M>   Generic driver for PCI 2.3 and PCI Express cards
+	< >   Hilscher NetX Card driver
+
+
+[Device Drivers\Staging drivers]
+	--- Staging drivers
+	[ ]	  Exclude Staging drivers from being built     
+	< >     Stallion EasyIO or EC8/32 support
+	< >     Stallion EC8/64, ONboard, Brumby support   
+	< >     Digiboard Intelligent Async Support  
+	< >     SDL RISCom/8 card support  
+	< >     Specialix IO8+ card support
+	<M>     Computone IntelliPort Plus serial support  
+	<M>     Agere ET-1310 Gigabit Ethernet support     
+	[ ]	Enable et131x debugging  
+	< >     Alacritech Gigabit IS-NIC support
+	< >     WIS GO7007 MPEG encoder support  
+	< >     Conexant cx25821 support   
+	< >     TV Master TM5600/6000/6010 driver
+	<M>     USB IP support (EXPERIMENTAL)    
+	<M> USB IP client driver     
+	<M> USB IP host driver 
+	[ ]	USB-IP Debug Enable
+	< >     IS89C35 WLAN USB driver    
+	<M>     Prism2.5/3 USB driver
+	< >     Line Echo Canceller support
+	<M>     Broadcom IEEE802.11n WLAN drivers  --->    
+	<M>     Ralink 2860/3090 wireless support
+	<M>     Ralink 2870/3070 wireless support
+	<M>     Data acquisition support (comedi)
+	[ ]	Comedi debugging   
+	< > Comedi misc drivers  --->
+	<M> Comedi PCI drivers  --->   
+	<M> Comedi PCMCIA drivers  --->    
+	<M> Comedi USB drivers  ---> 
+	< > Comedi National Instruments card support  ---> 
+	<M> Generic 8255 support     
+	< > DAS-08 compatible support
+	< > Comedi shared functions for low-level driver support  
+	< >     Asus OLED driver
+	< >     RealTek RTL8187SE Wireless LAN NIC driver  
+	<M>     RealTek RTL8192U Wireless LAN NIC driver   
+	<M>     RealTek RTL8192E Wireless LAN NIC driver   
+	< >     RealTek RTL8712U (RTL8192SU) Wireless LAN NIC driver    
+	< >     RealTek PCI-E Card Reader support
+	< >     Frontier Tranzport and Alphatrack support  
+	<M>     POHMELFS filesystem support
+	[ ]	POHMELFS debugging 
+	[*]	POHMELFS crypto support  
+	< >     PCIE ATA PS5000 IDE support
+	< >     Line6 USB support  --->    
+	< >     DRM driver for VMware Virtual GPU
+	<M>     Nouveau (nVidia) cards     
+	[*]	Support for backlight control  
+	[ ]	Build in Nouveaus debugfs support 
+		 I2C encoder or helper chips  --->
+	< >     USB Quatech ESU-100 8 Port Serial Driver   
+	< >     USB Quatech xSU2-[14]00 USB Serial Driver  
+	< >     VIA Technologies VT6655 support  
+	<M>     VIA Technologies VT6656 support    
+	< >     Microsoft Hyper-V client drivers 
+	< >     VME bridge support  --->   
+	< >     Discretix SEP driver 
+	< >     Industrial I/O support  --->     
+	<M>     AMD CS5535/CS5536 GPIO (Geode Companion Device)  
+	< >     Compressed RAM block device support  
+	< >     Agere Systems HERMES II Wireless PC Card Model 0110
+	< >     Linksys HERMES II.5 WCF54G_Wireless-G_CompactFlash_Card 
+	< >     Silicon Motion SM7XX Frame Buffer Support  
+	< >     DT3155 frame grabber, Video4Linux interface
+	< >     Broadcom Crystal HD video decoder support  
+	< >     SBE wanPMC-C[421]E1T1 hardware support     
+	< >     XGI display support  
+	[ ]	    Linux Infrared Remote Control IR receiver/transmitter drivers  ---> 
+	< >     EasyCAP USB ID 05e1:0408 support 
+	< >     Softlogic 6x10 MPEG codec cards  
+	< >     ACPI Quickstart key driver 
+		 West Bridge HAL (no West Bridge HAL selected)  --->
+	< >     SBE wanPMC-2T3E3 support   
+	< >     Atheros AR6003 support (non mac80211)
+	< >     USB ENE SM/MS card reader support
+	< >     Beceem BCS200/BCS220-3 and BCSM250 wimax support 
+	< >     Drivers for Flarion ft1000 devices   
+		 Speakup console speech  --->     
+	< >     Synaptics Clearpad TM1217  
+	< >     Synaptics i2c rmi4 touchscreen 
+	< >     Intel GMA500 KMS Framebuffer     
+		 *** Altera FPGA firmware download module ***  
+	< >     Altera FPGA firmware download module   
+
+[Device Drivers\Staging drivers\Broadcom IEEE802.11n WLAN drivers  ]
+	--- Broadcom IEEE802.11n WLAN drivers    
+	[ ]	  Broadcom IEEE802.11n PCIe SoftMAC WLAN driver
+	[ ]	  Broadcom IEEE802.11n embedded FullMAC WLAN driver  
+	[ ]	  Broadcom driver debug functions 
+
+[Device Drivers\Staging drivers\Comedi PCI drivers]
+	--- Comedi PCI drivers
+	< >   ADDI-DATA APCI_035 support   
+	< >   ADDI-DATA APCI_1032 support  
+	< >   ADDI-DATA APCI_1500 support  
+	< >   ADDI-DATA APCI_1516 support  
+	< >   ADDI-DATA APCI_1564 support  
+	< >   ADDI-DATA APCI_16xx support  
+	< >   ADDI-DATA APCI_2016 support  
+	< >   ADDI-DATA APCI_2032 support  
+	< >   ADDI-DATA APCI_2200 support  
+	< >   ADDI-DATA APCI_3001 support  
+	< >   ADDI-DATA APCI_3520 support  
+	< >   ADDI-DATA APCI_3501 support  
+	< >   ADDI-DATA APCI_3xxx support  
+	< >   ADLink PCI-6208A support     
+	< >   ADLink PCI-7230 digital io board support     
+	< >   ADLink PCI-7296 96 ch. digital io board support 
+	< >   ADLink PCI-7432 64 ch. isolated digital io board support  
+	< >   ADLink PCI-8164 4 Axes Motion Control board support
+	< >   ADLink PCI-9111HR support    
+	< >   ADLink PCI-9118DG, PCI-9118HG, PCI-9118HR support  
+	< >   Advantech PCI-171x, PCI-1720 and PCI-1731 support  
+	< >   Advantech PCI-1723 support   
+	< >   Advantech PCI DIO card support     
+	< >   Amplicon PC272E and PCI272 DIO board support 
+	< >   Amplicon PC36AT and PCI236 DIO board support 
+	< >   Amplicon PC263 and PCI263 relay board support
+	< >   Amplicon PCI224 and PCI234 support     
+	< >   Amplicon PCI230 and PCI260 support 
+	< >   Contec PIO1616L digital I/O board support    
+	< >   Data Translation DT3000 series support 
+	< >   Fastwel UNIOxx-5 analog and digital io board support 
+	< >   General Standards PCI-HPDI32 / PMC-HPDI32 support  
+	< >   Inova ICP_MULTI support
+	< >   Intelligent Instruments PCI-20001C carrier support 
+	< >   IOtech DAQboard/2000 support 
+	< >   JR3/PCI force sensor board support 
+	< >   Kolter-Electronic PCI Counter 1 card support 
+	< >   MeasurementComputing PCI-DAS 64xx, 60xx, and 4020 support 
+	< >   MeasurementComputing PCI-DAS support   
+	< >   MeasurementComputing PCI-DDA series support  
+	< >   MeasurementComputing PCI-DIO series support  
+	< >   MeasurementComputing PCIM-DAS1602/16 support 
+	< >   MeasurementComputing PCIM-DDA06-16 support   
+	< >   Meilhaus ME-4000 support     
+	< >   Meilhaus ME-2000i, ME-2600i, ME-3000vm1 support 
+	< >   Real Time Devices PCI4520/DM7520 support     
+	< >   Sensoray s526 support  
+	< >   Sensoray 626 support   
+	< >   SSV Embedded Systems DIL/Net-PC support 
+
+[Device Drivers\Staging drivers\ I2C encoder or helper chips]
+	<M> Chrontel ch7006 TV encoder     
+	<M> Silicon Image sil164 TMDS transmitter   
+
+[Device Drivers\Staging drivers\ Speakup console speech]
+	<M> Speakup core
+	<M>   Accent SA synthesizer support
+	<M>   Accent PC synthesizer support
+	<M>   Apollo II synthesizer support
+	<M>   Audapter synthesizer support 
+	<M>   Braille 'n' Speak synthesizer support  
+	<M>   DECtalk Express synthesizer support
+	<M>   DECtalk External (old) synthesizer support   
+	< >   DECtalk PC (big ISA card) synthesizer support
+	<M>   DoubleTalk PC synthesizer support  
+	<M>   Keynote Gold PC synthesizer support
+	<M>   DoubleTalk LT/LiteTalk synthesizer support   
+	<M>   Userspace software synthesizer support 
+	<M>   Speak Out synthesizer support
+	<M>   Transport synthesizer support
+	<M>   Dummy synthesizer driver (for testing) 
+
+[Device Drivers\ X86 Platform Specific Device Drivers]
+	--- X86 Platform Specific Device Drivers 
+	<M>   Acer WMI Laptop Extras 
+	<M>   Acer Aspire One temperature and fan driver   
+	<M>   Asus Laptop Extras
+	<M>   Dell Laptop Extras (EXPERIMENTAL)  
+	<M>   Dell WMI extras 
+	< >   WMI Hotkeys for Dell All-In-One series 
+	<M>   Fujitsu Laptop Extras  
+	[ ]	    Verbose debug mode for Fujitsu Laptop Extras  
+	<M>   HP Compaq TC1100 Tablet WMI Extras (EXPERIMENTAL)  
+	< >   HP laptop accelerometer
+	<M>   HP WMI extras
+	<M>   MSI Laptop Extras 
+	<M>   Panasonic Laptop Extras
+	<M>   Compal Laptop Extras   
+	<M>   Sony Laptop Extras
+	[*]	    Sonypi compatibility 
+	< >   Lenovo IdeaPad Laptop Extras 
+	<M>   ThinkPad ACPI Laptop Extras  
+	[*]	    Console audio control ALSA interface 
+	[ ]	    Maintainer debug facilities
+	[ ]	    Verbose debug mode   
+	[ ]	    Allow control of important LEDs (unsafe)   
+	[*]	    Video output control support     
+	[*]	    Support NVRAM polling for hot keys   
+	<M>   Thinkpad Hard Drive Active Protection System (hdaps) 
+	< >   Thermal Management driver for Intel menlow platform
+	<M>   Eee PC Hotkey Driver (EXPERIMENTAL)  
+	< >   ASUS WMI Driver (EXPERIMENTAL)     
+	<M>   WMI 
+	< >     MSI WMI extras
+	<M>   ASUS/Medion Laptop Extras (DEPRECATED) 
+	<M>   Topstar Laptop Extras  
+	<M>   Toshiba Laptop Extras  
+	< >   Toshiba Bluetooth RFKill switch support
+	< >   CMPC Laptop Extras
+	< >   Intel Intelligent Power Sharing    
+	< >   Device driver to enable PRTL support   
+	< >   OLPC XO-1.5 ebook switch     
+	<M>   Samsung Laptop driver   
+
+[Firmware Drivers]
+	<M> BIOS Enhanced Disk Drive calls determine boot disk
+	[ ]	  Sets default behavior for EDD detection to off  
+	<M> EFI Variable Support via sysfs 
+	<M> BIOS update support for DELL systems via sysfs 
+	<M> Dell Systems Management Base Driver  
+	[*]	Export DMI identification via sysfs to userspace  
+	< > DMI table support in sysfs     
+	[*]	iSCSI Boot Firmware Table Attributes 
+	<*>   iSCSI Boot Firmware Table Attributes module  
+	< > SigmaStudio firmware loader    
+
+[File systems]
+	<M> Second extended fs support     
+	[*]	  Ext2 extended attributes     
+	[*]	    Ext2 POSIX Access Control Lists  
+	[*]	    Ext2 Security Labels 
+	[ ]	  Ext2 execute in place support
+	<M> Ext3 journalling file system support 
+	[*]	  Default to 'data=ordered' in ext3  
+	[*]	  Ext3 extended attributes     
+	[*]	    Ext3 POSIX Access Control Lists  
+	[*]	    Ext3 Security Labels 
+	<M> The Extended 4 (ext4) filesystem     
+	[*]	  Ext4 extended attributes     
+	[*]	    Ext4 POSIX Access Control Lists  
+	[*]	    Ext4 Security Labels 
+	[ ]	  EXT4 debugging support 
+	[ ]	JBD (ext3) debugging support   
+	[ ]	JBD2 (ext4) debugging support  
+	<M> Reiserfs support  
+	[ ]	  Enable reiserfs debug mode   
+	[ ]	  Stats in /proc/fs/reiserfs   
+	[*]	  ReiserFS extended attributes 
+	[*]	    ReiserFS POSIX Access Control Lists  
+	[*]	    ReiserFS Security Labels   
+	<M> JFS filesystem support   
+	[*]	  JFS POSIX Access Control Lists     
+	[*]	  JFS Security Labels    
+	[ ]	  JFS debugging
+	[ ]	  JFS statistics  
+	<M> XFS filesystem support   
+	[*]	  XFS Quota support 
+	[*]	  XFS POSIX ACL support  
+	[*]	  XFS Realtime subvolume support     
+	[ ]	  XFS Debugging support (EXPERIMENTAL)   
+	<M> GFS2 file system support 
+	[*]	  GFS2 DLM locking
+	<M> OCFS2 file system support
+	<M>   O2CB Kernelspace Clustering  
+	<M>   OCFS2 Userspace Clustering   
+	[*]	  OCFS2 statistics
+	[*]	  OCFS2 logging support  
+	[ ]	  OCFS2 expensive checks 
+	<M> Btrfs filesystem (EXPERIMENTAL) Unstable disk format 
+	[*]	  Btrfs POSIX Access Control Lists   
+	<M> NILFS2 file system support (EXPERIMENTAL)
+	[*]	Dnotify support
+	[*]	Inotify support for userspace  
+	[ ]	Filesystem wide access notification  
+	-*- Quota support  
+	[*]	Report quota messages through netlink interface
+	[*]	Print quota warnings to console (OBSOLETE)     
+	[ ]	Additional quota sanity checks 
+	<M> Old quota format support 
+	<M> Quota format vfsv0 and vfsv1 support 
+	<M> Kernel automounter version 4 support (also supports v3)   
+	<M> FUSE (Filesystem in Userspace) support   
+	<M>   Character device in Userspace support  
+	 Caches  --->
+	 CD-ROM/DVD Filesystems  --->   
+	 DOS/FAT/NT Filesystems  --->   
+	 Pseudo filesystems  ---> 
+	[*]	Miscellaneous filesystems  --->
+	[*]	Network File Systems  --->     
+	 Partition Types  --->    
+	-*- Native language support  --->  
+	-M- Distributed Lock Manager (DLM)  --->  
+
+[File systems\ Caches]
+	<M> General filesystem local caching manager 
+	[*]	  Gather statistical information on local caching 
+	[ ]	  Gather latency information on local caching  
+	[ ]	  Debug FS-Cache  
+	[ ]	  Maintain global object list for debugging purposes 
+	<M>   Filesystem caching on files  
+	[ ]	    Debug CacheFiles
+	[ ]	    Gather latency information on CacheFiles  
+
+[File systems\ CD-ROM/DVD Filesystems]
+	<M> ISO 9660 CDROM file system support   
+	[*]	  Microsoft Joliet CDROM extensions  
+	[*]	  Transparent decompression extension
+	<M> UDF file system support    
+
+[File systems\DOS/FAT/NT Filesystems]
+	<M> MSDOS fs support  
+	<M> VFAT (Windows-95) fs support   
+	(437) Default codepage for FAT     
+	(utf8) Default iocharset for FAT   
+	<M> NTFS file system support 
+	[ ]	  NTFS debugging support 
+	[*]	  NTFS write support   
+
+[File systems\Pseudo filesystems]
+	-*- /proc file system support
+	[*]	  /proc/kcore support    
+	-*- Virtual memory file system support (former shm fs)
+	[*]	  Tmpfs POSIX Access Control Lists   
+	[*]	HugeTLB file system support    
+	{M} Userspace-driven configuration filesystem
+
+[File systems\Miscellaneous filesystems]
+	--- Miscellaneous filesystems
+	<M>   ADFS file system support (EXPERIMENTAL)
+	[ ]	    ADFS write support (DANGEROUS)   
+	<M>   Amiga FFS file system support (EXPERIMENTAL) 
+	<M>   eCrypt filesystem layer support (EXPERIMENTAL)  
+	<M>   Apple Macintosh file system support (EXPERIMENTAL) 
+	<M>   Apple Extended HFS file system support 
+	<M>   BeOS file system (BeFS) support (read only) (EXPERIMENTAL)
+	[ ]	    Debug BeFS 
+	<M>   BFS file system support (EXPERIMENTAL) 
+	<M>   EFS file system support (read only) (EXPERIMENTAL) 
+	<M>   Journalling Flash File System v2 (JFFS2) support
+	(0)     JFFS2 debugging verbosity (0 = quiet, 2 = noisy) 
+	[*]	    JFFS2 write-buffering support    
+	[ ]	Verify JFFS2 write-buffer reads
+	[*]	    JFFS2 summary support (EXPERIMENTAL) 
+	[*]	    JFFS2 XATTR support (EXPERIMENTAL)   
+	[*]	JFFS2 POSIX Access Control Lists   
+	[*]	JFFS2 Security Labels    
+	[*]	    Advanced compression options for JFFS2     
+	[*]	JFFS2 ZLIB compression support 
+	[*]	JFFS2 LZO compression support  
+	[*]	JFFS2 RTIME compression support
+	[ ]	JFFS2 RUBIN compression support
+		   JFFS2 default compression mode (priority)  --->
+	<M>   UBIFS file system support    
+	[*]	    Extended attributes support
+	[*]	    Advanced compression options     
+	[*]	LZO compression support  
+	[*]	ZLIB compression support 
+	[ ]	    Enable debugging support   
+	< >   LogFS file system (EXPERIMENTAL)   
+	<M>   Compressed ROM file system support (cramfs)  
+	<M>   SquashFS 4.0 - Squashed file system support  
+	[ ]	    Squashfs XATTR support     
+	[ ]	    Include support for LZO compressed file systems  
+	[ ]	    Include support for XZ compressed file systems
+	[ ]	    Additional option for memory-constrained systems 
+	<M>   FreeVxFS file system support (VERITAS VxFS(TM) compatible)
+	<M>   Minix file system support    
+	<M>   SonicBlue Optimized MPEG File System support 
+	<M>   OS/2 HPFS file system support
+	<M>   QNX4 file system support (read only)   
+	<M>   ROM file system support
+		 RomFS backing stores (Both the above)  --->
+	[ ]	  Persistent store support     
+	<M>   System V/Xenix/V7/Coherent file system support  
+	<M>   UFS file system support (read only)
+	[ ]	    UFS file system write support (DANGEROUS)  
+	[ ]	    UFS debugging 
+	<M>   exofs: OSD based file system support   
+	[ ]	    Enable debugging
+   
+
+[File systems\Network File Systems]
+	--- Network File Systems
+	<M>   NFS client support
+	[*]	    NFS client support for NFS version 3 
+	[*]	NFS client support for the NFSv3 ACL protocol extension     
+	[*]	    NFS client support for NFS version 4 
+	[ ]	NFS client support for NFSv4.1 (EXPERIMENTAL)  
+	[*]	  Provide NFS client caching support 
+	[ ]	  Use the legacy NFS DNS resolver    
+	[ ]	  Use the new idmapper upcall routine
+	<M>   NFS server support
+	[*]	    Include support for deprecated syscall interface to NFSD
+	-*-     NFS server support for NFS version 3 
+	[*]	NFS server support for the NFSv3 ACL protocol extension     
+	[*]	    NFS server support for NFS version 4 (EXPERIMENTAL)
+	<M>   Secure RPC: Kerberos V mechanism   
+	< >   Ceph distributed file system (EXPERIMENTAL)  
+	<M>   CIFS support (advanced network filesystem, SMBFS successor)     
+	[ ]	    CIFS statistics 
+	[*]	    Support legacy servers which use weaker LANMAN security 
+	[*]	    Kerberos/SPNEGO advanced session setup     
+	[*]	    CIFS extended attributes   
+	[*]	CIFS POSIX Extensions    
+	[ ]	    Enable additional CIFS debugging routines  
+	[*]	    DFS feature support  
+	[ ]	  Provide CIFS client caching support (EXPERIMENTAL) 
+	[ ]	  Provide CIFS ACL support (EXPERIMENTAL)
+	[*]	  CIFS Experimental Features (EXPERIMENTAL)    
+	<M>   NCP file system support (to mount NetWare volumes)
+	[*]	    Packet signatures    
+	[*]	    Proprietary file locking   
+	[*]	    Clear remove/delete inhibit when needed    
+	[*]	    Use NFS namespace if available   
+	[*]	    Use LONG (OS/2) namespace if available     
+	[ ]	    Lowercase DOS filenames    
+	[*]	    Use Native Language Support
+	[*]	    Enable symbolic links and execute flags    
+	<M>   Coda file system support (advanced network fs)  
+	<M>   Andrew File System support (AFS) (EXPERIMENTAL) 
+	[ ]	    AFS dynamic debugging
+	[*]	  Provide AFS client caching support (EXPERIMENTAL)  
+	<M>   Plan 9 Resource Sharing Support (9P2000) (Experimental)   
+	[*]	    Enable 9P client caching support (EXPERIMENTAL)  
+	[ ]	    9P POSIX Access Control Lists  
+
+
+[File systems\Partition Types]
+	[*]	Advanced partition selection   
+	[*]	  Acorn partition support
+	[ ]	    Cumana partition support   
+	[ ]	    EESOX partition support    
+	[*]	    ICS partition support
+	[ ]	    Native filecore partition support
+	[ ]	    PowerTec partition support 
+	[*]	    RISCiX partition support   
+	[*]	  Alpha OSF partition support  
+	[*]	  Amiga partition table support
+	[*]	  Atari partition table support
+	[*]	  Macintosh partition map support    
+	[*]	  PC BIOS (MSDOS partition tables) support     
+	[*]	    BSD disklabel (FreeBSD partition tables) support 
+	[*]	    Minix subpartition support 
+	[*]	    Solaris (x86) partition table support
+	[*]	    Unixware slices support    
+	[*]	  Windows Logical Disk Manager (Dynamic Disk) support
+	[ ]	    Windows LDM extra logging  
+	[*]	  SGI partition support  
+	[*]	  Ultrix partition table support     
+	[*]	  Sun partition tables support 
+	[*]	  Karma Partition support
+	[*]	  EFI GUID Partition support   
+	[ ]	  SYSV68 partition table support    
+
+[File systems\Native language support]
+	--- Native language support  
+	(utf8) Default NLS Option    
+	<M>   Codepage 437 (United States, Canada)   
+	<M>   Codepage 737 (Greek)   
+	<M>   Codepage 775 (Baltic Rim)    
+	<M>   Codepage 850 (Europe)  
+	<M>   Codepage 852 (Central/Eastern Europe)  
+	<M>   Codepage 855 (Cyrillic)
+	<M>   Codepage 857 (Turkish) 
+	<M>   Codepage 860 (Portuguese)    
+	<M>   Codepage 861 (Icelandic)     
+	<M>   Codepage 862 (Hebrew)  
+	<M>   Codepage 863 (Canadian French)     
+	<M>   Codepage 864 (Arabic)  
+	<M>   Codepage 865 (Norwegian, Danish)   
+	<M>   Codepage 866 (Cyrillic/Russian)    
+	<M>   Codepage 869 (Greek)   
+	<M>   Simplified Chinese charset (CP936, GB2312)   
+	<M>   Traditional Chinese charset (Big5) 
+	<M>   Japanese charsets (Shift-JIS, EUC-JP)  
+	<M>   Korean charset (CP949, EUC-KR)     
+	<M>   Thai charset (CP874, TIS-620)
+	<M>   Hebrew charsets (ISO-8859-8, CP1255)   
+	<M>   Windows CP1250 (Slavic/Central European Languages) 
+	<M>   Windows CP1251 (Bulgarian, Belarusian) 
+	<M>   ASCII (United States)  
+	<M>   NLS ISO 8859-1  (Latin 1; Western European Languages)
+	<M>   NLS ISO 8859-2  (Latin 2; Slavic/Central European Languages) 
+	<M>   NLS ISO 8859-3  (Latin 3; Esperanto, Galician, Maltese, Turkish)
+	<M>   NLS ISO 8859-4  (Latin 4; old Baltic charset)
+	<M>   NLS ISO 8859-5  (Cyrillic)   
+	<M>   NLS ISO 8859-6  (Arabic)     
+	<M>   NLS ISO 8859-7  (Modern Greek)     
+	<M>   NLS ISO 8859-9  (Latin 5; Turkish) 
+	<M>   NLS ISO 8859-13 (Latin 7; Baltic)  
+	<M>   NLS ISO 8859-14 (Latin 8; Celtic)  
+	<M>   NLS ISO 8859-15 (Latin 9; Western European Languages with Euro) 
+	<M>   NLS KOI8-R (Russian)   
+	<M>   NLS KOI8-U/RU (Ukrainian, Belarusian)  
+	{M}   NLS UTF-8    
+
+[File systems\Distributed Lock Manager (DLM)]
+	--- Distributed Lock Manager (DLM) 
+	[*]	  DLM debugging 
+
+[Kernel hacking]
+	[*]	Show timing information on printks   
+	(4) Default message log level (1-7)
+	[*]	Enable __deprecated logic
+	[*]	Enable __must_check logic
+	(1024) Warn for stack frames larger than (needs gcc 4.4) 
+	[*]	Magic SysRq key
+	[*]	Strip assembler-generated symbols during link  
+	[*]	Enable unused/obsolete exported symbols  
+	-*- Debug Filesystem  
+	[ ]	Run 'make headers_check' when building vmlinux 
+	[ ]	Enable full Section mismatch analysis
+	[*]	Kernel debugging  
+	[ ]	  Debug shared IRQ handlers    
+	[ ]	  Detect Hard and Soft Lockups 
+	[*]	Detect Hung Tasks 
+	[ ]	  Panic (Reboot) On Hung Tasks 
+	[*]	Collect scheduler debugging info     
+	[ ]	Collect scheduler statistics   
+	[*]	Collect kernel timers statistics     
+	[ ]	Debug object operations  
+	[ ]	SLUB debugging on by default   
+	[ ]	Enable SLUB performance statistics   
+	[ ]	Kernel memory leak detector    
+	[ ]	RT Mutex debugging, deadlock detection   
+	[ ]	Built-in scriptable tester for rt-mutexes
+	[ ]	Spinlock and rw-lock debugging: basic checks   
+	[ ]	Mutex debugging: basic checks  
+	[ ]	Lock debugging: detect incorrect freeing of live locks     
+	[ ]	Lock debugging: prove locking correctness
+	[ ]	RCU debugging: sparse-based checks for pointer usage 
+	[ ]	Lock usage statistics    
+	[ ]	Spinlock debugging: sleep-inside-spinlock checking
+	[ ]	Locking API boot-time self-tests     
+	[ ]	kobject debugging 
+	[ ]	Highmem debugging 
+	[ ]	Compile the kernel with debug info   
+	[ ]	Debug VM    
+	[ ]	Debug VM translations    
+	[ ]	Debug filesystem writers count 
+	[ ]	Debug linked list manipulation 
+	[ ]	Linked list sorting test 
+	[ ]	Debug SG table operations
+	[ ]	Debug notifier call chains     
+	[ ]	Debug credential management    
+	[ ]	Compile the kernel with frame pointers   
+	[ ]	Delay each boot printk message by N milliseconds  
+	< > torture tests for RCU    
+	[ ]	Check for stalled CPUs delaying RCU grace periods 
+	[ ]	Kprobes sanity tests
+	< > Self test for the backtrace code     
+	[ ]	Force extended block device numbers and spread them  
+	[ ]	Force weak per-cpu definitions 
+	< > Linux Kernel Dump Test Tool Module   
+	< > CPU notifier error injection module   
+	[ ]	Fault-injection framework
+	[ ]	Latency measuring infrastructure     
+	[*]	Sysctl checks  
+	[ ]	Debug page memory allocations  
+	[*]	Deprecated power event trace API, to be removed
+	[*]	Tracers  --->  
+	[ ]	Remote debugging over FireWire early on boot   
+	[ ]	Remote debugging over FireWire with firewire-ohci 
+	[ ]	Enable dynamic printk() support
+	[ ]	Enable debugging of DMA-API usage    
+	[ ]	Perform an atomic64_t self-test at boot  
+	< > Self test for hardware accelerated raid6 recovery 
+	[ ]	Sample kernel code  ---> 
+	[ ]	KGDB: kernel debugger  --->    
+	< > Test kstrto*() family of functions at runtime  
+	[*]	Filter access to /dev/mem
+	[*]	Enable verbose x86 bootup info messages  
+	-*- Early printk
+	[ ]	  Early printk via EHCI debug port   
+	[ ]	Check for stack overflows
+	[ ]	Stack utilization instrumentation    
+	[ ]	Debug access to per_cpu maps   
+	[ ]	Export kernel pagetable layout to userspace via debugfs
+	[*]	Write protect kernel read-only data structures 
+	[ ]	  Testcase for the DEBUG_RODATA feature    
+	[ ]	Set loadable kernel module data as NX and text as RO 
+	< > Testcase for the NX non-executable stack feature  
+	[ ]	Enable IOMMU stress-test mode  
+	[ ]	x86 instruction decoder selftest     
+	 IO delay type (port 0x80 based port-IO delay [recommended])  ---> 
+	[ ]	Debug boot parameters    
+	[ ]	CPA self-test code
+	[*]	Allow gcc to uninline functions marked 'inline'
+	[ ]	Strict copy size checks  
+
+[ Security options ]
+	-*- Enable access key retention support  
+	< >   TRUSTED KEYS 
+	[*]	  Enable the /proc/keys file by which keys may be viewed    
+	[ ]	Restrict unprivileged access to the kernel syslog 
+	[*]	Enable different security models     
+	-*- Enable the securityfs filesystem     
+	[*]	Socket and Networking Security Hooks 
+	[*]	  XFRM (IPSec) Networking Security Hooks 
+	-*- Security hooks for pathname based access control  
+	(0) Low address space for LSM to protect from user allocation   
+	[*]	NSA SELinux Support 
+	[*]	  NSA SELinux boot parameter   
+	(0)     NSA SELinux boot parameter default value   
+	[*]	  NSA SELinux runtime disable  
+	[*]	  NSA SELinux Development Support    
+	[*]	  NSA SELinux AVC Statistics   
+	(1)   NSA SELinux checkreqprot default value 
+	[ ]	  NSA SELinux maximum supported policy format version
+	[*]	TOMOYO Linux Support
+	[ ]	AppArmor support  
+	[ ]	Integrity Measurement Architecture(IMA)  
+	 Default security module (SELinux)  --->    
+
+
+[Cryptographic API]
+	--- Cryptographic API 
+	   *** Crypto core or helper ***
+	{*}   Cryptographic algorithm manager    
+	[*]	  Disable run-time self tests  
+	{M}   GF(2^128) multiplication functions (EXPERIMENTAL)  
+	<M>   Null algorithms 
+	< >   Parallel crypto engine (EXPERIMENTAL)  
+	< >   Software async crypto daemon 
+	{M}   Authenc support 
+	<M>   Testing module  
+	   *** Authenticated Encryption with Associated Data ***
+	<M>   CCM support  
+	<M>   GCM/GMAC support
+	{M}   Sequence Number IV Generator 
+	   *** Block modes ***    
+	{M}   CBC support  
+	{M}   CTR support  
+	<M>   CTS support  
+	{M}   ECB support  
+	<M>   LRW support (EXPERIMENTAL)   
+	{M}   PCBC support 
+	<M>   XTS support (EXPERIMENTAL)   
+	   *** Hash modes ***
+	{M}   HMAC support 
+	<M>   XCBC support 
+	<M>   VMAC support 
+	   *** Digest ***  
+	{M}   CRC32c CRC algorithm  
+	<M>   CRC32c INTEL hardware acceleration 
+	{M}   GHASH digest algorithm 
+	{M}   MD4 digest algorithm   
+	-*-   MD5 digest algorithm   
+	{M}   Michael MIC keyed digest algorithm 
+	<M>   RIPEMD-128 digest algorithm  
+	<M>   RIPEMD-160 digest algorithm  
+	<M>   RIPEMD-256 digest algorithm  
+	<M>   RIPEMD-320 digest algorithm  
+	{M}   SHA1 digest algorithm  
+	{M}   SHA224 and SHA256 digest algorithm 
+	<M>   SHA384 and SHA512 digest algorithms
+	<M>   Tiger digest algorithms
+	<M>   Whirlpool digest algorithms  
+	   *** Ciphers *** 
+	{M}   AES cipher algorithms  
+	<M>   AES cipher algorithms (i586) 
+	< >   AES cipher algorithms (AES-NI)     
+	<M>   Anubis cipher algorithm
+	{M}   ARC4 cipher algorithm  
+	<M>   Blowfish cipher algorithm    
+	<M>   Camellia cipher algorithms   
+	<M>   CAST5 (CAST-128) cipher algorithm  
+	<M>   CAST6 (CAST-256) cipher algorithm    
+	{M}   DES and Triple DES EDE cipher algorithms     
+	{M}   FCrypt cipher algorithm
+	<M>   Khazad cipher algorithm
+	<M>   Salsa20 stream cipher algorithm (EXPERIMENTAL)  
+	<M>   Salsa20 stream cipher algorithm (i586) (EXPERIMENTAL)
+	<M>   SEED cipher algorithm  
+	<M>   Serpent cipher algorithm     
+	<M>   TEA, XTEA and XETA cipher algorithms   
+	<M>   Twofish cipher algorithm     
+	<M>   Twofish cipher algorithms (i586)   
+	   *** Compression ***    
+	{M}   Deflate compression algorithm
+	<M>   Zlib compression algorithm   
+	{M}   LZO compression algorithm    
+	   *** Random Number Generation ***   
+	<M>   Pseudo Random Number Generation for Cryptographic modules 
+	< >   User-space interface for hash algorithms     
+	< >   User-space interface for symmetric key cipher algorithms  
+	[*]	  Hardware crypto devices  --->   
+
+[Cryptographic API\Hardware crypto devices  ]
+	--- Hardware crypto devices  
+	<M>   Support for VIA PadLock ACE  
+	<M>     PadLock driver for AES algorithm 
+	<M>     PadLock driver for SHA1 and SHA256 algorithms 
+	<M>   Support for the Geode LX AES engine
+	<M>   Driver HIFN 795x crypto accelerator chips    
+	[*]	    HIFN 795x random number generator  
+
+[Virtualization]
+	--- Virtualization 
+	< >   Kernel-based Virtual Machine (KVM) support   
+	< >   Host kernel accelerator for virtio net (EXPERIMENTAL)
+	< >   Linux hypervisor example code
+	< >   PCI driver for virtio devices (EXPERIMENTAL) 
+	< >   Virtio balloon driver (EXPERIMENTAL) 
+
+[Library routines]
+	{M} CRC-CCITT functions 
+	{M} CRC16 functions
+	{M} CRC calculation for the T10 Data Integrity Field  
+	{M} CRC ITU-T V.41 functions 
+	-*- CRC32 functions
+	{M} CRC7 functions 
+	{M} CRC32c (Castagnoli, et al) Cyclic Redundancy-Check
+	-*- XZ decompression support 
+	< > XZ decompressor tester   
+	-*- Averaging functions  
+
+
