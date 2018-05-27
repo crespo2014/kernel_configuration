@@ -1,0 +1,4 @@
+00:00.0 Host bridge [0600]: Intel Corporation Mobile PM965/GM965/GL960 Memory Controller Hub [8086:2a00] (rev 0c)
+
+Device Drivers > Graphics support > /dev/agpgart (AGP Support)> 
+<*>   Intel 440LX/BX/GX, I8xx and E7x05 chipset support

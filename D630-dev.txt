@@ -1,0 +1,648 @@
+00:00.0 Host bridge [0600]: Intel Corporation Mobile PM965/GM965/GL960 Memory Controller Hub [8086:2a00] (rev 0c)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_BRIDGE_HOST		0x0600
+#define PCI_DEVICE_ID_INTEL_82965GM_HB      0x2A00
+./drivers/char/agp/intel-agp.h
+
+Subsystem: Dell Mobile PM965/GM965/GL960 Memory Controller Hub [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+00:02.0 VGA compatible controller [0300]: Intel Corporation Mobile GM965/GL960 Integrated Graphics Controller (primary) [8086:2a02] (rev 0c)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_DISPLAY_VGA		0x0300
+#define PCI_DEVICE_ID_INTEL_965GM	0x2A02
+./drivers/video/fbdev/intelfb/intelfb.h
+#define PCI_DEVICE_ID_INTEL_82965GM_IG      0x2A02
+./drivers/char/agp/intel-agp.h
+	INTEL_VGA_DEVICE(0x2a02, info),	/* I965_GM */ \
+./include/drm/i915_pciids.h
+
+Subsystem: Dell Latitude D630 [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: i915
+config SND_HDA_I915
+./sound/hda/Kconfig
+config DRM_I915
+config DRM_I915_ALPHA_SUPPORT
+config DRM_I915_CAPTURE_ERROR
+config DRM_I915_COMPRESS_ERROR
+config DRM_I915_USERPTR
+config DRM_I915_GVT
+config DRM_I915_GVT_KVMGT
+./drivers/gpu/drm/i915/Kconfig
+snd-hda-core-$(CONFIG_SND_HDA_I915) += hdac_i915.o
+./sound/hda/Makefile
+obj-$(CONFIG_DRM_I915)	+= i915/
+./drivers/gpu/drm/Makefile
+subdir-ccflags-$(CONFIG_DRM_I915_WERROR) := -Werror
+i915-$(CONFIG_COMPAT)   += i915_ioc32.o
+i915-$(CONFIG_DEBUG_FS) += i915_debugfs.o intel_pipe_crc.o
+i915-$(CONFIG_DRM_I915_CAPTURE_ERROR) += i915_gpu_error.o
+i915-$(CONFIG_DRM_I915_SELFTEST) += \
+ifeq ($(CONFIG_DRM_I915_GVT),y)
+obj-$(CONFIG_DRM_I915) += i915.o
+./drivers/gpu/drm/i915/Makefile
+obj-$(CONFIG_DRM_I915_GVT_KVMGT)	+= $(GVT_DIR)/kvmgt.o
+./drivers/gpu/drm/i915/gvt/Makefile
+
+00:02.1 Display controller [0380]: Intel Corporation Mobile GM965/GL960 Integrated Graphics Controller (secondary) [8086:2a03] (rev 0c)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_DISPLAY_OTHER		0x0380
+
+Subsystem: Dell Mobile GM965/GL960 Integrated Graphics Controller (secondary) [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+00:1a.0 USB controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI Controller #4 [8086:2834] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_USB		0x0c03
+#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
+#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
+#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+
+Subsystem: Dell 82801H (ICH8 Family) USB UHCI Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: uhci_hcd
+config USB_UHCI_HCD
+./drivers/usb/host/Kconfig
+obj-$(CONFIG_USB_UHCI_HCD)	+= host/
+./drivers/usb/Makefile
+obj-$(CONFIG_USB_UHCI_HCD)	+= uhci-hcd.o
+./drivers/usb/host/Makefile
+
+00:1a.1 USB controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI Controller #5 [8086:2835] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_USB		0x0c03
+#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
+#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
+#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+
+Subsystem: Dell 82801H (ICH8 Family) USB UHCI Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: uhci_hcd
+config USB_UHCI_HCD
+./drivers/usb/host/Kconfig
+obj-$(CONFIG_USB_UHCI_HCD)	+= host/
+./drivers/usb/Makefile
+obj-$(CONFIG_USB_UHCI_HCD)	+= uhci-hcd.o
+./drivers/usb/host/Makefile
+
+00:1a.7 USB controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB2 EHCI Controller #2 [8086:283a] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_USB		0x0c03
+#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
+#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
+#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+
+Subsystem: Dell 82801H (ICH8 Family) USB2 EHCI Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: ehci-pci
+obj-$(CONFIG_USB_EHCI_PCI)	+= ehci-pci.o
+./drivers/usb/host/Makefile
+
+00:1b.0 Audio device [0403]: Intel Corporation 82801H (ICH8 Family) HD Audio Controller [8086:284b] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+
+Subsystem: Dell Dell Latitude D630 [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: snd_hda_intel
+config SND_HDA_INTEL
+./sound/pci/hda/Kconfig
+obj-$(CONFIG_SND_HDA_INTEL) += snd-hda-intel.o
+./sound/pci/hda/Makefile
+
+00:1c.0 PCI bridge [0604]: Intel Corporation 82801H (ICH8 Family) PCI Express Port 1 [8086:283f] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_BRIDGE_PCI		0x0604
+
+Kernel driver in use: pcieport
+config PCIEPORTBUS
+./drivers/pci/pcie/Kconfig
+obj-$(CONFIG_PCIEPORTBUS) += pcie/
+./drivers/pci/Makefile
+obj-$(CONFIG_PCIEPORTBUS)	+= pcieportdrv.o
+./drivers/pci/pcie/Makefile
+
+00:1c.1 PCI bridge [0604]: Intel Corporation 82801H (ICH8 Family) PCI Express Port 2 [8086:2841] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_BRIDGE_PCI		0x0604
+
+Kernel driver in use: pcieport
+config PCIEPORTBUS
+./drivers/pci/pcie/Kconfig
+obj-$(CONFIG_PCIEPORTBUS) += pcie/
+./drivers/pci/Makefile
+obj-$(CONFIG_PCIEPORTBUS)	+= pcieportdrv.o
+./drivers/pci/pcie/Makefile
+
+00:1c.5 PCI bridge [0604]: Intel Corporation 82801H (ICH8 Family) PCI Express Port 6 [8086:2849] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_BRIDGE_PCI		0x0604
+
+Kernel driver in use: pcieport
+config PCIEPORTBUS
+./drivers/pci/pcie/Kconfig
+obj-$(CONFIG_PCIEPORTBUS) += pcie/
+./drivers/pci/Makefile
+obj-$(CONFIG_PCIEPORTBUS)	+= pcieportdrv.o
+./drivers/pci/pcie/Makefile
+
+00:1d.0 USB controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI Controller #1 [8086:2830] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_USB		0x0c03
+#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
+#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
+#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+
+Subsystem: Dell 82801H (ICH8 Family) USB UHCI Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: uhci_hcd
+config USB_UHCI_HCD
+./drivers/usb/host/Kconfig
+obj-$(CONFIG_USB_UHCI_HCD)	+= host/
+./drivers/usb/Makefile
+obj-$(CONFIG_USB_UHCI_HCD)	+= uhci-hcd.o
+./drivers/usb/host/Makefile
+
+00:1d.1 USB controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI Controller #2 [8086:2831] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_USB		0x0c03
+#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
+#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
+#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+
+Subsystem: Dell 82801H (ICH8 Family) USB UHCI Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: uhci_hcd
+config USB_UHCI_HCD
+./drivers/usb/host/Kconfig
+obj-$(CONFIG_USB_UHCI_HCD)	+= host/
+./drivers/usb/Makefile
+obj-$(CONFIG_USB_UHCI_HCD)	+= uhci-hcd.o
+./drivers/usb/host/Makefile
+
+00:1d.2 USB controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB UHCI Controller #3 [8086:2832] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_USB		0x0c03
+#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
+#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
+#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+
+Subsystem: Dell 82801H (ICH8 Family) USB UHCI Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: uhci_hcd
+config USB_UHCI_HCD
+./drivers/usb/host/Kconfig
+obj-$(CONFIG_USB_UHCI_HCD)	+= host/
+./drivers/usb/Makefile
+obj-$(CONFIG_USB_UHCI_HCD)	+= uhci-hcd.o
+./drivers/usb/host/Makefile
+
+00:1d.7 USB controller [0c03]: Intel Corporation 82801H (ICH8 Family) USB2 EHCI Controller #1 [8086:2836] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_USB		0x0c03
+#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
+#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
+#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+
+Subsystem: Dell 82801H (ICH8 Family) USB2 EHCI Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: ehci-pci
+obj-$(CONFIG_USB_EHCI_PCI)	+= ehci-pci.o
+./drivers/usb/host/Makefile
+
+00:1e.0 PCI bridge [0604]: Intel Corporation 82801 Mobile PCI Bridge [8086:2448] (rev f2)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_BRIDGE_PCI		0x0604
+#define PCI_DEVICE_ID_INTEL_82801BA_6	0x2448
+#define PCI_DEVICE_ID_INTEL_82801BA_6	0x2448
+./include/linux/pci_ids.h
+	{ PCI_DEVICE(0x8086, 0x2448) }, */
+drivers/char/hw_random/intel-rng.c
+
+00:1f.0 ISA bridge [0601]: Intel Corporation 82801HM (ICH8M) LPC Interface Controller [8086:2815] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_BRIDGE_ISA		0x0601
+#define PCI_DEVICE_ID_INTEL_ICH8_4	0x2815
+#define PCI_DEVICE_ID_INTEL_ICH8_4	0x2815
+./include/linux/pci_ids.h
+
+Subsystem: Dell 82801HM (ICH8M) LPC Interface Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+00:1f.1 IDE interface [0101]: Intel Corporation 82801HM/HEM (ICH8M/ICH8M-E) IDE Controller [8086:2850] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_STORAGE_IDE		0x0101
+#define PCI_DEVICE_ID_INTEL_ICH8_6	0x2850
+#define PCI_DEVICE_ID_INTEL_ICH8_6	0x2850
+./include/linux/pci_ids.h
+
+Subsystem: Dell 82801HM/HEM (ICH8M/ICH8M-E) IDE Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: ata_piix
+config ATA_PIIX
+./drivers/ata/Kconfig
+obj-$(CONFIG_ATA_PIIX)		+= ata_piix.o
+./drivers/ata/Makefile
+
+00:1f.2 IDE interface [0101]: Intel Corporation 82801HM/HEM (ICH8M/ICH8M-E) SATA Controller [IDE mode] [8086:2828] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_STORAGE_IDE		0x0101
+
+Subsystem: Dell 82801HM/HEM (ICH8M/ICH8M-E) SATA Controller [IDE mode] [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: ata_piix
+config ATA_PIIX
+./drivers/ata/Kconfig
+obj-$(CONFIG_ATA_PIIX)		+= ata_piix.o
+./drivers/ata/Makefile
+
+00:1f.3 SMBus [0c05]: Intel Corporation 82801H (ICH8 Family) SMBus Controller [8086:283e] (rev 02)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_SERIAL_SMBUS		0x0c05
+#define PCI_DEVICE_ID_INTEL_ICH8_5	0x283e
+#define PCI_DEVICE_ID_INTEL_ICH8_5	0x283e
+./include/linux/pci_ids.h
+
+Subsystem: Dell 82801H (ICH8 Family) SMBus Controller [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: i801_smbus
+
+09:00.0 Ethernet controller [0200]: Broadcom Limited NetXtreme BCM5755M Gigabit Ethernet PCI Express [14e4:1673] (rev 02)
+#define PCI_VENDOR_ID_BROADCOM		0x14e4
+#define PCI_CLASS_NETWORK_ETHERNET	0x0200
+#define PCI_DEVICE_ID_TIGON3_5755M	0x1673
+#define PCI_DEVICE_ID_TIGON3_5755M	0x1673
+./include/linux/pci_ids.h
+
+Subsystem: Dell NetXtreme BCM5755M Gigabit Ethernet PCI Express [1028:01f9]
+#define PCI_VENDOR_ID_DELL		0x1028
+
+Kernel driver in use: tg3
+config ITG3200
+./drivers/iio/gyro/Kconfig
+obj-$(CONFIG_TIGON3) += tg3.o
+./drivers/net/ethernet/broadcom/Makefile
+itg3200-$(CONFIG_IIO_BUFFER) += itg3200_buffer.o
+obj-$(CONFIG_ITG3200)   += itg3200.o
+./drivers/iio/gyro/Makefile
+
+0c:00.0 Network controller [0280]: Intel Corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection [8086:4229] (rev 61)
+#define PCI_VENDOR_ID_INTEL		0x8086
+#define PCI_CLASS_NETWORK_OTHER		0x0280
+	{IL_PCI_DEVICE(0x4229, PCI_ANY_ID, il4965_cfg)},
+drivers/net/wireless/intel/iwlegacy/4965-mac.c
+
+Subsystem: Intel Corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection [8086:1121]
+#define PCI_VENDOR_ID_INTEL		0x8086
+	{IWL_PCI_DEVICE(0x4235, 0x1121, iwl5300_agn_cfg)}, /* Half Mini Card */
+	{IWL_PCI_DEVICE(0x422B, 0x1121, iwl6000_3agn_cfg)},
+drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+
+Kernel driver in use: iwl4965
+config IWL4965
+./drivers/net/wireless/intel/iwlegacy/Kconfig
+obj-$(CONFIG_IWL4965)	+= iwl4965.o
+./drivers/net/wireless/intel/iwlegacy/Makefile
+
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+drivers/usb/serial/usb_debug.c
+#define PCI_DEVICE_ID_NCR_53C820	0x0002
+#define PCI_DEVICE_ID_NS_87415		0x0002
+#define PCI_DEVICE_ID_DEC_TULIP		0x0002
+#define PCI_DEVICE_ID_NEC_LOCAL		0x0002 /* Local Bridge */
+#define PCI_DEVICE_ID_SI_6202		0x0002
+#define PCI_DEVICE_ID_MOTOROLA_MPC106	0x0002
+#define PCI_DEVICE_ID_PICOPOWER_PT86C523	0x0002
+#define PCI_DEVICE_ID_MYLEX_DAC960_PD	0x0002
+#define PCI_DEVICE_ID_CYRIX_5520	0x0002
+#define PCI_DEVICE_ID_MADGE_MK2		0x0002
+#define PCI_DEVICE_ID_CREATIVE_EMU10K1	0x0002
+#define PCI_DEVICE_ID_VORTEX_GDT6x10	0x0002
+#define PCI_DEVICE_ID_EF_ATM_ASIC	0x0002
+#define PCI_DEVICE_ID_ZEITNET_1225	0x0002
+#define PCI_DEVICE_ID_V3_V351		0x0002
+#define PCI_DEVICE_ID_RP8INTF		0x0002
+#define PCI_DEVICE_ID_3DFX_VOODOO2	0x0002
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH4_232		0x0002
+#define PCI_DEVICE_ID_AUREAL_VORTEX_2	0x0002
+#define PCI_DEVICE_ID_APPLICOM_PCI2000IBS_CAN 0x0002
+#define PCI_DEVICE_ID_BCM1250_HT	0x0002
+#define PCI_DEVICE_ID_RENESAS_SH7780	0x0002
+#define PCI_DEVICE_ID_NX2031_10GCX4	0x0002
+#define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
+#define PCI_SUBDEVICE_ID_COMPUTONE_PG8	0x0002
+#define PCI_DEVICE_ID_TIGERJET_100	0x0002
+Bus 007 Device 003: ID 0b97:7772 O2 Micro, Inc. OZ776 CCID Smartcard Reader
+Bus 007 Device 002: ID 0b97:7761 O2 Micro, Inc. Oz776 1.1 Hub
+Bus 007 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+drivers/usb/serial/usb_debug.c
+#define PCI_CLASS_NOT_DEFINED_VGA	0x0001
+#define PCI_DEVICE_ID_NCR_53C810	0x0001
+#define PCI_DEVICE_ID_DEC_BRD		0x0001
+#define PCI_DEVICE_ID_NEC_CBUS_1	0x0001 /* PCI-Cbus Bridge */
+#define PCI_DEVICE_ID_SI_5591_AGP	0x0001
+#define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
+#define PCI_DEVICE_ID_MYLEX_DAC960_P	0x0001
+#define PCI_DEVICE_ID_APPLE_BANDIT	0x0001
+#define PCI_DEVICE_ID_CYRIX_PCI_MASTER	0x0001
+#define PCI_DEVICE_ID_3COM_3C985	0x0001
+#define PCI_DEVICE_ID_VORTEX_GDT6000B	0x0001
+#define PCI_DEVICE_ID_IDT_IDT77201	0x0001
+#define PCI_DEVICE_ID_ZEITNET_1221	0x0001
+#define PCI_DEVICE_ID_FUJITSU_FS155	0x0001
+#define PCI_DEVICE_ID_V3_V960		0x0001
+#define PCI_DEVICE_ID_RP32INTF		0x0001
+#define PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER	0x0001
+#define PCI_DEVICE_ID_3DFX_VOODOO	0x0001
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_232		0x0001
+#define PCI_DEVICE_ID_AUREAL_VORTEX_1	0x0001
+#define PCI_DEVICE_ID_DOMEX_DMX3191D	0x0001
+#define PCI_DEVICE_ID_APPLICOM_PCIGENERIC 0x0001
+#define PCI_DEVICE_ID_MOXA_RC7000	0x0001
+#define PCI_SUBDEVICE_ID_OXSEMI_C950	0x0001
+#define PCI_DEVICE_ID_BCM1250_PCI	0x0001
+#define PCI_DEVICE_ID_CENATEK_IDE	0x0001
+#define PCI_DEVICE_ID_RENESAS_SH7781	0x0001
+#define PCI_SUBSYSTEM_ID_CIRCUITCO_MINNOWBOARD	0x0001
+#define PCI_DEVICE_ID_NX2031_10GXSR	0x0001
+#define PCI_DEVICE_ID_DUNORD_I3000	0x0001
+#define PCI_DEVICE_ID_DCI_PCCOM4	0x0001
+#define PCI_SUBDEVICE_ID_COMPUTONE_PG4	0x0001
+#define PCI_DEVICE_ID_TIGERJET_300	0x0001
+#define PCI_DEVICE_ID_XEN_PLATFORM	0x0001
+Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+drivers/usb/serial/usb_debug.c
+#define PCI_CLASS_NOT_DEFINED_VGA	0x0001
+#define PCI_DEVICE_ID_NCR_53C810	0x0001
+#define PCI_DEVICE_ID_DEC_BRD		0x0001
+#define PCI_DEVICE_ID_NEC_CBUS_1	0x0001 /* PCI-Cbus Bridge */
+#define PCI_DEVICE_ID_SI_5591_AGP	0x0001
+#define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
+#define PCI_DEVICE_ID_MYLEX_DAC960_P	0x0001
+#define PCI_DEVICE_ID_APPLE_BANDIT	0x0001
+#define PCI_DEVICE_ID_CYRIX_PCI_MASTER	0x0001
+#define PCI_DEVICE_ID_3COM_3C985	0x0001
+#define PCI_DEVICE_ID_VORTEX_GDT6000B	0x0001
+#define PCI_DEVICE_ID_IDT_IDT77201	0x0001
+#define PCI_DEVICE_ID_ZEITNET_1221	0x0001
+#define PCI_DEVICE_ID_FUJITSU_FS155	0x0001
+#define PCI_DEVICE_ID_V3_V960		0x0001
+#define PCI_DEVICE_ID_RP32INTF		0x0001
+#define PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER	0x0001
+#define PCI_DEVICE_ID_3DFX_VOODOO	0x0001
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_232		0x0001
+#define PCI_DEVICE_ID_AUREAL_VORTEX_1	0x0001
+#define PCI_DEVICE_ID_DOMEX_DMX3191D	0x0001
+#define PCI_DEVICE_ID_APPLICOM_PCIGENERIC 0x0001
+#define PCI_DEVICE_ID_MOXA_RC7000	0x0001
+#define PCI_SUBDEVICE_ID_OXSEMI_C950	0x0001
+#define PCI_DEVICE_ID_BCM1250_PCI	0x0001
+#define PCI_DEVICE_ID_CENATEK_IDE	0x0001
+#define PCI_DEVICE_ID_RENESAS_SH7781	0x0001
+#define PCI_SUBSYSTEM_ID_CIRCUITCO_MINNOWBOARD	0x0001
+#define PCI_DEVICE_ID_NX2031_10GXSR	0x0001
+#define PCI_DEVICE_ID_DUNORD_I3000	0x0001
+#define PCI_DEVICE_ID_DCI_PCCOM4	0x0001
+#define PCI_SUBDEVICE_ID_COMPUTONE_PG4	0x0001
+#define PCI_DEVICE_ID_TIGERJET_300	0x0001
+#define PCI_DEVICE_ID_XEN_PLATFORM	0x0001
+Bus 005 Device 002: ID 1bcf:0005 Sunplus Innovation Technology Inc. Optical Mouse
+#define PCI_DEVICE_ID_LSI_53C810AP	0x0005
+#define PCI_DEVICE_ID_VLSI_82C592	0x0005
+#define PCI_DEVICE_ID_COMPEX2_100VG	0x0005
+#define PCI_DEVICE_ID_NEC_486		0x0005 /* 486 Like Peripheral Bus Bridge */
+#define PCI_DEVICE_ID_CREATIVE_20K1	0x0005
+#define PCI_DEVICE_ID_TTI_HPT372	0x0005
+#define PCI_DEVICE_ID_VORTEX_GDT6550	0x0005
+#define PCI_DEVICE_ID_EF_ATM_LANAIHB	0x0005
+#define PCI_DEVICE_ID_ARTOP_ATP850UF	0x0005
+#define PCI_DEVICE_ID_RP8OCTA		0x0005
+#define PCI_DEVICE_ID_3DFX_VOODOO3	0x0005
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_485_4_4	0x0005
+#define PCI_DEVICE_ID_LMC_SSI		0x0005
+#define PCI_DEVICE_ID_NX2031_HMEZ	0x0005
+Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+drivers/usb/serial/usb_debug.c
+#define PCI_CLASS_NOT_DEFINED_VGA	0x0001
+#define PCI_DEVICE_ID_NCR_53C810	0x0001
+#define PCI_DEVICE_ID_DEC_BRD		0x0001
+#define PCI_DEVICE_ID_NEC_CBUS_1	0x0001 /* PCI-Cbus Bridge */
+#define PCI_DEVICE_ID_SI_5591_AGP	0x0001
+#define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
+#define PCI_DEVICE_ID_MYLEX_DAC960_P	0x0001
+#define PCI_DEVICE_ID_APPLE_BANDIT	0x0001
+#define PCI_DEVICE_ID_CYRIX_PCI_MASTER	0x0001
+#define PCI_DEVICE_ID_3COM_3C985	0x0001
+#define PCI_DEVICE_ID_VORTEX_GDT6000B	0x0001
+#define PCI_DEVICE_ID_IDT_IDT77201	0x0001
+#define PCI_DEVICE_ID_ZEITNET_1221	0x0001
+#define PCI_DEVICE_ID_FUJITSU_FS155	0x0001
+#define PCI_DEVICE_ID_V3_V960		0x0001
+#define PCI_DEVICE_ID_RP32INTF		0x0001
+#define PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER	0x0001
+#define PCI_DEVICE_ID_3DFX_VOODOO	0x0001
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_232		0x0001
+#define PCI_DEVICE_ID_AUREAL_VORTEX_1	0x0001
+#define PCI_DEVICE_ID_DOMEX_DMX3191D	0x0001
+#define PCI_DEVICE_ID_APPLICOM_PCIGENERIC 0x0001
+#define PCI_DEVICE_ID_MOXA_RC7000	0x0001
+#define PCI_SUBDEVICE_ID_OXSEMI_C950	0x0001
+#define PCI_DEVICE_ID_BCM1250_PCI	0x0001
+#define PCI_DEVICE_ID_CENATEK_IDE	0x0001
+#define PCI_DEVICE_ID_RENESAS_SH7781	0x0001
+#define PCI_SUBSYSTEM_ID_CIRCUITCO_MINNOWBOARD	0x0001
+#define PCI_DEVICE_ID_NX2031_10GXSR	0x0001
+#define PCI_DEVICE_ID_DUNORD_I3000	0x0001
+#define PCI_DEVICE_ID_DCI_PCCOM4	0x0001
+#define PCI_SUBDEVICE_ID_COMPUTONE_PG4	0x0001
+#define PCI_DEVICE_ID_TIGERJET_300	0x0001
+#define PCI_DEVICE_ID_XEN_PLATFORM	0x0001
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+drivers/usb/serial/usb_debug.c
+#define PCI_DEVICE_ID_NCR_53C820	0x0002
+#define PCI_DEVICE_ID_NS_87415		0x0002
+#define PCI_DEVICE_ID_DEC_TULIP		0x0002
+#define PCI_DEVICE_ID_NEC_LOCAL		0x0002 /* Local Bridge */
+#define PCI_DEVICE_ID_SI_6202		0x0002
+#define PCI_DEVICE_ID_MOTOROLA_MPC106	0x0002
+#define PCI_DEVICE_ID_PICOPOWER_PT86C523	0x0002
+#define PCI_DEVICE_ID_MYLEX_DAC960_PD	0x0002
+#define PCI_DEVICE_ID_CYRIX_5520	0x0002
+#define PCI_DEVICE_ID_MADGE_MK2		0x0002
+#define PCI_DEVICE_ID_CREATIVE_EMU10K1	0x0002
+#define PCI_DEVICE_ID_VORTEX_GDT6x10	0x0002
+#define PCI_DEVICE_ID_EF_ATM_ASIC	0x0002
+#define PCI_DEVICE_ID_ZEITNET_1225	0x0002
+#define PCI_DEVICE_ID_V3_V351		0x0002
+#define PCI_DEVICE_ID_RP8INTF		0x0002
+#define PCI_DEVICE_ID_3DFX_VOODOO2	0x0002
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH4_232		0x0002
+#define PCI_DEVICE_ID_AUREAL_VORTEX_2	0x0002
+#define PCI_DEVICE_ID_APPLICOM_PCI2000IBS_CAN 0x0002
+#define PCI_DEVICE_ID_BCM1250_HT	0x0002
+#define PCI_DEVICE_ID_RENESAS_SH7780	0x0002
+#define PCI_DEVICE_ID_NX2031_10GCX4	0x0002
+#define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
+#define PCI_SUBDEVICE_ID_COMPUTONE_PG8	0x0002
+#define PCI_DEVICE_ID_TIGERJET_100	0x0002
+Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+drivers/usb/serial/usb_debug.c
+#define PCI_CLASS_NOT_DEFINED_VGA	0x0001
+#define PCI_DEVICE_ID_NCR_53C810	0x0001
+#define PCI_DEVICE_ID_DEC_BRD		0x0001
+#define PCI_DEVICE_ID_NEC_CBUS_1	0x0001 /* PCI-Cbus Bridge */
+#define PCI_DEVICE_ID_SI_5591_AGP	0x0001
+#define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
+#define PCI_DEVICE_ID_MYLEX_DAC960_P	0x0001
+#define PCI_DEVICE_ID_APPLE_BANDIT	0x0001
+#define PCI_DEVICE_ID_CYRIX_PCI_MASTER	0x0001
+#define PCI_DEVICE_ID_3COM_3C985	0x0001
+#define PCI_DEVICE_ID_VORTEX_GDT6000B	0x0001
+#define PCI_DEVICE_ID_IDT_IDT77201	0x0001
+#define PCI_DEVICE_ID_ZEITNET_1221	0x0001
+#define PCI_DEVICE_ID_FUJITSU_FS155	0x0001
+#define PCI_DEVICE_ID_V3_V960		0x0001
+#define PCI_DEVICE_ID_RP32INTF		0x0001
+#define PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER	0x0001
+#define PCI_DEVICE_ID_3DFX_VOODOO	0x0001
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_232		0x0001
+#define PCI_DEVICE_ID_AUREAL_VORTEX_1	0x0001
+#define PCI_DEVICE_ID_DOMEX_DMX3191D	0x0001
+#define PCI_DEVICE_ID_APPLICOM_PCIGENERIC 0x0001
+#define PCI_DEVICE_ID_MOXA_RC7000	0x0001
+#define PCI_SUBDEVICE_ID_OXSEMI_C950	0x0001
+#define PCI_DEVICE_ID_BCM1250_PCI	0x0001
+#define PCI_DEVICE_ID_CENATEK_IDE	0x0001
+#define PCI_DEVICE_ID_RENESAS_SH7781	0x0001
+#define PCI_SUBSYSTEM_ID_CIRCUITCO_MINNOWBOARD	0x0001
+#define PCI_DEVICE_ID_NX2031_10GXSR	0x0001
+#define PCI_DEVICE_ID_DUNORD_I3000	0x0001
+#define PCI_DEVICE_ID_DCI_PCCOM4	0x0001
+#define PCI_SUBDEVICE_ID_COMPUTONE_PG4	0x0001
+#define PCI_DEVICE_ID_TIGERJET_300	0x0001
+#define PCI_DEVICE_ID_XEN_PLATFORM	0x0001
+Bus 003 Device 002: ID 413c:8140 Dell Computer Corp. Wireless 360 Bluetooth
+		USB_DEVICE_AND_INTERFACE_INFO(0x413C, 0x8195,
+		USB_DEVICE_AND_INTERFACE_INFO(0x413C, 0x8196,
+		USB_DEVICE_AND_INTERFACE_INFO(0x413C, 0x819b,
+drivers/net/usb/qmi_wwan.c
+	{ USB_DEVICE_AND_INTERFACE_INFO(0x413c, 0x81bb,
+	{ USB_DEVICE_AND_INTERFACE_INFO(0x413c, 0x81bc,
+drivers/net/usb/cdc_ncm.c
+	{USB_DEVICE(0x413c, 0x5513)},	/* Dell WLA3310 USB Wireless Adapter */
+	{USB_DEVICE(0x413c, 0x8102)},	/* Spinnaker DUT */
+	{USB_DEVICE(0x413c, 0x8104)},	/* Cohiba Proto board */
+drivers/net/wireless/intersil/p54/p54usb.c
+	{ USB_DEVICE(0x413c, 0x8197) },
+	{ USB_DEVICE(0x413c, 0x8126), .driver_info = BTUSB_WRONG_SCO_MTU },
+	{ USB_DEVICE(0x413c, 0x8152), .driver_info = BTUSB_WRONG_SCO_MTU },
+	{ USB_DEVICE(0x413c, 0x8156), .driver_info = BTUSB_WRONG_SCO_MTU },
+drivers/bluetooth/btusb.c
+	{ USB_DEVICE(0x413C, 0x4001) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4002) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4003) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4004) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4005) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4006) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4007) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4008) }, /* Dell Axim USB Sync */
+	{ USB_DEVICE(0x413C, 0x4009) }, /* Dell Axim USB Sync */
+drivers/usb/serial/ipaq.c
+	{ USB_DEVICE(0x413C, 0x9500) }, /* DW700 GPS USB interface */
+drivers/usb/serial/cp210x.c
+	{USB_DEVICE(0x413c, 0x8185)},	/* Dell Gobi 2000 QDL device (N0218, VU936) */
+	{USB_DEVICE(0x413c, 0x8186)},	/* Dell Gobi 2000 Modem device (N0218, VU936) */
+	{USB_DEVICE(0x413c, 0x8193)},	/* Dell Gobi 3000 QDL */
+	{USB_DEVICE(0x413c, 0x8194)},	/* Dell Gobi 3000 Composite */
+	{USB_DEVICE(0x413c, 0x81a6)},	/* Dell DW5570 QDL (MC8805) */
+drivers/usb/serial/qcserial.c
+Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+	{ USB_DEVICE(0x1d6b, 0x0010) },
+	{ USB_DEVICE(0x1d6b, 0x0011) },
+drivers/usb/serial/usb_debug.c
+#define PCI_CLASS_NOT_DEFINED_VGA	0x0001
+#define PCI_DEVICE_ID_NCR_53C810	0x0001
+#define PCI_DEVICE_ID_DEC_BRD		0x0001
+#define PCI_DEVICE_ID_NEC_CBUS_1	0x0001 /* PCI-Cbus Bridge */
+#define PCI_DEVICE_ID_SI_5591_AGP	0x0001
+#define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
+#define PCI_DEVICE_ID_MYLEX_DAC960_P	0x0001
+#define PCI_DEVICE_ID_APPLE_BANDIT	0x0001
+#define PCI_DEVICE_ID_CYRIX_PCI_MASTER	0x0001
+#define PCI_DEVICE_ID_3COM_3C985	0x0001
+#define PCI_DEVICE_ID_VORTEX_GDT6000B	0x0001
+#define PCI_DEVICE_ID_IDT_IDT77201	0x0001
+#define PCI_DEVICE_ID_ZEITNET_1221	0x0001
+#define PCI_DEVICE_ID_FUJITSU_FS155	0x0001
+#define PCI_DEVICE_ID_V3_V960		0x0001
+#define PCI_DEVICE_ID_RP32INTF		0x0001
+#define PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER	0x0001
+#define PCI_DEVICE_ID_3DFX_VOODOO	0x0001
+#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_232		0x0001
+#define PCI_DEVICE_ID_AUREAL_VORTEX_1	0x0001
+#define PCI_DEVICE_ID_DOMEX_DMX3191D	0x0001
+#define PCI_DEVICE_ID_APPLICOM_PCIGENERIC 0x0001
+#define PCI_DEVICE_ID_MOXA_RC7000	0x0001
+#define PCI_SUBDEVICE_ID_OXSEMI_C950	0x0001
+#define PCI_DEVICE_ID_BCM1250_PCI	0x0001
+#define PCI_DEVICE_ID_CENATEK_IDE	0x0001
+#define PCI_DEVICE_ID_RENESAS_SH7781	0x0001
+#define PCI_SUBSYSTEM_ID_CIRCUITCO_MINNOWBOARD	0x0001
+#define PCI_DEVICE_ID_NX2031_10GXSR	0x0001
+#define PCI_DEVICE_ID_DUNORD_I3000	0x0001
+#define PCI_DEVICE_ID_DCI_PCCOM4	0x0001
+#define PCI_SUBDEVICE_ID_COMPUTONE_PG4	0x0001
+#define PCI_DEVICE_ID_TIGERJET_300	0x0001
+#define PCI_DEVICE_ID_XEN_PLATFORM	0x0001
