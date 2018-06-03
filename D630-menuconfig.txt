@@ -1,4 +1,36 @@
 00:00.0 Host bridge [0600]: Intel Corporation Mobile PM965/GM965/GL960 Memory Controller Hub [8086:2a00] (rev 0c)
 
-Device Drivers > Graphics support > /dev/agpgart (AGP Support)> 
-<*>   Intel 440LX/BX/GX, I8xx and E7x05 chipset support
+Device Drivers >
+    >Generic Driver Options
+        ()    External firmware blobs to build into the kernel binary
+    >Graphics support
+        /dev/agpgart (AGP Support)>
+        <*>   Intel 440LX/BX/GX, I8xx and E7x05 chipset support
+    Serial ATA and Parallel ATA drivers (libata)>
+        [*]   Verbose ATA error reporting
+        [*]   ATA ACPI Support
+        [ ]     SATA Zero Power Optical Disc Drive (ZPODD) support
+        [*]   SATA Port Multiplier support
+              *** Controllers with non-SFF native interface ***
+        <*>   AHCI SATA support
+        (0)     Default SATA Link Power Management policy for mobile chipsets
+        <*>   Platform AHCI SATA support
+        < >   Initio 162x SATA support (Very Experimental)
+        < >   ACard AHCI variant (ATP 8620)
+        < >   Silicon Image 3124/3132 SATA support
+        [*]   ATA SFF support (for legacy IDE and PATA)
+                *** SFF controllers with custom DMA interface ***
+        < >     Pacific Digital ADMA support
+        < >     Pacific Digital SATA QStor support
+        < >     Promise SATA SX4 support (Experimental)
+        [*]     ATA BMDMA support
+                  *** SATA SFF controllers with BMDMA ***
+        <*>       Intel ESB, ICH, PIIX3, PIIX4 PATA/SATA support
+        <*>       Intel PATA old PIIX support
+        <*>       Intel SCH PATA support
+        <*>     Intel PATA MPIIX support
+        <*>     ACPI firmware driver for PATA                                                                                   │ │
+        <*>     Generic ATA support
+
+Device Drivers
+
