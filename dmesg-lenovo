@@ -1,0 +1,1792 @@
+[  105.516718]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[  105.518985]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[  105.521250]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[  105.523506]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[  105.525749]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[  105.527994]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[  105.530225]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[  105.532458] INFO: rcu_sched detected stalls on CPUs/tasks:
+[  105.534586] 	6-...: (5251 ticks this GP) idle=fc3/140000000000000/0 softirq=1208/1209 fqs=2614 
+[  105.536708] 	(detected by 2, t=5261 jiffies, g=15, c=14, q=1452)
+[  105.538826] Task dump for CPU 6:
+[  105.540945] NetworkManager  R  running task        0   525      1 0x00000008
+[  105.543092]  0000000000000046 ffff89ae9f358980 ffffa47302dc75d0 ffffffff812b2ff2
+[  105.545038]  0000000000000000 ffff89ae9f358980 0000000000000000 0000000000000000
+[  105.546684]  0000001000000006 0000000000000001 ffff89ae8b900700 0000000000001771
+[  105.548336] Call Trace:
+[  105.549970]  [<ffffffff812b2ff2>] ? enqueue_task_fair+0x82/0x940
+[  105.551622]  [<ffffffff815412ac>] ? delay_tsc+0x3c/0x50
+[  105.553277]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[  105.554914]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[  105.556559]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[  105.558203]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[  105.559843]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[  105.561490]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[  105.563125]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[  105.564771]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[  105.566411]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[  105.568069]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[  105.569657]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[  105.571229]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[  105.572811]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[  105.574396]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[  105.575977]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[  105.577549]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[  105.579129]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[  105.580703]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[  105.582232]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[  105.583769]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[  105.585301]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[  105.586829]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[  105.588360]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[  105.589896]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[  105.591430]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[  105.592943]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[  105.594437]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[  105.595926]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[  105.597416]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[  105.598910]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[  105.600401]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[  105.601893]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[  105.603386]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[  105.604868]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[  114.832651] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[  114.929540] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[  115.747728] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[  115.883578] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[  115.903903] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[  122.855371] nouveau 0000:01:00.0: DRM: evicting buffers...
+[  122.902715] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[  122.902735] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[  122.905479] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[  125.027475] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[  125.202296] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[  125.222886] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[  131.093785] nouveau 0000:01:00.0: DRM: evicting buffers...
+[  131.093789] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[  131.093812] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[  131.096533] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[  146.124442] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[  146.286792] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[  146.307397] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[  152.188326] nouveau 0000:01:00.0: DRM: evicting buffers...
+[  152.188331] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[  152.188359] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[  152.191176] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[  300.156916] mce: [Hardware Error]: Machine check events logged
+[  415.300411] INFO: rcu_sched self-detected stall on CPU
+[  415.300428] 	6-...: (5249 ticks this GP) idle=f25/140000000000001/0 softirq=6131/6131 fqs=2624 
+[  415.300429] 	 (t=5250 jiffies g=6972 c=6971 q=2569)
+[  415.300431] Task dump for CPU 6:
+[  415.300432] NetworkManager  R  running task        0   525      1 0x00000008
+[  415.300434]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000006 ffffffff81f18ec0
+[  415.300436]  ffffffff8138112b ffff89ae9f3996c0 ffffffff81e4fd00 0000000000000000
+[  415.300438]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[  415.300440] Call Trace:
+[  415.300442]  <IRQ> 
+[  415.300445]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[  415.300449]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[  415.300452]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[  415.300455]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[  415.300457]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[  415.300458]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[  415.300460]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[  415.300461]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[  415.300463]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[  415.300464]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[  415.300468]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[  415.300469]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[  415.300470]  <EOI> 
+[  415.300473]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[  415.300475]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[  415.300479]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[  415.300481]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[  415.300484]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[  415.300487]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[  415.300492]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[  415.300506]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[  415.300514]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[  415.300522]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[  415.300525]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[  415.300527]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[  415.300528]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[  415.300530]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[  415.300532]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[  415.300533]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[  415.300536]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[  415.300538]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[  415.300539]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[  415.300542]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[  415.300544]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[  415.300546]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[  415.300548]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[  415.300550]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[  415.300551]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[  415.300553]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[  415.300555]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[  415.300556]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[  415.300558]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[  415.300560]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[  415.300562]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[  415.300564]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[  415.300566]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[  415.300567]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[  415.300570]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[  415.300571]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[  424.606626] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[  448.637998] device-mapper: uevent: version 1.0.3
+[  448.638061] device-mapper: ioctl: 4.35.0-ioctl (2016-06-23) initialised: dm-devel@redhat.com
+[  450.050814] SGI XFS with ACLs, security attributes, realtime, no debug enabled
+[  450.061391] JFS: nTxBlock = 8192, nTxLock = 65536
+[  450.066603] ntfs: driver 2.1.32 [Flags: R/O MODULE].
+[  450.072983] QNX4 filesystem 0.2.3 registered.
+[  450.143090] raid6: sse2x1   gen() 10324 MB/s
+[  450.211085] raid6: sse2x1   xor()  8903 MB/s
+[  450.279081] raid6: sse2x2   gen() 14345 MB/s
+[  450.347079] raid6: sse2x2   xor()  9629 MB/s
+[  450.415078] raid6: sse2x4   gen() 16554 MB/s
+[  450.483075] raid6: sse2x4   xor() 11679 MB/s
+[  450.551072] raid6: avx2x1   gen() 22105 MB/s
+[  450.619067] raid6: avx2x2   gen() 25557 MB/s
+[  450.687067] raid6: avx2x4   gen() 29429 MB/s
+[  450.687068] raid6: using algorithm avx2x4 gen() 29429 MB/s
+[  450.687069] raid6: using avx2x2 recovery algorithm
+[  450.689063] xor: automatically using best checksumming function   avx       
+[  450.696456] Btrfs loaded, crc32c=crc32c-intel
+[  450.698971] fuse init (API version 7.26)
+[  575.978859] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[  576.141799] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[  576.162474] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[  581.170668] nouveau 0000:01:00.0: DRM: evicting buffers...
+[  581.170673] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[  581.170696] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[  581.173408] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[  590.346485] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[  590.508527] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[  590.529145] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[  596.082181] nouveau 0000:01:00.0: DRM: evicting buffers...
+[  596.082186] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[  596.082209] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[  596.084931] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[  761.316743] INFO: rcu_sched self-detected stall on CPU
+[  761.316763] 	2-...: (5250 ticks this GP) idle=ecd/140000000000001/0 softirq=16633/16633 fqs=2526 
+[  761.316764] 	 (t=5251 jiffies g=17995 c=17994 q=2418)
+[  761.316766] Task dump for CPU 2:
+[  761.316768] NetworkManager  R  running task        0   525      1 0x00000008
+[  761.316770]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[  761.316773]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[  761.316774]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 0000000000000001
+[  761.316776] Call Trace:
+[  761.316779]  <IRQ> 
+[  761.316783]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[  761.316798]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[  761.316800]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[  761.316803]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[  761.316805]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[  761.316806]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[  761.316808]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[  761.316809]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[  761.316811]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[  761.316814]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[  761.316817]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[  761.316817]  <EOI> 
+[  761.316820]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[  761.316822]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[  761.316829]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[  761.316831]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[  761.316836]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[  761.316839]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[  761.316848]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[  761.316880]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[  761.316894]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[  761.316904]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[  761.316908]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[  761.316910]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[  761.316912]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[  761.316914]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[  761.316917]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[  761.316918]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[  761.316921]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[  761.316923]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[  761.316925]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[  761.316927]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[  761.316929]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[  761.316931]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[  761.316933]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[  761.316935]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[  761.316936]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[  761.316938]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[  761.316940]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[  761.316941]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[  761.316944]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[  761.316946]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[  761.316949]  [<ffffffff81423308>] ? dput+0x38/0x250
+[  761.316951]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[  761.316953]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[  761.316955]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[  761.316957]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[  761.316960]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[  770.617909] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 1107.301586] INFO: rcu_sched self-detected stall on CPU
+[ 1107.301603] 	0-...: (5249 ticks this GP) idle=aff/140000000000001/0 softirq=32613/32613 fqs=2619 
+[ 1107.301604] 	 (t=5250 jiffies g=30774 c=30773 q=1470)
+[ 1107.301606] Task dump for CPU 0:
+[ 1107.301607] NetworkManager  R  running task        0   525      1 0x00000008
+[ 1107.301610]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000000 ffffffff81f18ec0
+[ 1107.301612]  ffffffff8138112b ffff89ae9f2196c0 ffffffff81e4fd00 0000000000000000
+[ 1107.301614]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 1107.301616] Call Trace:
+[ 1107.301618]  <IRQ> 
+[ 1107.301622]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 1107.301625]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 1107.301637]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 1107.301640]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 1107.301642]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 1107.301643]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 1107.301645]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 1107.301647]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 1107.301648]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 1107.301650]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 1107.301653]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 1107.301654]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 1107.301655]  <EOI> 
+[ 1107.301658]  [<ffffffff81541295>] ? delay_tsc+0x25/0x50
+[ 1107.301660]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 1107.301664]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 1107.301666]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 1107.301669]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 1107.301671]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 1107.301676]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 1107.301689]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 1107.301698]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 1107.301707]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 1107.301710]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 1107.301712]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 1107.301714]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 1107.301715]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 1107.301717]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 1107.301719]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 1107.301721]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 1107.301723]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 1107.301724]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 1107.301727]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 1107.301728]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 1107.301730]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 1107.301733]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 1107.301734]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 1107.301736]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 1107.301738]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 1107.301739]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 1107.301741]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 1107.301743]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 1107.301745]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 1107.301747]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 1107.301749]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 1107.301751]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 1107.301752]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 1107.301755]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 1107.301756]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 1116.597500] ------------[ cut here ]------------
+[ 1116.597507] WARNING: CPU: 0 PID: 3 at /build/linux-EbeuWA/linux-4.9.130/net/sched/sch_generic.c:316 dev_watchdog+0x233/0x240
+[ 1116.597508] NETDEV WATCHDOG: enp9s0 (r8169): transmit queue 0 timed out
+[ 1116.597509] Modules linked in: fuse btrfs xor raid6_pq ufs qnx4 hfsplus hfs minix ntfs msdos jfs xfs libcrc32c dm_mod bnep snd_hda_codec_hdmi nls_ascii nls_cp437 vfat fat btusb btrtl btbcm btintel arc4 bluetooth intel_rapl iTCO_wdt iTCO_vendor_support x86_pkg_temp_thermal intel_powerclamp rtl8723be coretemp snd_hda_codec_realtek kvm_intel snd_hda_codec_generic btcoexist rtl8723_common kvm rtl_pci nouveau rtlwifi irqbypass uvcvideo videobuf2_vmalloc i915 crct10dif_pclmul snd_hda_intel videobuf2_memops crc32_pclmul mac80211 videobuf2_v4l2 videobuf2_core ghash_clmulni_intel mxm_wmi snd_hda_codec intel_cstate ttm videodev snd_hda_core intel_uncore snd_hwdep media drm_kms_helper efi_pstore rtsx_pci_ms snd_pcm ie31200_edac intel_rapl_perf cfg80211 pcspkr memstick joydev evdev drm snd_timer mei_me sg snd
+[ 1116.597547]  serio_raw efivars i2c_algo_bit ideapad_laptop soundcore lpc_ich mei shpchp sparse_keymap edac_core rfkill ac wmi battery video button efivarfs ip_tables x_tables autofs4 ext4 crc16 jbd2 crc32c_generic fscrypto ecb mbcache hid_generic usbhid hid sd_mod rtsx_pci_sdmmc mmc_core crc32c_intel aesni_intel aes_x86_64 glue_helper ahci lrw gf128mul libahci ablk_helper cryptd libata psmouse xhci_pci i2c_i801 scsi_mod ehci_pci i2c_smbus ehci_hcd xhci_hcd r8169 rtsx_pci mfd_core mii usbcore usb_common thermal
+[ 1116.597578] CPU: 0 PID: 3 Comm: ksoftirqd/0 Not tainted 4.9.0-8-amd64 #1 Debian 4.9.130-2
+[ 1116.597580] Hardware name: LENOVO 20378/Lenovo Y50-70, BIOS 9ECN43WW(V3.03) 08/12/2015
+[ 1116.597581]  0000000000000000 ffffffff81533d74 ffffa473018cbce0 0000000000000000
+[ 1116.597584]  ffffffff8127a59e 0000000000000000 ffffa473018cbd38 ffff89ae87442000
+[ 1116.597587]  0000000000000000 ffff89ae87cfec80 0000000000000001 ffffffff8127a61f
+[ 1116.597589] Call Trace:
+[ 1116.597594]  [<ffffffff81533d74>] ? dump_stack+0x5c/0x78
+[ 1116.597596]  [<ffffffff8127a59e>] ? __warn+0xbe/0xe0
+[ 1116.597598]  [<ffffffff8127a61f>] ? warn_slowpath_fmt+0x5f/0x80
+[ 1116.597601]  [<ffffffff8173b833>] ? dev_watchdog+0x233/0x240
+[ 1116.597603]  [<ffffffff8173b600>] ? dev_deactivate_queue.constprop.26+0x60/0x60
+[ 1116.597606]  [<ffffffff812e87c2>] ? call_timer_fn+0x32/0x120
+[ 1116.597608]  [<ffffffff812e8b37>] ? run_timer_softirq+0x1d7/0x430
+[ 1116.597611]  [<ffffffff818190b0>] ? __switch_to_asm+0x40/0x70
+[ 1116.597613]  [<ffffffff818190a4>] ? __switch_to_asm+0x34/0x70
+[ 1116.597615]  [<ffffffff81225694>] ? __switch_to+0x1f4/0x690
+[ 1116.597617]  [<ffffffff818190b0>] ? __switch_to_asm+0x40/0x70
+[ 1116.597619]  [<ffffffff818190a4>] ? __switch_to_asm+0x34/0x70
+[ 1116.597621]  [<ffffffff8181ca8d>] ? __do_softirq+0x10d/0x2a5
+[ 1116.597624]  [<ffffffff8129dcf0>] ? sort_range+0x20/0x20
+[ 1116.597627]  [<ffffffff8128095e>] ? run_ksoftirqd+0x1e/0x40
+[ 1116.597628]  [<ffffffff8129ddfe>] ? smpboot_thread_fn+0x10e/0x160
+[ 1116.597631]  [<ffffffff8129a569>] ? kthread+0xd9/0xf0
+[ 1116.597633]  [<ffffffff8129a490>] ? kthread_park+0x60/0x60
+[ 1116.597635]  [<ffffffff81819137>] ? ret_from_fork+0x57/0x70
+[ 1116.597637] ---[ end trace 0df74cd8a683cc9c ]---
+[ 1116.607549] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 1116.615531] r8169 0000:09:00.0 enp9s0: link up
+[ 1453.285732] INFO: rcu_sched self-detected stall on CPU
+[ 1453.285749] 	0-...: (5249 ticks this GP) idle=5cd/140000000000001/0 softirq=40747/40747 fqs=2617 
+[ 1453.285750] 	 (t=5250 jiffies g=39899 c=39898 q=5514)
+[ 1453.285752] Task dump for CPU 0:
+[ 1453.285753] NetworkManager  R  running task        0   525      1 0x00000008
+[ 1453.285756]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000000 ffffffff81f18ec0
+[ 1453.285758]  ffffffff8138112b ffff89ae9f2196c0 ffffffff81e4fd00 0000000000000000
+[ 1453.285760]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 1453.285762] Call Trace:
+[ 1453.285763]  <IRQ> 
+[ 1453.285768]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 1453.285771]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 1453.285785]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 1453.285788]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 1453.285789]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 1453.285791]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 1453.285792]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 1453.285794]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 1453.285795]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 1453.285797]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 1453.285800]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 1453.285801]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 1453.285802]  <EOI> 
+[ 1453.285805]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 1453.285806]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 1453.285811]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 1453.285812]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 1453.285816]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 1453.285818]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 1453.285822]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 1453.285836]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 1453.285844]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 1453.285851]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 1453.285853]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 1453.285855]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 1453.285857]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 1453.285858]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 1453.285860]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 1453.285861]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 1453.285863]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 1453.285865]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 1453.285867]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 1453.285869]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 1453.285871]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 1453.285872]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 1453.285875]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 1453.285876]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 1453.285878]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 1453.285880]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 1453.285881]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 1453.285883]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 1453.285885]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 1453.285886]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 1453.285889]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 1453.285890]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 1453.285892]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 1453.285893]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 1453.285895]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 1453.285897]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 1462.592511] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 1619.080374] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 1619.242029] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 1619.262775] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 1625.168095] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 1625.168100] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 1625.168122] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 1625.170852] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 1649.415376] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 1649.575927] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 1649.596684] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 1655.119108] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 1655.119113] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 1655.119135] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 1655.121848] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 1799.278281] INFO: rcu_sched self-detected stall on CPU
+[ 1799.278298] 	4-...: (5249 ticks this GP) idle=2cb/140000000000001/0 softirq=58234/58234 fqs=2624 
+[ 1799.278299] 	 (t=5250 jiffies g=51525 c=51524 q=1826)
+[ 1799.278301] Task dump for CPU 4:
+[ 1799.278302] NetworkManager  R  running task        0   525      1 0x00000008
+[ 1799.278305]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000004 ffffffff81f18ec0
+[ 1799.278307]  ffffffff8138112b ffff89ae9f3196c0 ffffffff81e4fd00 0000000000000000
+[ 1799.278309]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 1799.278311] Call Trace:
+[ 1799.278312]  <IRQ> 
+[ 1799.278316]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 1799.278319]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 1799.278322]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 1799.278333]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 1799.278335]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 1799.278337]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 1799.278338]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 1799.278340]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 1799.278341]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 1799.278343]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 1799.278346]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 1799.278347]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 1799.278348]  <EOI> 
+[ 1799.278351]  [<ffffffff815412ac>] ? delay_tsc+0x3c/0x50
+[ 1799.278352]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 1799.278356]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 1799.278358]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 1799.278361]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 1799.278364]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 1799.278368]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 1799.278381]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 1799.278389]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 1799.278396]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 1799.278398]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 1799.278400]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 1799.278402]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 1799.278404]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 1799.278405]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 1799.278407]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 1799.278409]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 1799.278411]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 1799.278413]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 1799.278416]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 1799.278418]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 1799.278420]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 1799.278422]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 1799.278424]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 1799.278425]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 1799.278427]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 1799.278428]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 1799.278430]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 1799.278432]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 1799.278433]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 1799.278435]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 1799.278437]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 1799.278439]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 1799.278441]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 1799.278443]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 1799.278444]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 1808.583353] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 1948.957569] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 1949.118811] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 1949.139572] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 1954.885227] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 1954.885231] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 1954.885254] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 1954.887972] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 1976.128635] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 1976.289969] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 1976.310578] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 1982.020322] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 1982.020326] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 1982.020348] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 1982.023101] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 1997.435981] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 1997.597277] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 1997.617980] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 2003.011682] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 2003.011687] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 2003.011710] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 2003.014442] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 2145.266949] INFO: rcu_sched self-detected stall on CPU
+[ 2145.266967] 	0-...: (5249 ticks this GP) idle=f07/140000000000001/0 softirq=60841/60841 fqs=2621 
+[ 2145.266968] 	 (t=5250 jiffies g=60656 c=60655 q=3108)
+[ 2145.266970] Task dump for CPU 0:
+[ 2145.266971] NetworkManager  R  running task        0   525      1 0x00000008
+[ 2145.266974]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000000 ffffffff81f18ec0
+[ 2145.266976]  ffffffff8138112b ffff89ae9f2196c0 ffffffff81e4fd00 0000000000000000
+[ 2145.266978]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 2145.266980] Call Trace:
+[ 2145.266982]  <IRQ> 
+[ 2145.266986]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 2145.266989]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 2145.266992]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 2145.266995]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 2145.266996]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 2145.266998]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 2145.267000]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 2145.267001]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 2145.267003]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 2145.267004]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 2145.267007]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 2145.267009]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 2145.267010]  <EOI> 
+[ 2145.267013]  [<ffffffff81541295>] ? delay_tsc+0x25/0x50
+[ 2145.267014]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 2145.267019]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 2145.267021]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 2145.267024]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 2145.267027]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 2145.267031]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 2145.267043]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 2145.267051]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 2145.267059]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 2145.267061]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 2145.267063]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 2145.267065]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 2145.267067]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 2145.267068]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 2145.267070]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 2145.267072]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 2145.267074]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 2145.267076]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 2145.267080]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 2145.267081]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 2145.267083]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 2145.267085]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 2145.267087]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 2145.267089]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 2145.267091]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 2145.267092]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 2145.267094]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 2145.267096]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 2145.267098]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 2145.267100]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 2145.267101]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 2145.267103]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 2145.267105]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 2145.267107]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 2145.267109]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 2154.572662] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 2175.606151] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 2175.766997] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 2175.787608] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 2180.925861] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 2180.925866] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 2180.925889] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 2180.928603] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 2341.328694] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 2341.489853] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 2341.510616] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 2347.064373] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 2347.064379] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 2347.064406] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 2347.067157] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 2491.211646] INFO: rcu_sched self-detected stall on CPU
+[ 2491.211662] 	2-...: (5250 ticks this GP) idle=f3b/140000000000001/0 softirq=62626/62626 fqs=2551 
+[ 2491.211663] 	 (t=5250 jiffies g=70307 c=70306 q=4081)
+[ 2491.211665] Task dump for CPU 2:
+[ 2491.211666] NetworkManager  R  running task        0   525      1 0x00000008
+[ 2491.211669]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 2491.211671]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 2491.211673]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 0000000000000001
+[ 2491.211675] Call Trace:
+[ 2491.211677]  <IRQ> 
+[ 2491.211680]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 2491.211684]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 2491.211695]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 2491.211698]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 2491.211699]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 2491.211701]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 2491.211702]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 2491.211704]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 2491.211705]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 2491.211709]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 2491.211710]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 2491.211711]  <EOI> 
+[ 2491.211714]  [<ffffffff8154128c>] ? delay_tsc+0x1c/0x50
+[ 2491.211715]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 2491.211719]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 2491.211721]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 2491.211724]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 2491.211727]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 2491.211731]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 2491.211744]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 2491.211752]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 2491.211759]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 2491.211761]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 2491.211763]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 2491.211765]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 2491.211766]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 2491.211768]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 2491.211769]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 2491.211771]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 2491.211773]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 2491.211775]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 2491.211778]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 2491.211780]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 2491.211781]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 2491.211784]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 2491.211785]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 2491.211787]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 2491.211789]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 2491.211790]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 2491.211792]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 2491.211794]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 2491.211795]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 2491.211798]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 2491.211799]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 2491.211801]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 2491.211802]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 2491.211804]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 2491.211806]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 2500.513803] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 2837.186580] INFO: rcu_sched self-detected stall on CPU
+[ 2837.186596] 	2-...: (5249 ticks this GP) idle=a09/140000000000001/0 softirq=66844/66844 fqs=2624 
+[ 2837.186597] 	 (t=5250 jiffies g=77573 c=77572 q=2994)
+[ 2837.186599] Task dump for CPU 2:
+[ 2837.186600] NetworkManager  R  running task        0   525      1 0x00000008
+[ 2837.186603]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 2837.186605]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 2837.186607]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 2837.186609] Call Trace:
+[ 2837.186611]  <IRQ> 
+[ 2837.186615]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 2837.186618]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 2837.186630]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 2837.186633]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 2837.186635]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 2837.186637]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 2837.186638]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 2837.186640]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 2837.186641]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 2837.186643]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 2837.186646]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 2837.186647]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 2837.186648]  <EOI> 
+[ 2837.186651]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 2837.186653]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 2837.186657]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 2837.186659]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 2837.186662]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 2837.186665]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 2837.186669]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 2837.186682]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 2837.186690]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 2837.186698]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 2837.186700]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 2837.186702]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 2837.186704]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 2837.186706]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 2837.186707]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 2837.186709]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 2837.186711]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 2837.186713]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 2837.186714]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 2837.186718]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 2837.186719]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 2837.186721]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 2837.186723]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 2837.186725]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 2837.186727]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 2837.186728]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 2837.186730]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 2837.186732]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 2837.186734]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 2837.186736]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 2837.186738]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 2837.186740]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 2837.186741]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 2837.186743]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 2837.186745]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 2837.186747]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 2846.493364] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 2847.326364] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 2847.487706] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 2847.508398] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 2852.902030] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 2852.902035] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 2852.902058] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 2852.904758] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 3183.169569] INFO: rcu_sched self-detected stall on CPU
+[ 3183.169587] 	4-...: (5249 ticks this GP) idle=54b/140000000000001/0 softirq=81169/81169 fqs=2623 
+[ 3183.169588] 	 (t=5250 jiffies g=84674 c=84673 q=1730)
+[ 3183.169590] Task dump for CPU 4:
+[ 3183.169591] NetworkManager  R  running task        0   525      1 0x00000008
+[ 3183.169594]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000004 ffffffff81f18ec0
+[ 3183.169596]  ffffffff8138112b ffff89ae9f3196c0 ffffffff81e4fd00 0000000000000000
+[ 3183.169598]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 3183.169600] Call Trace:
+[ 3183.169602]  <IRQ> 
+[ 3183.169615]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 3183.169618]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 3183.169620]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 3183.169623]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 3183.169625]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 3183.169626]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 3183.169628]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 3183.169629]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 3183.169631]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 3183.169632]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 3183.169635]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 3183.169637]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 3183.169638]  <EOI> 
+[ 3183.169640]  [<ffffffff815412a5>] ? delay_tsc+0x35/0x50
+[ 3183.169642]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 3183.169646]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 3183.169648]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 3183.169651]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 3183.169653]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 3183.169657]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 3183.169671]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 3183.169678]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 3183.169685]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 3183.169688]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 3183.169689]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 3183.169691]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 3183.169693]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 3183.169695]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 3183.169696]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 3183.169698]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 3183.169700]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 3183.169702]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 3183.169705]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 3183.169707]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 3183.169708]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 3183.169711]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 3183.169712]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 3183.169714]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 3183.169716]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 3183.169717]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 3183.169719]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 3183.169721]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 3183.169722]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 3183.169725]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 3183.169727]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 3183.169728]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 3183.169730]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 3183.169732]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 3183.169733]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 3192.473876] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 3267.150780] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 3267.312205] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 3267.332818] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 3272.982459] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 3272.982464] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 3272.982487] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 3272.985199] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 3459.487939] usb 3-1: new high-speed USB device number 5 using xhci_hcd
+[ 3459.629472] usb 3-1: New USB device found, idVendor=0951, idProduct=16ae
+[ 3459.629477] usb 3-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 3459.629479] usb 3-1: Product: DT microDuo 3C
+[ 3459.629480] usb 3-1: Manufacturer: Kingston
+[ 3459.629482] usb 3-1: SerialNumber: D850E64D1AD1BFA099012291
+[ 3459.650308] usb-storage 3-1:1.0: USB Mass Storage device detected
+[ 3459.650371] scsi host6: usb-storage 3-1:1.0
+[ 3459.650434] usbcore: registered new interface driver usb-storage
+[ 3459.651238] usbcore: registered new interface driver uas
+[ 3460.656762] scsi 6:0:0:0: Direct-Access     Kingston DT microDuo 3C   PMAP PQ: 0 ANSI: 6
+[ 3460.657314] sd 6:0:0:0: Attached scsi generic sg1 type 0
+[ 3460.657496] sd 6:0:0:0: [sdb] 121110528 512-byte logical blocks: (62.0 GB/57.8 GiB)
+[ 3460.657701] sd 6:0:0:0: [sdb] Write Protect is off
+[ 3460.657704] sd 6:0:0:0: [sdb] Mode Sense: 45 00 00 00
+[ 3460.657904] sd 6:0:0:0: [sdb] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[ 3460.959917]  sdb: sdb1
+[ 3460.967490] sd 6:0:0:0: [sdb] Attached SCSI removable disk
+[ 3529.201441] INFO: rcu_sched self-detected stall on CPU
+[ 3529.201457] 	0-...: (5249 ticks this GP) idle=da3/140000000000001/0 softirq=84337/84337 fqs=2624 
+[ 3529.201458] 	 (t=5250 jiffies g=92691 c=92690 q=1960)
+[ 3529.201460] Task dump for CPU 0:
+[ 3529.201461] NetworkManager  R  running task        0   525      1 0x00000008
+[ 3529.201464]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000000 ffffffff81f18ec0
+[ 3529.201466]  ffffffff8138112b ffff89ae9f2196c0 ffffffff81e4fd00 0000000000000000
+[ 3529.201468]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 3529.201470] Call Trace:
+[ 3529.201472]  <IRQ> 
+[ 3529.201475]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 3529.201479]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 3529.201482]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 3529.201484]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 3529.201487]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 3529.201488]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 3529.201490]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 3529.201492]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 3529.201493]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 3529.201495]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 3529.201498]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 3529.201500]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 3529.201500]  <EOI> 
+[ 3529.201503]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 3529.201505]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 3529.201509]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 3529.201511]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 3529.201514]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 3529.201517]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 3529.201521]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 3529.201536]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 3529.201544]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 3529.201552]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 3529.201554]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 3529.201556]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 3529.201558]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 3529.201560]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 3529.201562]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 3529.201563]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 3529.201565]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 3529.201567]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 3529.201569]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 3529.201573]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 3529.201574]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 3529.201576]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 3529.201578]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 3529.201580]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 3529.201582]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 3529.201584]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 3529.201585]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 3529.201587]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 3529.201589]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 3529.201591]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 3529.201593]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 3529.201595]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 3529.201596]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 3529.201598]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 3529.201600]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 3529.201602]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 3538.506738] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 3743.477348] systemd[1]: apt-daily-upgrade.timer: Adding 22min 58.374362s random time.
+[ 3743.477898] systemd[1]: anacron.timer: Adding 2min 10.357913s random time.
+[ 3743.477942] systemd[1]: apt-daily.timer: Adding 4h 22min 47.527596s random time.
+[ 3743.797455] systemd[1]: apt-daily-upgrade.timer: Adding 11min 45.866773s random time.
+[ 3743.797991] systemd[1]: anacron.timer: Adding 16.905497s random time.
+[ 3743.798026] systemd[1]: apt-daily.timer: Adding 6h 8min 51.018581s random time.
+[ 3743.856747] systemd[1]: apt-daily-upgrade.timer: Adding 1min 16.430306s random time.
+[ 3743.857350] systemd[1]: anacron.timer: Adding 1min 41.565699s random time.
+[ 3743.857387] systemd[1]: apt-daily.timer: Adding 4h 40min 49.730639s random time.
+[ 3875.149544] INFO: rcu_sched self-detected stall on CPU
+[ 3875.149568] 	6-...: (5249 ticks this GP) idle=b6b/140000000000001/0 softirq=82559/82559 fqs=2623 
+[ 3875.149570] 	 (t=5250 jiffies g=101420 c=101419 q=2667)
+[ 3875.149572] Task dump for CPU 6:
+[ 3875.149573] NetworkManager  R  running task        0   525      1 0x00000008
+[ 3875.149576]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000006 ffffffff81f18ec0
+[ 3875.149578]  ffffffff8138112b ffff89ae9f3996c0 ffffffff81e4fd00 0000000000000000
+[ 3875.149579]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 3875.149582] Call Trace:
+[ 3875.149583]  <IRQ> 
+[ 3875.149587]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 3875.149599]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 3875.149602]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 3875.149605]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 3875.149616]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 3875.149618]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 3875.149619]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 3875.149621]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 3875.149622]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 3875.149624]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 3875.149627]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 3875.149629]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 3875.149629]  <EOI> 
+[ 3875.149632]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 3875.149634]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 3875.149638]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 3875.149639]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 3875.149643]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 3875.149645]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 3875.149649]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 3875.149662]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 3875.149670]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 3875.149677]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 3875.149680]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 3875.149682]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 3875.149683]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 3875.149685]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 3875.149687]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 3875.149688]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 3875.149690]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 3875.149692]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 3875.149694]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 3875.149696]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 3875.149698]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 3875.149701]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 3875.149703]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 3875.149705]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 3875.149706]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 3875.149708]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 3875.149710]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 3875.149712]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 3875.149713]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 3875.149715]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 3875.149717]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 3875.149718]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 3875.149720]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 3875.149722]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 3875.149723]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 3875.149725]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 3875.149727]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 3875.149729]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 3884.452656] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 4021.701896] systemd[1]: apt-daily-upgrade.timer: Adding 11min 54.362944s random time.
+[ 4021.702438] systemd[1]: anacron.timer: Adding 2min 31.969483s random time.
+[ 4021.702493] systemd[1]: apt-daily.timer: Adding 9h 21min 46.846714s random time.
+[ 4021.744671] systemd[1]: apt-daily-upgrade.timer: Adding 23min 36.395462s random time.
+[ 4021.745257] systemd[1]: anacron.timer: Adding 2min 36.756538s random time.
+[ 4021.745311] systemd[1]: apt-daily.timer: Adding 3h 13min 49.464657s random time.
+[ 4021.788212] systemd[1]: apt-daily-upgrade.timer: Adding 26min 16.324113s random time.
+[ 4021.788807] systemd[1]: anacron.timer: Adding 10.673286s random time.
+[ 4021.788851] systemd[1]: apt-daily.timer: Adding 10h 10min 23.110271s random time.
+[ 4021.925066] systemd[1]: apt-daily-upgrade.timer: Adding 6min 9.124759s random time.
+[ 4221.193923] INFO: rcu_sched self-detected stall on CPU
+[ 4221.193940] 	0-...: (5249 ticks this GP) idle=e2d/140000000000001/0 softirq=103145/103145 fqs=2431 
+[ 4221.193941] 	 (t=5250 jiffies g=111201 c=111200 q=5453)
+[ 4221.193943] Task dump for CPU 0:
+[ 4221.193944] NetworkManager  R  running task        0   525      1 0x00000008
+[ 4221.193947]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000000 ffffffff81f18ec0
+[ 4221.193949]  ffffffff8138112b ffff89ae9f2196c0 ffffffff81e4fd00 0000000000000000
+[ 4221.193951]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 0000000000000001
+[ 4221.193953] Call Trace:
+[ 4221.193955]  <IRQ> 
+[ 4221.193959]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 4221.193962]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 4221.193974]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 4221.193977]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 4221.193978]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 4221.193980]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 4221.193982]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 4221.193983]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 4221.193985]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 4221.193988]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 4221.193990]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 4221.193991]  <EOI> 
+[ 4221.193993]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 4221.193995]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 4221.193999]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 4221.194001]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 4221.194005]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 4221.194007]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 4221.194011]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 4221.194025]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 4221.194033]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 4221.194040]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 4221.194042]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 4221.194044]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 4221.194046]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 4221.194048]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 4221.194050]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 4221.194051]  [<ffffffff81389fe6>] ? __rmqueue+0x96/0x400
+[ 4221.194053]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 4221.194054]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 4221.194056]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 4221.194058]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 4221.194060]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 4221.194062]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 4221.194064]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 4221.194066]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 4221.194068]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 4221.194069]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 4221.194071]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 4221.194073]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 4221.194075]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 4221.194076]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 4221.194078]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 4221.194080]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 4221.194082]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 4221.194084]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 4221.194085]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 4221.194087]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 4221.194089]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 4221.194091]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 4221.194092]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 4230.499490] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 4567.136613] INFO: rcu_sched self-detected stall on CPU
+[ 4567.136630] 	2-...: (5249 ticks this GP) idle=eeb/140000000000001/0 softirq=101711/101711 fqs=2624 
+[ 4567.136632] 	 (t=5250 jiffies g=119888 c=119887 q=2339)
+[ 4567.136634] Task dump for CPU 2:
+[ 4567.136635] NetworkManager  R  running task        0   525      1 0x00000008
+[ 4567.136637]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 4567.136640]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 4567.136642]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 4567.136644] Call Trace:
+[ 4567.136645]  <IRQ> 
+[ 4567.136649]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 4567.136653]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 4567.136664]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 4567.136667]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 4567.136669]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 4567.136671]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 4567.136673]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 4567.136674]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 4567.136676]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 4567.136677]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 4567.136680]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 4567.136682]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 4567.136682]  <EOI> 
+[ 4567.136685]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 4567.136687]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 4567.136691]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 4567.136693]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 4567.136696]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 4567.136698]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 4567.136702]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 4567.136717]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 4567.136726]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 4567.136734]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 4567.136738]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 4567.136740]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 4567.136741]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 4567.136743]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 4567.136745]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 4567.136747]  [<ffffffff81389fe6>] ? __rmqueue+0x96/0x400
+[ 4567.136749]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 4567.136750]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 4567.136752]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 4567.136754]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 4567.136756]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 4567.136757]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 4567.136760]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 4567.136761]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 4567.136763]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 4567.136765]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 4567.136767]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 4567.136768]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 4567.136770]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 4567.136772]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 4567.136773]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 4567.136775]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 4567.136777]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 4567.136779]  [<ffffffff81423308>] ? dput+0x38/0x250
+[ 4567.136780]  [<ffffffff8144e8b1>] ? __fsnotify_parent+0x91/0x120
+[ 4567.136782]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 4567.136783]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 4567.136786]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 4567.136787]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 4576.440783] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 4708.735407] systemd[1]: apt-daily-upgrade.timer: Adding 54min 40.956095s random time.
+[ 4708.735968] systemd[1]: anacron.timer: Adding 2min 43.081866s random time.
+[ 4708.736002] systemd[1]: apt-daily.timer: Adding 3h 2min 36.159591s random time.
+[ 4708.896843] systemd[1]: apt-daily-upgrade.timer: Adding 45min 18.213322s random time.
+[ 4708.897452] systemd[1]: anacron.timer: Adding 37.694188s random time.
+[ 4708.897502] systemd[1]: apt-daily.timer: Adding 5h 8min 22.892920s random time.
+[ 4708.941872] systemd[1]: apt-daily-upgrade.timer: Adding 17min 21.780909s random time.
+[ 4708.942438] systemd[1]: anacron.timer: Adding 2min 23.763888s random time.
+[ 4708.942482] systemd[1]: apt-daily.timer: Adding 3h 57min 15.551207s random time.
+[ 4709.072184] systemd[1]: apt-daily-upgrade.timer: Adding 4min 2.472654s random time.
+[ 4732.174667] tun: Universal TUN/TAP device driver, 1.6
+[ 4732.174670] tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
+[ 4913.121806] INFO: rcu_sched self-detected stall on CPU
+[ 4913.121823] 	0-...: (5248 ticks this GP) idle=531/140000000000001/0 softirq=119117/119117 fqs=2624 
+[ 4913.121824] 	 (t=5250 jiffies g=128334 c=128333 q=1484)
+[ 4913.121826] Task dump for CPU 0:
+[ 4913.121827] NetworkManager  R  running task        0   525      1 0x00000008
+[ 4913.121830]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000000 ffffffff81f18ec0
+[ 4913.121832]  ffffffff8138112b ffff89ae9f2196c0 ffffffff81e4fd00 0000000000000000
+[ 4913.121834]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 4913.121836] Call Trace:
+[ 4913.121838]  <IRQ> 
+[ 4913.121841]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 4913.121845]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 4913.121847]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 4913.121850]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 4913.121852]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 4913.121853]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 4913.121855]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 4913.121857]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 4913.121858]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 4913.121860]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 4913.121863]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 4913.121864]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 4913.121865]  <EOI> 
+[ 4913.121868]  [<ffffffff81541295>] ? delay_tsc+0x25/0x50
+[ 4913.121870]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 4913.121874]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 4913.121876]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 4913.121880]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 4913.121882]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 4913.121886]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 4913.121898]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 4913.121907]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 4913.121914]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 4913.121917]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 4913.121919]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 4913.121920]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 4913.121922]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 4913.121924]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 4913.121926]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 4913.121928]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 4913.121930]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 4913.121932]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 4913.121934]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 4913.121936]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 4913.121938]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 4913.121940]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 4913.121941]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 4913.121943]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 4913.121945]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 4913.121947]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 4913.121949]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 4913.121950]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 4913.121953]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 4913.121954]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 4913.121957]  [<ffffffff81401578>] ? mem_cgroup_commit_charge+0x78/0x4b0
+[ 4913.121958]  [<ffffffff813baaa8>] ? handle_mm_fault+0xcd8/0x1310
+[ 4913.121960]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 4913.121962]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 4913.121964]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 4913.121966]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 4922.431822] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 5186.922603] usb 3-1: USB disconnect, device number 5
+[ 5234.799642] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 5234.960339] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 5234.981091] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 5240.023278] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 5240.023281] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 5240.023310] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 5240.026007] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 5259.162645] INFO: rcu_sched self-detected stall on CPU
+[ 5259.162651] 	2-...: (5249 ticks this GP) idle=69d/140000000000001/0 softirq=123234/123234 fqs=2623 
+[ 5259.162652] 	 (t=5250 jiffies g=136884 c=136883 q=6792)
+[ 5259.162654] Task dump for CPU 2:
+[ 5259.162655] NetworkManager  R  running task        0   525      1 0x00000008
+[ 5259.162658]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 5259.162660]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 5259.162662]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 5259.162664] Call Trace:
+[ 5259.162675]  <IRQ> 
+[ 5259.162679]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 5259.162682]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 5259.162685]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 5259.162687]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 5259.162690]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 5259.162692]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 5259.162693]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 5259.162695]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 5259.162696]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 5259.162698]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 5259.162701]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 5259.162703]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 5259.162703]  <EOI> 
+[ 5259.162706]  [<ffffffff8154129e>] ? delay_tsc+0x2e/0x50
+[ 5259.162708]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 5259.162712]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 5259.162714]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 5259.162717]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 5259.162719]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 5259.162723]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 5259.162738]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 5259.162747]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 5259.162755]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 5259.162758]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 5259.162760]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 5259.162761]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 5259.162763]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 5259.162765]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 5259.162767]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 5259.162769]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 5259.162770]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 5259.162772]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 5259.162775]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 5259.162776]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 5259.162778]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 5259.162780]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 5259.162782]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 5259.162784]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 5259.162785]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 5259.162787]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 5259.162788]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 5259.162790]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 5259.162792]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 5259.162794]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 5259.162796]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 5259.162798]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 5259.162799]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 5259.162802]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 5259.162803]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 5262.294573] INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 2-... } 5264 jiffies s: 797 root: 0x4/.
+[ 5262.294577] blocking rcu_node structures:
+[ 5262.294578] Task dump for CPU 2:
+[ 5262.294579] NetworkManager  R  running task        0   525      1 0x00000008
+[ 5262.294582]  0000000000000046 ffff89ae9f2d8980 ffffa47302dc75d0 ffffffff812b2ff2
+[ 5262.294584]  0000000000000000 ffff89ae9f2d8980 0000000000000000 0000000000000000
+[ 5262.294586]  0000001000000003 0000000000000001 ffff89ae8b900700 0000000000001771
+[ 5262.294597] Call Trace:
+[ 5262.294603]  [<ffffffff812b2ff2>] ? enqueue_task_fair+0x82/0x940
+[ 5262.294606]  [<ffffffff815412ac>] ? delay_tsc+0x3c/0x50
+[ 5262.294608]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 5262.294612]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 5262.294613]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 5262.294617]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 5262.294619]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 5262.294624]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 5262.294637]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 5262.294645]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 5262.294652]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 5262.294655]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 5262.294656]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 5262.294658]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 5262.294660]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 5262.294662]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 5262.294663]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 5262.294665]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 5262.294667]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 5262.294669]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 5262.294672]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 5262.294673]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 5262.294675]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 5262.294677]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 5262.294679]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 5262.294680]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 5262.294682]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 5262.294684]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 5262.294685]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 5262.294687]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 5262.294689]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 5262.294691]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 5262.294693]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 5262.294694]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 5262.294696]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 5262.294698]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 5262.294700]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 5268.467145] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 5605.155646] INFO: rcu_sched self-detected stall on CPU
+[ 5605.155662] 	2-...: (5250 ticks this GP) idle=5eb/140000000000001/0 softirq=131733/131733 fqs=2414 
+[ 5605.155664] 	 (t=5251 jiffies g=145831 c=145830 q=1300)
+[ 5605.155665] Task dump for CPU 2:
+[ 5605.155667] NetworkManager  R  running task        0   525      1 0x00000008
+[ 5605.155669]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 5605.155672]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 5605.155673]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 0000000000000001
+[ 5605.155675] Call Trace:
+[ 5605.155677]  <IRQ> 
+[ 5605.155682]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 5605.155685]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 5605.155697]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 5605.155699]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 5605.155701]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 5605.155703]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 5605.155704]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 5605.155706]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 5605.155707]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 5605.155710]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 5605.155713]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 5605.155713]  <EOI> 
+[ 5605.155716]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 5605.155718]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 5605.155722]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 5605.155725]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 5605.155728]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 5605.155731]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 5605.155735]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 5605.155748]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 5605.155758]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 5605.155766]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 5605.155769]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 5605.155771]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 5605.155773]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 5605.155774]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 5605.155776]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 5605.155778]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 5605.155779]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 5605.155782]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 5605.155784]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 5605.155785]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 5605.155787]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 5605.155790]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 5605.155791]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 5605.155793]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 5605.155795]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 5605.155797]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 5605.155799]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 5605.155800]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 5605.155802]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 5605.155804]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 5605.155806]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 5605.155808]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 5605.155810]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 5605.155812]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 5605.155814]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 5605.155815]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 5605.155818]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 5605.155819]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 5614.456564] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 5951.088513] INFO: rcu_sched self-detected stall on CPU
+[ 5951.088520] 	4-...: (5249 ticks this GP) idle=f0f/140000000000001/0 softirq=145539/145539 fqs=2611 
+[ 5951.088522] 	 (t=5250 jiffies g=153797 c=153796 q=1267)
+[ 5951.088523] Task dump for CPU 4:
+[ 5951.088525] NetworkManager  R  running task        0   525      1 0x00000008
+[ 5951.088527]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000004 ffffffff81f18ec0
+[ 5951.088529]  ffffffff8138112b ffff89ae9f3196c0 ffffffff81e4fd00 0000000000000000
+[ 5951.088531]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 5951.088533] Call Trace:
+[ 5951.088535]  <IRQ> 
+[ 5951.088539]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 5951.088542]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 5951.088545]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 5951.088548]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 5951.088550]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 5951.088551]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 5951.088553]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 5951.088554]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 5951.088556]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 5951.088558]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 5951.088561]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 5951.088562]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 5951.088563]  <EOI> 
+[ 5951.088566]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 5951.088567]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 5951.088572]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 5951.088574]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 5951.088577]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 5951.088579]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 5951.088583]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 5951.088594]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 5951.088602]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 5951.088609]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 5951.088612]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 5951.088614]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 5951.088616]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 5951.088618]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 5951.088620]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 5951.088621]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 5951.088623]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 5951.088625]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 5951.088627]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 5951.088629]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 5951.088631]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 5951.088635]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 5951.088636]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 5951.088639]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 5951.088640]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 5951.088642]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 5951.088645]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 5951.088646]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 5951.088648]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 5951.088650]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 5951.088652]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 5951.088654]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 5951.088656]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 5951.088657]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 5951.088659]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 5951.088661]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 5951.088663]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 5951.088665]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 5960.395547] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 5960.430424] r8169 0000:09:00.0 enp9s0: link up
+[ 6297.085307] INFO: rcu_sched self-detected stall on CPU
+[ 6297.085323] 	6-...: (5250 ticks this GP) idle=735/140000000000001/0 softirq=143250/143250 fqs=2413 
+[ 6297.085324] 	 (t=5251 jiffies g=161945 c=161944 q=7940)
+[ 6297.085326] Task dump for CPU 6:
+[ 6297.085327] NetworkManager  R  running task        0   525      1 0x00000008
+[ 6297.085330]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000006 ffffffff81f18ec0
+[ 6297.085332]  ffffffff8138112b ffff89ae9f3996c0 ffffffff81e4fd00 0000000000000000
+[ 6297.085334]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 0000000000000001
+[ 6297.085336] Call Trace:
+[ 6297.085338]  <IRQ> 
+[ 6297.085342]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 6297.085345]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 6297.085348]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 6297.085350]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 6297.085352]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 6297.085354]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 6297.085355]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 6297.085357]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 6297.085358]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 6297.085362]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 6297.085364]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 6297.085365]  <EOI> 
+[ 6297.085368]  [<ffffffff81541295>] ? delay_tsc+0x25/0x50
+[ 6297.085370]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 6297.085374]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 6297.085376]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 6297.085380]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 6297.085382]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 6297.085387]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 6297.085401]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 6297.085411]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 6297.085419]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 6297.085422]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 6297.085425]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 6297.085426]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 6297.085429]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 6297.085430]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 6297.085432]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 6297.085434]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 6297.085436]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 6297.085438]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 6297.085439]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 6297.085441]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 6297.085445]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 6297.085446]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 6297.085448]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 6297.085450]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 6297.085452]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 6297.085454]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 6297.085456]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 6297.085458]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 6297.085459]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 6297.085462]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 6297.085464]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 6297.085466]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 6297.085467]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 6297.085469]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 6297.085471]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 6297.085473]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 6297.085475]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 6306.388288] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 6306.423202] r8169 0000:09:00.0 enp9s0: link up
+[ 6643.118065] INFO: rcu_sched self-detected stall on CPU
+[ 6643.118081] 	2-...: (5249 ticks this GP) idle=61b/140000000000001/0 softirq=157611/157611 fqs=2624 
+[ 6643.118082] 	 (t=5250 jiffies g=170128 c=170127 q=1322)
+[ 6643.118084] Task dump for CPU 2:
+[ 6643.118085] NetworkManager  R  running task        0   525      1 0x00000008
+[ 6643.118087]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 6643.118089]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 6643.118091]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 6643.118093] Call Trace:
+[ 6643.118095]  <IRQ> 
+[ 6643.118099]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 6643.118102]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 6643.118105]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 6643.118108]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 6643.118111]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 6643.118112]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 6643.118114]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 6643.118116]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 6643.118117]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 6643.118119]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 6643.118122]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 6643.118124]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 6643.118124]  <EOI> 
+[ 6643.118127]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 6643.118129]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 6643.118133]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 6643.118135]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 6643.118139]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 6643.118141]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 6643.118145]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 6643.118161]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 6643.118169]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 6643.118177]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 6643.118179]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 6643.118181]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 6643.118183]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 6643.118185]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 6643.118187]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 6643.118188]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 6643.118190]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 6643.118192]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 6643.118194]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 6643.118195]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 6643.118197]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 6643.118200]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 6643.118201]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 6643.118203]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 6643.118205]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 6643.118207]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 6643.118209]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 6643.118211]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 6643.118212]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 6643.118214]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 6643.118216]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 6643.118218]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 6643.118220]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 6643.118222]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 6643.118223]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 6643.118225]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 6643.118227]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 6643.118229]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 6652.423335] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 6989.106806] INFO: rcu_sched self-detected stall on CPU
+[ 6989.106823] 	2-...: (5249 ticks this GP) idle=2dd/140000000000001/0 softirq=161029/161029 fqs=2623 
+[ 6989.106824] 	 (t=5250 jiffies g=176879 c=176878 q=1288)
+[ 6989.106826] Task dump for CPU 2:
+[ 6989.106827] NetworkManager  R  running task        0   525      1 0x00000008
+[ 6989.106829]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 6989.106832]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 6989.106833]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 6989.106835] Call Trace:
+[ 6989.106837]  <IRQ> 
+[ 6989.106841]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 6989.106844]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 6989.106857]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 6989.106859]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 6989.106862]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 6989.106863]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 6989.106864]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 6989.106866]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 6989.106867]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 6989.106869]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 6989.106872]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 6989.106874]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 6989.106875]  <EOI> 
+[ 6989.106877]  [<ffffffff81541295>] ? delay_tsc+0x25/0x50
+[ 6989.106879]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 6989.106883]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 6989.106885]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 6989.106888]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 6989.106891]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 6989.106894]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 6989.106908]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 6989.106916]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 6989.106923]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 6989.106925]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 6989.106927]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 6989.106929]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 6989.106931]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 6989.106933]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 6989.106934]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 6989.106936]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 6989.106938]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 6989.106940]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 6989.106941]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 6989.106945]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 6989.106946]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 6989.106948]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 6989.106950]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 6989.106951]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 6989.106954]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 6989.106955]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 6989.106957]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 6989.106958]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 6989.106960]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 6989.106962]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 6989.106964]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 6989.106966]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 6989.106968]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 6989.106969]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 6989.106971]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 6989.106973]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 6998.411880] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 7227.567233] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 7227.728433] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 7227.749115] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 7235.734799] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 7235.784474] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 7235.784494] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 7235.787256] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 7335.043541] INFO: rcu_sched self-detected stall on CPU
+[ 7335.043557] 	2-...: (5249 ticks this GP) idle=7bf/140000000000001/0 softirq=164096/164096 fqs=2624 
+[ 7335.043558] 	 (t=5250 jiffies g=183547 c=183546 q=1359)
+[ 7335.043560] Task dump for CPU 2:
+[ 7335.043561] NetworkManager  R  running task        0   525      1 0x00000008
+[ 7335.043564]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000002 ffffffff81f18ec0
+[ 7335.043566]  ffffffff8138112b ffff89ae9f2996c0 ffffffff81e4fd00 0000000000000000
+[ 7335.043568]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 7335.043570] Call Trace:
+[ 7335.043572]  <IRQ> 
+[ 7335.043576]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 7335.043579]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 7335.043591]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 7335.043594]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 7335.043596]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 7335.043597]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 7335.043599]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 7335.043600]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 7335.043602]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 7335.043603]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 7335.043606]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 7335.043608]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 7335.043609]  <EOI> 
+[ 7335.043611]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 7335.043613]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 7335.043617]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 7335.043619]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 7335.043623]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 7335.043625]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 7335.043629]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 7335.043642]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 7335.043650]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 7335.043658]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 7335.043660]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 7335.043662]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 7335.043664]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 7335.043666]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 7335.043668]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 7335.043669]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 7335.043671]  [<ffffffff817c3426>] ? inet6_fill_ifla6_attrs+0x416/0x430
+[ 7335.043673]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 7335.043675]  [<ffffffff81744fde>] ? __netlink_sendskb+0x3e/0x60
+[ 7335.043678]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 7335.043680]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 7335.043682]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 7335.043684]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 7335.043686]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 7335.043687]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 7335.043689]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 7335.043691]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 7335.043692]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 7335.043694]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 7335.043696]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 7335.043699]  [<ffffffff81401578>] ? mem_cgroup_commit_charge+0x78/0x4b0
+[ 7335.043700]  [<ffffffff813baaa8>] ? handle_mm_fault+0xcd8/0x1310
+[ 7335.043702]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 7335.043704]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 7335.043706]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 7335.043708]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 7344.347497] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 7562.852336] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 7563.044793] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 7563.065406] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 7573.899800] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 7573.899805] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 7573.899828] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 7573.902567] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 7681.084269] INFO: rcu_sched self-detected stall on CPU
+[ 7681.084277] 	1-...: (5249 ticks this GP) idle=397/140000000000001/0 softirq=72827/72827 fqs=2573 
+[ 7681.084278] 	 (t=5250 jiffies g=190754 c=190753 q=4934)
+[ 7681.084280] Task dump for CPU 1:
+[ 7681.084282] NetworkManager  R  running task        0   525      1 0x00000008
+[ 7681.084285]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000001 ffffffff81f18ec0
+[ 7681.084287]  ffffffff8138112b ffff89ae9f2596c0 ffffffff81e4fd00 0000000000000000
+[ 7681.084288]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 0000000000000001
+[ 7681.084290] Call Trace:
+[ 7681.084292]  <IRQ> 
+[ 7681.084297]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 7681.084300]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 7681.084303]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 7681.084306]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 7681.084307]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 7681.084309]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 7681.084311]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 7681.084312]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 7681.084314]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 7681.084317]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 7681.084319]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 7681.084320]  <EOI> 
+[ 7681.084323]  [<ffffffff81541291>] ? delay_tsc+0x21/0x50
+[ 7681.084325]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 7681.084330]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 7681.084332]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 7681.084336]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 7681.084339]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 7681.084343]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 7681.084361]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 7681.084372]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 7681.084382]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 7681.084385]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 7681.084387]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 7681.084389]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 7681.084391]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 7681.084394]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 7681.084396]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 7681.084399]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 7681.084402]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 7681.084405]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 7681.084408]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 7681.084412]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 7681.084413]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 7681.084415]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 7681.084417]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 7681.084419]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 7681.084421]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 7681.084423]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 7681.084425]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 7681.084427]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 7681.084429]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 7681.084431]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 7681.084433]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 7681.084435]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 7681.084438]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 7681.084439]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 7681.084451]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 7681.084453]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 7690.388756] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 8027.076992] INFO: rcu_sched self-detected stall on CPU
+[ 8027.077008] 	1-...: (5250 ticks this GP) idle=871/140000000000001/0 softirq=76197/76197 fqs=2622 
+[ 8027.077009] 	 (t=5251 jiffies g=199094 c=199093 q=1649)
+[ 8027.077011] Task dump for CPU 1:
+[ 8027.077013] NetworkManager  R  running task        0   525      1 0x00000008
+[ 8027.077015]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000001 ffffffff81f18ec0
+[ 8027.077017]  ffffffff8138112b ffff89ae9f2596c0 ffffffff81e4fd00 0000000000000000
+[ 8027.077019]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 0000000000000001
+[ 8027.077021] Call Trace:
+[ 8027.077023]  <IRQ> 
+[ 8027.077027]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 8027.077030]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 8027.077032]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 8027.077035]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 8027.077036]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 8027.077038]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 8027.077040]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 8027.077041]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 8027.077043]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 8027.077046]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 8027.077048]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 8027.077049]  <EOI> 
+[ 8027.077051]  [<ffffffff8154129b>] ? delay_tsc+0x2b/0x50
+[ 8027.077053]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 8027.077057]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 8027.077059]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 8027.077063]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 8027.077065]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 8027.077069]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 8027.077082]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 8027.077091]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 8027.077099]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 8027.077102]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 8027.077104]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 8027.077106]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 8027.077108]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 8027.077110]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 8027.077111]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 8027.077113]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 8027.077115]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 8027.077118]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 8027.077120]  [<ffffffff813fa1fd>] ? page_counter_uncharge+0x1d/0x30
+[ 8027.077122]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 8027.077126]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 8027.077127]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 8027.077129]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 8027.077131]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 8027.077133]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 8027.077136]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 8027.077137]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 8027.077139]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 8027.077141]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 8027.077143]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 8027.077145]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 8027.077148]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 8027.077150]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 8027.077152]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 8027.077154]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 8027.077157]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 8027.077159]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 8036.378139] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 8373.049439] INFO: rcu_sched self-detected stall on CPU
+[ 8373.049448] 	4-...: (5249 ticks this GP) idle=c21/140000000000001/0 softirq=188490/188490 fqs=2622 
+[ 8373.049449] 	 (t=5250 jiffies g=206206 c=206205 q=323841)
+[ 8373.049451] Task dump for CPU 4:
+[ 8373.049453] NetworkManager  R  running task        0   525      1 0x00000008
+[ 8373.049456]  ffffffff81f18ec0 ffffffff812a7dcb 0000000000000004 ffffffff81f18ec0
+[ 8373.049458]  ffffffff8138112b ffff89ae9f3196c0 ffffffff81e4fd00 0000000000000000
+[ 8373.049460]  ffffffff81f18ec0 00000000ffffffff ffffffff812e36fa 00000000009e5324
+[ 8373.049462] Call Trace:
+[ 8373.049464]  <IRQ> 
+[ 8373.049468]  [<ffffffff812a7dcb>] ? sched_show_task+0xcb/0x130
+[ 8373.049473]  [<ffffffff8138112b>] ? rcu_dump_cpu_stacks+0x92/0xb2
+[ 8373.049476]  [<ffffffff812e36fa>] ? rcu_check_callbacks+0x75a/0x8b0
+[ 8373.049479]  [<ffffffff812f1dc8>] ? update_wall_time+0x498/0x7b0
+[ 8373.049481]  [<ffffffff812f9c30>] ? tick_sched_do_timer+0x30/0x30
+[ 8373.049483]  [<ffffffff812ea2d8>] ? update_process_times+0x28/0x50
+[ 8373.049485]  [<ffffffff812f9630>] ? tick_sched_handle.isra.12+0x20/0x50
+[ 8373.049486]  [<ffffffff812f9c68>] ? tick_sched_timer+0x38/0x70
+[ 8373.049488]  [<ffffffff812eadae>] ? __hrtimer_run_queues+0xde/0x250
+[ 8373.049489]  [<ffffffff812eb48c>] ? hrtimer_interrupt+0x9c/0x1a0
+[ 8373.049493]  [<ffffffff8181c507>] ? smp_apic_timer_interrupt+0x47/0x60
+[ 8373.049495]  [<ffffffff8181ada6>] ? apic_timer_interrupt+0x96/0xa0
+[ 8373.049496]  <EOI> 
+[ 8373.049498]  [<ffffffff815412ac>] ? delay_tsc+0x3c/0x50
+[ 8373.049500]  [<ffffffff81541270>] ? __ndelay+0x40/0x40
+[ 8373.049506]  [<ffffffffc08e964f>] ? rtl8723_fw_free_to_go+0xbf/0x110 [rtl8723_common]
+[ 8373.049508]  [<ffffffffc08e99e1>] ? rtl8723_download_fw+0xc1/0x150 [rtl8723_common]
+[ 8373.049512]  [<ffffffffc0f94fb3>] ? rtl8723be_hw_init+0xeb3/0x1bd0 [rtl8723be]
+[ 8373.049515]  [<ffffffffc09076b5>] ? rtl_pci_start+0x55/0xd0 [rtl_pci]
+[ 8373.049521]  [<ffffffffc0a5ecd3>] ? rtl_op_start+0x53/0x90 [rtlwifi]
+[ 8373.049551]  [<ffffffffc099b6b0>] ? drv_start+0x40/0x100 [mac80211]
+[ 8373.049560]  [<ffffffffc09b0b4d>] ? ieee80211_do_open+0x2ad/0x990 [mac80211]
+[ 8373.049568]  [<ffffffffc09af24a>] ? ieee80211_check_concurrent_iface+0x11a/0x1e0 [mac80211]
+[ 8373.049570]  [<ffffffff81713b58>] ? __dev_open+0xc8/0x140
+[ 8373.049572]  [<ffffffff81713e4c>] ? __dev_change_flags+0x9c/0x160
+[ 8373.049574]  [<ffffffff81713f33>] ? dev_change_flags+0x23/0x60
+[ 8373.049576]  [<ffffffff817228cc>] ? do_setlink+0x32c/0xd60
+[ 8373.049578]  [<ffffffff81561828>] ? __nla_reserve+0x38/0x50
+[ 8373.049580]  [<ffffffff8156194c>] ? __nla_put+0xc/0x20
+[ 8373.049581]  [<ffffffff81552c39>] ? list_del+0x9/0x30
+[ 8373.049584]  [<ffffffff813e553a>] ? page_is_poisoned+0xa/0x20
+[ 8373.049586]  [<ffffffff8138b6de>] ? get_page_from_freelist+0x88e/0xb20
+[ 8373.049588]  [<ffffffff81727232>] ? rtnl_newlink+0x5d2/0x880
+[ 8373.049590]  [<ffffffff814a9e50>] ? cap_inode_killpriv+0x20/0x20
+[ 8373.049592]  [<ffffffff814ac997>] ? security_capable+0x47/0x60
+[ 8373.049594]  [<ffffffff817275c7>] ? rtnetlink_rcv_msg+0xe7/0x220
+[ 8373.049595]  [<ffffffff813e62de>] ? kmem_cache_alloc_node+0x13e/0x530
+[ 8373.049597]  [<ffffffff817274e0>] ? rtnl_newlink+0x880/0x880
+[ 8373.049600]  [<ffffffff81747e64>] ? netlink_rcv_skb+0xa4/0xc0
+[ 8373.049602]  [<ffffffff81721f84>] ? rtnetlink_rcv+0x24/0x30
+[ 8373.049603]  [<ffffffff8174783a>] ? netlink_unicast+0x18a/0x230
+[ 8373.049605]  [<ffffffff81747c37>] ? netlink_sendmsg+0x357/0x3b0
+[ 8373.049608]  [<ffffffff816f2946>] ? sock_sendmsg+0x36/0x40
+[ 8373.049610]  [<ffffffff816f33d8>] ? ___sys_sendmsg+0x2c8/0x2e0
+[ 8373.049612]  [<ffffffff8164e871>] ? _crng_backtrack_protect+0x31/0x70
+[ 8373.049614]  [<ffffffff8153cc6e>] ? memzero_explicit+0xe/0x10
+[ 8373.049616]  [<ffffffff81423398>] ? dput+0xc8/0x250
+[ 8373.049618]  [<ffffffff816f3ce1>] ? __sys_sendmsg+0x51/0x90
+[ 8373.049620]  [<ffffffff81203b7d>] ? do_syscall_64+0x8d/0xf0
+[ 8373.049622]  [<ffffffff81818f8e>] ? entry_SYSCALL_64_after_swapgs+0x58/0xc6
+[ 8382.357526] IPv6: ADDRCONF(NETDEV_UP): wlp8s0: link is not ready
+[ 8549.675320] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 8549.842915] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 8549.863560] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 8558.698799] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 8558.698803] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 8558.698825] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 8558.701546] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
+[ 8561.742817] nouveau 0000:01:00.0: DRM: resuming kernel object tree...
+[ 8561.909750] nouveau 0000:01:00.0: priv: HUB0: 10ecc0 ffffffff (1840822c)
+[ 8561.930400] nouveau 0000:01:00.0: DRM: resuming client object trees...
+[ 8567.658498] nouveau 0000:01:00.0: DRM: evicting buffers...
+[ 8567.658504] nouveau 0000:01:00.0: DRM: waiting for kernel channels to go idle...
+[ 8567.658528] nouveau 0000:01:00.0: DRM: suspending client object trees...
+[ 8567.661270] nouveau 0000:01:00.0: DRM: suspending kernel object tree...
