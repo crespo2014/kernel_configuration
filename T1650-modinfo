@@ -1,0 +1,2142 @@
+filename:       /lib/modules/4.9.0-6-amd64/kernel/fs/fuse/fuse.ko
+alias:          devname:fuse
+alias:          char-major-10-229
+alias:          fs-fuseblk
+alias:          fs-fuse
+license:        GPL
+description:    Filesystem in Userspace
+author:         Miklos Szeredi <miklos@szeredi.hu>
+alias:          fs-fusectl
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           max_user_bgreq:Global limit for the maximum number of backgrounded requests an unprivileged user can set (uint)
+parm:           max_user_congthresh:Global limit for the maximum congestion threshold an unprivileged user can set (uint)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/powercap/intel_rapl.ko
+license:        GPL v2
+author:         Jacob Pan <jacob.jun.pan@intel.com>
+description:    Driver for Intel RAPL (Running Average Power Limit)
+alias:          cpu:type:x86,ven0000fam0006mod0057:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod005F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod005C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod005A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0037:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod009E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod008E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0055:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod005E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0056:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0047:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0046:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0045:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002A:feature:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/thermal/x86_pkg_temp_thermal.ko
+license:        GPL v2
+author:         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+description:    X86 PKG TEMP Thermal Driver
+alias:          cpu:type:x86,ven0000fam*mod*:feature:*01C6*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           notify_delay_ms:User space notification delay in milli seconds. (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/thermal/intel_powerclamp.ko
+description:    Package Level C-state Idle Injection for Intel CPUs
+author:         Jacob Pan <jacob.jun.pan@linux.intel.com>
+author:         Arjan van de Ven <arjan@linux.intel.com>
+license:        GPL
+alias:          cpu:type:x86,ven0000fam*mod*:feature:*0083*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           duration:forced idle time for each attempt in msec.
+parm:           window_size:sliding window in number of clamping cycles
+	powerclamp controls idle ratio within this window. larger
+	window size results in slower response time but more smooth
+	clamping results. default to 2.
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/kvm/kvm-intel.ko
+license:        GPL
+author:         Qumranet
+alias:          cpu:type:x86,ven*fam*mod*:feature:*0085*
+depends:        kvm
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           vpid:bool
+parm:           flexpriority:bool
+parm:           ept:bool
+parm:           unrestricted_guest:bool
+parm:           eptad:bool
+parm:           emulate_invalid_guest_state:bool
+parm:           vmm_exclusive:bool
+parm:           fasteoi:bool
+parm:           enable_apicv:bool
+parm:           enable_shadow_vmcs:bool
+parm:           nested:bool
+parm:           pml:bool
+parm:           preemption_timer:bool
+parm:           ple_gap:int
+parm:           ple_window:int
+parm:           ple_window_grow:int
+parm:           ple_window_shrink:int
+parm:           ple_window_max:int
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/gpu/drm/nouveau/nouveau.ko
+firmware:       nvidia/gp100/gr/sw_method_init.bin
+firmware:       nvidia/gp100/gr/sw_bundle_init.bin
+firmware:       nvidia/gp100/gr/sw_nonctx.bin
+firmware:       nvidia/gp100/gr/sw_ctx.bin
+firmware:       nvidia/gp100/gr/gpccs_sig.bin
+firmware:       nvidia/gp100/gr/gpccs_data.bin
+firmware:       nvidia/gp100/gr/gpccs_inst.bin
+firmware:       nvidia/gp100/gr/gpccs_bl.bin
+firmware:       nvidia/gp100/gr/fecs_sig.bin
+firmware:       nvidia/gp100/gr/fecs_data.bin
+firmware:       nvidia/gp100/gr/fecs_inst.bin
+firmware:       nvidia/gp100/gr/fecs_bl.bin
+firmware:       nvidia/gp100/acr/ucode_unload.bin
+firmware:       nvidia/gp100/acr/ucode_load.bin
+firmware:       nvidia/gp100/acr/bl.bin
+firmware:       nvidia/gm206/gr/sw_method_init.bin
+firmware:       nvidia/gm206/gr/sw_bundle_init.bin
+firmware:       nvidia/gm206/gr/sw_nonctx.bin
+firmware:       nvidia/gm206/gr/sw_ctx.bin
+firmware:       nvidia/gm206/gr/gpccs_sig.bin
+firmware:       nvidia/gm206/gr/gpccs_data.bin
+firmware:       nvidia/gm206/gr/gpccs_inst.bin
+firmware:       nvidia/gm206/gr/gpccs_bl.bin
+firmware:       nvidia/gm206/gr/fecs_sig.bin
+firmware:       nvidia/gm206/gr/fecs_data.bin
+firmware:       nvidia/gm206/gr/fecs_inst.bin
+firmware:       nvidia/gm206/gr/fecs_bl.bin
+firmware:       nvidia/gm206/acr/ucode_unload.bin
+firmware:       nvidia/gm206/acr/ucode_load.bin
+firmware:       nvidia/gm206/acr/bl.bin
+firmware:       nvidia/gm204/gr/sw_method_init.bin
+firmware:       nvidia/gm204/gr/sw_bundle_init.bin
+firmware:       nvidia/gm204/gr/sw_nonctx.bin
+firmware:       nvidia/gm204/gr/sw_ctx.bin
+firmware:       nvidia/gm204/gr/gpccs_sig.bin
+firmware:       nvidia/gm204/gr/gpccs_data.bin
+firmware:       nvidia/gm204/gr/gpccs_inst.bin
+firmware:       nvidia/gm204/gr/gpccs_bl.bin
+firmware:       nvidia/gm204/gr/fecs_sig.bin
+firmware:       nvidia/gm204/gr/fecs_data.bin
+firmware:       nvidia/gm204/gr/fecs_inst.bin
+firmware:       nvidia/gm204/gr/fecs_bl.bin
+firmware:       nvidia/gm204/acr/ucode_unload.bin
+firmware:       nvidia/gm204/acr/ucode_load.bin
+firmware:       nvidia/gm204/acr/bl.bin
+firmware:       nvidia/gm200/gr/sw_method_init.bin
+firmware:       nvidia/gm200/gr/sw_bundle_init.bin
+firmware:       nvidia/gm200/gr/sw_nonctx.bin
+firmware:       nvidia/gm200/gr/sw_ctx.bin
+firmware:       nvidia/gm200/gr/gpccs_sig.bin
+firmware:       nvidia/gm200/gr/gpccs_data.bin
+firmware:       nvidia/gm200/gr/gpccs_inst.bin
+firmware:       nvidia/gm200/gr/gpccs_bl.bin
+firmware:       nvidia/gm200/gr/fecs_sig.bin
+firmware:       nvidia/gm200/gr/fecs_data.bin
+firmware:       nvidia/gm200/gr/fecs_inst.bin
+firmware:       nvidia/gm200/gr/fecs_bl.bin
+firmware:       nvidia/gm200/acr/ucode_unload.bin
+firmware:       nvidia/gm200/acr/ucode_load.bin
+firmware:       nvidia/gm200/acr/bl.bin
+firmware:       nvidia/gm20b/gr/sw_method_init.bin
+firmware:       nvidia/gm20b/gr/sw_bundle_init.bin
+firmware:       nvidia/gm20b/gr/sw_nonctx.bin
+firmware:       nvidia/gm20b/gr/sw_ctx.bin
+firmware:       nvidia/gm20b/gr/gpccs_data.bin
+firmware:       nvidia/gm20b/gr/gpccs_inst.bin
+firmware:       nvidia/gm20b/gr/fecs_sig.bin
+firmware:       nvidia/gm20b/gr/fecs_data.bin
+firmware:       nvidia/gm20b/gr/fecs_inst.bin
+firmware:       nvidia/gm20b/gr/fecs_bl.bin
+firmware:       nvidia/gm20b/acr/ucode_load.bin
+firmware:       nvidia/gm20b/acr/bl.bin
+license:        GPL and additional rights
+description:    nVidia Riva/TNT/GeForce/Quadro/Tesla
+author:         Nouveau Project
+alias:          pci:v000012D2d*sv*sd*bc03sc*i*
+alias:          pci:v000010DEd*sv*sd*bc03sc*i*
+depends:        drm,drm_kms_helper,ttm,mxm-wmi,button,wmi,video,i2c-algo-bit
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           tv_norm:Default TV norm.
+		Supported: PAL, PAL-M, PAL-N, PAL-Nc, NTSC-M, NTSC-J,
+			hd480i, hd480p, hd576i, hd576p, hd720p, hd1080i.
+		Default: PAL
+		*NOTE* Ignored for cards with external TV encoders. (charp)
+parm:           vram_pushbuf:Create DMA push buffers in VRAM (int)
+parm:           nofbaccel:Disable fbcon acceleration (int)
+parm:           tv_disable:Disable TV-out detection (int)
+parm:           ignorelid:Ignore ACPI lid status (int)
+parm:           duallink:Allow dual-link TMDS (default: enabled) (int)
+parm:           hdmimhz:Force a maximum HDMI pixel clock (in MHz) (int)
+parm:           config:option string to pass to driver core (charp)
+parm:           debug:debug string to pass to driver core (charp)
+parm:           noaccel:disable kernel/abi16 acceleration (int)
+parm:           modeset:enable driver (default: auto, 0 = disabled, 1 = enabled, 2 = headless) (int)
+parm:           runpm:disable (0), force enable (1), optimus only default (-1) (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/input/joydev.ko
+license:        GPL
+description:    Joystick device interfaces
+author:         Vojtech Pavlik <vojtech@ucw.cz>
+alias:          input:b*v*p*e*-e*1,*k*2C0,*r*a*m*l*s*f*w*
+alias:          input:b*v*p*e*-e*1,*k*130,*r*a*m*l*s*f*w*
+alias:          input:b*v*p*e*-e*1,*k*120,*r*a*m*l*s*f*w*
+alias:          input:b*v*p*e*-e*3,*k*r*a*6,*m*l*s*f*w*
+alias:          input:b*v*p*e*-e*3,*k*r*a*8,*m*l*s*f*w*
+alias:          input:b*v*p*e*-e*3,*k*r*a*2,*m*l*s*f*w*
+alias:          input:b*v*p*e*-e*3,*k*r*a*0,*m*l*s*f*w*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/platform/x86/mxm-wmi.ko
+alias:          wmi:F6CB5C3C-9CAE-4EBD-B577-931EA32A2CC0
+license:        GPL
+description:    MXM WMI Driver
+author:         Dave Airlie
+depends:        wmi
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/pci/hda/snd-hda-codec-hdmi.ko
+alias:          snd-hda-codec-atihdmi
+alias:          snd-hda-codec-nvhdmi
+alias:          snd-hda-codec-intelhdmi
+description:    HDMI HD-audio codec
+license:        GPL
+alias:          hdaudio:v00000101r*a01*
+alias:          hdaudio:v808629FBr*a01*
+alias:          hdaudio:v80862883r*a01*
+alias:          hdaudio:v80862882r*a01*
+alias:          hdaudio:v80862880r*a01*
+alias:          hdaudio:v8086280Dr*a01*
+alias:          hdaudio:v8086280Br*a01*
+alias:          hdaudio:v8086280Ar*a01*
+alias:          hdaudio:v80862809r*a01*
+alias:          hdaudio:v80862808r*a01*
+alias:          hdaudio:v80862807r*a01*
+alias:          hdaudio:v80862806r*a01*
+alias:          hdaudio:v80862805r*a01*
+alias:          hdaudio:v80862804r*a01*
+alias:          hdaudio:v80862803r*a01*
+alias:          hdaudio:v80862802r*a01*
+alias:          hdaudio:v80862801r*a01*
+alias:          hdaudio:v80860054r*a01*
+alias:          hdaudio:v11069F85r*a01*
+alias:          hdaudio:v11069F84r*a01*
+alias:          hdaudio:v11069F81r*a01*
+alias:          hdaudio:v11069F80r*a01*
+alias:          hdaudio:v10DE8067r*a01*
+alias:          hdaudio:v10DE8001r*a01*
+alias:          hdaudio:v10DE0099r*a01*
+alias:          hdaudio:v10DE0098r*a01*
+alias:          hdaudio:v10DE0097r*a01*
+alias:          hdaudio:v10DE0095r*a01*
+alias:          hdaudio:v10DE0094r*a01*
+alias:          hdaudio:v10DE0093r*a01*
+alias:          hdaudio:v10DE0092r*a01*
+alias:          hdaudio:v10DE0091r*a01*
+alias:          hdaudio:v10DE0090r*a01*
+alias:          hdaudio:v10DE0084r*a01*
+alias:          hdaudio:v10DE0083r*a01*
+alias:          hdaudio:v10DE0082r*a01*
+alias:          hdaudio:v10DE0081r*a01*
+alias:          hdaudio:v10DE0080r*a01*
+alias:          hdaudio:v10DE007Er*a01*
+alias:          hdaudio:v10DE007Dr*a01*
+alias:          hdaudio:v10DE007Cr*a01*
+alias:          hdaudio:v10DE007Br*a01*
+alias:          hdaudio:v10DE0076r*a01*
+alias:          hdaudio:v10DE0074r*a01*
+alias:          hdaudio:v10DE0073r*a01*
+alias:          hdaudio:v10DE0072r*a01*
+alias:          hdaudio:v10DE0071r*a01*
+alias:          hdaudio:v10DE0070r*a01*
+alias:          hdaudio:v10DE0067r*a01*
+alias:          hdaudio:v10DE0062r*a01*
+alias:          hdaudio:v10DE0061r*a01*
+alias:          hdaudio:v10DE0060r*a01*
+alias:          hdaudio:v10DE0052r*a01*
+alias:          hdaudio:v10DE0051r*a01*
+alias:          hdaudio:v10DE0050r*a01*
+alias:          hdaudio:v10DE0045r*a01*
+alias:          hdaudio:v10DE0044r*a01*
+alias:          hdaudio:v10DE0043r*a01*
+alias:          hdaudio:v10DE0042r*a01*
+alias:          hdaudio:v10DE0041r*a01*
+alias:          hdaudio:v10DE0040r*a01*
+alias:          hdaudio:v10DE0029r*a01*
+alias:          hdaudio:v10DE0028r*a01*
+alias:          hdaudio:v10DE0022r*a01*
+alias:          hdaudio:v10DE0020r*a01*
+alias:          hdaudio:v10DE001Cr*a01*
+alias:          hdaudio:v10DE001Br*a01*
+alias:          hdaudio:v10DE001Ar*a01*
+alias:          hdaudio:v10DE0019r*a01*
+alias:          hdaudio:v10DE0018r*a01*
+alias:          hdaudio:v10DE0016r*a01*
+alias:          hdaudio:v10DE0015r*a01*
+alias:          hdaudio:v10DE0014r*a01*
+alias:          hdaudio:v10DE0013r*a01*
+alias:          hdaudio:v10DE0012r*a01*
+alias:          hdaudio:v10DE0011r*a01*
+alias:          hdaudio:v10DE0010r*a01*
+alias:          hdaudio:v10DE000Dr*a01*
+alias:          hdaudio:v10DE000Cr*a01*
+alias:          hdaudio:v10DE000Br*a01*
+alias:          hdaudio:v10DE000Ar*a01*
+alias:          hdaudio:v10DE0009r*a01*
+alias:          hdaudio:v10DE0008r*a01*
+alias:          hdaudio:v10DE0007r*a01*
+alias:          hdaudio:v10DE0006r*a01*
+alias:          hdaudio:v10DE0005r*a01*
+alias:          hdaudio:v10DE0004r*a01*
+alias:          hdaudio:v10DE0003r*a01*
+alias:          hdaudio:v10DE0002r*a01*
+alias:          hdaudio:v10DE0001r*a01*
+alias:          hdaudio:v17E80047r*a01*
+alias:          hdaudio:v10951392r*a01*
+alias:          hdaudio:v10951390r*a01*
+alias:          hdaudio:v1002AA01r*a01*
+alias:          hdaudio:v1002791Ar*a01*
+alias:          hdaudio:v10027919r*a01*
+alias:          hdaudio:v1002793Cr*a01*
+depends:        snd-hda-core,snd,snd-hda-codec,snd-pcm
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           static_hdmi_pcm:Don't restrict PCM parameters per ELD info (bool)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/kvm/kvm.ko
+license:        GPL
+author:         Qumranet
+depends:        irqbypass
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           allow_unsafe_assigned_interrupts:Enable device assignment on platforms without interrupt remapping support. (bool)
+parm:           ignore_msrs:bool
+parm:           min_timer_period_us:uint
+parm:           kvmclock_periodic_sync:bool
+parm:           tsc_tolerance_ppm:uint
+parm:           lapic_timer_advance_ns:uint
+parm:           vector_hashing:bool
+parm:           halt_poll_ns:uint
+parm:           halt_poll_ns_grow:uint
+parm:           halt_poll_ns_shrink:uint
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/platform/x86/wmi.ko
+license:        GPL
+description:    ACPI-WMI Mapping Driver
+author:         Carlos Corbacho
+alias:          acpi*:pnp0c14:*
+alias:          acpi*:PNP0C14:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           debug_event:Log WMI Events [0/1] (bool)
+parm:           debug_dump_wdg:Dump available WMI interfaces [0/1] (bool)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/gpu/drm/ttm/ttm.ko
+license:        GPL and additional rights
+description:    TTM memory manager subsystem (for DRM device)
+author:         Thomas Hellstrom, Jerome Glisse
+depends:        drm
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/gpu/drm/drm_kms_helper.ko
+license:        GPL and additional rights
+description:    DRM KMS helper
+author:         David Airlie, Jesse Barnes
+license:        GPL
+depends:        drm
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           fbdev_emulation:Enable legacy fbdev emulation [default=true] (bool)
+parm:           edid_firmware:Do not probe monitor, use specified EDID blob from built-in data or /lib/firmware instead.  (string)
+parm:           poll:bool
+parm:           dp_aux_i2c_speed_khz:Assumed speed of the i2c bus in kHz, (1-400, default 10) (int)
+parm:           dp_aux_i2c_transfer_size:Number of bytes to transfer in a single I2C over DP AUX CH message, (1-16, default 16) (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/gpu/drm/drm.ko
+license:        GPL and additional rights
+description:    DRM shared core routines
+author:         Gareth Hughes, Leif Delgass, José Fonseca, Jon Smirl
+license:        GPL and additional rights
+description:    DRM bridge infrastructure
+author:         Ajay Kumar <ajaykumar.rs@samsung.com>
+license:        GPL and additional rights
+description:    DRM panel infrastructure
+author:         Thierry Reding <treding@nvidia.com>
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           edid_fixup:Minimum number of valid EDID header bytes (0-8, default 6) (int)
+parm:           debug:Enable debug output, where each bit enables a debug category.
+		Bit 0 (0x01) will enable CORE messages (drm core code)
+		Bit 1 (0x02) will enable DRIVER messages (drm controller code)
+		Bit 2 (0x04) will enable KMS messages (modesetting code)
+		Bit 3 (0x08) will enable PRIME messages (prime code)
+		Bit 4 (0x10) will enable ATOMIC messages (atomic code)
+		Bit 5 (0x20) will enable VBL messages (vblank code) (int)
+parm:           vblankoffdelay:Delay until vblank irq auto-disable [msecs] (0: never disable, <0: disable immediately) (int)
+parm:           timestamp_precision_usec:Max. error on timestamps [usecs] (int)
+parm:           timestamp_monotonic:Use monotonic timestamps (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/pci/hda/snd-hda-codec-realtek.ko
+description:    Realtek HD-audio codec
+license:        GPL
+alias:          hdaudio:v10EC0900r*a01*
+alias:          hdaudio:v10EC0899r*a01*
+alias:          hdaudio:v10EC0892r*a01*
+alias:          hdaudio:v10EC0889r*a01*
+alias:          hdaudio:v10EC0888r*a01*
+alias:          hdaudio:v10EC0888r00100101a01*
+alias:          hdaudio:v10EC0887r*a01*
+alias:          hdaudio:v10EC0885r*a01*
+alias:          hdaudio:v10EC0885r00100103a01*
+alias:          hdaudio:v10EC0885r00100101a01*
+alias:          hdaudio:v10EC0883r*a01*
+alias:          hdaudio:v10EC0882r*a01*
+alias:          hdaudio:v10EC0880r*a01*
+alias:          hdaudio:v10EC0867r*a01*
+alias:          hdaudio:v10EC0703r*a01*
+alias:          hdaudio:v10EC0701r*a01*
+alias:          hdaudio:v10EC0700r*a01*
+alias:          hdaudio:v10EC0680r*a01*
+alias:          hdaudio:v10EC0671r*a01*
+alias:          hdaudio:v10EC0670r*a01*
+alias:          hdaudio:v10EC0668r*a01*
+alias:          hdaudio:v10EC0667r*a01*
+alias:          hdaudio:v10EC0665r*a01*
+alias:          hdaudio:v10EC0663r*a01*
+alias:          hdaudio:v10EC0662r00100300a01*
+alias:          hdaudio:v10EC0662r00100101a01*
+alias:          hdaudio:v10EC0662r00100002a01*
+alias:          hdaudio:v10EC0862r*a01*
+alias:          hdaudio:v10EC0861r*a01*
+alias:          hdaudio:v10EC0660r*a01*
+alias:          hdaudio:v10EC0861r00100340a01*
+alias:          hdaudio:v10EC0299r*a01*
+alias:          hdaudio:v10EC0298r*a01*
+alias:          hdaudio:v10EC0295r*a01*
+alias:          hdaudio:v10EC0294r*a01*
+alias:          hdaudio:v10EC0293r*a01*
+alias:          hdaudio:v10EC0292r*a01*
+alias:          hdaudio:v10EC0290r*a01*
+alias:          hdaudio:v10EC0288r*a01*
+alias:          hdaudio:v10EC0286r*a01*
+alias:          hdaudio:v10EC0285r*a01*
+alias:          hdaudio:v10EC0284r*a01*
+alias:          hdaudio:v10EC0283r*a01*
+alias:          hdaudio:v10EC0282r*a01*
+alias:          hdaudio:v10EC0280r*a01*
+alias:          hdaudio:v10EC0276r*a01*
+alias:          hdaudio:v10EC0275r*a01*
+alias:          hdaudio:v10EC0274r*a01*
+alias:          hdaudio:v10EC0272r*a01*
+alias:          hdaudio:v10EC0270r*a01*
+alias:          hdaudio:v10EC0269r*a01*
+alias:          hdaudio:v10EC0268r*a01*
+alias:          hdaudio:v10EC0267r*a01*
+alias:          hdaudio:v10EC0262r*a01*
+alias:          hdaudio:v10EC0260r*a01*
+alias:          hdaudio:v10EC0256r*a01*
+alias:          hdaudio:v10EC0255r*a01*
+alias:          hdaudio:v10EC0236r*a01*
+alias:          hdaudio:v10EC0235r*a01*
+alias:          hdaudio:v10EC0234r*a01*
+alias:          hdaudio:v10EC0233r*a01*
+alias:          hdaudio:v10EC0231r*a01*
+alias:          hdaudio:v10EC0225r*a01*
+alias:          hdaudio:v10EC0221r*a01*
+depends:        snd-hda-codec-generic,snd-hda-codec,snd-hda-core,snd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/i2c/algos/i2c-algo-bit.ko
+license:        GPL
+description:    I2C-Bus bit-banging algorithm
+author:         Simon G. Vogl <simon@tk.uni-linz.ac.at>
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           bit_test:lines testing - 0 off; 1 report; 2 fail if stuck (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/pci/hda/snd-hda-codec-generic.ko
+description:    Generic HD-audio codec parser
+license:        GPL
+alias:          hdaudio:v00000201r*a01*
+depends:        snd-hda-codec,snd-hda-core,snd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/pci/hda/snd-hda-intel.ko
+description:    Intel HDA driver
+license:        GPL
+alias:          pci:v00001022d*sv*sd*bc04sc03i00*
+alias:          pci:v00001002d*sv*sd*bc04sc03i00*
+alias:          pci:v000015ADd00001977sv*sd*bc*sc*i*
+alias:          pci:v000017F3d00003010sv*sd*bc*sc*i*
+alias:          pci:v000013F6d00005011sv*sd*bc*sc*i*
+alias:          pci:v00001102d00000009sv*sd*bc*sc*i*
+alias:          pci:v00001102d00000012sv*sd*bc*sc*i*
+alias:          pci:v00001102d00000010sv*sd*bc*sc*i*
+alias:          pci:v00006549d00002200sv*sd*bc*sc*i*
+alias:          pci:v00006549d00001200sv*sd*bc*sc*i*
+alias:          pci:v000010DEd*sv*sd*bc04sc03i00*
+alias:          pci:v000010B9d00005461sv*sd*bc*sc*i*
+alias:          pci:v00001039d00007502sv*sd*bc*sc*i*
+alias:          pci:v00001106d00009140sv*sd*bc*sc*i*
+alias:          pci:v00001106d00009170sv*sd*bc*sc*i*
+alias:          pci:v00001106d00003288sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAF0sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAE0sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAE8sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAD8sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAC8sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAC0sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAB0sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAA8sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AAA0sv*sd*bc*sc*i*
+alias:          pci:v00001002d00009902sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA98sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA90sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA88sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA80sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA68sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA60sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA58sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA50sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA48sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA40sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA38sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA30sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA28sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA20sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA18sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA10sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA08sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000AA00sv*sd*bc*sc*i*
+alias:          pci:v00001002d00009840sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000970Fsv*sd*bc*sc*i*
+alias:          pci:v00001002d0000960Fsv*sd*bc*sc*i*
+alias:          pci:v00001002d00007919sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000793Bsv*sd*bc*sc*i*
+alias:          pci:v00001002d000015B3sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000157Asv*sd*bc*sc*i*
+alias:          pci:v00001002d00001308sv*sd*bc*sc*i*
+alias:          pci:v00001002d00000002sv*sd*bc*sc*i*
+alias:          pci:v00001022d000015E3sv*sd*bc*sc*i*
+alias:          pci:v00001022d0000780Dsv*sd*bc*sc*i*
+alias:          pci:v00001002d00004383sv*sd*bc*sc*i*
+alias:          pci:v00001002d0000437Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d*sv*sd*bc04sc03i00*
+alias:          pci:v00008086d00003A6Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A3Esv*sd*bc*sc*i*
+alias:          pci:v00008086d0000293Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000293Esv*sd*bc*sc*i*
+alias:          pci:v00008086d0000284Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000269Asv*sd*bc*sc*i*
+alias:          pci:v00008086d000027D8sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002668sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002284sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000F04sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000080Asv*sd*bc*sc*i*
+alias:          pci:v00008086d0000811Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B56sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000160Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00000D0Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00000C0Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00000A0Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00001A98sv*sd*bc*sc*i*
+alias:          pci:v00008086d00005A98sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A2F0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D71sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A171sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D70sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A170sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CA0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C21sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C20sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A270sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1F0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D21sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D20sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CA0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C20sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E20sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D20sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C20sv*sd*bc*sc*i*
+depends:        snd-hda-core,snd-hda-codec,snd-pcm,snd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           index:Index value for Intel HD audio interface. (array of int)
+parm:           id:ID string for Intel HD audio interface. (array of charp)
+parm:           enable:Enable Intel HD audio interface. (array of bool)
+parm:           model:Use the given board model. (array of charp)
+parm:           position_fix:DMA pointer read method.(-1 = system default, 0 = auto, 1 = LPIB, 2 = POSBUF, 3 = VIACOMBO, 4 = COMBO). (array of int)
+parm:           bdl_pos_adj:BDL position adjustment offset. (array of int)
+parm:           probe_mask:Bitmask to probe codecs (default = -1). (array of int)
+parm:           probe_only:Only probing and no codec initialization. (array of int)
+parm:           jackpoll_ms:Ms between polling for jack events (default = 0, using unsol events only) (array of int)
+parm:           single_cmd:Use single command to communicate with codecs (for debugging only). (bool)
+parm:           enable_msi:Enable Message Signaled Interrupt (MSI) (bint)
+parm:           patch:Patch file for Intel HD audio interface. (array of charp)
+parm:           beep_mode:Select HDA Beep registration mode (0=off, 1=on) (default=1). (array of bool)
+parm:           power_save:Automatic power-saving timeout (in second, 0 = disable). (xint)
+parm:           power_save_controller:Reset controller in power save mode. (bool)
+parm:           align_buffer_size:Force buffer and period sizes to be multiple of 128 bytes. (bint)
+parm:           snoop:Enable/disable snooping (bint)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/pci/hda/snd-hda-codec.ko
+license:        GPL
+description:    HDA codec core
+depends:        snd-hda-core,snd-pcm,snd,snd-hwdep
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           dump_coef:Dump processing coefficients in codec proc file (-1=auto, 0=disable, 1=enable) (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/hda/snd-hda-core.ko
+license:        GPL
+description:    HD-audio bus
+depends:        snd-pcm
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/watchdog/iTCO_wdt.ko
+alias:          platform:iTCO_wdt
+license:        GPL
+version:        1.11
+description:    Intel TCO WatchDog Timer Driver
+author:         Wim Van Sebroeck <wim@iguana.be>
+srcversion:     D1AED0E4F307FC28D094F2D
+depends:        iTCO_vendor_support
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           heartbeat:Watchdog timeout in seconds. 5..76 (TCO v1) or 3..614 (TCO v2), default=30) (int)
+parm:           nowayout:Watchdog cannot be stopped once started (default=0) (bool)
+parm:           turn_SMI_watchdog_clear_off:Turn off SMI clearing watchdog (depends on TCO-version)(default=1) (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/virt/lib/irqbypass.ko
+description:    IRQ bypass manager utility module
+license:        GPL v2
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/watchdog/iTCO_vendor_support.ko
+license:        GPL
+version:        1.04
+description:    Intel TCO Vendor Specific WatchDog Timer Driver Support
+author:         Wim Van Sebroeck <wim@iguana.be>, R. Seretny <lkpatches@paypc.com>
+srcversion:     CB807265FDB4CF801295385
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           vendorsupport:iTCO vendor specific support mode, default=0 (none), 1=SuperMicro Pent3, 2=SuperMicro Pent4+, 911=Broken SMI BIOS (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/core/snd-hwdep.ko
+license:        GPL
+description:    Hardware dependent layer
+author:         Jaroslav Kysela <perex@perex.cz>
+depends:        snd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/core/snd-pcm.ko
+license:        GPL
+description:    Midlevel PCM code for ALSA.
+author:         Jaroslav Kysela <perex@perex.cz>, Abramo Bagnara <abramo@alsa-project.org>
+depends:        snd,snd-timer
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           preallocate_dma:Preallocate DMA memory when the PCM devices are initialized. (int)
+parm:           maximum_substreams:Maximum substreams with preallocated DMA memory. (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/core/snd-timer.ko
+alias:          devname:snd/timer
+alias:          char-major-116-33
+license:        GPL
+description:    ALSA timer interface
+author:         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>
+depends:        snd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           timer_limit:Maximum global timers in system. (int)
+parm:           timer_tstamp_monotonic:Use posix monotonic clock source for timestamps (default). (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/crypto/crct10dif-pclmul.ko
+alias:          crypto-crct10dif-pclmul
+alias:          crct10dif-pclmul
+alias:          crypto-crct10dif
+alias:          crct10dif
+license:        GPL
+description:    T10 DIF CRC calculation accelerated with PCLMULQDQ.
+author:         Tim Chen <tim.c.chen@linux.intel.com>
+alias:          cpu:type:x86,ven*fam*mod*:feature:*0081*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/crypto/crc32-pclmul.ko
+alias:          crypto-crc32-pclmul
+alias:          crc32-pclmul
+alias:          crypto-crc32
+alias:          crc32
+license:        GPL
+author:         Alexander Boyko <alexander_boyko@xyratex.com>
+alias:          cpu:type:x86,ven*fam*mod*:feature:*0081*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/core/snd.ko
+alias:          char-major-116-*
+license:        GPL
+description:    Advanced Linux Sound Architecture driver for soundcards.
+author:         Jaroslav Kysela <perex@perex.cz>
+depends:        soundcore
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           slots:Module names assigned to the slots. (array of charp)
+parm:           major:Major # for sound driver. (int)
+parm:           cards_limit:Count of auto-loadable soundcards. (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/sound/soundcore.ko
+alias:          char-major-14-*
+license:        GPL
+author:         Alan Cox
+description:    Core sound module
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           preclaim_oss:int
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/misc/mei/mei-me.ko
+license:        GPL v2
+description:    Intel(R) Management Engine Interface
+author:         Intel Corporation
+alias:          pci:v00008086d0000A2BBsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A2BAsv*sd*bc*sc*i*
+alias:          pci:v00008086d00005A9Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001A9Asv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1BAsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A13Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A13Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D3Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CBBsv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CBAsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CBAsv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001DBAsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001CBAsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B65sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B64sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002E34sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002E24sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002E14sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002E04sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002A74sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002A64sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002A54sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002A44sv*sd*bc*sc*i*
+alias:          pci:v00008086d000028F4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000028E4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000028D4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000028C4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000028B4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000029F4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000029E4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000029D4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000029C4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000029B4sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002A14sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002A04sv*sd*bc*sc*i*
+alias:          pci:v00008086d000029A4sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002994sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002984sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002974sv*sd*bc*sc*i*
+depends:        mei
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/pci/hotplug/shpchp.ko
+license:        GPL
+description:    Standard Hot Plug PCI Controller Driver
+author:         Dan Zink <dan.zink@compaq.com>, Greg Kroah-Hartman <greg@kroah.com>, Dely Sy <dely.l.sy@intel.com>
+alias:          pci:v*d*sv*sd*bc06sc04i00*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           shpchp_debug:Debugging mode enabled or not (bool)
+parm:           shpchp_poll_mode:Using polling mechanism for hot-plug events or not (bool)
+parm:           shpchp_poll_time:Polling mechanism frequency, in seconds (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/crypto/ghash-clmulni-intel.ko
+alias:          crypto-ghash
+alias:          ghash
+description:    GHASH Message Digest Algorithm, acclerated by PCLMULQDQ-NI
+license:        GPL
+alias:          cpu:type:x86,ven*fam*mod*:feature:*0081*
+depends:        cryptd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/edac/ie31200_edac.ko
+description:    MC support for Intel Processor E31200 memory hub controllers
+author:         Jason Baron <jbaron@akamai.com>
+license:        GPL
+alias:          pci:v00008086d00001918sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000C08sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000C04sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000015Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00000158sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000150sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000010Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00000108sv*sd*bc*sc*i*
+depends:        edac_core
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/mfd/lpc_ich.ko
+license:        GPL
+description:    LPC interface for Intel ICH
+author:         Aaron Sierra <asierra@xes-inc.com>
+alias:          pci:v00008086d0000A243sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A242sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1C7sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1C6sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1C5sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1C4sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1C3sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1C2sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1C1sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CC9sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CC7sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CC6sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CC5sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CC3sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CC2sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CC1sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C47sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C46sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C45sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C44sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C43sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C42sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C41sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C40sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D5Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D5Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D5Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D5Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D5Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D5Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D59sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D58sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D57sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D56sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D55sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D54sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D53sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D52sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D51sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D50sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D4Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D4Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D4Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D4Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D4Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D4Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D49sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D48sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D47sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D46sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D45sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D44sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D43sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D42sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D41sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D40sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CC6sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CC4sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CC3sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CC2sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CC1sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C5Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C5Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C5Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C5Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C5Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C5Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C59sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C58sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C57sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C56sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C55sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C54sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C53sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C52sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C51sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C50sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C4Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C4Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C4Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C4Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C4Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C4Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C49sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C48sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C47sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C46sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C45sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C44sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C43sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C42sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C41sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C40sv*sd*bc*sc*i*
+alias:          pci:v00008086d00005031sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B16sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B14sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B12sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B0Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B0Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B0Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B0Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B09sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B08sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B07sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B06sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B03sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B02sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B01sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B00sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A1Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A18sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A16sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A14sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002919sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002918sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002917sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002916sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002914sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002912sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002815sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002814sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002812sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002811sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002810sv*sd*bc*sc*i*
+alias:          pci:v00008086d000027BDsv*sd*bc*sc*i*
+alias:          pci:v00008086d000027BCsv*sd*bc*sc*i*
+alias:          pci:v00008086d000027B9sv*sd*bc*sc*i*
+alias:          pci:v00008086d000027B8sv*sd*bc*sc*i*
+alias:          pci:v00008086d000027B0sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000267Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000267Esv*sd*bc*sc*i*
+alias:          pci:v00008086d0000267Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000267Csv*sd*bc*sc*i*
+alias:          pci:v00008086d0000267Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000267Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00002679sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002678sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002677sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002676sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002675sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002674sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002673sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002672sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002671sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002670sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002642sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002641sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002640sv*sd*bc*sc*i*
+alias:          pci:v00008086d000025A1sv*sd*bc*sc*i*
+alias:          pci:v00008086d000024D0sv*sd*bc*sc*i*
+alias:          pci:v00008086d000024CCsv*sd*bc*sc*i*
+alias:          pci:v00008086d000024C0sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000248Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00002480sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002450sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000244Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00002440sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002420sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002410sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002390sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002310sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000229Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F3Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F3Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F39sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F38sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E5Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E5Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E5Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E5Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E5Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E5Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E59sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E58sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E57sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E56sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E55sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E54sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E53sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E52sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E51sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E50sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E4Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E4Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E4Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E4Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E4Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E4Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E49sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E48sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E47sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E46sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E45sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E44sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E43sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E42sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E41sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E40sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D41sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D40sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C5Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C5Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C5Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C5Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C5Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C5Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C59sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C58sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C57sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C56sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C55sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C54sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C53sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C52sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C51sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C50sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C4Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C4Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C4Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C4Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C4Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C4Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C49sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C48sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C47sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C46sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C45sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C44sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C43sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C42sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C41sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000F1Csv*sd*bc*sc*i*
+depends:        mfd-core
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/misc/mei/mei.ko
+license:        GPL v2
+description:    Intel(R) Management Engine Interface
+author:         Intel Corporation
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/mfd/mfd-core.ko
+author:         Ian Molton, Dmitry Baryshkov
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/firmware/dcdbas.ko
+alias:          dmi:*:[bs]vnD[Ee][Ll][Ll]*:*
+license:        GPL
+author:         Dell Inc.
+version:        5.6.0-3.2
+description:    Dell Systems Management Base Driver (version 5.6.0-3.2)
+srcversion:     23FEF767856755DD4554FC8
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/input/evdev.ko
+license:        GPL
+description:    Input driver event char devices
+author:         Vojtech Pavlik <vojtech@ucw.cz>
+alias:          input:b*v*p*e*-e*k*r*a*m*l*s*f*w*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/edac/edac_core.ko
+description:    Core library routines for EDAC reporting
+author:         Doug Thompson www.softwarebitmaker.com, et al
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           check_pci_errors:Check for PCI bus parity errors: 0=off 1=on (int)
+parm:           edac_pci_panic_on_pe:Panic on PCI Bus Parity error: 0=off 1=on (int)
+parm:           edac_mc_panic_on_ue:Panic on uncorrected error: 0=off 1=on (int)
+parm:           edac_mc_log_ue:Log uncorrectable error to console: 0=off 1=on (int)
+parm:           edac_mc_log_ce:Log correctable error to console: 0=off 1=on (int)
+parm:           edac_mc_poll_msec:Polling period in milliseconds
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/scsi/sg.ko
+alias:          char-major-21-*
+version:        3.5.36
+license:        GPL
+description:    SCSI generic (sg) driver
+author:         Douglas Gilbert
+srcversion:     956FDC3B4FDC925307FED7E
+depends:        scsi_mod
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           scatter_elem_sz:scatter gather element size (default: max(SG_SCATTER_SZ, PAGE_SIZE)) (int)
+parm:           def_reserved_size:size of buffer reserved for each fd (int)
+parm:           allow_dio:allow direct I/O (default: 0 (disallow)) (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/hwmon/dell-smm-hwmon.ko
+alias:          i8k
+license:        GPL
+description:    Dell laptop SMM BIOS hwmon driver
+author:         Pali Rohár <pali.rohar@gmail.com>
+author:         Massimo Dal Zotto (dz@debian.org)
+alias:          dmi*:svn*DellInc.*:pn*MXC051*:
+alias:          dmi*:svn*DellInc.*:pn*XPS13*:
+alias:          dmi*:svn*DellInc.*:pn*Studio*:
+alias:          dmi*:svn*DellInc.*:pn*XPSL421X*:
+alias:          dmi*:svn*DellInc.*:pn*Vostro*:
+alias:          dmi*:svn*DellInc.*:pn*Precision*:
+alias:          dmi*:svn*DellInc.*:pn*PrecisionWorkStation490*:
+alias:          dmi*:svn*DellInc.*:pn*MP061*:
+alias:          dmi*:svn*DellInc.*:pn*MM061*:
+alias:          dmi*:svn*DellInc.*:pn*Latitude*:
+alias:          dmi*:svn*DellInc.*:pn*LatitudeD520*:
+alias:          dmi*:svn*DellInc.*:pn*Inspiron*:
+alias:          dmi*:svn*DellComputer*:pn*Latitude*:
+alias:          dmi*:svn*DellComputer*:pn*Inspiron*:
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           force:Force loading without checking for supported models (bool)
+parm:           ignore_dmi:Continue probing hardware even if DMI data does not match (bool)
+parm:           restricted:Restrict fan control and serial number to CAP_SYS_ADMIN (default: 1) (bool)
+parm:           power_status:Report power status in /proc/i8k (default: 0) (bool)
+parm:           fan_mult:Factor to multiply fan speed with (default: autodetect) (uint)
+parm:           fan_max:Maximum configurable fan speed (default: autodetect) (uint)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/input/serio/serio_raw.ko
+license:        GPL
+description:    Raw serio driver
+author:         Dmitry Torokhov <dtor@mail.ru>
+alias:          serio:ty06pr*id*ex*
+alias:          serio:ty01pr*id*ex*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/events/intel/intel-cstate.ko
+license:        GPL
+alias:          cpu:type:x86,ven0000fam0006mod0085:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0057:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod005E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0047:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0056:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0037:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0045:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0046:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0025:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod001A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod001E:feature:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/events/intel/intel-uncore.ko
+license:        GPL
+alias:          cpu:type:x86,ven0000fam0006mod0055:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod005E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0085:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0057:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0056:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0047:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0046:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0045:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0025:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod001E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod001A:feature:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/events/intel/intel-rapl-perf.ko
+license:        GPL
+alias:          cpu:type:x86,ven0000fam0006mod005C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0055:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod005E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0085:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0057:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0056:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod004F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0047:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0046:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod0045:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003F:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003C:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003E:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod003A:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002D:feature:*
+alias:          cpu:type:x86,ven0000fam0006mod002A:feature:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/input/misc/pcspkr.ko
+alias:          platform:pcspkr
+license:        GPL
+description:    PC Speaker beeper driver
+author:         Vojtech Pavlik <vojtech@ucw.cz>
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/acpi/button.ko
+license:        GPL
+description:    ACPI Button Driver
+author:         Paul Diefenbaugh
+alias:          acpi*:LNXPWRBN:*
+alias:          acpi*:PNP0C0C:*
+alias:          acpi*:LNXSLPBN:*
+alias:          acpi*:PNP0C0E:*
+alias:          acpi*:PNP0C0D:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           lid_report_interval:Interval (ms) between lid key events (ulong)
+parm:           lid_init_state:Behavior for reporting LID initial state
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/acpi/video.ko
+license:        GPL
+description:    ACPI Video Driver
+author:         Bruno Ducrot
+alias:          acpi*:LNXVIDEO:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           brightness_switch_enabled:bool
+parm:           allow_duplicates:bool
+parm:           disable_backlight_sysfs_if:int
+parm:           report_key_events:0: none, 1: output changes, 2: brightness changes, 3: all (int)
+parm:           device_id_scheme:bool
+parm:           only_lcd:bool
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/hwmon/coretemp.ko
+license:        GPL
+description:    Intel Core temperature monitor
+author:         Rudolf Marek <r.marek@assembler.cz>
+alias:          cpu:type:x86,ven0000fam*mod*:feature:*01C0*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           tjmax:TjMax value in degrees Celsius (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/net/ipv4/netfilter/ip_tables.ko
+description:    IPv4 packet filter
+author:         Netfilter Core Team <coreteam@netfilter.org>
+license:        GPL
+depends:        x_tables
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/net/netfilter/x_tables.ko
+description:    {ip,ip6,arp,eb}_tables backend module
+author:         Harald Welte <laforge@netfilter.org>
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/fs/autofs4/autofs4.ko
+license:        GPL
+alias:          fs-autofs
+alias:          devname:autofs
+alias:          char-major-10-235
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/fs/ext4/ext4.ko
+softdep:        pre: crypto-crc32c crypto-aes crypto-ecb
+license:        GPL
+description:    Fourth Extended Filesystem
+author:         Remy Card, Stephen Tweedie, Andrew Morton, Andreas Dilger, Theodore Ts'o and others
+alias:          fs-ext4
+alias:          ext3
+alias:          fs-ext3
+alias:          ext2
+alias:          fs-ext2
+depends:        mbcache,fscrypto,jbd2,crc16
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/lib/crc16.ko
+license:        GPL
+description:    CRC16 calculations
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/fs/jbd2/jbd2.ko
+softdep:        pre: crypto-crc32c
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/crypto/crc32c_generic.ko
+alias:          crypto-crc32c-generic
+alias:          crc32c-generic
+alias:          crypto-crc32c
+alias:          crc32c
+license:        GPL
+description:    CRC32c (Castagnoli) calculations wrapper for lib/crc32c
+author:         Clay Haapala <chaapala@cisco.com>
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/fs/crypto/fscrypto.ko
+softdep:        pre: crypto-aes crypto-ecb
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           num_prealloc_crypto_pages:Number of crypto pages to preallocate (uint)
+parm:           num_prealloc_crypto_ctxs:Number of crypto contexts to preallocate (uint)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/crypto/ecb.ko
+alias:          crypto-ecb
+alias:          ecb
+description:    ECB block cipher algorithm
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/fs/mbcache.ko
+license:        GPL
+description:    Meta block cache (for extended attributes)
+author:         Jan Kara <jack@suse.cz>
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/hid/hid-generic.ko
+license:        GPL
+description:    HID generic driver
+author:         Henrik Rydberg
+alias:          hid:b*g0001v*p*
+depends:        hid
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/hid/usbhid/usbhid.ko
+license:        GPL
+description:    USB HID core driver
+author:         Jiri Kosina
+author:         Vojtech Pavlik
+author:         Andreas Gal
+alias:          usb:v*p*d*dc*dsc*dp*ic03isc*ip*in*
+depends:        hid,usbcore
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           mousepoll:Polling interval of mice (uint)
+parm:           ignoreled:Autosuspend with active leds (uint)
+parm:           quirks:Add/modify USB HID quirks by specifying  quirks=vendorID:productID:quirks where vendorID, productID, and quirks are all in 0x-prefixed hex (array of charp)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/hid/hid.ko
+license:        GPL
+author:         Jiri Kosina
+author:         Vojtech Pavlik
+author:         Andreas Gal
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           debug:toggle HID debugging messages (int)
+parm:           ignore_special_drivers:Ignore any special drivers and handle all devices by generic driver (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/scsi/sd_mod.ko
+alias:          scsi:t-0x0e*
+alias:          scsi:t-0x07*
+alias:          scsi:t-0x00*
+alias:          block-major-135-*
+alias:          block-major-134-*
+alias:          block-major-133-*
+alias:          block-major-132-*
+alias:          block-major-131-*
+alias:          block-major-130-*
+alias:          block-major-129-*
+alias:          block-major-128-*
+alias:          block-major-71-*
+alias:          block-major-70-*
+alias:          block-major-69-*
+alias:          block-major-68-*
+alias:          block-major-67-*
+alias:          block-major-66-*
+alias:          block-major-65-*
+alias:          block-major-8-*
+license:        GPL
+description:    SCSI disk (sd) driver
+author:         Eric Youngdale
+depends:        scsi_mod
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/crypto/crc32c-intel.ko
+alias:          crypto-crc32c-intel
+alias:          crc32c-intel
+alias:          crypto-crc32c
+alias:          crc32c
+license:        GPL
+description:    CRC32c (Castagnoli) optimization using Intel Hardware.
+author:         Austin Zhang <austin.zhang@intel.com>, Kent Liu <kent.liu@intel.com>
+alias:          cpu:type:x86,ven*fam*mod*:feature:*0094*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/crypto/aesni-intel.ko
+alias:          crypto-aes
+alias:          aes
+license:        GPL
+description:    Rijndael (AES) Cipher Algorithm, Intel AES-NI instructions optimized
+alias:          crypto-fpu
+alias:          fpu
+alias:          cpu:type:x86,ven*fam*mod*:feature:*0099*
+depends:        glue_helper,aes-x86_64,lrw,cryptd,ablk_helper
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/crypto/aes-x86_64.ko
+alias:          crypto-aes-asm
+alias:          aes-asm
+alias:          crypto-aes
+alias:          aes
+license:        GPL
+description:    Rijndael (AES) Cipher Algorithm, asm optimized
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/arch/x86/crypto/glue_helper.ko
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/ata/ahci.ko
+version:        3.0
+license:        GPL
+description:    AHCI SATA low-level driver
+author:         Jeff Garzik
+srcversion:     E5F504E8232E8851D590591
+alias:          pci:v*d*sv*sd*bc01sc06i01*
+alias:          pci:v00001C44d00008000sv*sd*bc*sc*i*
+alias:          pci:v0000144Dd0000A800sv*sd*bc*sc*i*
+alias:          pci:v0000144Dd00001600sv*sd*bc*sc*i*
+alias:          pci:v00001B21d00000612sv*sd*bc*sc*i*
+alias:          pci:v00001B21d00000611sv*sd*bc*sc*i*
+alias:          pci:v00001B21d00000602sv*sd*bc*sc*i*
+alias:          pci:v00001B21d00000601sv*sd*bc*sc*i*
+alias:          pci:v0000105Ad00003781sv*sd*bc*sc*i*
+alias:          pci:v0000105Ad00003F20sv*sd*bc*sc*i*
+alias:          pci:v00001103d00000642sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd00009230sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd000091A3sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd000091A2sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd000091A0sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd00009192sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd00009182sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd00009172sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd0000917Asv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd00009178sv00001B4Bsd00009170bc*sc*i*
+alias:          pci:v00001B4Bd00009125sv*sd*bc*sc*i*
+alias:          pci:v00001B4Bd00009123sv*sd*bc01sc06i01*
+alias:          pci:v000011ABd00006121sv*sd*bc*sc*i*
+alias:          pci:v000011ABd00006145sv*sd*bc*sc*i*
+alias:          pci:v0000104Ad0000CC06sv*sd*bc*sc*i*
+alias:          pci:v00001039d00000186sv*sd*bc*sc*i*
+alias:          pci:v00001039d00001185sv*sd*bc*sc*i*
+alias:          pci:v00001039d00001184sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D8Fsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D8Esv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D8Dsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D8Csv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D8Bsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D8Asv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D89sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D88sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D87sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D86sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D85sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000D84sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ABFsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ABEsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ABDsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ABCsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ABBsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ABAsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AB9sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AB8sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AB7sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AB6sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AB5sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AB4sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ADBsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000ADAsv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD9sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD8sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD7sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD6sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD5sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD4sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD3sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD2sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD1sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000AD0sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007FBsv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007FAsv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F9sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F8sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F7sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F6sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F5sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F4sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F3sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F2sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F1sv*sd*bc*sc*i*
+alias:          pci:v000010DEd000007F0sv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000058Fsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000058Esv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000058Dsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000058Csv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000058Bsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000058Asv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000589sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000588sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000587sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000586sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000585sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000584sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000583sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000582sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000581sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000580sv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000055Bsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000055Asv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000559sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000558sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000557sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000556sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000555sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000554sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000553sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000552sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000551sv*sd*bc*sc*i*
+alias:          pci:v000010DEd00000550sv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000045Fsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000045Esv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000045Dsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000045Csv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000044Fsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000044Esv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000044Dsv*sd*bc*sc*i*
+alias:          pci:v000010DEd0000044Csv*sd*bc*sc*i*
+alias:          pci:v00001106d00006287sv*sd*bc*sc*i*
+alias:          pci:v00001106d00003349sv*sd*bc*sc*i*
+alias:          pci:v00001022d*sv*sd*bc01sc04i00*
+alias:          pci:v00001022d00007900sv*sd*bc*sc*i*
+alias:          pci:v00001022d00007800sv*sd*bc*sc*i*
+alias:          pci:v00001002d00004395sv*sd*bc*sc*i*
+alias:          pci:v00001002d00004394sv*sd*bc*sc*i*
+alias:          pci:v00001002d00004393sv*sd*bc*sc*i*
+alias:          pci:v00001002d00004392sv*sd*bc*sc*i*
+alias:          pci:v00001002d00004391sv*sd*bc*sc*i*
+alias:          pci:v00001002d00004390sv*sd*bc*sc*i*
+alias:          pci:v00001002d00004380sv*sd*bc*sc*i*
+alias:          pci:v0000197Bd0000236Fsv*sd*bc*sc*i*
+alias:          pci:v0000197Bd00002362sv*sd*bc*sc*i*
+alias:          pci:v0000197Bd*sv*sd*bc01sc06i01*
+alias:          pci:v00008086d00005AE3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000022A3sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000F23sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000F22sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A356sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A256sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A252sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A206sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A202sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1D6sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1D2sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A186sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A182sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002827sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002826sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002823sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002822sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A10Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A107sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A106sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A105sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A103sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A102sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D07sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D05sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D03sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C8Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C8Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C87sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C86sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C85sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C84sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C83sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C82sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C8Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C87sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C85sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C83sv*sd*bc*sc*i*
+alias:          pci:v00008086d000023A3sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D6Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D66sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D64sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D62sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D0Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D06sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D04sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D02sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002827sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002823sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F3Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F3Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F37sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F36sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F35sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F34sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F33sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F32sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F2Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F2Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F27sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F26sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F25sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F24sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F23sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C0Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C0Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C07sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C06sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C05sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C04sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C03sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C02sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C0Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C0Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C07sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C06sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C05sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C04sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C03sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C02sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E0Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E07sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E06sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E05sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E04sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E03sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E02sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002323sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002826sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D06sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D04sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D02sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C07sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C06sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C05sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C04sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C03sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C02sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019CFsv*sd*bc*sc*i*
+alias:          pci:v00008086d000019CEsv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C7sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C6sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C5sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C2sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C1sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019C0sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019BFsv*sd*bc*sc*i*
+alias:          pci:v00008086d000019BEsv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B7sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B6sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B5sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B2sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B1sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019B0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B2Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B2Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B2Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B29sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B25sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B24sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B23sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A25sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A05sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000502Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000502Asv*sd*bc*sc*i*
+alias:          pci:v00008086d0000294Esv*sd*bc*sc*i*
+alias:          pci:v00008086d0000294Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000292Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000292Csv*sd*bc*sc*i*
+alias:          pci:v00008086d0000292Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000292Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00002929sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002927sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002925sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002924sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002923sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002922sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000282Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00002829sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002824sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002822sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002821sv*sd*bc*sc*i*
+alias:          pci:v00008086d000027C6sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002683sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002682sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002681sv*sd*bc*sc*i*
+alias:          pci:v000010B9d00005288sv*sd*bc*sc*i*
+alias:          pci:v00008086d000027C3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000027C5sv*sd*bc*sc*i*
+alias:          pci:v00008086d000027C1sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002653sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002652sv*sd*bc*sc*i*
+depends:        libahci,libata
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           marvell_enable:Marvell SATA via AHCI (1 = enabled) (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/crypto/lrw.ko
+alias:          crypto-lrw
+alias:          lrw
+description:    LRW block cipher mode
+license:        GPL
+depends:        gf128mul
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/crypto/gf128mul.ko
+description:    Functions for multiplying elements of GF(2^128)
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/crypto/ablk_helper.ko
+license:        GPL
+depends:        cryptd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/ata/libahci.ko
+license:        GPL
+description:    Common AHCI SATA low-level routines
+author:         Jeff Garzik
+depends:        libata
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           skip_host_reset:skip global host reset (0=don't skip, 1=skip) (int)
+parm:           ignore_sss:Ignore staggered spinup flag (0=don't ignore, 1=ignore) (int)
+parm:           ahci_em_messages:AHCI Enclosure Management Message control (0 = off, 1 = on) (bool)
+parm:           devslp_idle_timeout:device sleep idle timeout (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/crypto/cryptd.ko
+alias:          crypto-cryptd
+alias:          cryptd
+description:    Software async crypto daemon
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/ata/libata.ko
+version:        3.00
+license:        GPL
+description:    Library module for ATA devices
+author:         Jeff Garzik
+srcversion:     7D8076C4A3FEBA6219DD851
+depends:        scsi_mod
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           zpodd_poweroff_delay:Poweroff delay for ZPODD in seconds (int)
+parm:           acpi_gtf_filter:filter mask for ACPI _GTF commands, set to filter out (0x1=set xfermode, 0x2=lock/freeze lock, 0x4=DIPM, 0x8=FPDMA non-zero offset, 0x10=FPDMA DMA Setup FIS auto-activate) (int)
+parm:           force:Force ATA configurations including cable type, link speed and transfer mode (see Documentation/kernel-parameters.txt for details) (string)
+parm:           atapi_enabled:Enable discovery of ATAPI devices (0=off, 1=on [default]) (int)
+parm:           atapi_dmadir:Enable ATAPI DMADIR bridge support (0=off [default], 1=on) (int)
+parm:           atapi_passthru16:Enable ATA_16 passthru for ATAPI devices (0=off, 1=on [default]) (int)
+parm:           fua:FUA support (0=off [default], 1=on) (int)
+parm:           ignore_hpa:Ignore HPA limit (0=keep BIOS limits, 1=ignore limits, using full disk) (int)
+parm:           dma:DMA enable/disable (0x1==ATA, 0x2==ATAPI, 0x4==CF) (int)
+parm:           ata_probe_timeout:Set ATA probing timeout (seconds) (int)
+parm:           noacpi:Disable the use of ACPI in probe/suspend/resume (0=off [default], 1=on) (int)
+parm:           allow_tpm:Permit the use of TPM commands (0=off [default], 1=on) (int)
+parm:           atapi_an:Enable ATAPI AN media presence notification (0=0ff [default], 1=on) (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/usb/host/xhci-pci.ko
+license:        GPL
+description:    xHCI PCI Host Controller Driver
+alias:          pci:v*d*sv*sd*bc0Csc03i30*
+depends:        usbcore,xhci-hcd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/usb/host/ehci-pci.ko
+license:        GPL
+author:         Alan Stern
+author:         David Brownell
+description:    EHCI PCI platform driver
+alias:          pci:v0000104Ad0000CC00sv*sd*bc*sc*i*
+alias:          pci:v*d*sv*sd*bc0Csc03i20*
+depends:        usbcore,ehci-hcd
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/input/mouse/psmouse.ko
+license:        GPL
+description:    PS/2 mouse driver
+author:         Vojtech Pavlik <vojtech@suse.cz>
+alias:          serio:ty05pr*id*ex*
+alias:          serio:ty01pr*id*ex*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           proto:Highest protocol extension to probe (bare, imps, exps, any). Useful for KVM switches. (proto_abbrev)
+parm:           resolution:Resolution, in dpi. (uint)
+parm:           rate:Report rate, in reports per second. (uint)
+parm:           smartscroll:Logitech Smartscroll autorepeat, 1 = enabled (default), 0 = disabled. (bool)
+parm:           resetafter:Reset device after so many bad packets (0 = never). (uint)
+parm:           resync_time:How long can mouse stay idle before forcing resync (in seconds, 0 = never). (uint)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/usb/host/xhci-hcd.ko
+license:        GPL
+author:         Sarah Sharp
+description:    'eXtensible' Host Controller (xHC) Driver
+depends:        usbcore
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           link_quirk:Don't clear the chain bit on a link TRB (int)
+parm:           quirks:Bit flags for quirks to be enabled as default (uint)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/usb/host/ehci-hcd.ko
+license:        GPL
+author:         David Brownell
+description:    USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+depends:        usbcore
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           log2_irq_thresh:log2 IRQ latency, 1-64 microframes (int)
+parm:           park:park setting; 1-3 back-to-back async packets (uint)
+parm:           ignore_oc:ignore bogus hardware overcurrent indications (bool)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/i2c/busses/i2c-i801.ko
+license:        GPL
+description:    I801 SMBus driver
+author:         Mark D. Studebaker <mdsxyz123@yahoo.com>, Jean Delvare <jdelvare@suse.de>
+alias:          pci:v00008086d0000A2A3sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A223sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A1A3sv*sd*bc*sc*i*
+alias:          pci:v00008086d00005AD4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000019DFsv*sd*bc*sc*i*
+alias:          pci:v00008086d00009D23sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000A123sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002292sv*sd*bc*sc*i*
+alias:          pci:v00008086d00000F12sv*sd*bc*sc*i*
+alias:          pci:v00008086d00009CA2sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008CA2sv*sd*bc*sc*i*
+alias:          pci:v00008086d000023B0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D7Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D7Esv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D7Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d00008D22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001F3Csv*sd*bc*sc*i*
+alias:          pci:v00008086d00009C22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00008C22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001E22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002330sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D72sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D71sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D70sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001D22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001C22sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003B30sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A60sv*sd*bc*sc*i*
+alias:          pci:v00008086d00003A30sv*sd*bc*sc*i*
+alias:          pci:v00008086d00005032sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002930sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000283Esv*sd*bc*sc*i*
+alias:          pci:v00008086d0000269Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d000027DAsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000266Asv*sd*bc*sc*i*
+alias:          pci:v00008086d000025A4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000024D3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000024C3sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002483sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002443sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002423sv*sd*bc*sc*i*
+alias:          pci:v00008086d00002413sv*sd*bc*sc*i*
+depends:        i2c-smbus
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           disable_features:Disable selected driver features:
+		  0x01  disable SMBus PEC
+		  0x02  disable the block buffer
+		  0x08  disable the I2C block read functionality
+		  0x10  don't use interrupts
+		  0x20  disable SMBus Host Notify  (uint)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/scsi/scsi_mod.ko
+license:        GPL
+description:    SCSI core
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           dev_flags:Given scsi_dev_flags=vendor:model:flags[,v:m:f] add black/white list entries for vendor and model with an integer value of flags to the scsi device info list (string)
+parm:           default_dev_flags:scsi default device flag integer value (int)
+parm:           max_luns:last scsi LUN (should be between 1 and 2^64-1) (ullong)
+parm:           scan:sync, async, manual, or none. Setting to 'manual' disables automatic scanning, but allows for manual device scan via the 'scan' sysfs attribute. (string)
+parm:           inq_timeout:Timeout (in seconds) waiting for devices to answer INQUIRY. Default is 20. Some devices may need more; most need less. (uint)
+parm:           eh_deadline:SCSI EH timeout in seconds (should be between 0 and 2^31-1) (int)
+parm:           scsi_logging_level:a bit mask of logging levels (int)
+parm:           use_blk_mq:bool
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/i2c/i2c-smbus.ko
+license:        GPL
+description:    SMBus protocol extensions support
+author:         Jean Delvare <jdelvare@suse.de>
+alias:          i2c:smbus_alert
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/net/ethernet/intel/e1000e/e1000e.ko
+version:        3.2.6-k
+license:        GPL
+description:    Intel(R) PRO/1000 Network Driver
+author:         Intel Corporation, <linux.nics@intel.com>
+srcversion:     731208F3B8DDFA145549DC1
+alias:          pci:v00008086d000015D6sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015E3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015D8sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015D7sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015B9sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015B8sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015B7sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001570sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000156Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d000015A3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015A2sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015A1sv*sd*bc*sc*i*
+alias:          pci:v00008086d000015A0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001559sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000155Asv*sd*bc*sc*i*
+alias:          pci:v00008086d0000153Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000153Asv*sd*bc*sc*i*
+alias:          pci:v00008086d00001503sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001502sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010F0sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010EFsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010EBsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010EAsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001525sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010DFsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010DEsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010CEsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010CDsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010CCsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010CBsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010F5sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010BFsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010E5sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000294Csv*sd*bc*sc*i*
+alias:          pci:v00008086d000010BDsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010C3sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010C2sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010C0sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001501sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001049sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000104Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000104Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000104Asv*sd*bc*sc*i*
+alias:          pci:v00008086d000010C4sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010C5sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000104Csv*sd*bc*sc*i*
+alias:          pci:v00008086d000010BBsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001098sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010BAsv*sd*bc*sc*i*
+alias:          pci:v00008086d00001096sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000150Csv*sd*bc*sc*i*
+alias:          pci:v00008086d000010F6sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010D3sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000109Asv*sd*bc*sc*i*
+alias:          pci:v00008086d0000108Csv*sd*bc*sc*i*
+alias:          pci:v00008086d0000108Bsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000107Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000107Esv*sd*bc*sc*i*
+alias:          pci:v00008086d0000107Dsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010B9sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010D5sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010DAsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010D9sv*sd*bc*sc*i*
+alias:          pci:v00008086d00001060sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010A5sv*sd*bc*sc*i*
+alias:          pci:v00008086d000010BCsv*sd*bc*sc*i*
+alias:          pci:v00008086d000010A4sv*sd*bc*sc*i*
+alias:          pci:v00008086d0000105Fsv*sd*bc*sc*i*
+alias:          pci:v00008086d0000105Esv*sd*bc*sc*i*
+depends:        ptp
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           debug:Debug level (0=none,...,16=all) (int)
+parm:           copybreak:Maximum size of packet that is copied to a new buffer on receive (uint)
+parm:           TxIntDelay:Transmit Interrupt Delay (array of int)
+parm:           TxAbsIntDelay:Transmit Absolute Interrupt Delay (array of int)
+parm:           RxIntDelay:Receive Interrupt Delay (array of int)
+parm:           RxAbsIntDelay:Receive Absolute Interrupt Delay (array of int)
+parm:           InterruptThrottleRate:Interrupt Throttling Rate (array of int)
+parm:           IntMode:Interrupt Mode (array of int)
+parm:           SmartPowerDownEnable:Enable PHY smart power down (array of int)
+parm:           KumeranLockLoss:Enable Kumeran lock loss workaround (array of int)
+parm:           WriteProtectNVM:Write-protect NVM [WARNING: disabling this can lead to corrupted NVM] (array of int)
+parm:           CrcStripping:Enable CRC Stripping, disable if your BMC needs the CRC (array of int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/ptp/ptp.ko
+license:        GPL
+description:    PTP clocks support
+author:         Richard Cochran <richardcochran@gmail.com>
+depends:        pps_core
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/usb/core/usbcore.ko
+license:        GPL
+alias:          usb:v*p*d*dc*dsc*dp*ic09isc*ip*in*
+alias:          usb:v*p*d*dc09dsc*dp*ic*isc*ip*in*
+alias:          usb:v05E3p*d*dc*dsc*dp*ic09isc*ip*in*
+depends:        usb-common
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           usbfs_snoop:true to log all usbfs traffic (bool)
+parm:           usbfs_snoop_max:maximum number of bytes to print while snooping (uint)
+parm:           usbfs_memory_mb:maximum MB allowed for usbfs buffers (0 = no limit) (uint)
+parm:           authorized_default:Default USB device authorization: 0 is not authorized, 1 is authorized, -1 is authorized except for wireless USB (default, old behaviour (int)
+parm:           blinkenlights:true to cycle leds on hubs (bool)
+parm:           initial_descriptor_timeout:initial 64-byte descriptor request timeout in milliseconds (default 5000 - 5.0 seconds) (int)
+parm:           old_scheme_first:start with the old device initialization scheme (bool)
+parm:           use_both_schemes:try the other device initialization scheme if the first one fails (bool)
+parm:           nousb:bool
+parm:           autosuspend:default autosuspend delay (int)
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/pps/pps_core.ko
+license:        GPL
+description:    LinuxPPS support (RFC 2783) - ver. 5.3.6
+author:         Rodolfo Giometti <giometti@linux.it>
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/usb/common/usb-common.ko
+license:        GPL
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+filename:       /lib/modules/4.9.0-6-amd64/kernel/drivers/acpi/thermal.ko
+license:        GPL
+description:    ACPI Thermal Zone Driver
+author:         Paul Diefenbaugh
+alias:          acpi*:LNXTHERM:*
+depends:        
+retpoline:      Y
+intree:         Y
+vermagic:       4.9.0-6-amd64 SMP mod_unload modversions 
+parm:           act:Disable or override all lowest active trip points. (int)
+parm:           crt:Disable or lower all critical trip points. (int)
+parm:           tzp:Thermal zone polling frequency, in 1/10 seconds. (int)
+parm:           nocrt:Set to take no action upon ACPI thermal zone critical trips points. (int)
+parm:           off:Set to disable ACPI thermal support. (int)
+parm:           psv:Disable or override all passive trip points. (int)
