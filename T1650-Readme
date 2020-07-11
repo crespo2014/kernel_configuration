@@ -1,1 +1,13 @@
 apt-get install i8k
+processor	: 7
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 58 (0x3A)
+model name	: Intel(R) Xeon(R) CPU E3-1270 V2 @ 3.50GHz
+stepping	: 9
+microcode	: 0x12
+cpu MHz		: 1596.362
+cache size	: 8192 KB
+
+
+
