@@ -1,0 +1,172 @@
+
+00:00.0 Host bridge [0600]: Intel Corporation Xeon E3-1200 v2/Ivy Bridge DRAM Controller  [8086:0158] INTEL EXAR_XR17C158
+   ie31200_edac    ie31200_edac 
+00:01.0 PCI bridge [0604]: Intel Corporation Xeon E3-1200 v2/3rd Gen Core processor PCI Express Root Port  [8086:0151] INTEL NVIDIA_GEFORCE2_GTS2
+   pcieport 
+00:14.0 USB controller [0c03]: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller  [8086:1e31] INTEL INTEL_PANTHERPOINT_XHCI
+   xhci_hcd  CONFIG_USB_XHCI_HCD  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_XHCI_HCD xHCI HCD (USB 3.0) support > 
+   xhci_pci  CONFIG_USB_XHCI_PCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_XHCI_PCI > 
+
+00:16.0 Communication controller [0780]: Intel Corporation 7 Series/C216 Chipset Family MEI Controller #1  [8086:1e3a] INTEL
+   mei_me  CONFIG_INTEL_MEI_ME  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Misc devices > CONFIG_INTEL_MEI_ME ME Enabled Intel Chipsets > 
+   mei_me  CONFIG_INTEL_MEI_ME  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Misc devices > CONFIG_INTEL_MEI_ME ME Enabled Intel Chipsets > 
+
+00:19.0 Ethernet controller [0200]: Intel Corporation 82579LM Gigabit Network Connection  [8086:1502] INTEL
+   e1000e  CONFIG_E1000E  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Network device support" > "Ethernet driver support" > CONFIG_E1000E Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support > 
+   e1000e  CONFIG_E1000E  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Network device support" > "Ethernet driver support" > CONFIG_E1000E Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support > 
+
+00:1a.0 USB controller [0c03]: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #2  [8086:1e2d] INTEL
+   ehci-pci  CONFIG_USB_EHCI_PCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_EHCI_PCI > 
+   ehci_pci  CONFIG_USB_EHCI_PCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_EHCI_PCI > 
+
+00:1b.0 Audio device [0403]: Intel Corporation 7 Series/C216 Chipset Family High Definition Audio Controller  [8086:1e20] INTEL
+   snd_hda_intel  CONFIG_SND_HDA_INTEL  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_INTEL HD Audio PCI > 
+   snd_hda_intel  CONFIG_SND_HDA_INTEL  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_INTEL HD Audio PCI > 
+
+00:1c.0 PCI bridge [0604]: Intel Corporation 7 Series/C216 Chipset Family PCI Express Root Port 1  [8086:1e10] INTEL
+   pcieport 
+00:1c.4 PCI bridge [0604]: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 5  [8086:1e18] INTEL
+   pcieport 
+00:1d.0 USB controller [0c03]: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #1  [8086:1e26] INTEL
+   ehci-pci  CONFIG_USB_EHCI_PCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_EHCI_PCI > 
+   ehci_pci  CONFIG_USB_EHCI_PCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_EHCI_PCI > 
+
+00:1e.0 PCI bridge [0604]: Intel Corporation 82801 PCI Bridge  [8086:244e] INTEL INTEL_82801BA_11
+
+00:1f.0 ISA bridge [0601]: Intel Corporation C216 Series Chipset LPC Controller  [8086:1e53] INTEL
+   lpc_ich    lpc_ich 
+00:1f.2 RAID bus controller [0104]: Intel Corporation SATA Controller [RAID mode]  [8086:2822] INTEL
+   ahci  CONFIG_SATA_AHCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Serial ATA and Parallel ATA drivers (libata) > CONFIG_SATA_AHCI AHCI SATA support > 
+   ahci  CONFIG_SATA_AHCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Serial ATA and Parallel ATA drivers (libata) > CONFIG_SATA_AHCI AHCI SATA support > 
+
+00:1f.3 SMBus [0c05]: Intel Corporation 7 Series/C216 Chipset Family SMBus Controller  [8086:1e22] INTEL
+   i801_smbus    i2c_i801  CONFIG_I2C_I801  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > I2C support > I2C Hardware Bus support > CONFIG_I2C_I801 Intel 82801 (ICH/PCH) > 
+
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GK107 [GeForce GT 740]  [10de:0fc8] NVIDIA
+   nouveau    nouveau 
+01:00.1 Audio device [0403]: NVIDIA Corporation GK107 HDMI Audio Controller  [10de:0e1b] NVIDIA
+   snd_hda_intel  CONFIG_SND_HDA_INTEL  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_INTEL HD Audio PCI > 
+   snd_hda_intel  CONFIG_SND_HDA_INTEL  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_INTEL HD Audio PCI > 
+
+atkbd  CONFIG_KEYBOARD_ATKBD  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Input device support > "Keyboards" > CONFIG_KEYBOARD_ATKBD AT keyboard > 
+
+psmouse  CONFIG_MOUSE_PS2  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Input device support > "Mice" > CONFIG_MOUSE_PS2 PS/2 mouse > 
+
+serio_raw 
+snd_hda_codec_generic  CONFIG_SND_HDA_GENERIC  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_GENERIC Enable generic HD-audio codec parser > 
+
+snd_hda_codec_hdmi  CONFIG_SND_HDA_CODEC_HDMI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_CODEC_HDMI Build HDMI/DisplayPort HD-audio codec support > 
+
+snd_hda_codec_realtek  CONFIG_SND_HDA_CODEC_REALTEK  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_CODEC_REALTEK Build Realtek HD-audio codec support > 
+
+acpi-wmi 
+alarmtimer 
+amd_gpio 
+broxton-pinctrl 
+byt_gpio 
+cannonlake-pinctrl 
+cedarfork-pinctrl 
+cherryview-pinctrl 
+clk-lpt 
+clk-pmc-atom  CONFIG_PMC_ATOM  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "X86 Platform Specific Device Drivers" > CONFIG_PMC_ATOM > 
+
+clk-st  CONFIG_X86_AMD_PLATFORM_DEVICE 
+
+coretemp  CONFIG_SENSORS_CORETEMP  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Hardware Monitoring support > CONFIG_SENSORS_CORETEMP Intel Core/Core2/Atom temperature sensor > 
+
+dcdbas  CONFIG_DCDBAS  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "X86 Platform Specific Device Drivers" > CONFIG_DCDBAS Dell Systems Management Base Driver > 
+
+denverton-pinctrl 
+dw-apb-uart 
+efi-framebuffer 
+geminilake-pinctrl 
+GHES 
+gpio-clk 
+i8042  CONFIG_SERIO_I8042  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Input device support > Hardware I/O ports > CONFIG_SERIO_I8042 i8042 PC Keyboard controller > 
+
+icelake-pinctrl 
+iTCO_wdt 
+lewisburg-pinctrl 
+pcspkr  CONFIG_INPUT_PCSPKR  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Input device support > "Miscellaneous devices" > CONFIG_INPUT_PCSPKR PC Speaker support > 
+
+reg-dummy 
+serial8250 
+sunrisepoint-pinctrl 
+vesa-framebuffer 
+8250_mid 
+agpgart-intel 
+agpgart-sis 
+agpgart-via 
+ahci  CONFIG_SATA_AHCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Serial ATA and Parallel ATA drivers (libata) > CONFIG_SATA_AHCI AHCI SATA support > 
+
+cavium_ptp 
+e1000e  CONFIG_E1000E  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Network device support" > "Ethernet driver support" > CONFIG_E1000E Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support > 
+
+ehci-pci  CONFIG_USB_EHCI_PCI  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_EHCI_PCI > 
+
+i801_smbus 
+ie31200_edac 
+iosf_mbi_pci 
+lpc_ich 
+mei_me  CONFIG_INTEL_MEI_ME  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Misc devices > CONFIG_INTEL_MEI_ME ME Enabled Intel Chipsets > 
+
+nouveau 
+nvme  CONFIG_BLK_DEV_NVME  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > NVME Support > CONFIG_BLK_DEV_NVME NVM Express block device > 
+
+pcieport 
+serial  CONFIG_SERIAL_8250_CONSOLE  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Character devices > Serial drivers > CONFIG_SERIAL_8250_CONSOLE "Console on 8250/16550 and compatible serial port" > 
+
+shpchp  CONFIG_HOTPLUG_PCI_SHPC  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "PCI support" > "Support for PCI Hotplug" > CONFIG_HOTPLUG_PCI_SHPC "SHPC PCI Hotplug driver" > 
+
+snd_hda_intel  CONFIG_SND_HDA_INTEL  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "PCI sound devices" > HD-Audio > CONFIG_SND_HDA_INTEL HD Audio PCI > 
+
+xen-platform-pci 
+xhci_hcd  CONFIG_USB_XHCI_HCD  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > CONFIG_USB_XHCI_HCD xHCI HCD (USB 3.0) support > 
+
+processor  CONFIG_ACPI_PROCESSOR 
+
+mei_wdt 
+sd 
+spidev  CONFIG_SPI_SPIDEV  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "SPI support" > CONFIG_SPI_SPIDEV User mode SPI device driver support > 
+
+hid-generic  CONFIG_HID_GENERIC  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > HID support > CONFIG_HID_GENERIC Generic HID driver > 
+
+aer  CONFIG_PCIEAER  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "PCI support" > CONFIG_PCIEAER "PCI Express Advanced Error Reporting support" > 
+
+dpc  CONFIG_PCIE_DPC  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "PCI support" > CONFIG_PCIE_DPC "PCI Express Downstream Port Containment support" > 
+
+pciehp  CONFIG_HOTPLUG_PCI_PCIE  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "PCI support" > CONFIG_HOTPLUG_PCI_PCIE "PCI Express Hotplug driver" > 
+
+pcie_pme 
+rtc_cmos  CONFIG_RTC_DRV_CMOS  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Real Time Clock" > CONFIG_RTC_DRV_CMOS PC-style 'CMOS' > 
+
+system 
+hub 
+snd-usb-audio  CONFIG_SND_USB_AUDIO  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Sound card support > Advanced Linux Sound Architecture > "USB sound devices" > CONFIG_SND_USB_AUDIO USB Audio/MIDI driver > 
+
+usb  CONFIG_USB_SUPPORT  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "USB support" > USB Type-C Support > 
+ CONFIG_BRCMFMAC_USB  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Network device support" > "Wireless LAN" > CONFIG_BRCMFMAC_USB "USB bus interface support for FullMAC driver" > 
+ CONFIG_QE_USB  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > SOC (System On Chip) specific Drivers > NXP/Freescale QorIQ SoC drivers > CONFIG_QE_USB > 
+
+usbfs 
+usbhid  CONFIG_USB_HID  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > HID support > USB HID support > CONFIG_USB_HID USB HID transport layer > 
+
+uvcvideo  CONFIG_USB_VIDEO_CLASS  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Multimedia support > Media drivers > "Media USB Adapters" > CONFIG_USB_VIDEO_CLASS USB Video Class (UVC) > 
+
+button  CONFIG_ACPI_BUTTON 
+
+ec 
+hardware_error_device 
+hpet  CONFIG_HPET_TIMER 
+ CONFIG_RS780_HPET 
+ CONFIG_HPET  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > Character devices > CONFIG_HPET "HPET - High Precision Event Timer" if (X86 || IA64) > 
+
+thermal  CONFIG_ACPI_THERMAL 
+ CONFIG_THERMAL  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Thermal drivers" > 
+
+video  CONFIG_ACPI_VIDEO 
+
+dummy  CONFIG_HAS_DMA  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Library routines > CONFIG_HAS_DMA > 
+ CONFIG_DUMMY  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Network device support" > CONFIG_DUMMY Dummy net driver support > 
+ CONFIG_REGULATOR  > Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration > Device Drivers > "Voltage and Current Regulator Support" > 
+
