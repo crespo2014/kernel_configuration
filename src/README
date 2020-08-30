@@ -1,1 +1,13 @@
 Modified kernel files are stored in this place in the same path than orginal ones.
+
+~/projects/home/linux-5.8.5/drivers/gpu/drm$ ln -s ../../../../kernel_configuration/src/drivers/gpu/drm/nvidia-geforce/
+
+vi /home/lcrespo/projects/home/linux-5.8.5/drivers/gpu/drm/Kconfig
+
+source "drivers/gpu/drm/nvidia-geforce/Kconfig"
+
+vi /home/lcrespo/projects/home/linux-5.8.5/drivers/gpu/drm/Makefile
+
+obj-$(CONFIG_NVIDIA_GEFORCE) += nvidia-geforce/
+
+./NVIDIA-Linux-x86_64-340.107.run --kernel-source-path=../projects/home/linux-5.8.5 --kernel-output-path=../projects/home/linux-5.8.5/build/T1650 --dkms
