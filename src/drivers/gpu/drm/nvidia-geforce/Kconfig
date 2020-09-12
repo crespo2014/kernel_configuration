@@ -7,33 +7,4 @@ config NVIDIA_GEFORCE
 	---help---
 	Nvida Geforce is the nvidia diver for geforce cards
 	
-if NVIDIA_GEFORCE
 
-config NVIDIA_UVM_RM
-	bool "Enable Nvidia RM"
-	default y
-	---help---
-	You need this option enable in order to compile nvidia uvm driver that brings cuda support
-
-config NVIDIA_UVM
-	tristate "Enable CUDA Support"
-	depends on NVIDIA_UVM_RM
-	
-choice
- 	prompt "UVM module type"
- 	default NVIDIA_ION_UVM_LITE
- 	depends on NVIDIA_UVM
- 	
-config NVIDIA_ION_UVM_LITE
-	bool "Only lite mode"
-	
-config NVIDIA_ION_UVM_NEXT
-	bool "Only uvm next mode"
-	
-config NVIDIA_ION_UVM_ALL
-    bool "Both modes lite and next"
-	
- 	
-endchoice 	
-	
-endif # NVIDIA_ION

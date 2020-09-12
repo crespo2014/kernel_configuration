@@ -31,7 +31,8 @@ install: package-install
 KERNEL_GLUE_NAME := nv-linux$(NV_MODULE_SUFFIX).o
 KERNEL_GLUE_OBJS := $(MODULE_GLUE_OBJS) $(MODULE_NAME).mod.o
 
-obj-m := $(MODULE_NAME).o
+obj-$(CONFIG_NVIDIA_GEFORCE) += $(MODULE_NAME).o
+
 #
 # Include local source directory in $(CC)'s include path and set disable any
 # warning types that are of little interest to us.
@@ -94,7 +95,7 @@ ifndef ARCH
  )
 endif
 
-CONFTEST := /bin/sh $(src)/conftest.sh "$(CC)" "$(HOST_CC)" $(ARCH) $(KERNEL_SOURCES) $(KERNEL_OUTPUT)
+CONFTEST := /bin/sh -x $(srctree)/$(src)/conftest.sh "$(CC)" "$(HOST_CC)" $(ARCH) $(KERNEL_SOURCES) $(KERNEL_OUTPUT)
 
 KERNEL_UNAME ?= $(shell $(CONFTEST) get_uname)
 MODULE_ROOT := /lib/modules/$(KERNEL_UNAME)/kernel/drivers
@@ -228,7 +229,7 @@ define BUILD_MODULE_RULE
 	 echo "$(1) failed to build!"; \
 	 exit 1; \
 	elif [ -f split-object-file.sh ]; then \
-	 /bin/sh split-object-file.sh $(1); \
+	 /bin/sh -x split-object-file.sh $(1); \
 	fi
 endef
 

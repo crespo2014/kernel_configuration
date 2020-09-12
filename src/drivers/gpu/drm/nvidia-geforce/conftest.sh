@@ -1,4 +1,5 @@
 #!/bin/sh
+set -x
 
 PATH="${PATH}:/bin:/sbin:/usr/bin"
 
@@ -26,6 +27,8 @@ XEN_PRESENT=1
 PREEMPT_RT_PRESENT=0
 COMPILE_TEST_HEADERS="macros functions symbols types generic headers"
 KERNEL_ARCH="$ARCH"
+
+#echo "conftest " $@
 
 if [ "$ARCH" = "i386" -o "$ARCH" = "x86_64" ]; then
     if [ -d "$SOURCES/arch/x86" ]; then
@@ -77,7 +80,6 @@ translate_and_find_header_files() {
 
     local parent_dir=$1
     shift
-
     for file in $@; do
         local file_define=NV_`echo $file | tr '/.' '_' | tr '-' '_' | tr 'a-z' 'A-Z'`_PRESENT
         if [ -f $parent_dir/$file -o -f $OUTPUT/include/$file ]; then
@@ -303,7 +305,7 @@ compile_check_conftest() {
     echo "$CONFTEST_PREAMBLE
     $CODE" > conftest$$.c
 
-    $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+    $CC $CFLAGS -c conftest$$.c ##> /dev/null 2>&1
     rm -f conftest$$.c
 
     if [ -f conftest$$.o ]; then
@@ -372,7 +374,7 @@ get_configuration_option() {
         $OPTION
         " > conftest$$.c
 
-        $CC -E -P -I$INCLUDE_DIRECTORY -o conftest$$ conftest$$.c > /dev/null 2>&1
+        $CC -E -P -I$INCLUDE_DIRECTORY -o conftest$$ conftest$$.c ##> /dev/null 2>&1
 
         if [ -e conftest$$ ]; then
             tr -d '\r\n\t ' < conftest$$
@@ -517,7 +519,7 @@ compile_test() {
                 pci_save_state(NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -555,7 +557,7 @@ compile_test() {
                 vmap();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -570,7 +572,7 @@ compile_test() {
                 return vmap(pages, count);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -587,7 +589,7 @@ compile_test() {
                 return vmap(pages, count, 0, PAGE_KERNEL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -626,7 +628,7 @@ compile_test() {
                 pm_message_t *p = &state;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -644,7 +646,7 @@ compile_test() {
                 return offsetof(pm_message_t, event);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -695,7 +697,7 @@ compile_test() {
             irq_handler_t conftest_isr;
             " > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ ! -f conftest$$.o ]; then
@@ -713,7 +715,7 @@ compile_test() {
                 return conftest_isr(irq, arg);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -730,7 +732,7 @@ compile_test() {
                 return conftest_isr(irq, arg, regs);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -773,7 +775,7 @@ compile_test() {
                 return conftest_op_remove_routine(device);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -846,7 +848,7 @@ compile_test() {
                 kmem_cache_create();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -861,7 +863,7 @@ compile_test() {
                 kmem_cache_create(NULL, 0, 0, 0L, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -877,7 +879,7 @@ compile_test() {
                 kmem_cache_create(NULL, 0, 0, 0L, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -903,7 +905,7 @@ compile_test() {
             #endif
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -918,7 +920,7 @@ compile_test() {
                 smp_call_function(NULL, NULL, 0, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -934,7 +936,7 @@ compile_test() {
                 smp_call_function(NULL, NULL, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -960,7 +962,7 @@ compile_test() {
             #endif
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -975,7 +977,7 @@ compile_test() {
                 on_each_cpu(NULL, NULL, 0, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -991,7 +993,7 @@ compile_test() {
                 on_each_cpu(NULL, NULL, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1058,7 +1060,7 @@ compile_test() {
                 return AE_OK;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1075,7 +1077,7 @@ compile_test() {
                 return AE_OK;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1107,7 +1109,7 @@ compile_test() {
                 acpi_walk_namespace();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1122,7 +1124,7 @@ compile_test() {
                 acpi_walk_namespace(0, NULL, 0, NULL, NULL, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1138,7 +1140,7 @@ compile_test() {
                 acpi_walk_namespace(0, NULL, 0, NULL, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1202,7 +1204,7 @@ compile_test() {
                 INIT_WORK();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c ##> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1217,7 +1219,7 @@ compile_test() {
                 INIT_WORK((struct work_struct *)NULL, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c ##> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1233,7 +1235,7 @@ compile_test() {
                 INIT_WORK((struct work_struct *)NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c ##> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1258,7 +1260,7 @@ compile_test() {
                 return pci_dma_mapping_error(NULL, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1274,7 +1276,7 @@ compile_test() {
                 return pci_dma_mapping_error(0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1357,7 +1359,7 @@ compile_test() {
                     unsigned int nents) {
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ ! -f conftest$$.o ]; then
@@ -1375,7 +1377,7 @@ compile_test() {
                 sg_init_table();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1410,7 +1412,7 @@ compile_test() {
             int conftest_sg_alloc_table(void) {
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ ! -f conftest$$.o ]; then
@@ -1452,7 +1454,7 @@ compile_test() {
                 return efi_enabled();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1470,7 +1472,7 @@ compile_test() {
                 return efi_enabled(0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1822,7 +1824,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c    
             if [ -f conftest$$.o ]; then
                 echo "#define NV_GET_USER_PAGES_HAS_WRITE_AND_FORCE_ARGS" | append_conftest "functions"
@@ -1845,7 +1847,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1887,7 +1889,7 @@ compile_test() {
                 get_user_pages_remote();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1915,7 +1917,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1940,7 +1942,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c #> /dev/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2021,7 +2023,7 @@ case "$6" in
             return 0;
         }" > conftest$$.c
 
-        $CC -c conftest$$.c > /dev/null 2>&1
+        $CC -c conftest$$.c #> /dev/null 2>&1
         rm -f conftest$$.c
 
         if [ ! -f conftest$$.o ]; then
@@ -2081,7 +2083,7 @@ case "$6" in
         fi
 
         rm -f gcc-version-check
-        $HOSTCC gcc-version-check.c -o gcc-version-check > /dev/null 2>&1
+        $HOSTCC gcc-version-check.c -o gcc-version-check #> /dev/null 2>&1
         if [ ! -f gcc-version-check ]; then
             if [ "$CC" != "cc" ]; then
                 MSG="Could not compile 'gcc-version-check.c'.  Please be "
@@ -2168,7 +2170,7 @@ case "$6" in
         fi
 
         if lsmod | grep -wq $MODULE; then
-          rmmod $MODULE > /dev/null 2>&1
+          rmmod $MODULE #> /dev/null 2>&1
         fi
 
         if lsmod | grep -wq $MODULE; then

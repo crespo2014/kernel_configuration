@@ -31,7 +31,9 @@
 # The NVIDIA kernel module base name.
 #
 
-MODULE_BASENAME := nvidia
+MODULE_BASENAME := nvidia-geforce
+SYSOUT := $(abs_objtree)
+SYSSRC := $(abs_srctree) 
 
 # 
 # This suffix is used to construct the name of the NVIDIA kernel module
@@ -64,6 +66,11 @@ VERSION_HEADER := nv_compiler.h
 #
 
 CORE_OBJS := nv-kernel.o
+
+#custom lines
+#obj-$(CONFIG_NVIDIA_GEFORCE) += $(MODULE_NAME).o
+#EXTRA_CFLAGS += -DNV_LINUX_KCONFIG_H_PRESENT
+
 
 ifdef NV_BUILD_MODULE_INSTANCES
  ifeq ($(NV_MODULE_SUFFIX),frontend)
@@ -203,3 +210,5 @@ else
 endif
 
 module: $(NV_MODULE_TARGET_DEPS)
+
+

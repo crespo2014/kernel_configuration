@@ -207,7 +207,7 @@ ccflags-y += $(EXTRA_CFLAGS)
 RM_MODULE_SYMVERS:= $(RM_OUT_DIR)/Module.symvers
 UVM_MODULE_SYMVERS:= $(obj)/Module.symvers
 
-module $(MODULE_NAME).ko: $(UVM_MODULE_SYMVERS) debug_diagnostics_printing
+#module $(MODULE_NAME).ko: $(UVM_MODULE_SYMVERS) debug_diagnostics_printing
 
 $(MODULE_NAME)-y := $(MODULE_GLUE_OBJS)
 
