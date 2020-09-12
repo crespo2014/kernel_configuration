@@ -1,2 +1,2 @@
-
+ln -s /usr/include/asm-generic /usr/include/asm
 
