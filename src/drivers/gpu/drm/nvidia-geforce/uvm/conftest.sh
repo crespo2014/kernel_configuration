@@ -196,7 +196,7 @@ build_cflags() {
 -nostdinc -isystem $ISYSTEM"
 
     if [ "$OUTPUT" != "$SOURCES" ]; then
-        OUTPUT_CFLAGS="-I$OUTPUT/include2 -I$OUTPUT/include"
+        OUTPUT_CFLAGS="-I$OUTPUT/arch/x86/include/generated/uapi -I$OUTPUT/arch/x86/include/generated/asm -I$OUTPUT/include"
         if [ -f "$OUTPUT/include/generated/autoconf.h" ]; then
             AUTOCONF_CFLAGS="-include $OUTPUT/include/generated/autoconf.h"
         else
@@ -210,7 +210,7 @@ build_cflags() {
         fi
     fi
 
-    CFLAGS="$CFLAGS $OUTPUT_CFLAGS -I$HEADERS $AUTOCONF_CFLAGS"
+    CFLAGS="$CFLAGS $OUTPUT_CFLAGS -I$HEADERS $AUTOCONF_CFLAGS "
 
     test_xen
 
@@ -220,6 +220,7 @@ build_cflags() {
             MACH_CFLAGS="$MACH_CFLAGS -I$HEADERS/asm-x86/mach-default"
             MACH_CFLAGS="$MACH_CFLAGS -I$SOURCES/arch/x86/include/asm/mach-default"
             MACH_CFLAGS="$MACH_CFLAGS -I$HEADERS/arch/x86/include/uapi"
+            MACH_CFLAGS="$MACH_CFLAGS -I$HEADERS/arch/x86/include/"
         elif [ "$ARCH" = "arm" ]; then
             MACH_CFLAGS="$MACH_CFLAGS -D__LINUX_ARM_ARCH__=7"
             MACH_CFLAGS="$MACH_CFLAGS -I$SOURCES/arch/arm/mach-tegra/include"

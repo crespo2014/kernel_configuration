@@ -30,10 +30,11 @@
 #
 # The NVIDIA kernel module base name.
 #
-
 MODULE_BASENAME := nvidia-geforce
 SYSOUT := $(abs_objtree)
 SYSSRC := $(abs_srctree) 
+ARCH := x86_64
+
 
 # 
 # This suffix is used to construct the name of the NVIDIA kernel module
