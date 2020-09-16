@@ -195,7 +195,7 @@ build_cflags() {
 -nostdinc -isystem $ISYSTEM"
 
     if [ "$OUTPUT" != "$SOURCES" ]; then
-        OUTPUT_CFLAGS="-I$OUTPUT/include2 -I$OUTPUT/include"
+        OUTPUT_CFLAGS="-I$OUTPUT/arch/x86/include/generated/uapi -I$OUTPUT/arch/x86/include/generated/asm -I$OUTPUT/include"
         if [ -f "$OUTPUT/include/generated/autoconf.h" ]; then
             AUTOCONF_CFLAGS="-include $OUTPUT/include/generated/autoconf.h"
         else
