@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo Arguments $@ >> /tmp/null
+
 PATH="${PATH}:/bin:/sbin:/usr/bin"
 
 # make sure we are in the directory containing this script
@@ -8,7 +10,7 @@ cd $SCRIPTDIR
 
 CC="$1"
 ARCH=$2
-ISYSTEM=`$CC -print-file-name=include 2> /dev/null`
+ISYSTEM=`$CC -print-file-name=include > /dev/null`
 SOURCES=$3
 HEADERS=$SOURCES/include
 OUTPUT=$4
@@ -77,8 +79,8 @@ translate_and_preprocess_header_files() {
         local file_define=NV_`echo $file | tr '/.' '_' | tr '-' '_' | tr 'a-z' 'A-Z'`_PRESENT
 
         CODE="#include <$file>"
-
-        if echo "$CODE" | $CC $TEST_CFLAGS - > /dev/null 2>&1; then
+        echo "$CODE  $CC $TEST_CFLAGS " >> /tmp/null
+        if echo "$CODE" | $CC $TEST_CFLAGS - >> /tmp/null 2>&1; then
             echo "#define $file_define"
         else
             # If preprocessing failed, it could have been because the header
@@ -86,7 +88,7 @@ translate_and_preprocess_header_files() {
             # depends upon the inclusion of other header files. Attempting
             # preprocessing again with -MG will ignore a missing header file
             # but will still fail if the header file is present.
-            if echo "$CODE" | $CC $TEST_CFLAGS -MG - > /dev/null 2>&1; then
+            if echo "$CODE" | $CC $TEST_CFLAGS -MG - >> /tmp/null 2>&1; then
                 echo "#undef $file_define"
             else
                 echo "#define $file_define"
@@ -162,7 +164,7 @@ build_cflags() {
 -nostdinc -isystem $ISYSTEM"
 
     if [ "$OUTPUT" != "$SOURCES" ]; then
-        OUTPUT_CFLAGS="-I$OUTPUT/include2 -I$OUTPUT/include"
+        OUTPUT_CFLAGS="-I$OUTPUT/arch/x86/include/generated/uapi -I$OUTPUT/arch/x86/include/generated/asm -I$OUTPUT/drivers/gpu/drm/nvidia-geforce/conftest -I$OUTPUT/include"
         if [ -f "$OUTPUT/include/generated/autoconf.h" ]; then
             AUTOCONF_FILE="$OUTPUT/include/generated/autoconf.h"
         else
@@ -218,6 +220,7 @@ build_cflags() {
     CFLAGS="$CFLAGS -I$SOURCE_ARCH_HEADERS/uapi"
     CFLAGS="$CFLAGS -I$OUTPUT_ARCH_HEADERS/generated"
     CFLAGS="$CFLAGS -I$OUTPUT_ARCH_HEADERS/generated/uapi"
+    CFLAGS="$CFLAGS -I$SOURCES/tools/perf/util/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include"
 
     if [ -n "$BUILD_PARAMS" ]; then
         CFLAGS="$CFLAGS -D$BUILD_PARAMS"
@@ -311,8 +314,9 @@ compile_check_conftest() {
 
     echo "$CONFTEST_PREAMBLE
     $CODE" > conftest$$.c
-
-    $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+    
+    cat conftest$$.c >> /tmp/null
+    $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
     rm -f conftest$$.c
 
     if [ -f conftest$$.o ]; then
@@ -422,7 +426,7 @@ get_configuration_option() {
         $OPTION
         " > conftest$$.c
 
-        $CC -E -P -I$INCLUDE_DIRECTORY -o conftest$$ conftest$$.c > /dev/null 2>&1
+        $CC -E -P -I$INCLUDE_DIRECTORY -o conftest$$ conftest$$.c >> /tmp/null 2>&1
 
         if [ -e conftest$$ ]; then
             tr -d '\r\n\t ' < conftest$$
@@ -545,7 +549,7 @@ compile_test() {
         set_pages_array_uc)
             #
             # Determine if the set_pages_array_uc() function is present.
-            # It does not exist on all architectures.
+            # It does not exist on all architectucflasres.
             #
             # set_pages_array_uc() was added by commit
             # 0f3507555f6fa4acbc85a646d6e8766230db38fc ("x86, CPA: Add
@@ -673,7 +677,7 @@ compile_test() {
                 return conftest_op_remove_routine(device);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -775,7 +779,8 @@ compile_test() {
                 acpi_walk_namespace(0, NULL, 0, NULL, NULL, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            cat conftest$$.c >> /tmp/null
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -791,7 +796,8 @@ compile_test() {
                 acpi_walk_namespace(0, NULL, 0, NULL, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            cat conftest$$.c >>/tmp/null
+            $CC $CFLAGS -c conftest$$.c  >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -878,7 +884,7 @@ compile_test() {
                 return efi_enabled(0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -935,7 +941,7 @@ compile_test() {
                 return vfio_register_notifier((struct device *) NULL, (struct notifier_block *) NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1608,7 +1614,7 @@ compile_test() {
             #include <linux/of.h>
             " > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1642,7 +1648,7 @@ compile_test() {
             #include <linux/of.h>
             " > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1678,7 +1684,7 @@ compile_test() {
             #include <linux/of.h>
             " > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1744,7 +1750,7 @@ compile_test() {
                 kernel_write();
             }" > conftest$$.c;
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1766,7 +1772,7 @@ compile_test() {
                     return 0;
                 }" > conftest$$.c;
 
-                $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+                $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
                 rm -f conftest$$.c
 
                 if [ -f conftest$$.o ]; then
@@ -1788,7 +1794,7 @@ compile_test() {
                 kernel_read();
             }" > conftest$$.c;
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1810,7 +1816,7 @@ compile_test() {
                     return 0;
                 }" > conftest$$.c;
 
-                $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+                $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
                 rm -f conftest$$.c
 
                 if [ -f conftest$$.o ]; then
@@ -1890,7 +1896,7 @@ compile_test() {
                 a = offsetof(struct drm_mode_config_funcs, atomic_state_alloc);
             }" > conftest$$.c;
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -1908,7 +1914,7 @@ compile_test() {
                     drm_atomic_set_mode_prop_for_crtc();
                 }" > conftest$$.c;
 
-                $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+                $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
                 rm -f conftest$$.c
 
                 if [ -f conftest$$.o ]; then
@@ -2130,7 +2136,7 @@ compile_test() {
                             NULL);  /* const char *name */
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
 
             if [ -f conftest$$.o ]; then
                 rm -f conftest$$.o
@@ -2162,7 +2168,7 @@ compile_test() {
                                 NULL);  /* const char *name */
                 }" > conftest$$.c
 
-                $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+                $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
 
                 if [ -f conftest$$.o ]; then
                     rm -f conftest$$.o
@@ -2287,7 +2293,7 @@ compile_test() {
                 wait_on_bit_lock(NULL, 0, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2302,7 +2308,7 @@ compile_test() {
                 wait_on_bit_lock(NULL, 0, NULL, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2382,7 +2388,7 @@ compile_test() {
                 return;
             }" > conftest$$.c;
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2408,7 +2414,7 @@ compile_test() {
                     return;
                 }" > conftest$$.c;
 
-                $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+                $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
                 rm -f conftest$$.c
 
                 if [ -f conftest$$.o ]; then
@@ -2432,7 +2438,7 @@ compile_test() {
                 return offsetof(mm_context_t, id);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2482,7 +2488,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
             if [ -f conftest$$.o ]; then
                 echo "#define NV_GET_USER_PAGES_HAS_WRITE_AND_FORCE_ARGS" | append_conftest "functions"
@@ -2507,7 +2513,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2535,7 +2541,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2579,7 +2585,7 @@ compile_test() {
                 get_user_pages_remote();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2609,7 +2615,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2634,7 +2640,7 @@ compile_test() {
                 return 0;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2698,7 +2704,7 @@ compile_test() {
                 drm_gem_object_lookup(NULL, NULL, 0);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -2791,7 +2797,7 @@ compile_test() {
                 pnv_npu2_init_context();
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
             if [ -f conftest$$.o ]; then
                 echo "#undef NV_PNV_NPU2_INIT_CONTEXT_PRESENT" | append_conftest "functions"
@@ -2816,7 +2822,7 @@ compile_test() {
                 return NULL;
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
             if [ -f conftest$$.o ]; then
                 echo "#define NV_PNV_NPU2_INIT_CONTEXT_CALLBACK_RETURNS_VOID" | append_conftest "functions"
@@ -2951,7 +2957,7 @@ compile_test() {
                 backlight_device_register(NULL, NULL, NULL, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -3027,7 +3033,7 @@ compile_test() {
                 radix_tree_replace_slot(NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -3042,7 +3048,7 @@ compile_test() {
                 radix_tree_replace_slot(NULL, NULL, NULL);
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -3474,7 +3480,7 @@ compile_test() {
             #include <linux/of.h>
             " > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -3619,7 +3625,7 @@ compile_test() {
                 }
             }" > conftest$$.c
 
-            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
             rm -f conftest$$.c
 
             if [ -f conftest$$.o ]; then
@@ -3827,7 +3833,7 @@ case "$5" in
             return 0;
         }" > conftest$$.c
 
-        $CC -c conftest$$.c > /dev/null 2>&1
+        $CC -c conftest$$.c >> /tmp/null 2>&1
         rm -f conftest$$.c
 
         if [ ! -f conftest$$.o ]; then
@@ -3899,7 +3905,7 @@ case "$5" in
         #endif
         " > conftest$$.c
 
-        $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+        $CC $CFLAGS -c conftest$$.c >> /tmp/null 2>&1
         rm -f conftest$$.c
 
         if [ -f conftest$$.o ]; then
@@ -4155,6 +4161,7 @@ case "$5" in
         #
 
         CFLAGS=$6
+        #echo "cflags =" $CFLAGS >> /tmp/null
 
         test_headers
 
@@ -4170,9 +4177,11 @@ case "$5" in
         #
         # Generate CFLAGS for use in the compile tests
         #
-
+        echo '' > /tmp/null
+        env >> /tmp/null
         build_cflags
         echo $CFLAGS
+        echo "cflags =" $CFLAGS >> /tmp/null
         exit 0
     ;;
 

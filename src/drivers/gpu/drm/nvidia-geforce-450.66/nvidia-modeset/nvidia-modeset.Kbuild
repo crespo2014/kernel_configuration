@@ -69,7 +69,7 @@ $(call ASSIGN_PER_OBJ_CFLAGS, $(NVIDIA_MODESET_OBJECTS), $(NVIDIA_MODESET_CFLAGS
 
 NVIDIA_MODESET_INTERFACE := nvidia-modeset/nv-modeset-interface.o
 
-always += $(NVIDIA_MODESET_INTERFACE)
+always-y += $(NVIDIA_MODESET_INTERFACE)
 
 $(obj)/$(NVIDIA_MODESET_INTERFACE): $(addprefix $(obj)/,$(NVIDIA_MODESET_OBJECTS))
 	$(LD) -r -o $@ $^

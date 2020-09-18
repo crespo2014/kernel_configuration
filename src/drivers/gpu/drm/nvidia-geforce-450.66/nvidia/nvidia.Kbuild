@@ -84,7 +84,7 @@ clean-files += $(NV_COMPILER_VERSION_HEADER)
 
 NVIDIA_INTERFACE := nvidia/nv-interface.o
 
-always += $(NVIDIA_INTERFACE)
+always-y += $(NVIDIA_INTERFACE)
 
 $(obj)/$(NVIDIA_INTERFACE): $(addprefix $(obj)/,$(NVIDIA_OBJECTS))
 	$(LD) -r -o $@ $^

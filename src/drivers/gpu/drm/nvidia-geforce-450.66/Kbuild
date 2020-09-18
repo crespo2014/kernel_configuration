@@ -15,14 +15,17 @@
 # $(obj) : The directory where the output from this build is written.
 #
 
-obj := $(abs_objtree)
-src := $(abs_srctree) 
-ARCH := x86_64
+#obj := $(abs_objtree)
+#src := $(abs_srctree) 
+#ARCH := x86_64
 
 NV_KERNEL_SOURCES := $(abs_srctree) 
 NV_KERNEL_OUTPUT := $(abs_objtree)
-NV_KERNEL_MODULES := nvidia nvidia-uvm nvidia-modeset nvidia-drm nvidia-vgpu-vfio
+NV_KERNEL_MODULES := nvidia nvidia-uvm nvidia-modeset nvidia-drm
 
+MODULE_BASENAME := nvidia-geforce
+obj-$(CONFIG_NVIDIA_GEFORCE) += $(MODULE_BASENAME).o
+$(MODULE_BASENAME)-y := nvidia.o nvidia-uvm.o nvidia-modeset.o nvidia-drm.o
 
 #
 # Utility macro ASSIGN_PER_OBJ_CFLAGS: to control CFLAGS on a
@@ -64,7 +67,7 @@ ifeq ($(NV_UNDEF_BEHAVIOR_SANITIZER),1)
  UBSAN_SANITIZE := y
 endif
 
-always :=
+always-y :=
 
 $(foreach _module, $(NV_KERNEL_MODULES), \
  $(eval include $(src)/$(_module)/$(_module).Kbuild))
@@ -77,8 +80,8 @@ $(foreach _module, $(NV_KERNEL_MODULES), \
 # $(EXTRA_CFLAGS) to ccflags-y for compatibility.
 #
 
-EXTRA_CFLAGS += -I$(src)/common/inc
-EXTRA_CFLAGS += -I$(src)
+EXTRA_CFLAGS += -I/$(abs_srctree)/$(src)/common/inc
+EXTRA_CFLAGS += -I/$(abs_srctree)/$(src)
 EXTRA_CFLAGS += -Wall -MD $(DEFINES) $(INCLUDES) -Wno-cast-qual -Wno-error -Wno-format-extra-args
 EXTRA_CFLAGS += -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"450.66\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -mno-red-zone -mcmodel=kernel -DNV_UVM_ENABLE
 EXTRA_CFLAGS += $(call cc-option,-Werror=undef,)
@@ -109,7 +112,7 @@ endif
 CC ?= cc
 LD ?= ld
 
-NV_CONFTEST_SCRIPT := $(src)/conftest.sh
+NV_CONFTEST_SCRIPT := $(abs_srctree)/$(src)/conftest.sh
 NV_CONFTEST_HEADER := $(obj)/conftest/headers.h
 
 NV_CONFTEST_CMD := /bin/sh $(NV_CONFTEST_SCRIPT) \
