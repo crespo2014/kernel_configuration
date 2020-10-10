@@ -220,7 +220,9 @@ build_cflags() {
     CFLAGS="$CFLAGS -I$SOURCE_ARCH_HEADERS/uapi"
     CFLAGS="$CFLAGS -I$OUTPUT_ARCH_HEADERS/generated"
     CFLAGS="$CFLAGS -I$OUTPUT_ARCH_HEADERS/generated/uapi"
-    CFLAGS="$CFLAGS -I$SOURCES/tools/perf/util/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include"
+    CFLAGS="$CFLAGS -I$SOURCES/tools/perf/util/include "
+#-I/usr/lib/gcc/x86_64-linux-gnu/7/include"
+    #CFLAGS="$CFLAGS $LINUXINCLUDE"
 
     if [ -n "$BUILD_PARAMS" ]; then
         CFLAGS="$CFLAGS -D$BUILD_PARAMS"

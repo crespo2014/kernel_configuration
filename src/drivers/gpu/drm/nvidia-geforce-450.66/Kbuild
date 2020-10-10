@@ -80,8 +80,8 @@ $(foreach _module, $(NV_KERNEL_MODULES), \
 # $(EXTRA_CFLAGS) to ccflags-y for compatibility.
 #
 
-EXTRA_CFLAGS += -I/$(abs_srctree)/$(src)/common/inc
-EXTRA_CFLAGS += -I/$(abs_srctree)/$(src)
+EXTRA_CFLAGS += -I$(abs_srctree)/$(src)/common/inc
+EXTRA_CFLAGS += -I$(abs_srctree)/$(src)
 EXTRA_CFLAGS += -Wall -MD $(DEFINES) $(INCLUDES) -Wno-cast-qual -Wno-error -Wno-format-extra-args
 EXTRA_CFLAGS += -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"450.66\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -mno-red-zone -mcmodel=kernel -DNV_UVM_ENABLE
 EXTRA_CFLAGS += $(call cc-option,-Werror=undef,)
@@ -199,7 +199,8 @@ BUILD_SANITY_CHECKS = \
  xen_sanity_check \
  preempt_rt_sanity_check \
  vgpu_kvm_sanity_check \
- module_symvers_sanity_check
+ 
+ #module_symvers_sanity_check
 
 .PHONY: $(BUILD_SANITY_CHECKS)
 

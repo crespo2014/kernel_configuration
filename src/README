@@ -10,4 +10,6 @@ vi /home/lcrespo/projects/home/linux-5.8.5/drivers/gpu/drm/Makefile
 
 obj-$(CONFIG_NVIDIA_GEFORCE) += nvidia-geforce/
 
-./NVIDIA-Linux-x86_64-340.107.run --kernel-source-path=../projects/home/linux-5.8.5 --kernel-output-path=../projects/home/linux-5.8.5/build/T1650 --dkms
+./NVIDIA-Linux-x86_64-340.107.run --kernelsourcedir=/home/lcrespo/projects/home/linux-5.8.9 --kernel-source-path=/home/lcrespo/projects/home/linux-5.8.9 --kernel-output-path=/home/lcrespo/projects/home/linux-5.8.9/build/T1650 --skip-module-unload --expert --no-nvidia-modprobe  --no-x-check -z --dkms
+--no-kernel-module     
+
