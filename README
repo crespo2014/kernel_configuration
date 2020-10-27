@@ -1,2 +1,4 @@
 ln -s /usr/include/asm-generic /usr/include/asm
+ln -s uapi/asm-generic asm
+
 
