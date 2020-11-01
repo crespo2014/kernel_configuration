@@ -1,0 +1,10 @@
+#
+# NVidia Display controller
+#
+config NVIDIA_GEFORCE
+	tristate "Nvidia Geforce"
+	select DRM
+	help
+	Nvida Geforce is the nvidia diver for geforce cards
+	
+
