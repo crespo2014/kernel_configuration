@@ -10,4 +10,28 @@ cpu MHz		: 1596.362
 cache size	: 8192 KB
 
 
+Geforce graphics Card.
+abs_src_tree does not work building the module with 
 
+make V=1 -C ~/projects/home/linux-5.9.1 M=`pwd` O=~/projects/home/linux-5.9.1/build/${host} KCONFIG_CONFIG=${config} modules
+
+#error CONFIG_PREEMPT_RT not defined! no important it is just configuration
+ 
+fatal error: drm/drmP.h: No such file or directory   
+Remove in 5.5
+apt-get install libdrm-dev
+find /usr -name drmP.h
+/usr/src/linux-headers-4.19.0-12-common/include/drm/drmP.h
+/usr/src/linux-headers-4.19.0-11-common/include/drm/drmP.h
+
+
+mkdir /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/include/drm
+cp /usr/include/libdrm/drm.h /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/include/drm/
+cp /usr/include/libdrm/drm_mode.h /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/include/drm/
+ 
+
+/home/lcrespo/projects/home/linux-5.9.1/include/linux/kernel.h:6:10: fatal error: stdarg.h: No such file or directory
+ #include <stdarg.h>
+ 
+ /home/lcrespo/projects/home/linux-5.9.1/include/linux/mm_types_task.h:24:13: error: missing binary operator before token "("
+   IS_ENABLED(CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK))

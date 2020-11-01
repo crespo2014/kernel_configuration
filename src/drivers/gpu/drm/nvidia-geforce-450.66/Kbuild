@@ -80,8 +80,8 @@ $(foreach _module, $(NV_KERNEL_MODULES), \
 # $(EXTRA_CFLAGS) to ccflags-y for compatibility.
 #
 
-EXTRA_CFLAGS += -I$(abs_srctree)/$(src)/common/inc
-EXTRA_CFLAGS += -I$(abs_srctree)/$(src)
+EXTRA_CFLAGS += -I$(src)/common/inc
+EXTRA_CFLAGS += -I$(src)
 EXTRA_CFLAGS += -Wall -MD $(DEFINES) $(INCLUDES) -Wno-cast-qual -Wno-error -Wno-format-extra-args
 EXTRA_CFLAGS += -D__KERNEL__ -DMODULE -DNVRM -DNV_VERSION_STRING=\"450.66\" -Wno-unused-function -Wuninitialized -fno-strict-aliasing -mno-red-zone -mcmodel=kernel -DNV_UVM_ENABLE
 EXTRA_CFLAGS += $(call cc-option,-Werror=undef,)
@@ -112,7 +112,7 @@ endif
 CC ?= cc
 LD ?= ld
 
-NV_CONFTEST_SCRIPT := $(abs_srctree)/$(src)/conftest.sh
+NV_CONFTEST_SCRIPT := $(src)/conftest.sh
 NV_CONFTEST_HEADER := $(obj)/conftest/headers.h
 
 NV_CONFTEST_CMD := /bin/sh $(NV_CONFTEST_SCRIPT) \
