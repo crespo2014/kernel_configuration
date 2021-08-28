@@ -35,3 +35,17 @@ cp /usr/include/libdrm/drm_mode.h /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/include
  
  /home/lcrespo/projects/home/linux-5.9.1/include/linux/mm_types_task.h:24:13: error: missing binary operator before token "("
    IS_ENABLED(CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK))
+   
+    nouveau 0000:01:00.0: gr: TRAP ch 12 [007f269000 systemd-logind[786]]
+[29748.924955] nouveau 0000:01:00.0: gr: GPC0/TPC0/TEX: 80000041
+[29748.924960] nouveau 0000:01:00.0: gr: GPC0/TPC1/TEX: 80000041
+[29748.924973] nouveau 0000:01:00.0: fifo: fault 00 [READ] at 00000000077df000 engine 00 [GR] client 01 [GPC0/T1_0] reason 02 [PTE] on channel 12 [007f269000 systemd-logind[786]]
+[29748.924980] nouveau 0000:01:00.0: fifo: channel 12: killed
+[29748.924982] nouveau 0000:01:00.0: fifo: runlist 0: scheduled for recovery
+[29748.924991] nouveau 0000:01:00.0: fifo: engine 0: scheduled for recovery
+[29748.925016] nouveau 0000:01:00.0: systemd-logind[786]: channel 12 killed!
+[29749.150303] traps: xfsettingsd[32589] trap int3 ip:7f7ca5c64c75 sp:7ffe5ff91a30 error:0 in libglib-2.0.so.0.5800.3[7f7ca5c2c000+7e000]
+[29749.170879] traps: xfsettingsd[32603] trap int3 ip:7fdd416e8c75 sp:7ffd6aad1180 error:0 in libglib-2.0.so.0.5800.3[7fdd416b0000+7e000]
+[29749.193961] traps: xfsettingsd[32612] trap int3 ip:7f98a1f42c75 sp:7ffc05fcf5a0 error:0 in libglib-2.0.so.0.5800.3[7f98a1f0a000+7e000]
+[29749.209008] traps: xfsettingsd[32627] trap int3 ip:7f655123ec75 sp:7ffe2e6ff270 error:0 in libglib-2.0.so.0.5800.3[7f6551206000+7e000]
+[29749.225447] traps: xfsettingsd[32640] trap int3 ip:7f0c82ba4c75 sp:7ffc822208d0 error:0 in libglib-2.0.so.0.5800.3[7f0c82b6c000+7e000]
